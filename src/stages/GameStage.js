@@ -58,9 +58,8 @@ GameStage.prototype.spawnPatient = function () {
             wealth = 100,
             sickness = this.gameState.sicknesses[0];
 
-        const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness);
-        const path = this.gameState.level.findPath(spawnPoint.x, spawnPoint.y, receptionPoint.x, receptionPoint.y);
-        patient.planPath(path, null);
+        const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);
+        patient.moveTo(receptionPoint.x, receptionPoint.y);
         this.gameState.patients.push(patient);
     }
 };
@@ -80,7 +79,7 @@ GameStage.prototype.isOccupiedByPatient = function(x, y) {
     const patients = this.gameState.patients;
     for (let i=0; i < patients.length; i++) {
         const patient = patients[i];
-        const target = patient.getPathTarget();
+        const target = patient.getMoveTarget();
         const currentPositionOccupiesCoords = this.isInSameTile(patient.x, patient.y, x + 0.5,  y + 0.5);
         const targetPositionOccupiesCoords = target !== null ? this.isInSameTile(target.x, target.y, x + 0.5, y + 0.5) : false;
         if (currentPositionOccupiesCoords || targetPositionOccupiesCoords) {
@@ -95,8 +94,6 @@ GameStage.prototype.isInSameTile = function(x1, y1, x2, y2) {
     const diffY = Math.abs(y1 - y2);
     return (diffX < 0.5) && (diffY < 0.5);
 };
-
-
 
 GameStage.prototype.onkey = function (event) {
     if (event.key === "Escape") {

@@ -1,4 +1,4 @@
-function Patient(x, y, health, wealth, sickness) {
+function Patient(x, y, health, wealth, sickness, gameState) {
     this.x = x;
     this.y = y;
     this.health = health;
@@ -20,6 +20,8 @@ function Patient(x, y, health, wealth, sickness) {
     this.pathDestReachedCallback = null;
     this.lastPathProcessTime = 0;
     this.pathSmoothness = 50;
+
+    this.gameState = gameState;
 }
 
 Patient.load = function() {
@@ -30,6 +32,29 @@ Patient.load = function() {
 Patient.prototype.update = function() {
 
     this.processPath();
+};
+
+Patient.prototype.moveTo = function(targetX, targetY) {
+    const path = this.gameState.level.findPath(this.x, this.y, targetX, targetY);
+    this.planPath(path);
+};
+
+Patient.prototype.planPath = function(path) {
+
+    if (this.path === null) {
+        this.path = [];
+        for (let i=0; i < path.length - 1; i++) {
+            const currentPoint = path[i];
+            const destPoint = path[i+1];
+            const steps = this.pathSmoothness;
+            for (let step=0; step < steps; step++) {
+                let point = [0.5 + interpolate(currentPoint[0], destPoint[0], step / steps),
+                    0.5 + interpolate(currentPoint[1], destPoint[1], step / steps)];
+                this.path.push(point);
+            }
+        }
+        this.lastPathProcessTime = 0;
+    }
 };
 
 Patient.prototype.processPath = function() {
@@ -63,26 +88,7 @@ Patient.prototype.updateCharacterPosition = function(x, y) {
     this.lastMoveTime = gameStage.time;
 };
 
-Patient.prototype.planPath = function(path, pathDestReachedCallback) {
-
-    if (this.path === null) {
-        this.path = [];
-        for (let i=0; i < path.length - 1; i++) {
-            const currentPoint = path[i];
-            const destPoint = path[i+1];
-            const steps = this.pathSmoothness;
-            for (let step=0; step < steps; step++) {
-                let point = [0.5 + interpolate(currentPoint[0], destPoint[0], step / steps),
-                    0.5 + interpolate(currentPoint[1], destPoint[1], step / steps)];
-                this.path.push(point);
-            }
-        }
-        this.pathDestReachedCallback = pathDestReachedCallback;
-        this.lastPathProcessTime = 0;
-    }
-};
-
-Patient.prototype.getPathTarget = function() {
+Patient.prototype.getMoveTarget = function() {
 
     if ((this.path !== null) && (this.path.length > 0)) {
         const last = this.path[this.path.length - 1];
