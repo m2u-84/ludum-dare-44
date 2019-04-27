@@ -24,7 +24,7 @@ function Patient(x, y, health, wealth, sickness) {
 
 Patient.load = function() {
 
-    Patient.image = loader.loadImage("./assets/doctor_m.png", 4, 3); // TODO: new gfx for patient
+    Patient.image = loader.loadImage("./assets/patient1.png", 4, 3); // TODO: Random Patient Image?
 };
 
 Patient.prototype.update = function() {
@@ -106,5 +106,5 @@ Patient.prototype.paint = function(ctx) {
 
     // determine sequential frame index using game time
     const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-    drawFrame(ctx, Doctor.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+    drawFrame(ctx, Patient.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
 };

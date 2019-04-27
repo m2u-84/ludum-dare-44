@@ -1,7 +1,11 @@
 function GameState() {
+    // the level
     this.level = new Level();
+    // the hospital
+    this.hospital = new Hospital();
+    // the doctor
     this.doctor = new Doctor(13, 15, 0.5, 0.1, this);
-    
+    // possible treatments
     this.treatments = {
         placebo: new Treatment('Medication with Placebo', 100, 1),
         aspirin: new Treatment('Medication with Aspirin and Ibuprofen', 150, 20),
@@ -11,7 +15,7 @@ function GameState() {
         imodium: new Treatment('Medication with Imodium A-D', 150, 20),
         antibiotics: new Treatment('Medication with Antibiotics', 500, 100)
     };
-
+    // common sicknesses
     this.sicknesses = [
         new Sickness(0.0, 'Hypochondria', this.treatments.placebo),
         new Sickness(0.1, 'Common Cold', this.treatments.aspirin),
@@ -25,7 +29,7 @@ function GameState() {
         new Sickness(0.8, 'Lung Cancer', this.treatments.surgery),
         new Sickness(0.8, 'Heart Attack', this.treatments.surgery)
     ];
-    
+    // start with 0 patients
     this.patients = [];
 }
 
