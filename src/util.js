@@ -96,3 +96,7 @@ function absMod(v, modulus) {
 function vectorLength(x, y) {
   return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 }
+
+function interpolate(a, b, t) {
+    return a + t * (b - a);
+}
