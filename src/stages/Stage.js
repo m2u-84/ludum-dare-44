@@ -11,7 +11,7 @@ function Stage(name, zIndex) {
   this.isTransparent = false;
   this.isLoaded = false;
   this.time = 0;
-  this.timeDif = 0;
+  this.timeDif = 0; // millisecs
   this.aliveTime = 0;
   this.aliveTimeDif = 0;
 }
@@ -45,7 +45,7 @@ Stage.prototype.getShared = function(key) {
 
 Stage.prototype.getKeyState = function(key) {
   if (this.active) {
-    return keyHandler.keyStates[key];
+    return keyHandler.keyStates[key.toLowerCase()];
   } else {
     return false;
   }

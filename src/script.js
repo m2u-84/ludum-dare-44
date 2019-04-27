@@ -5,12 +5,13 @@ window.onload = () => {
   const canvas = document.getElementById("gameCanvas");
   timer = new Timer();
   loader = new Loader();
-  keyHandler = new KeyHandler(canvas, ["f", "Shift"]);
+  keyHandler = new KeyHandler(canvas, ["f", "Shift", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]);
   mouseHandler = new MouseHandler(canvas);
   mouse = mouseHandler.mouse;
   stageManager = new StageManager(canvas, timer);
+  gameStage = new GameStage();
   stageManager.add(new LoadStage())
-              .add(new GameStage());
+              .add(gameStage);
   
   // Load stage content
   stageManager.load();
