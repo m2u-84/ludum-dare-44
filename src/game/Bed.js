@@ -2,6 +2,7 @@ function Bed(x, y) {
     let position1 = {x: x, y: y};
     let position2 = {x: x, y: y+1};
     this.positions = [position1, position2];
+    this.occupiedBy = null;
 }
 
 Bed.load = function() {
@@ -9,5 +10,16 @@ Bed.load = function() {
 };
 
 Bed.prototype.paint = function(ctx) {
-    drawFrame(ctx, Bed.image, 0, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
+    let frame = 0;
+    if (this.occupiedBy) {
+        frame = 1 + Math.floor((gameStage.time + this.occupiedBy.animationOffset) / 1600) % 2;
+    } 
+    drawFrame(ctx, Bed.image, frame, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
+};
+
+Bed.prototype.occupy = function(patient) {
+    if (this.occupiedBy) {
+        throw new Error("Can't occupy preoccupied bed, noob.");
+    }
+    this.occupiedBy = patient;
 };
