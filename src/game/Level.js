@@ -3,7 +3,7 @@
 // define Level class
 function Level() {
 
-    // use w for wall, b for bed, r for recetionPoint, s for spawnPoint
+    // use w for wall, b for bed, r for receptionPoint, s for spawnPoint
     // cf. map_raster.png
     let rawMap =
           '--------------------------\n'
