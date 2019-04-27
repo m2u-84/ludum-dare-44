@@ -22,7 +22,7 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
 
 Doctor.load = function() {
 
-    Doctor.image = loader.loadImage("./assets/doctor_m.png", 4, 3);
+    Doctor.image = loader.loadImage("./assets/doctor_w.png", 4, 3);
 };
 
 Doctor.prototype.update = function() {
