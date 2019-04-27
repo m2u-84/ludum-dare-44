@@ -1,93 +1,60 @@
+
+
 // define Level class
 function Level() {
+
+    var rawMap = 
+          'wwwwwwww\n'
+        + 'w-b-b-b-\n'
+        + 'w-b-b-b-\n'
+        + 'w-------\n'
+        + 'w-------\n'
+        + 'www--www\n'
+        + '--------\n'
+        + '--------',
+        x, y, y0, count;
+
+    rawMap = rawMap.split('\n');
+
+    console.log("RAW", rawMap);
+
     // used for collision detection
-    this.tilemap = [
-        [
-            new Tile(0, 0, true),
-            new Tile(1, 0, true),
-            new Tile(2, 0, true),
-            new Tile(3, 0, true),
-            new Tile(4, 0, true),
-            new Tile(5, 0, true),
-            new Tile(6, 0, true),
-            new Tile(7, 0, true)
-        ],
-        [
-            new Tile(0, 1, true),
-            new Tile(1, 1, false),
-            new Tile(2, 1, true),
-            new Tile(3, 1, false),
-            new Tile(4, 1, true),
-            new Tile(5, 1, false),
-            new Tile(6, 1, true),
-            new Tile(7, 1, false)
-        ],
-        [
-            new Tile(0, 2, true),
-            new Tile(1, 2, false),
-            new Tile(2, 2, true),
-            new Tile(3, 2, false),
-            new Tile(4, 2, true),
-            new Tile(5, 2, false),
-            new Tile(6, 2, true),
-            new Tile(7, 2, false)
-        ],
-        [
-            new Tile(0, 3, true),
-            new Tile(1, 3, false),
-            new Tile(2, 3, false),
-            new Tile(3, 3, false),
-            new Tile(4, 3, false),
-            new Tile(5, 3, false),
-            new Tile(6, 3, false),
-            new Tile(7, 3, false)
-        ],
-        [
-            new Tile(0, 4, true),
-            new Tile(1, 4, false),
-            new Tile(2, 4, false),
-            new Tile(3, 4, false),
-            new Tile(4, 4, false),
-            new Tile(5, 4, false),
-            new Tile(6, 4, false),
-            new Tile(7, 4, false)
-        ],
-        [
-            new Tile(0, 5, true),
-            new Tile(1, 5, true),
-            new Tile(2, 5, true),
-            new Tile(3, 5, false),
-            new Tile(4, 5, false),
-            new Tile(5, 5, true),
-            new Tile(6, 5, true),
-            new Tile(7, 5, true)
-        ],
-        [
-            new Tile(0, 6, false),
-            new Tile(1, 6, false),
-            new Tile(2, 6, false),
-            new Tile(3, 6, false),
-            new Tile(4, 6, false),
-            new Tile(5, 6, false),
-            new Tile(6, 6, false),
-            new Tile(7, 6, false)
-        ],
-        [
-            new Tile(0, 7, false),
-            new Tile(1, 7, false),
-            new Tile(2, 7, false),
-            new Tile(3, 7, false),
-            new Tile(4, 7, false),
-            new Tile(5, 7, false),
-            new Tile(6, 7, false),
-            new Tile(7, 7, false)
-        ],
-    ];            
-    this.beds = [
-        new Bed(2, 1),
-        new Bed(4, 1),
-        new Bed(6, 1)
-    ];      
+    this.tilemap = new Array(rawMap.length).fill(null)
+        .map(tile => new Array(rawMap[0].length).fill(null));
+    this.beds = [];
+
+    for (y = 0; y < rawMap.length; y++) {
+        for (x = 0; x < rawMap[0].length; x++) {
+            switch (rawMap[y][x]) {
+                case '-':
+                    this.tilemap[y][x] = new Tile(x, y, false);
+                    break;
+
+                case 'w':
+                    this.tilemap[y][x] = new Tile(x, y, true);
+                    break;
+
+                case 'b':
+                    this.tilemap[y][x] = new Tile(x, y, true);
+
+                    count = 0;
+                    for (y0 = 0; y0 < y; y0++) {
+                        if (rawMap[y0][x] == 'b') {
+                            count++;
+                        }
+                    }
+
+                    // a new bed starts on even counts
+                    if (count % 2 == 0) {
+                        this.beds.push(new Bed(x, y));
+                    }
+                    break;
+            }
+        }
+    }
+
+    console.log("TILES", this.tilemap);
+    console.log("BEDS", this.beds);
 
     this.routes = [];
     this.entry = "";
