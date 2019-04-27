@@ -3,15 +3,25 @@
 // define Level class
 function Level() {
 
-    var rawMap = 
-          'wwwwwwww\n'
-        + 'w-b-b-b-\n'
-        + 'w-b-b-b-\n'
-        + 'w-------\n'
-        + 'w-------\n'
-        + 'www--www\n'
-        + '--------\n'
-        + '--------',
+    // cf. map_raster.png
+    let rawMap = 
+          '--------------------------\n'
+        + '-----wwwwwww----wwwwwww---\n'
+        + '-----w-b-b-w----w-b-b-w---\n'
+        + '-----w-b-b-wwwwww-b-b-w---\n'
+        + '-----w----------------w---\n'
+        + '-----wwwwwwww--wwwwwwww---\n'
+        + '-----w-b-b--w--w--b-b-w---\n'
+        + '-----w-b-b--w--w--b-b-w---\n'
+        + '-----w----------------w---\n'
+        + '-----wwwwwwww--wwwwwwww---\n'
+        + '-----w----w----w-w----w---\n'
+        + '-----w----w-wwww-w----w---\n'
+        + '-----w----------------w---\n'
+        + '-----wwwwwwww--wwwwwwww---\n'
+        + '--------------------------\n'
+        + '--------------------------\n'
+        + '--------------------------',
         x, y, y0, count;
 
     rawMap = rawMap.split('\n');
