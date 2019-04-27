@@ -5,6 +5,8 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.wealth = wealth;
     this.sickness = sickness;
     this.diagnosed = false;
+    this.inBed = null;
+    this.animationOffset = rnd(9999);
 
     this.movingVelocity = 2; // animation speed
     this.idleVelocity = 1;
@@ -98,6 +100,9 @@ Patient.prototype.getMoveTarget = function() {
 };
 
 Patient.prototype.paint = function(ctx) {
+    if (this.inBed) {
+      return;
+    }
 
     // Reset character state (idle, moving) shortly after walking ends
     if (gameStage.time - this.lastMoveTime > 100) {
@@ -111,6 +116,16 @@ Patient.prototype.paint = function(ctx) {
     const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
 
     // determine sequential frame index using game time
-    const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
+    const frameIndex = Math.floor((gameStage.time + this.animationOffset) / (200 / velocity)) % frameCount;
     drawFrame(ctx, Patient.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+};
+
+Patient.prototype.enterBed = function(bed) {
+    if (this.inBed) {
+      throw new Error("Can't enter bed while already in bed. Noob.");
+    }
+    bed.occupy(this);
+    this.inBed = bed;
+    this.x = bed.positions[0].x;
+    this.y = bed.positions[0].y;
 };

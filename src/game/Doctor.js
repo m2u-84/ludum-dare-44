@@ -15,14 +15,14 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
     this.directionFactor = 1;
     this.characterStateIndex = 0;
     this.characterFrameIndexes = [
-        [1, 4, 5, 5, 5, 4, 1, 1], // idle
+        [1, 4, 5, 5, 5, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1, 1], // idle
         [0, 1, 2, 3, 2, 1] // moving
     ];
 }
 
 Doctor.load = function() {
 
-    Doctor.image = loader.loadImage("./assets/doctor_m.png", 4, 3);
+    Doctor.image = loader.loadImage("./assets/doctor_w.png", 4, 3);
 };
 
 Doctor.prototype.update = function() {
@@ -147,5 +147,5 @@ Doctor.prototype.paint = function(ctx) {
     const frameCount = frames.length;
     const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
     const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-    drawFrame(ctx, Doctor.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+    drawFrame(ctx, Doctor.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.97);
 };
