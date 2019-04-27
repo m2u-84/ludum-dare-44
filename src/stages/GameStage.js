@@ -8,11 +8,13 @@ inherit(GameStage, Stage);
 
 GameStage.prototype.preload = function() {
    // grafik laden
-   loader.loadImage("");
+   this.mapImage = loader.loadImage("./assets/test.png");
 };
 
 GameStage.prototype.render = function(ctx, timer) {
+  ctx.scale(4, 4);
   const w = ctx.canvas.width, h = ctx.canvas.height;
+  drawImage(ctx, this.mapImage, 0, 0, 0, 1, 1, 0, 0);
 };
 
 GameStage.prototype.update = function(timer) {
