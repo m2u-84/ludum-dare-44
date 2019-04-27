@@ -7,7 +7,8 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
     this.y = y;
     this.sizeX = sizeX;
     this.sizeY = sizeY;
-    this.velocity = 1; // tiles per second
+    this.movingVelocity = 4; // tiles per second TODO: reduce to 2
+    this.idleVelocity = 1;
     this.gameState = gameState;
     this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
@@ -53,7 +54,7 @@ Doctor.prototype.tryMove = function(delta) {
     let moveLen = vectorLength(delta.x, delta.y);
 
     if (moveLen > 0) {
-        let scale = this.velocity * gameStage.timeDif / 1000;
+        let scale = this.movingVelocity * gameStage.timeDif / 1000;
         delta.x = delta.x / moveLen * scale;
         delta.y = delta.y / moveLen * scale;
         const moveToX = {x: this.x + delta.x, y: this.y};
@@ -142,8 +143,7 @@ Doctor.prototype.paint = function(ctx) {
     this.directionFactor = this.lastMoveDelta.x !== 0 ? Math.sign(this.lastMoveDelta.x) : this.directionFactor;
     const frames = this.characterFrameIndexes[this.characterStateIndex];
     const frameCount = frames.length;
-    const frameIndex = Math.floor(gameStage.time / (200 / this.velocity)) % frameCount;
+    const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
+    const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
     drawFrame(ctx, Doctor.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.9);
 };
-
-
