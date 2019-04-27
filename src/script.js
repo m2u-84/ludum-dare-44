@@ -12,7 +12,8 @@ window.onload = () => {
   gameStage = new GameStage();
   stageManager.add(new LoadStage())
               .add(gameStage)
-              .add(new SyringeStage());
+              .add(new SyringeStage())
+              .add(new OrganStage());
   
   // Load stage content
   stageManager.load();

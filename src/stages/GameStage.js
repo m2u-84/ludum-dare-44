@@ -10,6 +10,7 @@ GameStage.prototype.preload = function () {
     this.gameState.init();
     this.mapImage = loader.loadImage("./assets/map.png");
     Doctor.load();
+    Bed.load();
 };
 
 GameStage.prototype.render = function (ctx, timer) {
@@ -21,7 +22,13 @@ GameStage.prototype.render = function (ctx, timer) {
     const offy = clamp(Math.round(-this.gameState.doctor.y * 24) / 24, -(this.mapImage.height - h / 2) / cellSize, -h / 2 / cellSize);
     console.log(offx, offy);
     ctx.translate(offx, offy);
+
     drawImage(ctx, this.mapImage, 0, 0, 0, 1 / cellSize, 1 / cellSize, 0, 0);
+
+    for (let i = 0; i < this.gameState.level.beds.length; i++) {
+        this.gameState.level.beds[i].paint(ctx);
+    }
+
     this.gameState.doctor.paint(ctx);
     this.gameState.patients.forEach(p => p.paint(ctx));
 };
@@ -59,6 +66,6 @@ GameStage.prototype.onkey = function (event) {
     if (event.key === "Escape") {
         // TODO this.transitionIn("pause", 400);
     } else if (event.key === "Enter") {
-        this.transitionIn("syringe");
+        this.transitionIn("organ");
     }
 };
