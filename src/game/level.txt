@@ -1,8 +1,8 @@
--wb-b--b
--wb-b--b
--w------
--w-b-b-b
--w-b-b-b
--w------
--ww-wwww
+wwwwwwww
+w-b-b-b-
+w-b-b-b-
+w-------
+w-------
+www--www
+--------
 --------
