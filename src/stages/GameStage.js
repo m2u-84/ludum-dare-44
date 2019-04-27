@@ -7,7 +7,8 @@ function GameStage() {
 inherit(GameStage, Stage);
 
 GameStage.prototype.preload = function() {
-
+   // grafik laden
+   loader.loadImage("");
 };
 
 GameStage.prototype.render = function(ctx, timer) {

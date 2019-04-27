@@ -1,5 +1,6 @@
 // define Level class
 function Level() {
+    // used for collision detection
     this.tilemap = [
         [
             new Tile(0, 0, false),
@@ -74,12 +75,12 @@ function Level() {
     ];
         
     this.beds = [
-        new Bed(2, 0, false),
-        new Bed(4, 0, false),
-        new Bed(6, 1, true),
-        new Bed(3, 3, false),
-        new Bed(5, 3, false),
-        new Bed(7, 3, false)
+        new Bed(2, 0),
+        new Bed(4, 0),
+        new Bed(6, 1),
+        new Bed(3, 3),
+        new Bed(5, 3),
+        new Bed(7, 3)
     ];
 
     this.routes = [];
@@ -87,14 +88,9 @@ function Level() {
 }
 
 
-function Bed(x, y, isHorizontal) {
+function Bed(x, y) {
     var position1 = [x, y];
-    var position2;
-    if (isHorizontal) {
-        position2 = [x+1, y];
-    } else {
-        position2 = [x, y+1];
-    }
+    var position2 = [x, y+1];
     this.positions = [position1, position2];
 }
 
