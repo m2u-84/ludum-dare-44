@@ -1,8 +1,8 @@
+// sample tilemap
 var tilemap = {
 
 
 };
-
 
 // define Level class
 function Level() {
@@ -12,26 +12,24 @@ function Level() {
     this.entry = "";
 }
 
-Level.prototype.generateTilemap = function () {
-    // start with empty tilemap
-    var tilemap = [];
-    
+
+
+
+
+function Bed(x, y, isHorizontal) {
+    var position1 = [x, y];
+    var position2;
+    if (isHorizontal) {
+        position2 = [x+1, y];
+    } else {
+        position2 = [x, y+1];
+    }
+    this.positions = [position1, position2];
 }
 
-
-function Tile(x, y, collide) {
-    this.position = [x, y];
-    this.collides = collide;
-}
-
-
-
-
-
-function Bed(x, y, orientation) {
+Bed.prototype.collides = function() {
 
 }
-
 
 
 function Route() {

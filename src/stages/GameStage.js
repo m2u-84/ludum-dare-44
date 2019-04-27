@@ -7,7 +7,7 @@ function GameStage() {
 inherit(GameStage, Stage);
 
 GameStage.prototype.preload = function() {
-    this.gameState.level.generateTilemap();
+
 };
 
 GameStage.prototype.render = function(ctx, timer) {
