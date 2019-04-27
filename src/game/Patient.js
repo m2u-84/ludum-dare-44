@@ -36,6 +36,48 @@ Patient.prototype.update = function() {
     this.processPath();
 };
 
+Patient.prototype.introduceAtReception = function () {
+
+    const receptionPoint = this.getFreePoint(this.gameState.level.receptionPoints);
+    if (receptionPoint !== null) {
+        this.moveTo(receptionPoint.x, receptionPoint.y);
+        this.gameState.patients.push(this);
+        return true;
+    }
+    return false;
+};
+
+Patient.prototype.getFreePoint = function(points) {
+
+    for (let i=0; i < points.length; i++) {
+        if (!this.isOccupiedByPatient(points[i].x, points[i].y)) {
+            return points[i];
+        }
+    }
+    return null;
+};
+
+Patient.prototype.isOccupiedByPatient = function(x, y) {
+
+    const patients = this.gameState.patients;
+    for (let i=0; i < patients.length; i++) {
+        const patient = patients[i];
+        const target = patient.getMoveTarget();
+        const currentPositionOccupiesCoords = this.isInSameTile(patient.x, patient.y, x + 0.5,  y + 0.5);
+        const targetPositionOccupiesCoords = target !== null ? this.isInSameTile(target.x, target.y, x + 0.5, y + 0.5) : false;
+        if (currentPositionOccupiesCoords || targetPositionOccupiesCoords) {
+            return true;
+        }
+    }
+};
+
+Patient.prototype.isInSameTile = function(x1, y1, x2, y2) {
+
+    const diffX = Math.abs(x1 - x2);
+    const diffY = Math.abs(y1 - y2);
+    return (diffX < 0.5) && (diffY < 0.5);
+};
+
 Patient.prototype.moveTo = function(targetX, targetY) {
     const path = this.gameState.level.findPath(this.x, this.y, targetX, targetY);
     this.planPath(path);

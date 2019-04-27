@@ -49,50 +49,24 @@ GameStage.prototype.update = function (timer) {
 };
 
 GameStage.prototype.spawnPatient = function () {
-    const spawnPoint = this.getFreePoint(this.gameState.level.spawnPoints);
-    const receptionPoint = this.getFreePoint(this.gameState.level.receptionPoints);
-    if ((spawnPoint !== null) && (receptionPoint !== null)) {
+    const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
+    if (spawnPoint !== null) {
 
         const
             health = 100,
             wealth = 100,
             sickness = this.gameState.sicknesses[0];
-
         const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);
-        patient.moveTo(receptionPoint.x, receptionPoint.y);
-        this.gameState.patients.push(patient);
+        patient.introduceAtReception(); // TODO: possibly try to respawn patient earlier if reception slot is blocked
     }
 };
 
-GameStage.prototype.getFreePoint = function(points) {
+GameStage.prototype.getRandomElement = function(list) {
 
-    for (let i=0; i < points.length; i++) {
-        if (!this.isOccupiedByPatient(points[i].x, points[i].y)) {
-            return points[i];
-        }
+    if (list.length > 0) {
+        return list[Math.floor(Math.random() * list.length)]
     }
     return null;
-};
-
-GameStage.prototype.isOccupiedByPatient = function(x, y) {
-
-    const patients = this.gameState.patients;
-    for (let i=0; i < patients.length; i++) {
-        const patient = patients[i];
-        const target = patient.getMoveTarget();
-        const currentPositionOccupiesCoords = this.isInSameTile(patient.x, patient.y, x + 0.5,  y + 0.5);
-        const targetPositionOccupiesCoords = target !== null ? this.isInSameTile(target.x, target.y, x + 0.5, y + 0.5) : false;
-        if (currentPositionOccupiesCoords || targetPositionOccupiesCoords) {
-            return true;
-        }
-    }
-};
-
-GameStage.prototype.isInSameTile = function(x1, y1, x2, y2) {
-
-    const diffX = Math.abs(x1 - x2);
-    const diffY = Math.abs(y1 - y2);
-    return (diffX < 0.5) && (diffY < 0.5);
 };
 
 GameStage.prototype.onkey = function (event) {
