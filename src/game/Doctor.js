@@ -59,6 +59,22 @@ Doctor.prototype.handleKeys = function() {
 
     this.tryMove(moveDelta);
     console.log(this.x + ", " + this.y)
+
+        if (moveTo.x !== this.x || moveTo.y !== this.y) {
+        if (!this.collides(moveTo)) {
+            this.x = moveTo.x;
+            this.y = moveTo.y;
+        } else {
+            console.log(this.getBed(moveTo));
+        }
+    }
+
+    // console.log(this.x + ", " + this.y)
+};
+
+// returns null or bed
+Doctor.prototype.getBed = function(target) {
+    return this.gameState.getBed(target);
 };
 
 Doctor.prototype.collides = function(target) {

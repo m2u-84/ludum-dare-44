@@ -70,15 +70,27 @@ Level.prototype.isBlocked = function(target) {
         return true;
     }
     var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
-    console.log("checkCollision", Math.floor(target.y), Math.floor(target.x));
     return tile.collides;
 }
 
+Level.prototype.getBed = function(target) {
+    // target is x and y
+    if ((target.x < 0) || (target.y < 0) || (target.x >= this.tilemap[0].length) || (target.y >= this.tilemap.length)) {
+        return true;
+    }
+    var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
+    return tile.bed;
+}
+
 Level.prototype.placeBeds = function() {
-    /*for (var i = 0; i < this.beds.length; i++) {
-        var x = this.beds[i].position[0];
-        
-    }*/
+    for (var i = 0; i < this.beds.length; i++) {
+        var x1 = this.beds[i].positions[0][0];
+        var y1 = this.beds[i].positions[0][1];
+        this.tilemap[y1][x1].bed = this.beds[i];
+        var x2 = this.beds[i].positions[1][0];
+        var y2 = this.beds[i].positions[1][1];
+        this.tilemap[y2][x2].bed = this.beds[i];
+    }
 }
 
 function Route() {

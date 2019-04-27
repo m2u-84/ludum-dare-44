@@ -10,3 +10,7 @@ GameState.prototype.init = function() {
 GameState.prototype.isBlocked = function(target) {
     return this.level.isBlocked(target);
 }
+
+GameState.prototype.getBed = function(target) {
+    return this.level.getBed(target);
+}
