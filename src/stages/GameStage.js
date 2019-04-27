@@ -7,14 +7,18 @@ function GameStage() {
 inherit(GameStage, Stage);
 
 GameStage.prototype.preload = function() {
-   // load grafic
+   this.gameState.init();
    this.mapImage = loader.loadImage("./assets/test.png");
 };
 
 GameStage.prototype.render = function(ctx, timer) {
   var cellSize = 24;
-  ctx.scale(cellSize, cellSize);
   const w = ctx.canvas.width, h = ctx.canvas.height;
+  ctx.translate(w / 2, h / 2);
+  ctx.scale(cellSize, cellSize);
+  const offx = Math.round(-this.gameState.doctor.x * 24) / 24;
+  const offy = Math.round(-this.gameState.doctor.y * 24) / 24;
+  ctx.translate(offx, offy);
   drawImage(ctx, this.mapImage, 0, 0, 0, 1 / cellSize, 1 / cellSize, 0, 0);
   this.gameState.doctor.paint(ctx);
 };

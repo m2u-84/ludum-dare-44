@@ -3,6 +3,10 @@ function GameState() {
     this.doctor = new Doctor(4, 4, 0.5, 0.5, this);
 }
 
+GameState.prototype.init = function() {
+    this.level.init();
+}
+
 GameState.prototype.isBlocked = function(target) {
     return this.level.isBlocked(target);
 }
