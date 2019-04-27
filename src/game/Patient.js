@@ -63,7 +63,7 @@ Patient.prototype.updateCharacterPosition = function(x, y) {
     this.lastMoveTime = gameStage.time;
 };
 
-Patient.prototype.planRoute = function(path, pathDestReachedCallback) {
+Patient.prototype.planPath = function(path, pathDestReachedCallback) {
 
     if (this.path === null) {
         this.path = [];
@@ -80,6 +80,15 @@ Patient.prototype.planRoute = function(path, pathDestReachedCallback) {
         this.pathDestReachedCallback = pathDestReachedCallback;
         this.lastPathProcessTime = 0;
     }
+};
+
+Patient.prototype.getPathTarget = function() {
+
+    if ((this.path !== null) && (this.path.length > 0)) {
+        const last = this.path[this.path.length - 1];
+        return {x: last[0], y: last[1]};
+    }
+    return null;
 };
 
 Patient.prototype.paint = function(ctx) {
