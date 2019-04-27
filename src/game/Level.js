@@ -98,6 +98,7 @@ Level.prototype.placeBeds = function() {
 }
 
 Level.prototype.findPath = function(x1, y1, x2, y2) {
+    const neighbourDistances = [ [-1,0], [1,0], [0,-1], [0,1] ];
     const self = this;
     Level.pathFindingCount++;
     const tiles = [];
@@ -125,10 +126,10 @@ Level.prototype.findPath = function(x1, y1, x2, y2) {
     }
 
     function addNeighbours(x, y) {
-        addNeighbour(x - 1, y, x, y);
-        addNeighbour(x + 1, y, x, y);
-        addNeighbour(x, y - 1, x, y);
-        addNeighbour(x, y + 1, x, y);
+        shuffle(neighbourDistances);
+        for (const dis of neighbourDistances) {
+            addNeighbour(x + dis[0], y + dis[1], x, y);
+        }
     }
 
     function addNeighbour(x, y, sx, sy) {
