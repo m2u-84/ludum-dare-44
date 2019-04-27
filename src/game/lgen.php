@@ -26,13 +26,13 @@ foreach ($lines as $y => $line) {
                 echo "        new Tile($x, $y, true),\n";
                 $count = 0;
                 for ($y0 = 0; $y0 < $y; $y0++) {
-                    if ($lines[$y0][$x] == 'v') {
+                    if ($lines[$y0][$x] == 'b') {
                         $count++;
                     }
                 }
                 // a new bed starts on even counts
                 if ($count % 2 == 0) {
-                    array_push($beds, "    new Bed($x, $y)\n");
+                    array_push($beds, "    new Bed($x, $y),\n");
                 }
                 break;
         }
@@ -42,8 +42,8 @@ foreach ($lines as $y => $line) {
 
 echo "];\n";
 
-echo "beds = [\n";
+echo "this.beds = [\n";
 foreach ($beds as $bed) {
     echo $bed;
 }
-echo "]\n";
+echo "];\n";
