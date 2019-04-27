@@ -4,6 +4,7 @@ function MinigameStage(name) {
   // Drawable canvas size, updated in render function
   this.w = 0;
   this.h = 0;
+  this.margin = 32;
 }
 inherit(MinigameStage, Stage);
 
@@ -23,10 +24,10 @@ MinigameStage.prototype.render = function(ctx, timer) {
   }
   // Background
   ctx.fillStyle = "#806846";
-  this.w = w - 200;
-  this.h = h - 200;
-  ctx.fillRect(100, 100, this.w, this.h);
-  ctx.translate(100, 100);
+  this.w = w - 2 * this.margin;
+  this.h = h - 2 * this.margin;
+  ctx.fillRect(this.margin, this.margin, this.w, this.h);
+  ctx.translate(this.margin, this.margin);
   // Clipping
   ctx.beginPath();
   ctx.moveTo(0, 0);
