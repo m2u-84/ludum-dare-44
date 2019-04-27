@@ -66,6 +66,6 @@ GameStage.prototype.onkey = function (event) {
     if (event.key === "Escape") {
         // TODO this.transitionIn("pause", 400);
     } else if (event.key === "Enter") {
-        this.transitionIn("organ");
+        this.transitionIn(getRandomItem(["organ"])); //, "syringe"]));
     }
 };
