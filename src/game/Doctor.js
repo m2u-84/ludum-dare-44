@@ -133,9 +133,11 @@ Doctor.prototype.collidesPoint = function(target) {
 
 Doctor.prototype.paint = function(ctx) {
 
-//    let bounds = this.computeBoundingRect(this.x, this.y);
-//    ctx.fillStyle= 'blue';
-//    ctx.fillRect(bounds.tl.x, bounds.tl.y, (bounds.tr.x - bounds.tl.x), (bounds.bl.y - bounds.tl.y));
+    /*
+    let bounds = this.computeBoundingRect(this.x, this.y);
+    ctx.fillStyle= 'blue';
+    ctx.fillRect(bounds.tl.x, bounds.tl.y, (bounds.tr.x - bounds.tl.x), (bounds.bl.y - bounds.tl.y));
+    */
     if (gameStage.time - this.lastMoveTime > 100) {
         this.characterStateIndex = 0;
     }
