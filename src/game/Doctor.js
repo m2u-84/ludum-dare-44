@@ -18,23 +18,30 @@ Doctor.prototype.update = function() {
 
 Doctor.prototype.handleKeys = function() {
 
-    const moveDelta = this.velocity * gameStage.timeDif / 1000;
-    const moveTo = {x: this.x, y: this.y};
+    let moveDelta = {x: 0, y: 0};
     if (gameStage.getKeyState("ArrowUp")) {
-        moveTo.y -= moveDelta;
+        moveDelta.y -= 1;
     }
     if (gameStage.getKeyState("ArrowDown")) {
-        moveTo.y += moveDelta;
+        moveDelta.y += 1;
     }
     if (gameStage.getKeyState("ArrowLeft")) {
-        moveTo.x -= moveDelta;
+        moveDelta.x -= 1;
     }
     if (gameStage.getKeyState("ArrowRight")) {
-        moveTo.x += moveDelta;
+        moveDelta.x += 1;
     }
-    if (((moveTo.x !== this.x) || (moveTo.y !== this.y)) && (!this.collides(moveTo))) {
-        this.x = moveTo.x;
-        this.y = moveTo.y;
+    let moveLen = Math.sqrt(Math.pow(moveDelta.x, 2) + Math.pow(moveDelta.y, 2));
+
+    if (moveLen > 0) {
+        let scale = this.velocity * gameStage.timeDif / 1000;
+        moveDelta.x = moveDelta.x / moveLen * scale;
+        moveDelta.y = moveDelta.y / moveLen * scale;
+        const moveTo = {x: this.x + moveDelta.x, y: this.y + moveDelta.y};
+        if (!this.collides(moveTo)) {
+            this.x = moveTo.x;
+            this.y = moveTo.y;
+        }
     }
     console.log(this.x + ", " + this.y)
 };
