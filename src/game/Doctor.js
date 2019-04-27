@@ -43,19 +43,19 @@ Doctor.prototype.handleKeys = function() {
 
 Doctor.prototype.collides = function(target) {
 
-    var bounds = this.computeBoundingRect(this.x, this.y);
-    return !this.collidesPoint(bounds.tl) &&
-        !this.collidesPoint(bounds.tr) &&
-        !this.collidesPoint(bounds.bl) &&
-        !this.collidesPoint(bounds.br);
+    var bounds = this.computeBoundingRect(target.x, target.y);
+    return this.collidesPoint(bounds.tl) ||
+        this.collidesPoint(bounds.tr) ||
+        this.collidesPoint(bounds.bl) ||
+        this.collidesPoint(bounds.br);
 }
 
 Doctor.prototype.computeBoundingRect = function(x, y) {
 
     var left = x - this.sizeX / 2;
     var right = x + this.sizeX / 2;
-    var top = y - this.sizeY / 2;
-    var bottom = y + this.sizeY / 2;
+    var top = y + this.sizeY / 2;
+    var bottom = y - this.sizeY / 2;
 
     var topLeft = {x: left, y: top};
     var topRight = {x: right, y: top};
@@ -66,6 +66,7 @@ Doctor.prototype.computeBoundingRect = function(x, y) {
 }
 
 Doctor.prototype.collidesPoint = function(target) {
+//    return ((target.x < 0) || (target.x > 8) || (target.y < 0) || (target.y > 8));
     return this.gameState.isBlocked(target);
 }
 
