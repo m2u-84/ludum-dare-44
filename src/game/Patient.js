@@ -6,7 +6,7 @@ function Patient(x, y, health, wealth, sickness) {
     this.sickness = sickness;
     this.diagnosed = false;
 
-    this.movingVelocity = 4; // tiles per second TODO: reduce to 2
+    this.movingVelocity = 2; // animation speed
     this.idleVelocity = 1;
     this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
