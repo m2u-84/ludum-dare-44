@@ -15,7 +15,7 @@ function Level() {
 
 Level.prototype.generateTilemap = function () {
     // parse level.json
-    var parsedJson = JSON.parse(level);
+    //var parsedJson = JSON.parse(level);
     // start with empty tilemap
     var tilemap = [];
     

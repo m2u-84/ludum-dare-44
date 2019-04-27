@@ -18,6 +18,7 @@ GameStage.prototype.update = function(timer) {
   if (this.timeDif == 0) {
     return;
   }
+  this.gameState.doctor.update();
 };
 
 GameStage.prototype.onkey = function(event) {
