@@ -43,29 +43,37 @@ Doctor.prototype.handleKeys = function() {
 
 Doctor.prototype.collides = function(target) {
 
-    var left = target.x - this.sizeX / 2;
-    var right = target.x + this.sizeX / 2;
-    var top = target.y - this.sizeY / 2;
-    var bottom = target.y - this.sizeY / 2;
+    var bounds = this.computeBoundingRect(this.x, this.y);
+    return !this.collidesPoint(bounds.tl) &&
+        !this.collidesPoint(bounds.tr) &&
+        !this.collidesPoint(bounds.bl) &&
+        !this.collidesPoint(bounds.br);
+}
+
+Doctor.prototype.computeBoundingRect = function(x, y) {
+
+    var left = x - this.sizeX / 2;
+    var right = x + this.sizeX / 2;
+    var top = y - this.sizeY / 2;
+    var bottom = y + this.sizeY / 2;
 
     var topLeft = {x: left, y: top};
     var topRight = {x: right, y: top};
     var bottomLeft = {x: left, y: bottom};
     var bottomRight = {x: right, y: bottom};
 
-    return !this.collidesPoint(topLeft) &&
-        !this.collidesPoint(topRight) &&
-        !this.collidesPoint(bottomLeft) &&
-        !this.collidesPoint(bottomRight);
+    return {tl: topLeft, tr: topRight, bl: bottomLeft, br: bottomRight};
 }
 
 Doctor.prototype.collidesPoint = function(target) {
-var collides = this.gameState.checkCollision(target);
-    return (target.x > 0) && (target.x < 10) && (target.y > 0) && (target.y < 10);
+    return this.gameState.isBlocked(target);
 }
 
-Doctor.prototype.paint = function() {
+Doctor.prototype.paint = function(ctx) {
 
+    var bounds = this.computeBoundingRect(this.x, this.y);
+    ctx.fillStyle= 'blue';
+    ctx.fillRect(bounds.tl.x, bounds.tl.y, (bounds.tr.x - bounds.tl.x), (bounds.bl.y - bounds.tl.y));
 }
 
 

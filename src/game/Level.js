@@ -100,8 +100,11 @@ function Bed(x, y) {
     this.positions = [position1, position2];
 }
 
-Level.prototype.checkCollision = function(target) {
+Level.prototype.isBlocked = function(target) {
     // target is x and y
+    if ((target.x < 0) || (target.y < 0) || (target.x >= this.tilemap[0].length) || (target.y >= this.tilemap.length)) {
+        return true;
+    }
     var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
     console.log("checkCollision", Math.floor(target.y), Math.floor(target.x));
     return tile.collides;

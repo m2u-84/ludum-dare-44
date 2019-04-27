@@ -3,6 +3,6 @@ function GameState() {
     this.doctor = new Doctor(5, 5, 0.5, 0.5, this);
 }
 
-GameState.prototype.checkCollision = function(target) {
-    return this.level.checkCollision(target);
+GameState.prototype.isBlocked = function(target) {
+    return this.level.isBlocked(target);
 }

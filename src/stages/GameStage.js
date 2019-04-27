@@ -12,9 +12,11 @@ GameStage.prototype.preload = function() {
 };
 
 GameStage.prototype.render = function(ctx, timer) {
-  ctx.scale(24, 24);
+  var cellSize = 24;
+  ctx.scale(cellSize, cellSize);
   const w = ctx.canvas.width, h = ctx.canvas.height;
-  drawImage(ctx, this.mapImage, 0, 0, 0, 0.25, 0.25, 0, 0);
+  drawImage(ctx, this.mapImage, 0, 0, 0, 1 / cellSize, 1 / cellSize, 0, 0);
+  this.gameState.doctor.paint(ctx);
 };
 
 GameStage.prototype.update = function(timer) {
