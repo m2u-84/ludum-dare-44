@@ -44,7 +44,7 @@ foreach ($lines as $y => $line) {
                     }
                 }
                 if ($count % 2 == 0) {
-                    array_push($beds, "    new Bed($x, $y, true)\n");
+                    array_push($beds, "    new Bed($x, $y, true),\n");
                 }
                 break;
         }
