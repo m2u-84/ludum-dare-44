@@ -17,9 +17,9 @@ function Level() {
         + '-----wwwwwww--wwwwwww-----\n'
         + '-----w---w----w-w---w-----\n'
         + '-----w---w-wwww-w---w-----\n'
-        + '-----w---w------w---w-----\n'
-        + '-----wwwwwww--wwwwwww-----\n'
-        + '--------------------------\n'
+        + '-----w---w--rr--w---w-----\n'
+        + '-----wwwwwwwrrwwwwwww-----\n'
+        + 's------------------------s\n'
         + '--------------------------\n'
         + '--------------------------',
         x, y, y0, count;
@@ -32,6 +32,8 @@ function Level() {
     this.tilemap = new Array(rawMap.length).fill(null)
         .map(tile => new Array(rawMap[0].length).fill(null));
     this.beds = [];
+    this.spawnPoints = [];
+    this.receptionPoints = [];
 
     for (y = 0; y < rawMap.length; y++) {
         for (x = 0; x < rawMap[0].length; x++) {
@@ -42,6 +44,16 @@ function Level() {
 
                 case 'w':
                     this.tilemap[y][x] = new Tile(x, y, true);
+                    break;
+
+                case 's':
+                    this.tilemap[y][x] = new Tile(x, y, false);
+                    this.spawnPoints.push({x: x, y: y});
+                    break;
+
+                case 'r':
+                    this.tilemap[y][x] = new Tile(x, y, false);
+                    this.receptionPoints.push({x: x, y: y});
                     break;
 
                 case 'b':
