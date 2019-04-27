@@ -5,7 +5,7 @@ window.onload = () => {
   const canvas = document.getElementById("gameCanvas");
   timer = new Timer();
   loader = new Loader();
-  keyHandler = new KeyHandler(canvas, ["f", "Shift", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]);
+  keyHandler = new KeyHandler(canvas, [" ", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]);
   mouseHandler = new MouseHandler(canvas);
   mouse = mouseHandler.mouse;
   stageManager = new StageManager(canvas, timer);
