@@ -145,5 +145,5 @@ Doctor.prototype.paint = function(ctx) {
     const frameCount = frames.length;
     const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
     const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-    drawFrame(ctx, Doctor.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.9);
+    drawFrame(ctx, Doctor.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
 };

@@ -1,6 +1,6 @@
 function GameState() {
     this.level = new Level();
-    this.doctor = new Doctor(13, 15, 0.5, 0.5, this);
+    this.doctor = new Doctor(13, 15, 0.5, 0.1, this);
 }
 
 GameState.prototype.init = function() {
