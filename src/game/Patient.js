@@ -7,5 +7,7 @@ function Patient(x, y, health, wealth, sickness) {
   this.wealth = wealth;
   this.sickness = sickness;
   this.diagnosed = false;
+
+  console.log("PATIENT", this);
 }
 
