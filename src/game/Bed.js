@@ -1,5 +1,5 @@
 function Bed(x, y) {
-    var position1 = [x, y];
-    var position2 = [x, y+1];
+    let position1 = {x: x, y: y};
+    let position2 = {x: x, y: y+1};
     this.positions = [position1, position2];
 }

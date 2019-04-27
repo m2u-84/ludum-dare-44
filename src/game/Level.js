@@ -3,7 +3,7 @@
 // define Level class
 function Level() {
 
-    var rawMap = 
+    var rawMap =
           'wwwwwwww\n'
         + 'w-b-b-b-\n'
         + 'w-b-b-b-\n'
@@ -66,7 +66,7 @@ Level.pathFindingCount = 0;
 
 Level.prototype.init = function() {
     this.placeBeds();
-}
+};
 
 Level.prototype.isBlocked = function(target) {
     // target is x and y
@@ -75,7 +75,7 @@ Level.prototype.isBlocked = function(target) {
     }
     var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
     return tile.collides;
-}
+};
 
 Level.prototype.getBed = function(target) {
     // target is x and y
@@ -84,18 +84,18 @@ Level.prototype.getBed = function(target) {
     }
     var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
     return tile.bed;
-}
+};
 
 Level.prototype.placeBeds = function() {
     for (var i = 0; i < this.beds.length; i++) {
-        var x1 = this.beds[i].positions[0][0];
-        var y1 = this.beds[i].positions[0][1];
+        var x1 = this.beds[i].positions[0].x;
+        var y1 = this.beds[i].positions[0].y;
         this.tilemap[y1][x1].bed = this.beds[i];
-        var x2 = this.beds[i].positions[1][0];
-        var y2 = this.beds[i].positions[1][1];
+        var x2 = this.beds[i].positions[1].x;
+        var y2 = this.beds[i].positions[1].y;
         this.tilemap[y2][x2].bed = this.beds[i];
     }
-}
+};
 
 Level.prototype.findPath = function(x1, y1, x2, y2) {
     const self = this;
