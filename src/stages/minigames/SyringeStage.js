@@ -7,6 +7,7 @@ inherit(SyringeStage, MinigameStage);
 SyringeStage.prototype.preload = function() {
   this.syringe = loader.loadImage("assets/syringe.png");
   this.arrow = loader.loadImage("assets/arrow.png");
+  this.arm = loader.loadImage("assets/arm.png");
 };
 
 SyringeStage.prototype.prestart = function() {
@@ -21,6 +22,7 @@ SyringeStage.prototype.prestart = function() {
 SyringeStage.prototype.update = function(timer) {
   this.armLeft = this.w - 90;
   this.armRight = this.w - 30;
+  this.armCenter = (this.armLeft + this.armRight) / 2;
   if (this.isAiming) {
     // Aiming (angle)
     this.x = this.w * 0.2;
@@ -56,8 +58,8 @@ SyringeStage.prototype.updateFlight = function() {
   this.vy += f * 0.002;
   // Angle according to velocity
   this.angle = Math.atan2(this.vy, this.vx);
-  if (this.active && (this.x > this.armLeft - 20 || this.y > this.h + 100)) {
-    this.x = this.armLeft - 20;
+  if (this.active && (this.x > this.armLeft - 10 || this.y > this.h + 100)) {
+    this.x = this.armLeft - 10;
     this.transitionOut();
   }
 };
@@ -67,8 +69,7 @@ SyringeStage.prototype.render = function(ctx, timer) {
   // MinigameStage handles transitions, background, clipping
   MinigameStage.prototype.render.call(this, ctx, timer);
   // Draw arm
-  ctx.fillStyle = "#f0b0a0";
-  ctx.fillRect(this.armLeft, 0, this.armRight - this.armLeft, this.h);
+  drawImage(ctx, this.arm, this.armCenter, this.h, 0, 1, 1, 0.5, 1);
   // Draw arrow if aiming
   if (!this.isFlying && !this.isAiming) {
     drawImage(ctx, this.arrow, this.x + 50 * Math.cos(this.angle), this.y + 50 * Math.sin(this.angle),
