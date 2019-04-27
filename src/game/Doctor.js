@@ -9,11 +9,17 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
     this.sizeY = sizeY;
     this.velocity = 1; // tiles per second
     this.gameState = gameState;
+    this.stateIndex = 0; // 0 = idle, 1 = moving
+    this.lastMoveTime = 0;
+    this.characterFrameIndexes = [
+        [1, 3, 4, 4, 4, 3, 1, 1],
+        [0, 1, 2, 1]
+    ];
 }
 
 Doctor.load = function() {
 
-  Doctor.image = loader.loadImage("./assets/doctor_m.png", 3, 3);
+    Doctor.image = loader.loadImage("./assets/doctor_m.png", 3, 3);
 };
 
 Doctor.prototype.update = function() {
@@ -67,6 +73,8 @@ Doctor.prototype.handleKeys = function() {
 
     const moveDelta = this.getDeltaFromKeys();
     if (this.tryMove(moveDelta)) {
+        this.stateIndex = 1;
+        this.lastMoveTime = gameStage.time;
         let closestBed = this.getClosestBed();
     }
 };
@@ -121,12 +129,15 @@ Doctor.prototype.collidesPoint = function(target) {
 
 Doctor.prototype.paint = function(ctx) {
 
-    let bounds = this.computeBoundingRect(this.x, this.y);
+//    let bounds = this.computeBoundingRect(this.x, this.y);
 //    ctx.fillStyle= 'blue';
 //    ctx.fillRect(bounds.tl.x, bounds.tl.y, (bounds.tr.x - bounds.tl.x), (bounds.bl.y - bounds.tl.y));
-    const frameCount = 3;
+    if (gameStage.time - this.lastMoveTime > 100) {
+        this.stateIndex = 0;
+    }
+    const frameCount = this.characterFrameIndexes[this.stateIndex].length;
     const frameIndex = Math.floor(gameStage.time / (200 / this.velocity)) % frameCount;
-    drawFrame(ctx, Doctor.image, frameIndex, this.x, this.y, 0, 1/24, 1/24, 0.5, 0.9);
+    drawFrame(ctx, Doctor.image, this.characterFrameIndexes[this.stateIndex][frameIndex], this.x, this.y, 0, 1/24, 1/24, 0.5, 0.9);
 };
 
 
