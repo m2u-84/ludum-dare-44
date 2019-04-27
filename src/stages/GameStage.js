@@ -12,9 +12,9 @@ GameStage.prototype.preload = function() {
 };
 
 GameStage.prototype.render = function(ctx, timer) {
-  ctx.scale(4, 4);
+  ctx.scale(24, 24);
   const w = ctx.canvas.width, h = ctx.canvas.height;
-  drawImage(ctx, this.mapImage, 0, 0, 0, 1, 1, 0, 0);
+  drawImage(ctx, this.mapImage, 0, 0, 0, 0.25, 0.25, 0, 0);
 };
 
 GameStage.prototype.update = function(timer) {

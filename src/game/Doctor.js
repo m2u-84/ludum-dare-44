@@ -1,12 +1,13 @@
 /**
  * The player is a doctor
  */
-function Doctor(x, y, sizeX, sizeY) {
+function Doctor(x, y, sizeX, sizeY, gameState) {
     this.x = x;
     this.y = y;
     this.sizeX = sizeX;
     this.sizeY = sizeY;
     this.velocity = 1; // tiles per second
+    this.gameState = gameState;
 }
   
 Doctor.prototype.update = function() {
@@ -59,7 +60,7 @@ Doctor.prototype.collides = function(target) {
 }
 
 Doctor.prototype.collidesPoint = function(target) {
-
+var collides = this.gameState.checkCollision(target);
     return (target.x > 0) && (target.x < 10) && (target.y > 0) && (target.y < 10);
 }
 

@@ -100,8 +100,11 @@ function Bed(x, y) {
     this.positions = [position1, position2];
 }
 
-Bed.prototype.collides = function() {
-
+Level.prototype.checkCollision = function(target) {
+    // target is x and y
+    var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
+    console.log("checkCollision", Math.floor(target.y), Math.floor(target.x));
+    return tile.collides;
 }
 
 
