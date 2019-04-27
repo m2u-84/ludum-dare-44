@@ -10,6 +10,7 @@ GameStage.prototype.preload = function () {
     this.gameState.init();
     this.mapImage = loader.loadImage("./assets/map.png");
     Doctor.load();
+    Patient.load();
     Bed.load();
 };
 
