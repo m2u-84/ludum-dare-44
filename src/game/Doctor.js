@@ -7,19 +7,22 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
     this.y = y;
     this.sizeX = sizeX;
     this.sizeY = sizeY;
-    this.velocity = 1; // tiles per second
+    this.movingVelocity = 4; // tiles per second TODO: reduce to 2
+    this.idleVelocity = 1;
     this.gameState = gameState;
-    this.stateIndex = 0; // 0 = idle, 1 = moving
+    this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
+    this.directionFactor = 1;
+    this.characterStateIndex = 0;
     this.characterFrameIndexes = [
-        [1, 3, 4, 4, 4, 3, 1, 1],
-        [0, 1, 2, 1]
+        [1, 4, 5, 5, 5, 4, 1, 1], // idle
+        [0, 1, 2, 3, 2, 1] // moving
     ];
 }
 
 Doctor.load = function() {
 
-    Doctor.image = loader.loadImage("./assets/doctor_m.png", 3, 3);
+    Doctor.image = loader.loadImage("./assets/doctor_m.png", 4, 3);
 };
 
 Doctor.prototype.update = function() {
@@ -48,10 +51,10 @@ Doctor.prototype.getDeltaFromKeys = function() {
 Doctor.prototype.tryMove = function(delta) {
 
     let moved = false;
-    let moveLen = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
+    let moveLen = vectorLength(delta.x, delta.y);
 
     if (moveLen > 0) {
-        let scale = this.velocity * gameStage.timeDif / 1000;
+        let scale = this.movingVelocity * gameStage.timeDif / 1000;
         delta.x = delta.x / moveLen * scale;
         delta.y = delta.y / moveLen * scale;
         const moveToX = {x: this.x + delta.x, y: this.y};
@@ -72,8 +75,9 @@ Doctor.prototype.tryMove = function(delta) {
 Doctor.prototype.handleKeys = function() {
 
     const moveDelta = this.getDeltaFromKeys();
+    this.lastMoveDelta = moveDelta;
     if (this.tryMove(moveDelta)) {
-        this.stateIndex = 1;
+        this.characterStateIndex = 1;
         this.lastMoveTime = gameStage.time;
         let closestBed = this.getClosestBed();
     }
@@ -88,7 +92,7 @@ Doctor.prototype.getClosestBed = function() {
         let positions = beds[bedIndex].positions;
         for (let posIndex = 0; posIndex < positions.length; posIndex++) {
             let pos = positions[posIndex];
-            let dist = Math.sqrt(Math.pow(this.x - pos.x, 2) + Math.pow(this.y - pos.y, 2));
+            let dist = vectorLength(this.x - pos.x, this.y - pos.y);
             if (dist < minDist) {
                 minDist = dist;
                 closestBedIndex = bedIndex;
@@ -133,11 +137,13 @@ Doctor.prototype.paint = function(ctx) {
 //    ctx.fillStyle= 'blue';
 //    ctx.fillRect(bounds.tl.x, bounds.tl.y, (bounds.tr.x - bounds.tl.x), (bounds.bl.y - bounds.tl.y));
     if (gameStage.time - this.lastMoveTime > 100) {
-        this.stateIndex = 0;
+        this.characterStateIndex = 0;
     }
-    const frameCount = this.characterFrameIndexes[this.stateIndex].length;
-    const frameIndex = Math.floor(gameStage.time / (200 / this.velocity)) % frameCount;
-    drawFrame(ctx, Doctor.image, this.characterFrameIndexes[this.stateIndex][frameIndex], this.x, this.y, 0, 1/24, 1/24, 0.5, 0.9);
+
+    this.directionFactor = this.lastMoveDelta.x !== 0 ? Math.sign(this.lastMoveDelta.x) : this.directionFactor;
+    const frames = this.characterFrameIndexes[this.characterStateIndex];
+    const frameCount = frames.length;
+    const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
+    const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
+    drawFrame(ctx, Doctor.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
 };
-
-
