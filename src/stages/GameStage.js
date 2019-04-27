@@ -30,6 +30,22 @@ GameStage.prototype.update = function(timer) {
     return;
   }
   this.gameState.doctor.update();
+
+  if (this.timeDif > 10000) {
+    this.spawnPatient();
+  }
+};
+
+GameStage.prototype.spawnPatient = function() {
+    if (this.gameState.patients.length == 0) {
+
+        const y = 12, x = 12,
+            health = 100,
+            wealth = 100,
+            sickness = ;
+
+        this.gameState.patients.push(new Patient(x, y, health, wealth, sickness));
+    }
 };
 
 GameStage.prototype.onkey = function(event) {
