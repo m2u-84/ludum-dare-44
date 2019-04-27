@@ -1,4 +1,4 @@
-var level = {
+var tilemap = {
 
 
 };
@@ -6,16 +6,13 @@ var level = {
 
 // define Level class
 function Level() {
-    this.tilemap = [];
+    this.tilemap = tilemap;
     this.beds = [];
     this.routes = [];
     this.entry = "";
 }
 
-
 Level.prototype.generateTilemap = function () {
-    // parse level.json
-    var parsedJson = JSON.parse(level);
     // start with empty tilemap
     var tilemap = [];
     
@@ -31,7 +28,7 @@ function Tile(x, y, collide) {
 
 
 
-function Bed() {
+function Bed(x, y, orientation) {
 
 }
 
