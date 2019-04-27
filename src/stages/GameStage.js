@@ -20,7 +20,7 @@ GameStage.prototype.render = function (ctx, timer) {
     ctx.scale(cellSize, cellSize);
     const offx = clamp(Math.round(-this.gameState.doctor.x * 24) / 24, -(this.mapImage.width - w / 2) / cellSize, -w / 2 / cellSize);
     const offy = clamp(Math.round(-this.gameState.doctor.y * 24) / 24, -(this.mapImage.height - h / 2) / cellSize, -h / 2 / cellSize);
-    console.log(offx, offy);
+    // console.log(offx, offy);
     ctx.translate(offx, offy);
 
     drawImage(ctx, this.mapImage, 0, 0, 0, 1 / cellSize, 1 / cellSize, 0, 0);
@@ -66,6 +66,6 @@ GameStage.prototype.onkey = function (event) {
     if (event.key === "Escape") {
         // TODO this.transitionIn("pause", 400);
     } else if (event.key === "Enter") {
-        this.transitionIn("organ");
+        this.transitionIn(getRandomItem(["organ"])); //, "syringe"]));
     }
 };
