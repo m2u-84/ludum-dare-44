@@ -21,6 +21,17 @@ function removeItem(array, item) {
   return index;
 }
 
+function shuffle(array) {
+  for (let i = 1; i < array.length; i++) {
+    const other = Math.floor(i * Math.random());
+    if (other !== i) {
+      const temp = array[other];
+      array[other] = array[i];
+      array[i] = temp;
+    }
+  }
+}
+
 function getAngleDiff(a1, a2) {
   var dif = (a2 - a1) % (2 * Math.PI);
   if (dif < -Math.PI) {
