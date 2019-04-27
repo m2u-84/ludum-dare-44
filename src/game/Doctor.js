@@ -16,7 +16,7 @@ Doctor.prototype.update = function() {
     this.handleKeys();
 };
 
-Doctor.prototype.handleKeys = function() {
+Doctor.prototype.getDelta = function() {
 
     let moveDelta = {x: 0, y: 0};
     if (gameStage.getKeyState("ArrowUp")) {
@@ -31,18 +31,33 @@ Doctor.prototype.handleKeys = function() {
     if (gameStage.getKeyState("ArrowRight")) {
         moveDelta.x += 1;
     }
-    let moveLen = Math.sqrt(Math.pow(moveDelta.x, 2) + Math.pow(moveDelta.y, 2));
+    return moveDelta;
+};
+
+Doctor.prototype.tryMove = function(delta) {
+
+    let moveLen = Math.sqrt(Math.pow(delta.x, 2) + Math.pow(delta.y, 2));
 
     if (moveLen > 0) {
         let scale = this.velocity * gameStage.timeDif / 1000;
-        moveDelta.x = moveDelta.x / moveLen * scale;
-        moveDelta.y = moveDelta.y / moveLen * scale;
-        const moveTo = {x: this.x + moveDelta.x, y: this.y + moveDelta.y};
-        if (!this.collides(moveTo)) {
-            this.x = moveTo.x;
-            this.y = moveTo.y;
+        delta.x = delta.x / moveLen * scale;
+        delta.y = delta.y / moveLen * scale;
+        const moveToX = {x: this.x + delta.x, y: this.y};
+        if (!this.collides(moveToX)) {
+            this.x = moveToX.x;
+        }
+        const moveToY = {x: this.x, y: this.y + delta.y};
+        if (!this.collides(moveToY)) {
+            this.y = moveToY.y;
         }
     }
+};
+
+Doctor.prototype.handleKeys = function() {
+
+    const moveDelta = this.getDelta();
+
+    this.tryMove(moveDelta);
     console.log(this.x + ", " + this.y)
 };
 
