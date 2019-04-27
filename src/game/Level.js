@@ -27,8 +27,6 @@ function Level() {
 
     rawMap = rawMap.split('\n');
 
-    console.log("RAW", rawMap);
-
     // used for collision detection
     this.tilemap = new Array(rawMap.length).fill(null)
         .map(tile => new Array(rawMap[0].length).fill(null));
@@ -77,9 +75,6 @@ function Level() {
     }
     this.h = this.tilemap.length;
     this.w = this.tilemap[0].length;
-
-    console.log("TILES", this.tilemap);
-    console.log("BEDS", this.beds);
 
     this.routes = [];
     this.entry = "";
