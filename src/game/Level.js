@@ -52,6 +52,8 @@ function Level() {
             }
         }
     }
+    this.h = this.tilemap.length;
+    this.w = this.tilemap[0].length;
 
     console.log("TILES", this.tilemap);
     console.log("BEDS", this.beds);
@@ -60,13 +62,15 @@ function Level() {
     this.entry = "";
 }
 
+Level.pathFindingCount = 0;
+
 Level.prototype.init = function() {
     this.placeBeds();
 }
 
 Level.prototype.isBlocked = function(target) {
     // target is x and y
-    if ((target.x < 0) || (target.y < 0) || (target.x >= this.tilemap[0].length) || (target.y >= this.tilemap.length)) {
+    if ((target.x < 0) || (target.y < 0) || (target.x >= this.w) || (target.y >= this.h)) {
         return true;
     }
     var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
@@ -92,6 +96,49 @@ Level.prototype.placeBeds = function() {
         this.tilemap[y2][x2].bed = this.beds[i];
     }
 }
+
+Level.prototype.findPath = function(x1, y1, x2, y2) {
+    const self = this;
+    Level.pathFindingCount++;
+    const tiles = [];
+    addNeighbours(x1, y1);
+    let found = false;
+    for (var i = 0; i < tiles.length; i++) {
+        if (tiles[i][0] == x2 && tiles[i][1] == y2) {
+            found = true;
+            break;
+        }
+        addNeighbours(tiles[i][0], tiles[i][1]);
+    }
+    if (found) {
+        // Reconstruct path by backtracking from goal
+        const route = [[x2, y2]];
+        while (x2 != x1 || y2 != y1) {
+            const tile = this.tilemap[y2][x2];
+            x2 = tile.pathFindingSource[0];
+            y2 = tile.pathFindingSource[1];
+            route.unshift([x2, y2]);
+        }
+        return route;
+    } else {
+        return null;
+    }
+
+    function addNeighbours(x, y) {
+        addNeighbour(x - 1, y, x, y);
+        addNeighbour(x + 1, y, x, y);
+        addNeighbour(x, y - 1, x, y);
+        addNeighbour(x, y + 1, x, y);
+    }
+
+    function addNeighbour(x, y, sx, sy) {
+        if (!self.isBlocked({x,y}) && self.tilemap[y][x].pathFindingCount !== Level.pathFindingCount) {
+            self.tilemap[y][x].pathFindingCount = Level.pathFindingCount;
+            self.tilemap[y][x].pathFindingSource = [sx, sy];
+            tiles.push([x, y]);
+        }
+    }
+};
 
 function Route() {
 

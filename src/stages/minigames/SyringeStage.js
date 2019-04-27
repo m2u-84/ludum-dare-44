@@ -13,7 +13,7 @@ SyringeStage.prototype.prestart = function() {
   this.isAiming = true;
   this.isFlying = false;
   this.angle = 0;
-  this.force = 1;
+  this.force = 0;
   this.vx = 0;
   this.vy = 0;
 };
@@ -56,8 +56,8 @@ SyringeStage.prototype.updateFlight = function() {
   this.vy += f * 0.002;
   // Angle according to velocity
   this.angle = Math.atan2(this.vy, this.vx);
-  if (this.active && (this.x > this.armLeft || this.y > this.h + 100)) {
-    this.x = this.armLeft;
+  if (this.active && (this.x > this.armLeft - 20 || this.y > this.h + 100)) {
+    this.x = this.armLeft - 20;
     this.transitionOut();
   }
 };
