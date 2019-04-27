@@ -60,11 +60,8 @@ function Level() {
     this.entry = "";
 }
 
-
-function Bed(x, y) {
-    var position1 = [x, y];
-    var position2 = [x, y+1];
-    this.positions = [position1, position2];
+Level.prototype.init = function() {
+    this.placeBeds();
 }
 
 Level.prototype.isBlocked = function(target) {
@@ -77,6 +74,12 @@ Level.prototype.isBlocked = function(target) {
     return tile.collides;
 }
 
+Level.prototype.placeBeds = function() {
+    /*for (var i = 0; i < this.beds.length; i++) {
+        var x = this.beds[i].position[0];
+        
+    }*/
+}
 
 function Route() {
 
