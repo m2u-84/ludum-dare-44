@@ -80,6 +80,7 @@ Doctor.prototype.handleKeys = function() {
         this.characterStateIndex = 1;
         this.lastMoveTime = gameStage.time;
         let closestBed = this.getClosestBed();
+        // TODO: work with closestBed
     }
 };
 
