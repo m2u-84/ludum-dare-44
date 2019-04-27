@@ -44,3 +44,12 @@ GameState.prototype.isBlocked = function(target) {
 GameState.prototype.getBed = function(target) {
     return this.level.getBed(target);
 }
+
+GameState.prototype.getRandomFreeBed = function() {
+    const freeBeds = this.level.beds.filter(bed => !bed.occupiedBy && this.patients.every(p => !(p.targetBed == bed)));
+    return getRandomItem(freeBeds);
+}
+
+GameState.prototype.removePatient = function(patient) {
+    this.patients = this.patients.filter(p => p != patient);
+}

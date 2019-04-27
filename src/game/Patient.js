@@ -1,3 +1,13 @@
+
+const PatientStates = {
+  DO_NOTHING: 0,
+  WALK_TO_RECEPTION: 1,
+  WAIT_AT_RECEPTION: 2,
+  WALK_TO_BED: 3,
+  STAY_IN_BED: 4,
+  WALK_HOME: 5
+}
+
 function Patient(x, y, health, wealth, sickness, gameState) {
     this.x = x;
     this.y = y;
@@ -6,6 +16,8 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.sickness = sickness;
     this.diagnosed = false;
     this.inBed = null;
+    this.targetBed = null;
+    this.state = PatientStates.DO_NOTHING;
     this.animationOffset = rnd(9999);
 
     this.movingVelocity = 2; // animation speed
@@ -21,7 +33,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.path = null;
     this.pathDestReachedCallback = null;
     this.lastPathProcessTime = 0;
-    this.pathSmoothness = 50;
+    this.pathSmoothness = 10; // TODO 50
 
     this.gameState = gameState;
 }
@@ -40,8 +52,8 @@ Patient.prototype.introduceAtReception = function () {
 
     const receptionPoint = this.getFreePoint(this.gameState.level.receptionPoints);
     if (receptionPoint !== null) {
+        this.state = PatientStates.WALK_TO_RECEPTION;
         this.moveTo(receptionPoint.x, receptionPoint.y);
-        this.gameState.patients.push(this);
         return true;
     }
     return false;
@@ -79,6 +91,7 @@ Patient.prototype.isInSameTile = function(x1, y1, x2, y2) {
 };
 
 Patient.prototype.moveTo = function(targetX, targetY) {
+  console.log('Moving to ', targetX, targetY);
     const path = this.gameState.level.findPath(this.x, this.y, targetX, targetY);
     this.planPath(path);
 };
@@ -108,6 +121,17 @@ Patient.prototype.processPath = function() {
             this.path = null;
             if (this.pathDestReachedCallback !== null) {
                 this.pathDestReachedCallback(this);
+            }
+            switch (this.state) {
+              case PatientStates.WALK_TO_RECEPTION:
+                this.state = PatientStates.WAIT_AT_RECEPTION;
+                break;
+              case PatientStates.WALK_TO_BED:
+                this.enterBed(this.targetBed);
+                break;
+              case PatientStates.WALK_HOME:
+                this.gameState.removePatient(this);
+                break;
             }
             return;
         }
@@ -158,8 +182,18 @@ Patient.prototype.paint = function(ctx) {
     const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
 
     // determine sequential frame index using game time
-    const frameIndex = Math.floor((gameStage.time + this.animationOffset) / (200 / velocity)) % frameCount;
-    drawFrame(ctx, Patient.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+    const highlight = false;
+    const frameIndex = Math.floor((gameStage.time + this.animationOffset) / ((200 + this.animationOffset % 80)  / velocity)) % frameCount;
+    const angle = 0; // wobble(gameStage.time, 5 + this.animationOffset/5000, this.animationOffset, 8) * 1;
+    ctx.save();
+    if (highlight) {
+      ctx.shadowColor = '#e0b030';
+      ctx.shadowBlur = 1;
+    }
+    for (var i = 0; i < (highlight ? 8 : 1); i++) {
+      drawFrame(ctx, Patient.image, frames[frameIndex], this.x, this.y, angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+    }
+    ctx.restore();
 };
 
 Patient.prototype.enterBed = function(bed) {
@@ -170,4 +204,61 @@ Patient.prototype.enterBed = function(bed) {
     this.inBed = bed;
     this.x = bed.positions[0].x;
     this.y = bed.positions[0].y;
+    this.state = PatientStates.STAY_IN_BED;
+};
+
+Patient.prototype.getActions = function() {
+  switch (this.state) {
+    case PatientStates.WAIT_AT_RECEPTION:
+      return ["Accept", "Send away"];
+    case PatientStates.STAY_IN_BED:
+      const list = ["Antibiotics", "Give Organ"];
+      if (this.diagnosed) {
+        list.unshift("Diagnose");
+      }
+      return list;
+    default:
+      return [];
+  }
+};
+
+Patient.prototype.executeAction = function(action) {
+  switch (this.state) {
+    case PatientStates.WAIT_AT_RECEPTION: {
+      switch (action) {
+        case "Accept":
+          const bed = this.gameState.getRandomFreeBed();
+          if (bed) {
+            this.targetBed = bed;
+            this.moveTo(bed.positions[0].x + 1, bed.positions[0].y);
+            this.state = PatientStates.WALK_TO_BED;
+          } else {
+            // TODO Inform player this does not work
+          }
+          break;
+        case "Send away":
+          this.moveTo(0, 15); // TODO use actual exits of level
+          this.state = PatientStates.WALK_HOME;
+          break;
+        default:
+          throw new Error("Invalid action for waiting patient: " + action);
+      }
+      break;
+    }
+    case PatientStates.STAY_IN_BED: {
+      switch (action) {
+        case "Antibiotics":
+          gameStage.transitionIn("syringe")
+          break;
+        case "Give Organ":
+          gameStage.transitionIn("organ");
+          break;
+        default:
+          throw new Error("Invalid action for patient in bed: " + action);
+      }
+      break;
+    }
+    default:
+      throw new Error("Patient doesn't take actions while in state " + this.state);
+  }
 };

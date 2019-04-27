@@ -79,7 +79,7 @@ StageManager.prototype.fadeOutStage = function(fadeDuration = this.defaultDurati
   }
 };
 
-StageManager.prototype.fadeInStage = function(stage, fadeDuration = this.defaultDuration) {
+StageManager.prototype.fadeInStage = function(stage, fadeDuration = this.defaultDuration, payload = undefined) {
   stage = this.get(stage);
   // Check if stage is already active, if so throw error
   if (stage.alive) {
@@ -94,7 +94,7 @@ StageManager.prototype.fadeInStage = function(stage, fadeDuration = this.default
   if (this.activeStage) {
     this.activeStage.active = false;
   }
-  stage.prestart();
+  stage.prestart(payload);
   stage.active = true;
   stage.alive = true;
   // Fade in
@@ -114,10 +114,10 @@ StageManager.prototype.fadeInStage = function(stage, fadeDuration = this.default
   this.activeStage = stage;
 };
 
-StageManager.prototype.crossfadeToStage = function(stage, fadeDuration = this.defaultDuration, fadeInDuration = fadeDuration) {
+StageManager.prototype.crossfadeToStage = function(stage, fadeDuration = this.defaultDuration, fadeInDuration = fadeDuration, payload) {
   if (this.activeStage)
     this.fadeOutStage(fadeDuration, false);
-  this.fadeInStage(stage, fadeInDuration);
+  this.fadeInStage(stage, fadeInDuration, payload);
 };
 
 StageManager.prototype.get = function(stage) {

@@ -20,12 +20,12 @@ Stage.prototype.setManager = function(manager) {
   this.manager = manager;
 };
 
-Stage.prototype.transitionTo = function(stage, duration) {
-  this.manager.crossfadeToStage(stage, duration);
+Stage.prototype.transitionTo = function(stage, duration, payload) {
+  this.manager.crossfadeToStage(stage, duration, payload);
 };
 
-Stage.prototype.transitionIn = function(stage, duration) {
-  this.manager.fadeInStage(stage, duration);
+Stage.prototype.transitionIn = function(stage, duration, payload) {
+  this.manager.fadeInStage(stage, duration, payload);
 };
 
 Stage.prototype.transitionOut = function(duration) {

@@ -101,7 +101,7 @@ Level.prototype.isBlocked = function(target) {
 Level.prototype.getBed = function(target) {
     // target is x and y
     if ((target.x < 0) || (target.y < 0) || (target.x >= this.tilemap[0].length) || (target.y >= this.tilemap.length)) {
-        return true;
+        return null;
     }
     var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
     return tile.bed;
@@ -120,6 +120,10 @@ Level.prototype.placeBeds = function() {
 
 Level.prototype.findPath = function(x1, y1, x2, y2) {
     const self = this;
+    x1 = Math.floor(x1);
+    y1 = Math.floor(y1);
+    x2 = Math.floor(x2);
+    y2 = Math.floor(y2);
     Level.pathFindingCount++;
     const tiles = [];
     addNeighbours(x1, y1);

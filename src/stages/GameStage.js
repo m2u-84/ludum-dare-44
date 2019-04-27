@@ -1,17 +1,24 @@
 function GameStage() {
     Stage.call(this, "game", 0);
-    this.gameState = new GameState();
+    this.gameState = null;
     this.lastPatientSpawnTime = 0;
+    this.contextMenu = null;
 }
 
 inherit(GameStage, Stage);
 
 GameStage.prototype.preload = function () {
-    this.gameState.init();
     this.mapImage = loader.loadImage("./assets/map.png");
     Doctor.load();
     Patient.load();
     Bed.load();
+};
+
+GameStage.prototype.prestart = function() {
+  this.gameState = new GameState();
+  this.gameState.init();
+  this.lastPatientSpawnTime = 0;
+  this.contextMenu = null;
 };
 
 GameStage.prototype.render = function (ctx, timer) {
@@ -33,6 +40,8 @@ GameStage.prototype.render = function (ctx, timer) {
     const people = [this.gameState.doctor].concat(this.gameState.patients);
     people.sort((a,b) => a.y - b.y);
     people.forEach(p => p.paint(ctx));
+
+
 };
 
 GameStage.prototype.update = function (timer) {
@@ -58,7 +67,9 @@ GameStage.prototype.spawnPatient = function () {
             wealth = 100,
             sickness = this.gameState.sicknesses[0];
         const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);
-        patient.introduceAtReception(); // TODO: possibly try to respawn patient earlier if reception slot is blocked
+        if (patient.introduceAtReception()) {
+          this.gameState.patients.push(patient);
+        } // TODO: possibly try to respawn patient earlier if reception slot is blocked
     }
 };
 
@@ -75,5 +86,8 @@ GameStage.prototype.onkey = function (event) {
         // TODO this.transitionIn("pause", 400);
     } else if (event.key === "Enter") {
         this.transitionIn(getRandomItem(["organ", "syringe"]));
+    } else if (event.key === "Shift") {
+        // this.contextMenu = new ContextMenu(this.gameState.patients[0]);
+        this.transitionIn("context", 500, { patient: this.gameState.patients[0] });
     }
 };
