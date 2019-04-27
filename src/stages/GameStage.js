@@ -30,8 +30,9 @@ GameStage.prototype.render = function (ctx, timer) {
         this.gameState.level.beds[i].paint(ctx);
     }
 
-    this.gameState.doctor.paint(ctx);
-    this.gameState.patients.forEach(p => p.paint(ctx));
+    const people = [this.gameState.doctor].concat(this.gameState.patients);
+    people.sort((a,b) => a.y - b.y);
+    people.forEach(p => p.paint(ctx));
 };
 
 GameStage.prototype.update = function (timer) {
