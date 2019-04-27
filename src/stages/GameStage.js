@@ -34,7 +34,7 @@ GameStage.prototype.render = function (ctx, timer) {
 };
 
 GameStage.prototype.update = function (timer) {
-    if (this.timeDif == 0) {
+    if (this.timeDif === 0) {
         return;
     }
     this.gameState.doctor.update();
@@ -93,7 +93,7 @@ GameStage.prototype.isInSameTile = function(x1, y1, x2, y2) {
     const diffX = Math.abs(x1 - x2);
     const diffY = Math.abs(y1 - y2);
     return (diffX < 0.5) && (diffY < 0.5);
-}
+};
 
 
 
