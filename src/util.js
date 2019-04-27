@@ -92,3 +92,7 @@ function absMod(v, modulus) {
   v = v % modulus;
   return (v < 0) ? v + modulus : v;
 }
+
+function vectorLength(x, y) {
+  return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+}
