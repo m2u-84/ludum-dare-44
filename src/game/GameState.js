@@ -13,17 +13,17 @@ function GameState() {
     };
 
     this.sicknesses = [
-        new Sickness(0.0, 'Hypochondria', treatments.placebo),
-        new Sickness(0.1, 'Common Cold', treatments.aspirin),
-        new Sickness(0.2, 'Demonic Posession', treatments.placeboSurgery),
-        new Sickness(0.2, 'Depression', treatments.psychotropics),
-        new Sickness(0.2, 'Bone Fracture', treatments.surgery),
-        new Sickness(0.3, 'Influenza', treatments.aspirin),
-        new Sickness(0.2, 'Diarrhea', treatments.imodium),
-        new Sickness(0.6, 'Apoplectic Stroke', treatments.surgery), 
-        new Sickness(0.8, 'Anthrax', treatments.antibiotics), 
-        new Sickness(0.8, 'Lung Cancer', treatments.surgery),
-        new Sickness(0.8, 'Heart Attack', treatments.surgery)
+        new Sickness(0.0, 'Hypochondria', this.treatments.placebo),
+        new Sickness(0.1, 'Common Cold', this.treatments.aspirin),
+        new Sickness(0.2, 'Demonic Posession', this.treatments.placeboSurgery),
+        new Sickness(0.2, 'Depression', this.treatments.psychotropics),
+        new Sickness(0.2, 'Bone Fracture', this.treatments.surgery),
+        new Sickness(0.3, 'Influenza', this.treatments.aspirin),
+        new Sickness(0.2, 'Diarrhea', this.treatments.imodium),
+        new Sickness(0.6, 'Apoplectic Stroke', this.treatments.surgery), 
+        new Sickness(0.8, 'Anthrax', this.treatments.antibiotics), 
+        new Sickness(0.8, 'Lung Cancer', this.treatments.surgery),
+        new Sickness(0.8, 'Heart Attack', this.treatments.surgery)
     ];
     
     this.patients = [];
