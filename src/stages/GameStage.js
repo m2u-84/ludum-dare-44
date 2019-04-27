@@ -7,7 +7,7 @@ function GameStage() {
 inherit(GameStage, Stage);
 
 GameStage.prototype.preload = function() {
-   // grafik laden
+   // load grafic
    this.mapImage = loader.loadImage("./assets/test.png");
 };
 
