@@ -3,6 +3,7 @@
 // define Level class
 function Level() {
 
+    // use w for wall, b for bed, r for receptionPoint, s for spawnPoint
     // cf. map_raster.png
     let rawMap =
           '--------------------------\n'
@@ -17,56 +18,66 @@ function Level() {
         + '-----wwwwwww--wwwwwww-----\n'
         + '-----w---w----w-w---w-----\n'
         + '-----w---w-wwww-w---w-----\n'
-        + '-----w---w------w---w-----\n'
-        + '-----wwwwwww--wwwwwww-----\n'
-        + '--------------------------\n'
+        + '-----w---w--rr--w---w-----\n'
+        + '-----wwwwwwwrrwwwwwww-----\n'
+        + 's------------------------s\n'
         + '--------------------------\n'
         + '--------------------------',
-        x, y, y0, count;
+        x, y, collide;
 
     rawMap = rawMap.split('\n');
-
-    console.log("RAW", rawMap);
 
     // used for collision detection
     this.tilemap = new Array(rawMap.length).fill(null)
         .map(tile => new Array(rawMap[0].length).fill(null));
     this.beds = [];
+    this.spawnPoints = [];
+    this.receptionPoints = [];
+
+    const isTopmostBedTile = function(y) {
+        let count = 0,
+            y0;
+
+        for (y0 = 0; y0 < y; y0++) {
+            if (rawMap[y0][x] == 'b') {
+                count++;
+            }
+        }
+        return count % 2 == 0;
+    }; 
 
     for (y = 0; y < rawMap.length; y++) {
         for (x = 0; x < rawMap[0].length; x++) {
+            collide = false;
+
             switch (rawMap[y][x]) {
                 case '-':
-                    this.tilemap[y][x] = new Tile(x, y, false);
                     break;
 
                 case 'w':
-                    this.tilemap[y][x] = new Tile(x, y, true);
+                    collide = true;
+                    break;
+
+                case 's':
+                    this.spawnPoints.push({x: x, y: y});
+                    break;
+
+                case 'r':
+                    this.receptionPoints.push({x: x, y: y});
                     break;
 
                 case 'b':
-                    this.tilemap[y][x] = new Tile(x, y, true);
-
-                    count = 0;
-                    for (y0 = 0; y0 < y; y0++) {
-                        if (rawMap[y0][x] == 'b') {
-                            count++;
-                        }
-                    }
-
-                    // a new bed starts on even counts
-                    if (count % 2 == 0) {
+                    collide = true;
+                    if (isTopmostBedTile(y)) {
                         this.beds.push(new Bed(x, y));
                     }
                     break;
             }
+            this.tilemap[y][x] = new Tile(x, y, collide);
         }
     }
     this.h = this.tilemap.length;
     this.w = this.tilemap[0].length;
-
-    console.log("TILES", this.tilemap);
-    console.log("BEDS", this.beds);
 
     this.routes = [];
     this.entry = "";
