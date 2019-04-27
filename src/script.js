@@ -11,7 +11,8 @@ window.onload = () => {
   stageManager = new StageManager(canvas, timer);
   gameStage = new GameStage();
   stageManager.add(new LoadStage())
-              .add(gameStage);
+              .add(gameStage)
+              .add(new SyringeStage());
   
   // Load stage content
   stageManager.load();
