@@ -72,7 +72,7 @@ function rndInt(vMinOrMax, vMax) {
 }
 
 function wobble(t, speedFactor = 1, offset = 0, power = 1) {
-  t *= speedFactor * 0.001;
+  t = t * speedFactor * 0.001 + offset;
   let v = (Math.sin(t) + Math.sin(t * 0.7934) + Math.sin(t * 0.31532) + Math.sin(t*0.23543)) * 0.25;
   if (power != 1) {
     v = sgnPow(v, power);
