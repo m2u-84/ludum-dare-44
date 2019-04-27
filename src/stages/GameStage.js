@@ -9,6 +9,7 @@ inherit(GameStage, Stage);
 GameStage.prototype.preload = function() {
    this.gameState.init();
    this.mapImage = loader.loadImage("./assets/map.png");
+   Doctor.load();
 };
 
 GameStage.prototype.render = function(ctx, timer) {
