@@ -23,6 +23,7 @@ GameStage.prototype.render = function (ctx, timer) {
     ctx.translate(offx, offy);
     drawImage(ctx, this.mapImage, 0, 0, 0, 1 / cellSize, 1 / cellSize, 0, 0);
     this.gameState.doctor.paint(ctx);
+    this.gameState.patients.forEach(p => p.paint(ctx));
 };
 
 GameStage.prototype.update = function (timer) {
@@ -30,9 +31,10 @@ GameStage.prototype.update = function (timer) {
         return;
     }
     this.gameState.doctor.update();
+    this.gameState.patients.forEach(p => p.update());
 
     const currentTime = this.time;
-    if (currentTime - this.lastPatientSpawnTime > 10000) {
+    if (currentTime - this.lastPatientSpawnTime > 3000) {
         this.lastPatientSpawnTime = currentTime;
         this.spawnPatient();
     }
@@ -46,7 +48,10 @@ GameStage.prototype.spawnPatient = function () {
             wealth = 100,
             sickness = this.gameState.sicknesses[0];
 
-        this.gameState.patients.push(new Patient(x, y, health, wealth, sickness));
+        const patient = new Patient(x, y, health, wealth, sickness);
+        const path = gameStage.gameState.level.findPath(x, y, 8, 8);
+        patient.planRoute(path, null);
+        this.gameState.patients.push(patient);
     }
 };
 
