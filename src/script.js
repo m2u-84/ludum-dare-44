@@ -9,15 +9,13 @@ window.onload = () => {
   mouseHandler = new MouseHandler(canvas);
   mouse = mouseHandler.mouse;
   stageManager = new StageManager(canvas, timer);
-  /* stageManager.add(new LoadStage())
-              .add(new StartStage())
-              .add(new MainStage())
-              .add(new PauseStage()); */
+  stageManager.add(new LoadStage())
+              .add(new GameStage());
   
   // Load stage content
   stageManager.load();
   canvas.focus();
-  loader.loadAll(); //.then(() => stageManager.crossfadeToStage("start", 2500, 0));
+  loader.loadAll().then(() => stageManager.crossfadeToStage("start", 2500, 0));
   handleFrame();
 }
 
