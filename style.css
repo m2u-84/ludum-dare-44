@@ -13,4 +13,6 @@ html, body {
   max-height: 100vh;
   box-sizing: border-box;
   border: 1px solid #333;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
 }

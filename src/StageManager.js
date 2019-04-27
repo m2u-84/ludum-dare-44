@@ -74,6 +74,8 @@ StageManager.prototype.fadeOutStage = function(fadeDuration = this.defaultDurati
     prevStage.alive = false;
     prevStage.opacity = 0;
     prevStage.stop();
+    prevStage.aliveTime = 0;
+    prevStage.time = 0;
   }
 };
 
@@ -146,6 +148,8 @@ StageManager.prototype.update = function() {
       } else {
         // Fade out ready
         this.transitions[t].stage.stop();
+        this.transitions[t].stage.aliveTime = 0;
+        this.transitions[t].stage.time = 0;
         // Remove stage from current stages stack
         this.currentStages = this.currentStages.filter(stage => stage != this.transitions[t].stage);
       }
