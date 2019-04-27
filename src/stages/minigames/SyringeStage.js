@@ -8,6 +8,8 @@ SyringeStage.prototype.preload = function() {
   this.syringe = loader.loadImage("assets/syringe.png");
   this.arrow = loader.loadImage("assets/arrow.png");
   this.arm = loader.loadImage("assets/arm.png");
+  this.hand = loader.loadImage("assets/darthand_back.png");
+  this.thumb = loader.loadImage("assets/darthand_front.png");
 };
 
 SyringeStage.prototype.prestart = function() {
@@ -23,15 +25,18 @@ SyringeStage.prototype.update = function(timer) {
   this.armLeft = this.w - 90;
   this.armRight = this.w - 30;
   this.armCenter = (this.armLeft + this.armRight) / 2;
+  if (!this.isFlying) {
+    this.x = this.w * 0.2 + 10 * wobble(this.time, 8, 0, 2);
+    this.y = this.h * 0.75 + 10 * wobble(this.time, 13.7, 1, 2);
+  }
   if (this.isAiming) {
     // Aiming (angle)
-    this.x = this.w * 0.2;
-    this.y = this.h * 0.75;
     if (this.getKeyState(" ")) {
       this.isAiming = false;
       this.forceStartTime = this.time;
     } else {
-      this.angle = -0.5 + 0.4 * Math.sin(this.time * 0.003);
+      this.angle = -0.3 + 0.3 * Math.sin(this.time * 0.003);
+      this.handAngle = -0.2 + 0.2 * Math.sin(this.time * 0.003 + 0.6);
     }
   } else if (!this.isFlying) {
     // Setting force
@@ -58,8 +63,8 @@ SyringeStage.prototype.updateFlight = function() {
   this.vy += f * 0.002;
   // Angle according to velocity
   this.angle = Math.atan2(this.vy, this.vx);
-  if (this.active && (this.x > this.armLeft - 10 || this.y > this.h + 100)) {
-    this.x = this.armLeft - 10;
+  if (this.active && (this.x > this.armLeft - 20 || this.y > this.h + 100)) {
+    this.x = this.armLeft - 20;
     this.transitionOut();
   }
 };
@@ -75,6 +80,11 @@ SyringeStage.prototype.render = function(ctx, timer) {
     drawImage(ctx, this.arrow, this.x + 50 * Math.cos(this.angle), this.y + 50 * Math.sin(this.angle),
         this.angle, this.force, 0.5, 0.25, 0.5);
   }
+  // Draw back of hand
+  const hangle = this.handAngle;
+  drawImage(ctx, this.hand, this.x, this.y, hangle, 1, 1, 0.7, 0.2);
   // Draw Syringe
-  drawImage(ctx, this.syringe, this.x, this.y, this.angle, 0.5);
+  drawImage(ctx, this.syringe, this.x, this.y, this.angle, 0.75);
+  // Draw thumb
+  drawImage(ctx, this.thumb, this.x, this.y, hangle, 1, 1, 0.7, 0.2);
 };
