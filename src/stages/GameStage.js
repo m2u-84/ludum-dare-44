@@ -2,10 +2,12 @@
 
 function GameStage() {
   Stage.call(this, "game", 0);
+  this.gameState = new GameState();
 }
 inherit(GameStage, Stage);
 
 GameStage.prototype.preload = function() {
+    this.gameState.level.generateTilemap();
 };
 
 GameStage.prototype.render = function(ctx, timer) {
