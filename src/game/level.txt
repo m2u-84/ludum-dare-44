@@ -1,8 +1,8 @@
--wv-v---
--wv-v-hh
+-wb-b--b
+-wb-b--b
 -w------
--w-v-v-v
--w-v-v-v
+-w-b-b-b
+-w-b-b-b
 -w------
 -ww-wwww
 --------

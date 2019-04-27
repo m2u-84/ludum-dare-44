@@ -21,7 +21,7 @@ foreach ($lines as $y => $line) {
             case 'w':
                 echo "        new Tile($x, $y, true),\n";
                 break;
-            case 'v':
+            case 'b':
                 // tile of vertical bed
                 echo "        new Tile($x, $y, true),\n";
                 $count = 0;
@@ -30,21 +30,9 @@ foreach ($lines as $y => $line) {
                         $count++;
                     }
                 }
+                // a new bed starts on even counts
                 if ($count % 2 == 0) {
-                    array_push($beds, "    new Bed($x, $y, false)\n");
-                }
-                break;
-            case 'h':
-                // tile of horizontal bed 
-                echo "        new Tile($x, $y, true),\n";
-                $count = 0;
-                for ($x0 = 0; $x0 < $x; $x0++) {
-                    if ($lines[$y][$x0] == 'h') {
-                        $count++;
-                    }
-                }
-                if ($count % 2 == 0) {
-                    array_push($beds, "    new Bed($x, $y, true),\n");
+                    array_push($beds, "    new Bed($x, $y)\n");
                 }
                 break;
         }
