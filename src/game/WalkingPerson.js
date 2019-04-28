@@ -2,7 +2,7 @@ function WalkingPerson(x, y, gameState) {
     this.x = x;
     this.y = y;
 
-    this.movingVelocity = 4; // animation speed
+    this.movingVelocity = 12; // animation speed
     this.idleVelocity = 1;
     this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
