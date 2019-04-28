@@ -125,7 +125,27 @@ FacilityManager.prototype.walkToCorpse = function() {
 
     const corpse = this.getFirstCorpse();
     if (corpse) {
-        this.moveTo(corpse.x, corpse.y, () => {
+        let pos = {x: null, y: null};
+        if (corpse.inBed) {
+            const bed = corpse.inBed;
+            const xl = bed.positions[0].x - 1;
+            const xr = bed.positions[0].x + 1;
+            const y = bed.positions[0].y;
+
+            pos.y = y;
+            if (this.isFreeTile(xl, y)) {
+                pos.x = xl;
+            } else if (this.isFreeTile(xr, y)) {
+                pos.x = xr;
+            } else {
+                this.isFreeTile(xl, y);
+                throw new Error("no non-blocked space around bed");
+            }
+        } else {
+            pos.x = corpse.x;
+            pos.y = corpse.y;
+        }
+        this.moveTo(pos.x, pos.y, () => {
             this.removeCorpse(corpse);
             this.nextState();
         });
@@ -134,6 +154,9 @@ FacilityManager.prototype.walkToCorpse = function() {
 
 FacilityManager.prototype.removeCorpse = function(corpse) {
 
+    if (corpse.inBed) {
+        corpse.releaseFromBed();
+    }
     this.gameState.patients.remove(corpse);
 };
 

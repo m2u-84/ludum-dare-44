@@ -155,3 +155,16 @@ WalkingPerson.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 WalkingPerson.prototype.getCharacterFrames = function(isMoving) {
 
 };
+
+WalkingPerson.prototype.isInSameTile = function(x1, y1, x2, y2) {
+
+    const diffX = Math.abs(x1 - x2);
+    const diffY = Math.abs(y1 - y2);
+    return (diffX < 0.5) && (diffY < 0.5);
+};
+
+WalkingPerson.prototype.isFreeTile = function (x, y) {
+
+    return !gameStage.gameState.level.isBlocked({x: x, y: y});
+};
+

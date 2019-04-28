@@ -77,12 +77,12 @@ Patient.prototype.getAddressablePosition = function() {
     result.y -= 0.8;
   }
   return result;
-}
+};
 
 Patient.prototype.isDead = function() {
 
     return this.state === PatientStates.DEAD;
-}
+};
 
 Patient.prototype.getFreePoint = function(points) {
 
@@ -108,13 +108,6 @@ Patient.prototype.isOccupiedByPatient = function(x, y) {
             }
         }
     }
-};
-
-Patient.prototype.isInSameTile = function(x1, y1, x2, y2) {
-
-    const diffX = Math.abs(x1 - x2);
-    const diffY = Math.abs(y1 - y2);
-    return (diffX < 0.5) && (diffY < 0.5);
 };
 
 Patient.prototype.nextState = function() {
