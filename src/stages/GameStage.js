@@ -90,7 +90,7 @@ GameStage.prototype.update = function (timer) {
     }
     this.gameState.doctor.update();
     const closestPatientInfo = this.gameState.doctor.getClosestIdlePatient();
-    if (closestPatientInfo.distance < 1) {
+    if (closestPatientInfo.distance < 1.2) {
         this.gameState.closestPatientToDoctor = closestPatientInfo.patient;
     } else {
         this.gameState.closestPatientToDoctor = null;
@@ -117,7 +117,7 @@ GameStage.prototype.spawnPatient = function () {
     const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
     if (spawnPoint !== null) {
 
-        const health = rndInt(20, 100),
+        const health = rndInt(25, 100),
               wealth = rndInt(15, 100),
               sickness = this.gameState.sicknesses[0];
         const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);

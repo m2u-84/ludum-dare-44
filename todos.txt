@@ -11,7 +11,7 @@ Bugs
 [ ] verbrannte Leichen aus patients-Liste entfernen
 
 Technik
-[ ] Bitmap Font evaluieren
+[X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
 [ ] Canvas HighRes rendern
 
@@ -30,7 +30,7 @@ Features
 [X] Verbessertes Organ-Bounce-Verhalten
 [X] Kontext-Menü für nächsten Patienten
 [X] Kontext-Menü Zoom-In
-[ ] Kontext-Menü schön machen
+[/] Kontext-Menü schön machen
 (Optional)
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
 [ ] schlecht behandelte Patienten bluten Boden voll und Arzt rutscht aus
@@ -52,7 +52,7 @@ Finanz-Controller
 Patient-Visualisierung
 [X] Leben
 [/] Privat/Kasse
-[ ] Im Bett individuell rendern
+[X] Im Bett individuell rendern
 [ ] Schweregrad der Erkrankung
 [ ] Hotkey für Einblenden
 

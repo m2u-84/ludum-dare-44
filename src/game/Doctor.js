@@ -83,7 +83,6 @@ Doctor.prototype.handleKeys = function() {
     if (this.tryMove(moveDelta)) {
         this.characterStateIndex = 1;
         this.lastMoveTime = gameStage.time;
-        let closestBed = this.getClosestBed();
         // TODO: work with closestBed
     }
 };
@@ -96,7 +95,8 @@ Doctor.prototype.getClosestIdlePatient = function() {
     for (let patientIndex = 0; patientIndex < patients.length; patientIndex++) {
         let patient = patients[patientIndex];
         if (patient.isAddressable()) {
-            let dist = vectorLength(this.x - patient.x, this.y - patient.y);
+            const patientPos = patient.getAddressablePosition();
+            let dist = vectorLength(this.x - patientPos.x, this.y - patientPos.y);
             if (dist < minDist) {
                 minDist = dist;
                 closestPatientIndex = patientIndex;
@@ -105,26 +105,6 @@ Doctor.prototype.getClosestIdlePatient = function() {
     }
 
     return {patient: closestPatientIndex > -1 ? patients[closestPatientIndex] : null, distance: minDist}
-};
-
-Doctor.prototype.getClosestBed = function() {
-
-    let closestBedIndex = -1;
-    let minDist = Infinity;
-    let beds = this.gameState.level.beds;
-    for (let bedIndex = 0; bedIndex < beds.length; bedIndex++) {
-        let positions = beds[bedIndex].positions;
-        for (let posIndex = 0; posIndex < positions.length; posIndex++) {
-            let pos = positions[posIndex];
-            let dist = vectorLength(this.x - pos.x, this.y - pos.y);
-            if (dist < minDist) {
-                minDist = dist;
-                closestBedIndex = bedIndex;
-            }
-        }
-    }
-
-    return {bed: closestBedIndex > -1 ? beds[closestBedIndex] : null, distance: minDist}
 };
 
 Doctor.prototype.collides = function(target) {

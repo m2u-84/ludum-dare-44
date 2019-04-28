@@ -8,6 +8,7 @@ inherit(ContextMenuStage, Stage);
 
 ContextMenuStage.prototype.preload = function() {
   this.background = loader.loadImage("assets/patientsheet.png");
+  this.keyImage = loader.loadImage("assets/keys.png", 9, 1);
 };
 
 ContextMenuStage.prototype.prestart = function(payload) {
@@ -22,6 +23,7 @@ ContextMenuStage.prototype.update = function(timer) {
 };
 
 ContextMenuStage.prototype.render = function(ctx, timer) {
+  const self = this;
   const w = ctx.canvas.width, h = ctx.canvas.height;
   const p = Interpolators.cubic(this.opacity);
   // Black background
@@ -32,12 +34,37 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   ctx.globalAlpha = 1;
   const y = (h - this.background.height) / 2;
   const x = w - this.background.width * p;
-  drawImageToScreen(ctx, this.background, x, y, 0, 1, 1, 0, 0);
-  // Draw Actions
-  ctx.fillStyle = "white";
-  for (var i = 0; i < this.actions.length; i++) {
+  ctx.translate(x, y);
+  drawImageToScreen(ctx, this.background, 0, 0, 0, 1, 1, 0, 0);
+  // Draw Patient Overview
+  ctx.translate(14, 14);
+  bigFont.drawText(ctx, "" + this.patient.id, 118, 0, "dark");
+  // mainFont.drawText(ctx, "BUDGET:", 0, 20, "darkgray");
+  // mainFont.drawText(ctx, "DIAGNOSIS:", 100, 20, "darkgray");
+  ctx.globalAlpha = 0.2;
+  const wealth = this.patient.wealthLevel == 1 ? "$" : this.patient.wealthLevel == 2 ? "$$" : "$$$";
+  mainFont.drawText(ctx, "$$$", 0, 34, "green");
+  ctx.globalAlpha = 1;
+  mainFont.drawText(ctx, wealth, 0, 34, "green");
+  mainFont.drawText(ctx, "???", 80, 34, "orange");
+  
+  // Preferred option
+  drawOption(72, 1, this.actions[0], "Safe", 50);
+  for (var i = 1; i < this.actions.length; i++) {
     const action = this.actions[i];
-    mainFont.drawText(ctx, (i + 1) + " " + action, x + 30, y + 100 + 15 * i, "black", 0);
+    const y = 107 + 18 * i;
+    drawOption(y, i + 1, action, "Safe", 200);
+    ctx.fillStyle = "#00000020";
+    ctx.fillRect(20, y + 12, 240, 1);
+  }
+
+  function drawOption(y, num, name, safety, price) {
+    mainFont.drawText(ctx, name, 20, y, "blue");
+    mainFont.drawText(ctx, safety, 140, y, "green");
+    drawFrame(ctx, self.keyImage, num - 1, 0, y - 4, 0, 1, 1, 0, 0);
+    const priceColor = price == 0 ? "gray" : price > 0 ? "green" : "red";
+    const priceString = (price >= 0 ? "+ $ " : "") + price;
+    mainFont.drawText(ctx, priceString, 260, y, priceColor, 1);
   }
 };
 

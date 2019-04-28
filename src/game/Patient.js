@@ -9,17 +9,21 @@ const PatientStates = {
   DEAD: 6
 };
 
+Patient.count = 0;
+
 function Patient(x, y, health, wealth, sickness, gameState) {
 
     WalkingPerson.call(this, x, y, gameState);
+    this.id = (++Patient.count);
     this.health = health;
     this.wealth = wealth;
     this.sickness = sickness;
     this.diagnosed = false;
-    this.isRich = (wealth > 80);
+    this.wealthLevel = wealth >= 40 ? 2 : wealth > 80 ? 3 : 1;
+    this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
     this.targetBed = null;
-    this.healthDecrease = 20; // per second TODO: adjust
+    this.healthDecrease = 2; // per second TODO: adjust
     this.deathDuration = 500; // millisecs
     this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
@@ -63,9 +67,17 @@ function updateHealth() {
 }
 
 Patient.prototype.isAddressable = function() {
-
     return ((this.state === PatientStates.WAIT_AT_RECEPTION) || (this.state === PatientStates.STAY_IN_BED));
 };
+
+Patient.prototype.getAddressablePosition = function() {
+  const result = {x: this.x, y: this.y};
+  // Modify position when waiting at counter
+  if (this.state == PatientStates.WAIT_AT_RECEPTION) {
+    result.y -= 0.8;
+  }
+  return result;
+}
 
 Patient.prototype.isDead = function() {
 
@@ -141,7 +153,7 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
         const angle = 0; // wobble(gameStage.time, 5 + this.animationOffset/5000, this.animationOffset, 8) * 1;
         ctx.save();
         if (highlight) {
-            ctx.shadowColor = '#e0b030';
+            ctx.shadowColor = '#009cff';
             ctx.shadowBlur = 1;
         }
         for (let i = 0; i < (highlight ? 8 : 1); i++) {
@@ -308,10 +320,6 @@ Patient.prototype.walkHome = function() {
 Patient.prototype.die = function() {
     if (!this.isDead()) {
         this.state = PatientStates.DEAD;
-        if (this.inBed) {
-            this.inBed.releasePatient();
-            this.inBed = null;
-        }
         this.finishPath();
         setTimeout(() => {
             this.gameState.hospital.loseRevenue(250, this.x, this.y);

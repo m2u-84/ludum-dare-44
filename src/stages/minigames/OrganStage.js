@@ -70,14 +70,14 @@ OrganStage.prototype.updateFlight = function() {
     } else {
       // Bounce back
       this.y = this.bounceHeight;
-      const dx = Math.abs(this.x - this.w / 2);
+      const dx = Math.abs(this.x - this.w / 2) - (this.w * 0.05);
       const angle = -Math.PI / 4 + (Math.PI / 2) * dx / (this.w / 2);
       const v = 0.7 * Math.sqrt(this.vx * this.vx + this.vy * this.vy);
       this.vx = v * Math.sin(angle);
       this.vy = -v * Math.cos(angle);
       if (this.x < this.w / 2) { this.vx = -this.vx; }
       this.angleRotationStart = this.time;
-      this.angleSpeed = this.vx * 0.01;
+      this.angleSpeed = this.vx * 0.015;
       this.startAngle = this.angle;
       if (this.bounces == 2) {
         this.firstBounceTime = this.time;
