@@ -116,11 +116,6 @@ Patient.prototype.getPathProgress = function() {
 Patient.prototype.processPath = function() {
 
     if (this.path !== null) {
-        if (this.path.length === 0) {
-            this.path = null;
-            this.nextState();
-            return;
-        }
         const pos = this.getPathProgress();
         if (pos.waypointIndex < this.path.length - 1) {
             const elem1 = this.path[pos.waypointIndex];
@@ -131,6 +126,8 @@ Patient.prototype.processPath = function() {
         } else {
             const elem = this.path[pos.waypointIndex];
             this.updateCharacterPosition(elem[0] + 0.5, elem[1] + 0.5);
+            this.path = null;
+            this.nextState();
         }
 
     }
