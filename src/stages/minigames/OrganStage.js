@@ -26,6 +26,7 @@ OrganStage.prototype.prestart = function() {
   this.bounceHeight = 0;
   this.angle = 0;
   this.organWellPlaced = false;
+  this.firstBounceTime = 0;
 };
 
 OrganStage.prototype.update = function(timer) {
@@ -78,6 +79,9 @@ OrganStage.prototype.updateFlight = function() {
       this.angleRotationStart = this.time;
       this.angleSpeed = this.vx * 0.01;
       this.startAngle = this.angle;
+      if (this.bounces == 2) {
+        this.firstBounceTime = this.time;
+      }
       this.bounces--;
       if (this.bounces <= 0) {
         this.bounceHeight = this.h + 1000;
@@ -98,7 +102,12 @@ OrganStage.prototype.render = function(ctx, timer) {
   const bx = this.w * 0.5, by = this.h * 0.65;
   drawImage(ctx, this.bodyBack, bx, by);
   // Organ
-  if (this.organWellPlaced) drawImage(ctx, this.organ, this.x, this.y, this.angle, 1, 1);
+  let scaleX = 1;
+  if (this.bounces < 2) {
+    scaleX = 1 + 0.2 * Math.sin((this.time - this.firstBounceTime) * 0.01);
+    console.log(scaleX);
+  }
+  if (this.organWellPlaced) drawImage(ctx, this.organ, this.x, this.y, this.angle, scaleX, 1/scaleX);
   // Hand
   if (!this.isFlying) {
     drawImage(ctx, this.hand, this.handX, this.handY, 0, 1, 1, 0.4, 0.7);
@@ -108,7 +117,7 @@ OrganStage.prototype.render = function(ctx, timer) {
   // Front of Body
   drawImage(ctx, this.bodyFront, bx, by - 1);
   // Organ
-  if (!this.organWellPlaced) drawImage(ctx, this.organ, this.x, this.y, this.angle, 1, 1);
+  if (!this.organWellPlaced) drawImage(ctx, this.organ, this.x, this.y, this.angle, scaleX, 1/scaleX);
   // Thumb
   drawImage(ctx, this.thumb, this.isFlying ? this.handX - 15 : this.handX, this.handY, this.isFlying ? 0.6 : 0, 1, 1, 0.4, 0.7);
 };
