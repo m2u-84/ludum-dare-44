@@ -29,7 +29,7 @@ Hospital.prototype.giveRevenue = function(rev, x, y) {
 
 Hospital.prototype.loseRevenue = function(rev, x, y) {
     this.balance -= rev;
-    gameStage.showFloatingText("-$" - rev, x, y, "#f0c030");
+    gameStage.showFloatingText("-$" + rev, x, y, "#f0c030");
 };
 
 Hospital.prototype.draw = function(ctx) {

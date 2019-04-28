@@ -159,7 +159,7 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 Patient.prototype.getCharacterFrames = function(isMoving) {
 
     if (this.isDead()) {
-        return [1, 1, 2, 2, 3, 3, 4, 4, 5, 5];
+        return [1, 6, 7];
     } else {
         return isMoving ? [0, 1, 2, 3, 2, 1] : [1, 4, 5, 5, 5, 4, 1, 1];
     }
@@ -308,7 +308,7 @@ Patient.prototype.die = function() {
             this.inBed.releasePatient();
             this.inBed = null;
         }
-        setTimeout(() => this.gameState.hospital.loseRevenue(250), 1000);
+        setTimeout(() => this.gameState.hospital.loseRevenue(250, this.x, this.y), 1000);
         this.timeOfDeath = gameStage.time;
     }
 };
