@@ -17,7 +17,7 @@ Technik
 [ ] Canvas HighRes rendern
 
 Features
-[ ] Verbrennungsgeräusch
+[X] Verbrennungsgeräusch
 [ ] Ambient-Sounds
 [ ] Randomisierung Rezeption
 [ ] Bett-Weg: kürzester Weg, bei gleicher Länge dann Randomisierung
@@ -30,7 +30,7 @@ Features
 [X] Hausmeister-Basis implementieren
 [X] Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
 [X] Sounds für Verbrennen von Leichen
-[ ] Hausmeister verbrennt Leichen periodisch
+[X] Hausmeister verbrennt Leichen periodisch
 [ ] Spielende erkennen (Erfolg, Misserfolg)
 [ ] Organ-Inventory
 [X] Verbessertes Organ-Bounce-Verhalten
