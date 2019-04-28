@@ -20,7 +20,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.state = PatientStates.SPAWNED;
     this.animationOffset = rnd(9999);
 
-    this.movingVelocity = 2; // animation speed
+    this.movingVelocity = 4; // animation speed
     this.idleVelocity = 1;
     this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
@@ -31,9 +31,8 @@ function Patient(x, y, health, wealth, sickness, gameState) {
         [0, 1, 2, 3, 2, 1] // moving
     ];
     this.path = null;
-    this.pathDestReachedCallback = null;
-    this.lastPathProcessTime = 0;
-    this.pathSmoothness = 10; // TODO 50
+    this.pathLength = 0;
+    this.pathStartedTime = 0;
 
     this.gameState = gameState;
 }
@@ -80,7 +79,7 @@ Patient.prototype.isInSameTile = function(x1, y1, x2, y2) {
 };
 
 Patient.prototype.moveTo = function(targetX, targetY) {
-  console.log('Moving to ', targetX, targetY);
+    console.log('Moving to ', targetX, targetY);
     const path = this.gameState.level.findPath(this.x, this.y, targetX, targetY);
     this.planPath(path);
 };
@@ -88,19 +87,29 @@ Patient.prototype.moveTo = function(targetX, targetY) {
 Patient.prototype.planPath = function(path) {
 
     if (this.path === null) {
-        this.path = [];
+        this.path = path;
+        this.pathLength = 0;
         for (let i=0; i < path.length - 1; i++) {
             const currentPoint = path[i];
             const destPoint = path[i+1];
-            const steps = this.pathSmoothness;
-            for (let step=0; step < steps; step++) {
-                let point = [0.5 + interpolate(currentPoint[0], destPoint[0], step / steps),
-                    0.5 + interpolate(currentPoint[1], destPoint[1], step / steps)];
-                this.path.push(point);
-            }
+            const dist = vectorLength(currentPoint[0] - destPoint[0], currentPoint[1] - destPoint[1]);
+            this.pathLength += dist;
+            this.pathStartedTime = gameStage.time;
         }
-        this.lastPathProcessTime = 0;
     }
+};
+
+Patient.prototype.getPathProgress = function() {
+
+    const millsecsForPath = this.pathLength / this.movingVelocity * 1000;
+    const elapsedMillisecs = gameStage.time - this.pathStartedTime;
+    const percentage = elapsedMillisecs / millsecsForPath;
+    const floatingWaitpointIndex = this.path.length * percentage;
+    let waypointIndex = Math.floor(floatingWaitpointIndex);
+    waypointIndex = Math.min(this.path.length - 1, waypointIndex);
+    const betweenPercent = floatingWaitpointIndex - Math.floor(floatingWaitpointIndex);
+
+    return {waypointIndex: waypointIndex, betweenPercent: betweenPercent};
 };
 
 Patient.prototype.processPath = function() {
@@ -108,48 +117,54 @@ Patient.prototype.processPath = function() {
     if (this.path !== null) {
         if (this.path.length === 0) {
             this.path = null;
-            if (this.pathDestReachedCallback !== null) {
-                this.pathDestReachedCallback(this);
-            }
-            switch (this.state) {
-              case PatientStates.WALK_TO_RECEPTION:
-                this.state = PatientStates.WAIT_AT_RECEPTION;
-                break;
-              case PatientStates.WALK_TO_BED:
-                this.enterBed(this.targetBed);
-                break;
-              case PatientStates.WALK_HOME:
-                this.gameState.removePatient(this);
-                break;
-            }
+            this.nextState();
             return;
         }
-        const currentTime = gameStage.time;
-        if (currentTime - this.lastPathProcessTime > 25 / this.pathSmoothness) {
-            this.lastPathProcessTime = currentTime;
-
-            const elem = this.path[0];
-            this.path.shift();
-            this.updateCharacterPosition(elem[0], elem[1]);
+        const pos = this.getPathProgress();
+        if (pos.waypointIndex < this.path.length - 1) {
+            const elem1 = this.path[pos.waypointIndex];
+            const elem2 = this.path[pos.waypointIndex + 1];
+            const x = interpolate(elem1[0], elem2[0], pos.betweenPercent);
+            const y = interpolate(elem1[1], elem2[1], pos.betweenPercent);
+            this.updateCharacterPosition(x + 0.5, y + 0.5);
+        } else {
+            const elem = this.path[pos.waypointIndex];
+            this.updateCharacterPosition(elem[0] + 0.5, elem[1] + 0.5);
         }
 
+    }
+};
+
+Patient.prototype.nextState = function() {
+    switch (this.state) {
+        case PatientStates.WALK_TO_RECEPTION:
+            this.state = PatientStates.WAIT_AT_RECEPTION;
+            break;
+        case PatientStates.WALK_TO_BED:
+            this.enterBed(this.targetBed);
+            break;
+        case PatientStates.WALK_HOME:
+            this.gameState.removePatient(this);
+            break;
     }
 };
 
 Patient.prototype.updateCharacterPosition = function(x, y) {
 
     this.lastMoveDelta = {x: x - this.x, y: y - this.y};
-    this.x = x;
-    this.y = y;
-    this.characterStateIndex = 1;
-    this.lastMoveTime = gameStage.time;
+    if ((this.lastMoveDelta.x !== 0) || (this.lastMoveDelta.y !== 0)) {
+        this.x = x;
+        this.y = y;
+        this.characterStateIndex = 1;
+        this.lastMoveTime = gameStage.time;
+    }
 };
 
 Patient.prototype.getMoveTarget = function() {
 
     if ((this.path !== null) && (this.path.length > 0)) {
         const last = this.path[this.path.length - 1];
-        return {x: last[0], y: last[1]};
+        return {x: last[0] + 0.5, y: last[1] + 0.5};
     }
     return null;
 };
