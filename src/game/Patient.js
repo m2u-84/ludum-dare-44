@@ -19,7 +19,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.wealth = wealth;
     this.sickness = sickness;
     this.diagnosed = false;
-    this.wealthLevel = wealth >= 40 ? 2 : wealth > 80 ? 3 : 1;
+    this.wealthLevel = wealth >= 80 ? 3 : wealth >= 40 ? 2 : 1;
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
     this.targetBed = null;
