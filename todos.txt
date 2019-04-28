@@ -32,6 +32,7 @@ Features
 [ ] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei <--- Björn
 [ ] Cash-Flow-Feed (in/out)
 [ ] Releasing
+[ ] Spieler informieren, wenn alle Betten voll
 [X] Verbrennungsgeräusch
 [X] Ambient-Sounds
 [X] Randomisierung Rezeption

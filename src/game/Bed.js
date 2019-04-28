@@ -69,3 +69,26 @@ Bed.prototype.getVisitorPoints = function() {
 
     return {left: left, right: right};
 };
+
+Bed.prototype.getClosestVisitorPoint = function(fromX, fromY) {
+
+    const visitorPoints = this.getVisitorPoints();
+
+    const distLeft = gameStage.gameState.level.computePathAndLength(fromX, fromY,
+        visitorPoints.left.x, visitorPoints.left.y );
+    const distRight = gameStage.gameState.level.computePathAndLength(fromX, fromY,
+        visitorPoints.right.x, visitorPoints.right.y);
+
+
+    if (distLeft < distRight) {
+        return visitorPoints.left;
+    } else if (distLeft > distRight) {
+        return visitorPoints.right;
+    } else {
+        if (Math.random() > 0.5) {
+            return visitorPoints.left;
+        } else {
+            return visitorPoints.right;
+        }
+    }
+};

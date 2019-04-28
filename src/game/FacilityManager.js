@@ -139,25 +139,7 @@ FacilityManager.prototype.walkToCorpse = function() {
     if (corpse) {
         let pos = {x: null, y: null};
         if (corpse.inBed) {
-            const bed = corpse.inBed;
-            const visitorPoints = bed.getVisitorPoints();
-
-            const distLeft = this.gameState.level.computePathAndLength(this.x, this.y,
-                visitorPoints.left.x, visitorPoints.left.y );
-            const distRight = this.gameState.level.computePathAndLength(this.x, this.y,
-                visitorPoints.right.x, visitorPoints.right.y);
-
-            if (distLeft < distRight) {
-                pos = visitorPoints.left;
-            } else if (distLeft > distRight) {
-                pos = visitorPoints.right;
-            } else {
-                if (Math.random() > 0.5) {
-                    pos = visitorPoints.left;
-                } else {
-                    pos = visitorPoints.right;
-                }
-            }
+            pos = corpse.inBed.getClosestVisitorPoint(this.x, this.y);
         } else {
             pos.x = corpse.x;
             pos.y = corpse.y;
