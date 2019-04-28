@@ -7,7 +7,7 @@ Story
 [ ] Namen für Spiel brainstormen
 
 Bugs
-[X] Laufgeschwindigkeit framerate[ ]abhängig
+[X] Laufgeschwindigkeit framerate-abhängig
 
 Technik
 [ ] Canvas HighRes rendern
@@ -16,17 +16,17 @@ Technik
 
 Features
 [ ] Abstandserkennung nächster Patient
-[ ] Entlassung des Patienten
-[ ] Trennung Privat[ ]/Kassenpatienten (über Betten)
+[X] Entlassung des Patienten
+[ ] Trennung Privat-/Kassenpatienten (über Betten)
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
-[ ] Entlassung nach Operation nur optional, um Patienten durch mehrere Operationen zu monetarisieren
-[ ] Kontroll[ ]Wagen, der periodisch nach dem Rechten sieht
+[X] Entlassung nach Operation nur optional, um Patienten durch mehrere Operationen zu monetarisieren
+[ ] Kontroll-Wagen, der periodisch nach dem Rechten sieht
 [ ] Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
 [ ] Hausmeister verbrennt Leichen periodisch
 [ ] Spielende erkennen (Erfolg, Misserfolg)
 [ ] Demonstranten / Passanten, wenn Rezeption voll
 [ ] schlecht behandelte Patienten bluten Boden voll und Arzt rutscht aus
-[ ] Turbo[ ]Modus für Doktor (ggfs. mit Verlust von Geld / Injektion von Drogen / Verlust von Leben)
+[ ] Turbo-Modus für Doktor (ggfs. mit Verlust von Geld / Injektion von Drogen / Verlust von Leben)
 [ ] Organinventory
 [X] Verbessertes Organ-Bounce-Verhalten
 
