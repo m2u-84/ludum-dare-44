@@ -1,0 +1,43 @@
+Story
+- Rahmenstory erzählen
+  - Mafia: Startkapital bereitgestellt
+  - Spielziel: innerhalb Zeit möglichst viel Knete machen, Kickback an Mafia, Hinweis auf unlautere Methoden
+  - Warnung vor Polizei
+  - Warnung vor Mafia
+- Namen für Spiel brainstormen
+
+Bugs
+- Laufgeschwindigkeit framerate-abhängig
+
+
+Features
+- Abstandserkennung nächster Patient
+- Entlassung des Patienten
+- Trennung Privat-/Kassenpatienten (über Betten)
+- weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
+- Entlassung nach Operation nur optional, um Patienten durch mehrere Operationen zu monetarisieren
+- Kontroll-Wagen, der periodisch nach dem Rechten sieht
+- Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
+- Hausmeister verbrennt Leichen periodisch
+- Spielende erkennen (Erfolg, Misserfolg)
+- Demonstranten / Passanten, wenn Rezeption voll
+- schlecht behandelte Patienten bluten Boden voll und Arzt rutscht aus
+- Turbo-Modus für Doktor (ggfs. mit Verlust von Geld / Injektion von Drogen / Verlust von Leben)
+- Organinventory
+
+Strategie-Modul
+- Schwierigkeitsgrad mit der Zeit steigern
+
+Finanz-Controller
+- Visualisierung Gewinn/Verlust
+- Visualisierung Spieldauer
+- Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge
+  - auch Kassenpatienten müssen Geld einbringen können (muss aber an bestimmten Kriterien hängen, damit sich die tödliche Injektion lohnt)
+
+Patient-Visualisierung
+- Leben
+- Privat/Kasse
+- Schweregrad der Erkrankung
+- Hotkey für Einblenden
+
+

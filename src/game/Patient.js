@@ -6,7 +6,7 @@ const PatientStates = {
   WALK_TO_BED: 3,
   STAY_IN_BED: 4,
   WALK_HOME: 5
-}
+};
 
 function Patient(x, y, health, wealth, sickness, gameState) {
     this.x = x;
