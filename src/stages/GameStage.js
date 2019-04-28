@@ -9,12 +9,34 @@ function GameStage() {
 
 inherit(GameStage, Stage);
 
+GameStage.load = function() {
+
+    GameStage.audioAmbient = loader.loadAudio({src: "./assets/audio/ambience/ambience.mp3"});
+    GameStage.audioTrack2 = loader.loadAudio({src: "./assets/audio/tracks/track-2.mp3"});
+};
+
+GameStage.prototype.playAmbientMusic = function() {
+
+    const music = GameStage.audioAmbient;
+    music.loop = true;
+    music.play();
+    music.currentTime = Math.random() * music.duration;
+};
+
+GameStage.prototype.playMusicTrack = function() {
+
+    const music = GameStage.audioTrack2;
+    music.loop = true;
+    music.play();
+};
+
 GameStage.prototype.preload = function () {
     this.mapImage = loader.loadImage("./assets/map.png");
     Doctor.load();
     Patient.load();
     FacilityManager.load();
     Bed.load();
+    GameStage.load();
 
     this.facitlityManagerDelay = 1000;
 };
@@ -153,6 +175,10 @@ GameStage.prototype.spawnPatient = function () {
 GameStage.prototype.spawnFacilityManager = function () {
     const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
     if (spawnPoint !== null) {
+
+        // Workaround: start music here since it's most likely loaded
+        this.playAmbientMusic();
+        this.playMusicTrack();
 
         const facilityManager = new FacilityManager(spawnPoint.x, spawnPoint.y, this.gameState);
         facilityManager.nextState();

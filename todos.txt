@@ -18,7 +18,7 @@ Technik
 
 Features
 [X] Verbrennungsgeräusch
-[ ] Ambient-Sounds
+[X] Ambient-Sounds
 [ ] Randomisierung Rezeption
 [ ] Bett-Weg: kürzester Weg, bei gleicher Länge dann Randomisierung
 [X] Abstandserkennung nächster Patient
@@ -37,6 +37,7 @@ Features
 [X] Kontext-Menü für nächsten Patienten
 [X] Kontext-Menü Zoom-In
 [/] Kontext-Menü schön machen
+[ ] Pausieren der Musik, wenn Stage in Pause ist
 (Optional)
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
 [ ] schlecht behandelte Patienten bluten Boden voll und Arzt rutscht aus
