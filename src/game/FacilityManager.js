@@ -13,12 +13,11 @@ function FacilityManager(x, y, gameState) {
 
     WalkingPerson.call(this, x, y, gameState);
     this.state = FacilityManagerStates.SPAWNED;
+    this.image = gameState.doctor.isMale ? Doctor.images[1] : Doctor.images[0];
 }
 inherit(FacilityManager, WalkingPerson);
 
 FacilityManager.load = function() {
-
-    FacilityManager.image = loader.loadImage("./assets/doctor_m.png", 4, 3); // TODO: use FacilityManager image
     FacilityManager.soundContainerDump = loader.loadAudio({src: "./assets/audio/sounds/container-dump/container-dump.mp3"});
 };
 
@@ -74,7 +73,7 @@ FacilityManager.prototype.paintExecution = function(ctx, velocity, frameIndexes)
     // determine sequential frame index using game time
     const frameCount = frameIndexes.length;
     const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-    drawFrame(ctx, FacilityManager.image, frameIndexes[frameIndex], this.x, this.y, 0, this.directionFactor * 1 / 24, 1 / 24, 0.5, 0.98);
+    drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, 0, this.directionFactor * 1 / 24, 1 / 24, 0.5, 0.98);
 };
 
 FacilityManager.prototype.getCharacterFrames = function(isMoving) {
