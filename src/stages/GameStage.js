@@ -178,11 +178,10 @@ GameStage.prototype.getRandomElement = function(list) {
 GameStage.prototype.onkey = function (event) {
     if (event && event.key && event.key.length == 1 && (event.key !== event.key.toLowerCase() || isSpecialCharacter(event.key))
         && !event.shiftKey && this.capslockMessageStart < 0) {
-        console.log(event);
       this.capslockMessageStart = this.time;
     }
     if (event.key === "Escape") {
-        // TODO this.transitionIn("pause", 400);
+        this.transitionIn("pause", 400);
     } else if (event.key === "Enter") {
         this.transitionIn(getRandomItem(["organ", "syringe"]));
     } else if (event.key === "Shift") {

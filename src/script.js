@@ -19,6 +19,7 @@ window.onload = () => {
   gameStage = new GameStage();
   stageManager.add(new LoadStage())
               .add(gameStage)
+              .add(new PauseStage())
               .add(new ContextMenuStage())
               .add(new SyringeStage())
               .add(new OrganStage());
