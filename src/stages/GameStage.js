@@ -3,6 +3,7 @@ function GameStage() {
     this.gameState = null;
     this.lastPatientSpawnTime = 0;
     this.contextStage = null;
+    this.floatingTexts = [];
 }
 
 inherit(GameStage, Stage);
@@ -63,6 +64,13 @@ GameStage.prototype.render = function (ctx, timer) {
     // Draw health bars, also sorted by z-index
     people.forEach(p => { if (p instanceof Patient) { p.paintAttachedUI(ctx); } } );
 
+    // Money
+    for (let i = this.floatingTexts.length - 1; i >= 0; i--) {
+      if (this.floatingTexts[i].render(ctx)) {
+        this.floatingTexts.splice(i, 1);
+      }
+    }
+
     ctx.restore();
 
     // Screen space UI
@@ -103,6 +111,12 @@ GameStage.prototype.spawnPatient = function () {
           this.gameState.patients.push(patient);
         } // TODO: possibly try to respawn patient earlier if reception slot is blocked
     }
+};
+
+GameStage.prototype.showFloatingText = function(t, x, y, color) {
+  this.floatingTexts.push(
+    new FloatingText(t, x, y, color)
+  );
 };
 
 GameStage.prototype.getRandomElement = function(list) {
