@@ -24,7 +24,7 @@ Features
 [X] Entlassung nach Operation nur optional, um Patienten durch mehrere Operationen zu monetarisieren
 [ ] Kontroll-Wagen, der periodisch nach dem Rechten sieht
 [X] Hausmeister-Basis implementieren
-[ ] Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
+[X] Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
 [ ] Hausmeister verbrennt Leichen periodisch
 [ ] Spielende erkennen (Erfolg, Misserfolg)
 [ ] Organ-Inventory

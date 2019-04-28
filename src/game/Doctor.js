@@ -18,7 +18,8 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
         [1, 4, 5, 5, 5, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1, 1], // idle
         [0, 1, 2, 3, 2, 1] // moving
     ];
-    this.image = Doctor.images[rndInt(0, 2)];
+    this.isMale = rnd() < 0.5;
+    this.image = Doctor.images[this.isMale ? 0 : 1];
 }
 
 Doctor.load = function() {

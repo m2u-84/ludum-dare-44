@@ -34,12 +34,12 @@ GameStage.prototype.render = function (ctx, timer) {
     ctx.imageSmoothingEnabled = false;
     // Handle camera placement
     let camZoom = 1, camTolerance = 0;
-    let camX = this.gameState.doctor.x, camY = this.gameState.doctor.y - 1;
+    let camX = this.gameState.doctor.x, camY = this.gameState.doctor.y;
     if (this.contextStage) {
       const p = this.contextStage.opacity;
       camZoom = 1; // Interpolators.square(p, camZoom, 4);
       const targetX = (this.gameState.doctor.x + this.contextStage.patient.x) / 2 + 6.4 / camZoom; // 1.6 for camZoom 4
-      const targetY = (this.gameState.doctor.y + this.contextStage.patient.y) / 2; // 0.8 for camZoom 4
+      const targetY = (this.gameState.doctor.y); // + this.contextStage.patient.y) / 2; // 0.8 for camZoom 4
       camX = Interpolators.cos(p, camX, targetX);
       camY = Interpolators.cos(p, camY, targetY);
       camTolerance = 20 * p;

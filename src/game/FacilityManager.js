@@ -13,12 +13,12 @@ function FacilityManager(x, y, gameState) {
 
     WalkingPerson.call(this, x, y, gameState);
     this.state = FacilityManagerStates.SPAWNED;
+    this.image = gameState.doctor.isMale ? Doctor.images[1] : Doctor.images[0];
 }
 inherit(FacilityManager, WalkingPerson);
 
 FacilityManager.load = function() {
-
-    FacilityManager.image = loader.loadImage("./assets/doctor_m.png", 4, 3); // TODO: use FacilityManager image
+    FacilityManager.soundContainerDump = loader.loadAudio({src: "./assets/audio/sounds/container-dump/container-dump.mp3"});
 };
 
 FacilityManager.prototype.update = function() {
@@ -73,12 +73,21 @@ FacilityManager.prototype.paintExecution = function(ctx, velocity, frameIndexes)
     // determine sequential frame index using game time
     const frameCount = frameIndexes.length;
     const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-    drawFrame(ctx, FacilityManager.image, frameIndexes[frameIndex], this.x, this.y, 0, this.directionFactor * 1 / 24, 1 / 24, 0.5, 0.98);
+    drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, 0, this.directionFactor * 1 / 24, 1 / 24, 0.5, 0.98);
 };
 
 FacilityManager.prototype.getCharacterFrames = function(isMoving) {
 
-    return isMoving ? [0, 1, 2, 3, 2, 1] : [1, 4, 5, 5, 5, 4, 1, 1];
+    if (this.isCarryingCorpse()) {
+        return [8, 9, 10, 11]
+    } else {
+        return isMoving ? [0, 1, 2, 3, 2, 1] : [1, 4, 5, 5, 5, 4, 1, 1];
+    }
+};
+
+FacilityManager.prototype.isCarryingCorpse = function() {
+
+    return this.state === FacilityManagerStates.CARRY_CORPSE_TO_PILE;
 };
 
 FacilityManager.prototype.walkToStoreRoom = function() {
@@ -138,6 +147,7 @@ FacilityManager.prototype.carryCorpseToPile = function() {
 
 FacilityManager.prototype.burnPile = function() {
 
+    FacilityManager.soundContainerDump.play();
     // burn randomly every three times
     if (Math.floor(Math.random() * 3) === 0) {
         // TODO: play sound?
