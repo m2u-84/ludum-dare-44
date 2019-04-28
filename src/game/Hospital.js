@@ -27,8 +27,13 @@ Hospital.prototype.giveRevenue = function(rev, x, y) {
     gameStage.showFloatingText("+$" + rev, x, y, "#f0c030");
 };
 
+Hospital.prototype.loseRevenue = function(rev, x, y) {
+    this.balance -= rev;
+    gameStage.showFloatingText("-$" + rev, x, y, "#f0c030");
+};
+
 Hospital.prototype.draw = function(ctx) {
     // Balance
     ctx.fillStyle = "#f0c030";
     ctx.fillText("$" + Math.floor(this.balance), 3, 11);
-}
+};

@@ -19,7 +19,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isRich = (wealth > 80);
     this.inBed = null;
     this.targetBed = null;
-    this.healthDecrease = 4; // per second
+    this.healthDecrease = 10; // per second
     this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
     this.animationOffset = rnd(9999);
@@ -51,7 +51,7 @@ Patient.prototype.update = function() {
 
 function updateHealth() {
 
-    if (this.state !== PatientStates.DEAD) {
+    if (!this.isDead()) {
         const healthDecrease = this.healthDecrease * gameStage.timeDif / 1000;
         this.health -= healthDecrease;
         this.health = Math.max(0, this.health);
@@ -65,6 +65,11 @@ Patient.prototype.isAddressable = function() {
 
     return ((this.state === PatientStates.WAIT_AT_RECEPTION) || (this.state === PatientStates.STAY_IN_BED));
 };
+
+Patient.prototype.isDead = function() {
+
+    return this.state === PatientStates.DEAD;
+}
 
 Patient.prototype.getFreePoint = function(points) {
 
@@ -81,11 +86,13 @@ Patient.prototype.isOccupiedByPatient = function(x, y) {
     const patients = this.gameState.patients;
     for (let i=0; i < patients.length; i++) {
         const patient = patients[i];
-        const target = patient.getMoveTarget();
-        const currentPositionOccupiesCoords = this.isInSameTile(patient.x, patient.y, x + 0.5,  y + 0.5);
-        const targetPositionOccupiesCoords = target !== null ? this.isInSameTile(target.x, target.y, x + 0.5, y + 0.5) : false;
-        if (currentPositionOccupiesCoords || targetPositionOccupiesCoords) {
-            return true;
+        if (!patient.isDead()) {
+            const target = patient.getMoveTarget();
+            const currentPositionOccupiesCoords = this.isInSameTile(patient.x, patient.y, x + 0.5,  y + 0.5);
+            const targetPositionOccupiesCoords = target !== null ? this.isInSameTile(target.x, target.y, x + 0.5, y + 0.5) : false;
+            if (currentPositionOccupiesCoords || targetPositionOccupiesCoords) {
+                return true;
+            }
         }
     }
 };
@@ -128,7 +135,7 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
     const frameCount = frameIndexes.length;
 
-    if (this.state !== PatientStates.DEAD) {
+    if (!this.isDead()) {
         // determine sequential frame index using game time
         const highlight = this.isHighlighted;
         const frameIndex = Math.floor((gameStage.time + this.animationOffset) / ((200 + this.animationOffset % 80)  / velocity)) % frameCount;
@@ -143,7 +150,7 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
         }
         ctx.restore();
     } else {
-        const frameIndex = Math.floor((gameStage.time - this.timeOfDeath) / (200  / velocity));
+        const frameIndex = Math.floor((gameStage.time - this.timeOfDeath) / (200 / velocity));
         const angle = frameIndexes.length === 0 ? 0 : Math.PI / 2 * frameIndex / (frameIndexes.length - 1);
         drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
     }
@@ -151,34 +158,38 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
 Patient.prototype.getCharacterFrames = function(isMoving) {
 
-    if (this.state === PatientStates.DEAD) {
-        return [1, 1, 2, 2, 3, 3, 4, 4, 5, 5];
+    if (this.isDead()) {
+        return [1, 6, 7];
     } else {
         return isMoving ? [0, 1, 2, 3, 2, 1] : [1, 4, 5, 5, 5, 4, 1, 1];
     }
 };
 
 Patient.prototype.paintAttachedUI = function(ctx) {
-  // Health bar
-  const directionFactor = sgn(this.directionFactor);
-  const px = 2 / 24;
-  const x = Math.round(this.x * 24 + 4 * directionFactor) / 24, y = Math.round((this.y - 2 - px) * 24) / 24;
-  const halfWidth = 6 / 24;
-  const height = 2 / 24;
-  ctx.fillStyle = "#00000000";
-  ctx.fillRect(x - halfWidth - px, y - px, 2 * halfWidth + 2 * px, height);
-  ctx.fillStyle = "white";
-  ctx.fillRect(x - halfWidth, y, 2 * halfWidth, height);
-  ctx.fillStyle = getHealthColor(this.health / 100);
-  ctx.fillRect(x - halfWidth, y, 2 * halfWidth * this.health / 100, height);
-  // Wealth
-  /* ctx.font = "0.4px Arial";
-  ctx.textAlign = "center";
-  ctx.fillStyle = "#f0c040";
-  const wealthLevel = this.wealth < 40 ? 1 : this.isRich ? 3 : 2;
-  for (var i = 0; i < wealthLevel; i++) {
-    ctx.fillText("$", x + (3 * i - 1) * px, y - 2 * px);
-  } */
+
+    if (!this.isDead()) {
+
+        // Health bar
+        const directionFactor = sgn(this.directionFactor);
+        const px = 2 / 24;
+        const x = Math.round(this.x * 24 + 4 * directionFactor) / 24, y = Math.round((this.y - 2 - px) * 24) / 24;
+        const halfWidth = 6 / 24;
+        const height = 2 / 24;
+        ctx.fillStyle = "#00000000";
+        ctx.fillRect(x - halfWidth - px, y - px, 2 * halfWidth + 2 * px, height);
+        ctx.fillStyle = "white";
+        ctx.fillRect(x - halfWidth, y, 2 * halfWidth, height);
+        ctx.fillStyle = getHealthColor(this.health / 100);
+        ctx.fillRect(x - halfWidth, y, 2 * halfWidth * this.health / 100, height);
+        // Wealth
+        /* ctx.font = "0.4px Arial";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#f0c040";
+        const wealthLevel = this.wealth < 40 ? 1 : this.isRich ? 3 : 2;
+        for (var i = 0; i < wealthLevel; i++) {
+          ctx.fillText("$", x + (3 * i - 1) * px, y - 2 * px);
+        } */
+    }
 };
 
 Patient.prototype.getActions = function() {
@@ -273,6 +284,7 @@ Patient.prototype.enterBed = function(bed) {
     this.x = bed.positions[0].x + 0.5;
     this.y = bed.positions[0].y + 1.5;
     this.state = PatientStates.STAY_IN_BED;
+    this.targetBed = null;
 };
 
 Patient.prototype.releaseFromBed = function() {
@@ -290,8 +302,13 @@ Patient.prototype.walkHome = function() {
 };
 
 Patient.prototype.die = function() {
-    if (this.state !== PatientStates.DEAD) {
+    if (!this.isDead()) {
         this.state = PatientStates.DEAD;
+        if (this.inBed) {
+            this.inBed.releasePatient();
+            this.inBed = null;
+        }
+        setTimeout(() => this.gameState.hospital.loseRevenue(250, this.x, this.y), 1000);
         this.timeOfDeath = gameStage.time;
     }
 };
