@@ -19,6 +19,9 @@ Bed.prototype.paint = function(ctx) {
             headFrame += 4;
             frame = 1;
         }
+        if (this.occupiedBy.state == PatientStates.DIAGNOSING) {
+            headFrame = rndInt(0,8);
+        }
     }
     drawFrame(ctx, Bed.image, frame, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
     if (headFrame >= 0) {

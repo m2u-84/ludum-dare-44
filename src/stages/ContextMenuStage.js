@@ -46,7 +46,8 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   mainFont.drawText(ctx, "$$$", 0, 34, "green");
   ctx.globalAlpha = 1;
   mainFont.drawText(ctx, wealth, 0, 34, "green");
-  mainFont.drawText(ctx, "???", 80, 34, "orange");
+  const diagnosis = this.patient.diagnosed ? this.patient.sickness.name : "???";
+  mainFont.drawText(ctx, diagnosis, 80, 34, "orange");
   
   // Preferred option
   drawOption(72, 1, this.actions[0], "Safe", 50);
@@ -58,7 +59,8 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
     ctx.fillRect(20, y + 12, 240, 1);
   }
 
-  function drawOption(y, num, name, safety, price) {
+  function drawOption(y, num, nameOrTreatment, safety, price) {
+    const name = nameOrTreatment instanceof Treatment ? nameOrTreatment.name : nameOrTreatment;
     mainFont.drawText(ctx, name, 20, y, "blue");
     mainFont.drawText(ctx, safety, 140, y, "green");
     drawFrame(ctx, self.keyImage, num - 1, 0, y - 4, 0, 1, 1, 0, 0);

@@ -6,7 +6,8 @@ const PatientStates = {
   WALK_TO_BED: 3,
   STAY_IN_BED: 4,
   WALK_HOME: 5,
-  DEAD: 6
+  DEAD: 6,
+  DIAGNOSING: 7
 };
 
 Patient.count = 0;
@@ -31,6 +32,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isHighlighted = false;
     this.imageIndex = this.isRich ? 3 : rndInt(0, 3);
     this.image = Patient.images[this.imageIndex];
+    this.diagnosingUntil = 0;
 }
 inherit(Patient, WalkingPerson);
 
@@ -52,6 +54,9 @@ Patient.prototype.update = function() {
         this.directionFactor = 0;
     }
     updateHealth.call(this);
+    if (this.state == PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
+      this.nextState();
+    }
 };
 
 function updateHealth() {
@@ -122,6 +127,10 @@ Patient.prototype.nextState = function() {
             break;
         case PatientStates.WALK_HOME:
             this.gameState.removePatient(this);
+            break;
+        case PatientStates.DIAGNOSING:
+            this.state = PatientStates.STAY_IN_BED;
+            this.diagnosed = true;
             break;
     }
 };
@@ -205,13 +214,18 @@ Patient.prototype.paintAttachedUI = function(ctx) {
 };
 
 Patient.prototype.getActions = function() {
+  const treatments = this.gameState.treatmentArray.slice();
+  shuffle(treatments);
   switch (this.state) {
     case PatientStates.WAIT_AT_RECEPTION:
       return ["Accept", "Send away"];
     case PatientStates.STAY_IN_BED:
-      const list = ["Antibiotics", "Give Organ", "Release"];
-      if (this.diagnosed) {
+      const list = treatments;
+      if (!this.diagnosed) {
         list.unshift("Diagnose");
+      } else {
+        // Move best diagnosis to top
+        moveToTop(list, this.sickness.treatment);
       }
       return list;
     default:
@@ -220,6 +234,7 @@ Patient.prototype.getActions = function() {
 };
 
 Patient.prototype.executeAction = function(action) {
+  const treatments = this.gameState.treatments;
   switch (this.state) {
       case PatientStates.SPAWNED: {
           switch (action) {
@@ -244,10 +259,14 @@ Patient.prototype.executeAction = function(action) {
     }
     case PatientStates.STAY_IN_BED: {
       switch (action) {
-        case "Antibiotics":
+        case "Diagnose":
+          this.diagnosingUntil = gameStage.time + rndInt(3000, 15000); // TODO change to ~7-40 seconds
+          this.state = PatientStates.DIAGNOSING;
+          break;
+        case treatments.antibiotics:
           gameStage.transitionIn("syringe")
           break;
-        case "Give Organ":
+        case treatments.organ:
           gameStage.transitionIn("organ");
           break;
         case "Release":
@@ -321,4 +340,13 @@ Patient.prototype.die = function() {
         }, this.deathDuration);
         this.timeOfDeath = gameStage.time;
     }
+};
+
+Patient.prototype.getTreatmentPrice = function(treatment) {
+  const hospitalCosts = treatment.costsForHospital;
+  const patientBasePrice = treatment.costsForPatient;
+  const multiplier = (this.wealth / 100);
+  const exactPrice = patientBasePrice * multiplier - hospitalCosts;
+  const price = 10 * Math.round(exactPrice / 10);
+  return price;
 };

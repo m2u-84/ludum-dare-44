@@ -36,6 +36,16 @@ function shuffle(array) {
   }
 }
 
+function moveToTop(list, item) {
+  const index = list.findIndex(el => el == item);
+  console.log(list, item, index);
+  if (index > 0) {
+    list.splice(index, 1);
+    list.unshift(item);
+  }
+  return list;
+}
+
 function getAngleDiff(a1, a2) {
   var dif = (a2 - a1) % (2 * Math.PI);
   if (dif < -Math.PI) {
