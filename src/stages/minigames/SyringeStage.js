@@ -12,7 +12,9 @@ SyringeStage.prototype.preload = function() {
   this.thumb = loader.loadImage("assets/images/darthand_front.png");
 };
 
-SyringeStage.prototype.prestart = function() {
+SyringeStage.prototype.prestart = function(payload) {
+  MinigameStage.prototype.prestart.call(this, payload);
+  this.treatment = gameStage.gameState.treatments.antibiotics;
   this.isAiming = true;
   this.isFlying = false;
   this.angle = 0;
@@ -22,6 +24,7 @@ SyringeStage.prototype.prestart = function() {
 };
 
 SyringeStage.prototype.update = function(timer) {
+  this.targetY = this.h * 0.6;
   this.armLeft = this.w - 90;
   this.armRight = this.w - 30;
   this.armCenter = (this.armLeft + this.armRight) / 2;
@@ -65,6 +68,7 @@ SyringeStage.prototype.updateFlight = function() {
   this.angle = Math.atan2(this.vy, this.vx);
   if (this.active && (this.x > this.armLeft - 20 || this.y > this.h + 100)) {
     this.x = this.armLeft - 20;
+    this.success = (Math.abs(this.y - this.targetY) < 0.12 * this.h);
     this.transitionOut();
   }
 };

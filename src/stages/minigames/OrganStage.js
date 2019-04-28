@@ -13,7 +13,9 @@ OrganStage.prototype.preload = function() {
   this.bodyFront = loader.loadImage("assets/images/organ_body_front.png");
 };
 
-OrganStage.prototype.prestart = function() {
+OrganStage.prototype.prestart = function(payload) {
+  MinigameStage.prototype.prestart.call(this, payload);
+  this.treatment = gameStage.gameState.treatments.organ;
   this.isFlying = false;
   this.vx = 0;
   this.vy = 0;
@@ -94,6 +96,7 @@ OrganStage.prototype.updateFlight = function() {
   }
   // Success or no success
   if (this.active && (this.y > this.h + 100)) {
+    this.success = this.organWellPlaced;
     this.transitionOut();
   }
 };

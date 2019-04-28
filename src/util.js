@@ -7,6 +7,13 @@ function clamp(v, vmin = -Infinity, vmax = Infinity) {
   return v < vmin ? vmin : v > vmax ? vmax : v;
 }
 
+function clump(v, vmin, vmax, vborder = (vmin + vmax)/2) {
+  if (v > vmin && v < vmax) {
+    return (v < vborder) ? vmin : vmax;
+  }
+  return v;
+}
+
 function noclamp(v) {
   return v;
 }
