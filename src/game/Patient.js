@@ -35,13 +35,18 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.path = null;
     this.pathLength = 0;
     this.pathStartedTime = 0;
-
+    this.image = Patient.images[this.isRich ? 3 : Math.floor(Math.random() * 2)];
     this.gameState = gameState;
 }
 
 Patient.load = function() {
-
-    Patient.image = loader.loadImage("./assets/patient1.png", 4, 3); // TODO: Random Patient Image?
+    let sprites = [
+      'patient1', // 0: Sick Man #1
+      'patient2', // 1: Sick Man #2
+      'patient3', // 2: Sick woman #1
+      'patient4', // 3: Rich person
+    ]
+    Patient.images = sprites.map(sprite => loader.loadImage("./assets/" + sprite +".png", 4, 3));
 };
 
 Patient.prototype.update = function() {
@@ -203,7 +208,7 @@ Patient.prototype.paint = function(ctx) {
       ctx.shadowBlur = 1;
     }
     for (var i = 0; i < (highlight ? 8 : 1); i++) {
-      drawFrame(ctx, Patient.image, frames[frameIndex], this.x, this.y, angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+      drawFrame(ctx, this.image, frames[frameIndex], this.x, this.y, angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
     }
     ctx.restore();
 };
