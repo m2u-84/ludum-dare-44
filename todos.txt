@@ -7,11 +7,12 @@ Story
 [ ] Namen für Spiel brainstormen
 
 Bugs
-[ ] Laufgeschwindigkeit framerate[ ]abhängig
+[X] Laufgeschwindigkeit framerate[ ]abhängig
 
 Technik
 [ ] Canvas HighRes rendern
 [ ] Bitmap Font evaluieren
+[ ] Extraktion Laufcode
 
 Features
 [ ] Abstandserkennung nächster Patient
