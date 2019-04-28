@@ -18,16 +18,14 @@ function FacilityManager(x, y, gameState) {
 inherit(FacilityManager, WalkingPerson);
 
 FacilityManager.load = function() {
+
     FacilityManager.soundContainerDump = loader.loadAudio({src: "./assets/audio/sounds/container-dump/container-dump.mp3"});
+    FacilityManager.soundBurn = loader.loadAudio({src: "./assets/audio/sounds/burning/burning.mp3"});
 };
 
 FacilityManager.prototype.update = function() {
 
     WalkingPerson.prototype.update.call(this);
-/* adjust for storeroom
-    if (this.inBed) {
-        this.directionFactor = 0;
-    }*/
 };
 
 FacilityManager.prototype.nextState = function() {
@@ -173,8 +171,10 @@ FacilityManager.prototype.burnPile = function() {
     FacilityManager.soundContainerDump.play();
     // burn randomly every three times
     if (Math.floor(Math.random() * 3) === 0) {
-        // TODO: play sound?
-        this.startWaitingTime(3000, () => this.nextState());
+        this.startWaitingTime(1000, () => {
+            FacilityManager.soundBurn.play();
+            this.startWaitingTime(3000, () => this.nextState());
+        });
     } else {
         this.nextState();
     }

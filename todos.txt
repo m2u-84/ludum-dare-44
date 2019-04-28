@@ -17,9 +17,10 @@ Technik
 [ ] Canvas HighRes rendern
 
 Features
-[ ] Randomisierung Rezeption
-[ ] Verbrennungsgeräusch …\assets\audio\sounds\burning\burning.mp3`
+[ ] Verbrennungsgeräusch
 [ ] Ambient-Sounds
+[ ] Randomisierung Rezeption
+[ ] Bett-Weg: kürzester Weg, bei gleicher Länge dann Randomisierung
 [X] Abstandserkennung nächster Patient
 [X] Tod von Patienten implementieren
 [X] Entlassung des Patienten
