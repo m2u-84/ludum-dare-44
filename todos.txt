@@ -8,22 +8,25 @@ Story
 
 Bugs
 [X] Laufgeschwindigkeit framerate-abhängig
+[ ] verbrannte Leichen aus patients-Liste entfernen
 
 Technik
 [ ] Bitmap Font evaluieren
-[ ] Extraktion Laufcode
+[X] Extraktion Laufcode
 [ ] Canvas HighRes rendern
 
 Features
 [X] Abstandserkennung nächster Patient
+[X] Tod von Patienten implementieren
 [X] Entlassung des Patienten
 [ ] Trennung Privat-/Kassenpatienten (über Betten)
 [X] Entlassung nach Operation nur optional, um Patienten durch mehrere Operationen zu monetarisieren
 [ ] Kontroll-Wagen, der periodisch nach dem Rechten sieht
+[X] Hausmeister-Basis implementieren
 [ ] Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
 [ ] Hausmeister verbrennt Leichen periodisch
 [ ] Spielende erkennen (Erfolg, Misserfolg)
-[ ] Organinventory
+[ ] Organ-Inventory
 [X] Verbessertes Organ-Bounce-Verhalten
 [X] Kontext-Menü für nächsten Patienten
 [X] Kontext-Menü Zoom-In
@@ -34,6 +37,7 @@ Features
 [ ] Turbo-Modus für Doktor (ggfs. mit Verlust von Geld / Injektion von Drogen / Verlust von Leben)
 [ ] Demonstranten / Passanten, wenn Rezeption voll
 
+
 Strategie-Modul
 [ ] Schwierigkeitsgrad mit der Zeit steigern
 
@@ -41,6 +45,8 @@ Finanz-Controller
 [ ] Visualisierung Gewinn/Verlust
 [ ] Visualisierung Spieldauer
 [ ] Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge
+  [X] Verlust durch Tod
+  [X] Gewinn durch Bettenbelegung
   [ ] auch Kassenpatienten müssen Geld einbringen können (muss aber an bestimmten Kriterien hängen, damit sich die tödliche Injektion lohnt)
 
 Patient-Visualisierung

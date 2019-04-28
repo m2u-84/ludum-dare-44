@@ -19,7 +19,8 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isRich = (wealth > 80);
     this.inBed = null;
     this.targetBed = null;
-    this.healthDecrease = 10; // per second
+    this.healthDecrease = 20; // per second TODO: adjust
+    this.deathDuration = 500; // millisecs
     this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
     this.animationOffset = rnd(9999);
@@ -134,6 +135,9 @@ Patient.prototype.paint = function(ctx) {
 Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
     const frameCount = frameIndexes.length;
+    if (frameCount === 0) {
+        return;
+    }
 
     if (!this.isDead()) {
         // determine sequential frame index using game time
@@ -150,16 +154,22 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
         }
         ctx.restore();
     } else {
-        const frameIndex = Math.floor((gameStage.time - this.timeOfDeath) / (200 / velocity));
-        const angle = frameIndexes.length === 0 ? 0 : Math.PI / 2 * frameIndex / (frameIndexes.length - 1);
-        drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+        let dyingPercentage = (gameStage.time - this.timeOfDeath) / this.deathDuration;
+        dyingPercentage = Math.min(1, dyingPercentage);
+        const frameIndex = Math.floor(dyingPercentage * (frameCount  - 1));
+        // hacked angle to improve dying animation without too many sprites
+        let angle = Math.PI * (1/2 - 1/7) * dyingPercentage; // 1/7 comes from PI/7
+        if (frameIndex > 2) {
+            angle += Math.PI / 7;
+        }
+        drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x - dyingPercentage * this.directionFactor, this.y, this.directionFactor * angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
     }
 };
 
 Patient.prototype.getCharacterFrames = function(isMoving) {
 
     if (this.isDead()) {
-        return [1, 6, 7];
+        return [1, 6, 6, 7, 7];
     } else {
         return isMoving ? [0, 1, 2, 3, 2, 1] : [1, 4, 5, 5, 5, 4, 1, 1];
     }
@@ -307,7 +317,10 @@ Patient.prototype.die = function() {
             this.inBed.releasePatient();
             this.inBed = null;
         }
-        setTimeout(() => this.gameState.hospital.loseRevenue(250, this.x, this.y), 1000);
+        this.finishPath();
+        setTimeout(() => {
+            this.gameState.hospital.loseRevenue(250, this.x, this.y);
+        }, this.deathDuration);
         this.timeOfDeath = gameStage.time;
     }
 };

@@ -115,3 +115,14 @@ function getHealthColor(p) {
   const g = 180 * clamp(2 * p, 0, 1);
   return `rgb(${r},${g},0)`;
 }
+
+Array.prototype.remove = function() {
+  let what, a = arguments, L = a.length, ax;
+  while (L && this.length) {
+    what = a[--L];
+    while ((ax = this.indexOf(what)) !== -1) {
+      this.splice(ax, 1);
+    }
+  }
+  return this;
+};
