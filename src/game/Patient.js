@@ -74,6 +74,11 @@ Patient.prototype.isInSameTile = function(x1, y1, x2, y2) {
     return (diffX < 0.5) && (diffY < 0.5);
 };
 
+Patient.prototype.pathFinished = function() {
+
+    this.nextState();
+};
+
 Patient.prototype.nextState = function() {
     switch (this.state) {
         case PatientStates.WALK_TO_RECEPTION:

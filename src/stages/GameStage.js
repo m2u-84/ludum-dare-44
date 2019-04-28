@@ -11,7 +11,10 @@ GameStage.prototype.preload = function () {
     this.mapImage = loader.loadImage("./assets/map.png");
     Doctor.load();
     Patient.load();
+    FacilityManager.load();
     Bed.load();
+
+    this.facitlityManagerDelay = 1000;
 };
 
 GameStage.prototype.prestart = function() {
@@ -39,7 +42,10 @@ GameStage.prototype.render = function (ctx, timer) {
     }
 
     // Draw people sorted by z-index
-    const people = [this.gameState.doctor].concat(this.gameState.patients);
+    let people = [this.gameState.doctor].concat(this.gameState.patients);
+    if (this.gameState.facilityManager) {
+       people = people.concat([this.gameState.facilityManager]);
+    }
     people.sort((a,b) => a.y - b.y);
     people.forEach(p => p.paint(ctx));
 
@@ -65,7 +71,14 @@ GameStage.prototype.update = function (timer) {
     }
 
     this.gameState.patients.forEach(p => p.update());
+    if (this.gameState.facilityManager) {
+        this.gameState.facilityManager.update();
+    }
     this.gameState.hospital.update(this.timeDif, this.time);
+
+    if ((this.gameState.facilityManager === null) && (this.time > this.facitlityManagerDelay)) {
+        this.gameState.facilityManager = this.spawnFacilityManager();
+    }
 
     const currentTime = this.time;
     if (currentTime - this.lastPatientSpawnTime > 3000) {
@@ -85,6 +98,17 @@ GameStage.prototype.spawnPatient = function () {
         if (patient.executeAction("Register")) {
           this.gameState.patients.push(patient);
         } // TODO: possibly try to respawn patient earlier if reception slot is blocked
+    }
+};
+
+GameStage.prototype.spawnFacilityManager = function () {
+    const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
+    if (spawnPoint !== null) {
+
+        const facilityManager = new FacilityManager(spawnPoint.x, spawnPoint.y, this.gameState);
+        facilityManager.nextState();
+
+        return facilityManager;
     }
 };
 

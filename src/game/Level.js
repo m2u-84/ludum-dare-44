@@ -17,8 +17,8 @@ function Level() {
         + '-----w--------------w-----\n'
         + '-----wwwwwww--wwwwwww-----\n'
         + '-----w---w----w-w---w-----\n'
-        + '-----w---w-wwww-w---w-----\n'
-        + '-----w---w-rrrr-w---w-----\n'
+        + '-----w---w-wwww-w-f-w-----\n'
+        + '-----w---w-rrrr-----w-----\n'
         + '-----wwwwwww--wwwwwww-----\n'
         + 's------------------------s\n'
         + '--------------------------\n'
@@ -33,6 +33,7 @@ function Level() {
     this.beds = [];
     this.spawnPoints = [];
     this.receptionPoints = [];
+    this.facilityManagerWaitPoint = null;
 
     const isTopmostBedTile = function(y) {
         let count = 0,
@@ -44,7 +45,7 @@ function Level() {
             }
         }
         return count % 2 == 0;
-    }; 
+    };
 
     for (y = 0; y < rawMap.length; y++) {
         for (x = 0; x < rawMap[0].length; x++) {
@@ -66,6 +67,10 @@ function Level() {
                     this.receptionPoints.push({x: x, y: y});
                     break;
 
+                case 'f':
+                    this.facilityManagerWaitPoint = {x: x, y: y};
+                    break;
+
                 case 'b':
                     collide = true;
                     if (isTopmostBedTile(y)) {
@@ -78,9 +83,6 @@ function Level() {
     }
     this.h = this.tilemap.length;
     this.w = this.tilemap[0].length;
-
-    this.routes = [];
-    this.entry = "";
 }
 
 Level.pathFindingCount = 0;
@@ -165,8 +167,5 @@ Level.prototype.findPath = function(x1, y1, x2, y2) {
     }
 };
 
-function Route() {
-
-}
 
 

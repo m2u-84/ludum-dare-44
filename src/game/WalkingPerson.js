@@ -72,10 +72,13 @@ WalkingPerson.prototype.processPath = function() {
             const elem = this.path[pos.waypointIndex];
             this.updateCharacterPosition(elem[0] + 0.5, elem[1] + 0.5);
             this.path = null;
-            this.nextState();
+            this.pathFinished();
         }
-
     }
+};
+
+WalkingPerson.prototype.pathFinished = function() {
+
 };
 
 WalkingPerson.prototype.updateCharacterPosition = function(x, y) {
