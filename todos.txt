@@ -19,7 +19,7 @@ Technik
 Features
 [X] Verbrennungsgeräusch
 [X] Ambient-Sounds
-[ ] Randomisierung Rezeption
+[X] Randomisierung Rezeption
 [ ] Bett-Weg: kürzester Weg, bei gleicher Länge dann Randomisierung
 [X] Abstandserkennung nächster Patient
 [X] Tod von Patienten implementieren
