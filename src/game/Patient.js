@@ -5,7 +5,8 @@ const PatientStates = {
   WAIT_AT_RECEPTION: 2,
   WALK_TO_BED: 3,
   STAY_IN_BED: 4,
-  WALK_HOME: 5
+  WALK_HOME: 5,
+  DEAD: 6
 };
 
 function Patient(x, y, health, wealth, sickness, gameState) {
@@ -18,6 +19,8 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isRich = (wealth > 80);
     this.inBed = null;
     this.targetBed = null;
+    this.healthDecrease = 4; // per second
+    this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
     this.animationOffset = rnd(9999);
     this.isHighlighted = false;
@@ -31,7 +34,7 @@ Patient.load = function() {
       'patient2', // 1: Sick Man #2
       'patient3', // 2: Sick woman #1
       'patient4', // 3: Rich person
-    ]
+    ];
     Patient.images = sprites.map(sprite => loader.loadImage("./assets/" + sprite +".png", 4, 3));
 };
 
@@ -42,7 +45,20 @@ Patient.prototype.update = function() {
     if (this.inBed) {
         this.directionFactor = 0;
     }
+    updateHealth.call(this);
 };
+
+function updateHealth() {
+
+    if (this.state !== PatientStates.DEAD) {
+        const healthDecrease = this.healthDecrease * gameStage.timeDif / 1000;
+        this.health -= healthDecrease;
+        this.health = Math.max(0, this.health);
+        if (this.health === 0) {
+            this.die();
+        }
+    }
+}
 
 Patient.prototype.isAddressable = function() {
 
@@ -107,22 +123,38 @@ Patient.prototype.paint = function(ctx) {
     WalkingPerson.prototype.paint.call(this, ctx);
 };
 
-Patient.prototype.paintExecution = function(ctx, frameCount, velocity, frames) {
+Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
-    // determine sequential frame index using game time
-    const highlight = this.isHighlighted;
-    const frameIndex = Math.floor((gameStage.time + this.animationOffset) / ((200 + this.animationOffset % 80)  / velocity)) % frameCount;
-    const angle = 0; // wobble(gameStage.time, 5 + this.animationOffset/5000, this.animationOffset, 8) * 1;
-    ctx.save();
-    if (highlight) {
-        ctx.shadowColor = '#e0b030';
-        ctx.shadowBlur = 1;
-    }
-    for (let i = 0; i < (highlight ? 8 : 1); i++) {
-        drawFrame(ctx, this.image, frames[frameIndex], this.x, this.y, angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
-    }
-    ctx.restore();
+    const frameCount = frameIndexes.length;
 
+    if (this.state !== PatientStates.DEAD) {
+        // determine sequential frame index using game time
+        const highlight = this.isHighlighted;
+        const frameIndex = Math.floor((gameStage.time + this.animationOffset) / ((200 + this.animationOffset % 80)  / velocity)) % frameCount;
+        const angle = 0; // wobble(gameStage.time, 5 + this.animationOffset/5000, this.animationOffset, 8) * 1;
+        ctx.save();
+        if (highlight) {
+            ctx.shadowColor = '#e0b030';
+            ctx.shadowBlur = 1;
+        }
+        for (let i = 0; i < (highlight ? 8 : 1); i++) {
+            drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+        }
+        ctx.restore();
+    } else {
+        const frameIndex = Math.floor((gameStage.time - this.timeOfDeath) / (200  / velocity));
+        const angle = frameIndexes.length === 0 ? 0 : Math.PI / 2 * frameIndex / (frameIndexes.length - 1);
+        drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+    }
+};
+
+Patient.prototype.getCharacterFrames = function(isMoving) {
+
+    if (this.state === PatientStates.DEAD) {
+        return [1, 1, 2, 2, 3, 3, 4, 4, 5, 5];
+    } else {
+        return isMoving ? [0, 1, 2, 3, 2, 1] : [1, 4, 5, 5, 5, 4, 1, 1];
+    }
 };
 
 Patient.prototype.paintAttachedUI = function(ctx) {
@@ -254,4 +286,11 @@ Patient.prototype.walkHome = function() {
   console.log(endPoint);
   this.moveTo(endPoint.x, endPoint.y);
   this.state = PatientStates.WALK_HOME;
+};
+
+Patient.prototype.die = function() {
+    if (this.state !== PatientStates.DEAD) {
+        this.state = PatientStates.DEAD;
+        this.timeOfDeath = gameStage.time;
+    }
 };
