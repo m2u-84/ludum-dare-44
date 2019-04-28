@@ -37,10 +37,13 @@ GameStage.prototype.render = function (ctx, timer) {
         this.gameState.level.beds[i].paint(ctx);
     }
 
+    // Draw people sorted by z-index
     const people = [this.gameState.doctor].concat(this.gameState.patients);
     people.sort((a,b) => a.y - b.y);
     people.forEach(p => p.paint(ctx));
 
+    // Draw health bars, also sorted by z-index
+    people.forEach(p => { if (p instanceof Patient) { p.paintAttachedUI(ctx); } } );
 
 };
 
@@ -62,10 +65,9 @@ GameStage.prototype.spawnPatient = function () {
     const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
     if (spawnPoint !== null) {
 
-        const
-            health = 100,
-            wealth = 100,
-            sickness = this.gameState.sicknesses[0];
+        const health = rndInt(20, 100),
+              wealth = rndInt(15, 100),
+              sickness = this.gameState.sicknesses[0];
         const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);
         if (patient.executeAction("Register")) {
           this.gameState.patients.push(patient);

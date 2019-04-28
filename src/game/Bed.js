@@ -23,3 +23,10 @@ Bed.prototype.occupy = function(patient) {
     }
     this.occupiedBy = patient;
 };
+
+Bed.prototype.releasePatient = function() {
+    if (!this.occupiedBy) {
+        throw new Error("Empty bed can't release patient");
+    }
+    this.occupiedBy = null;
+};

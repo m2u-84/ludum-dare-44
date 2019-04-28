@@ -99,13 +99,12 @@ OrganStage.prototype.render = function(ctx, timer) {
   // MinigameStage handles transitions, background, clipping
   MinigameStage.prototype.render.call(this, ctx, timer);
   // Back of body + inner body
-  const bx = this.w * 0.5, by = this.h * 0.65;
+  const bx = this.w * 0.5, by = Math.round(this.h * 0.65);
   drawImage(ctx, this.bodyBack, bx, by);
   // Organ
   let scaleX = 1;
   if (this.bounces < 2) {
     scaleX = 1 + 0.2 * Math.sin((this.time - this.firstBounceTime) * 0.01);
-    console.log(scaleX);
   }
   if (this.organWellPlaced) drawImage(ctx, this.organ, this.x, this.y, this.angle, scaleX, 1/scaleX);
   // Hand
