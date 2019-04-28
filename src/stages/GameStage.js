@@ -4,6 +4,7 @@ function GameStage() {
     this.lastPatientSpawnTime = 0;
     this.contextStage = null;
     this.floatingTexts = [];
+    this.capslockMessageStart = -1;
 }
 
 inherit(GameStage, Stage);
@@ -82,6 +83,28 @@ GameStage.prototype.render = function (ctx, timer) {
 
     // Screen space UI
     this.gameState.hospital.draw(ctx);
+
+    // Capslock message
+    if (this.capslockMessageStart > 0) {
+      const tdif = this.time - this.capslockMessageStart;
+      let p = 0;
+      if (tdif < 1000) {
+        // Fade in
+        p = tdif / 1000;
+      } else if (tdif < 7000) {
+        p = 1;
+      } else if (tdif < 8000) {
+        p = 1 - (tdif - 7000) / 1000;
+      } else {
+        p = 0;
+        this.capslockMessageStart = -1;
+      }
+      if (p > 0) {
+        ctx.globalAlpha = p;
+        const y = -10 + 18 * Interpolators.cos(p);
+        mainFont.drawText(ctx, "Activated Capslock may interfere with the game!", w / 2, y, "red", 0.5);
+      }
+    }
 };
 
 GameStage.prototype.update = function (timer) {
@@ -153,6 +176,11 @@ GameStage.prototype.getRandomElement = function(list) {
 };
 
 GameStage.prototype.onkey = function (event) {
+    if (event && event.key && event.key.length == 1 && (event.key !== event.key.toLowerCase() || isSpecialCharacter(event.key))
+        && !event.shiftKey && this.capslockMessageStart < 0) {
+        console.log(event);
+      this.capslockMessageStart = this.time;
+    }
     if (event.key === "Escape") {
         // TODO this.transitionIn("pause", 400);
     } else if (event.key === "Enter") {
@@ -163,3 +191,7 @@ GameStage.prototype.onkey = function (event) {
         }
     }
 };
+
+function isSpecialCharacter(char) {
+  return ["!", "*", "§", "$", "%", "&", "@", "(", ")", "?"].indexOf(char) >= 0;
+}
