@@ -137,6 +137,7 @@ Level.prototype.placeBeds = function() {
 
 Level.prototype.findPath = function(x1, y1, x2, y2) {
     const self = this;
+    const directions = [ [-1,0], [1,0], [0,1], [0,-1] ];
     x1 = Math.floor(x1);
     y1 = Math.floor(y1);
     x2 = Math.floor(x2);
@@ -167,10 +168,10 @@ Level.prototype.findPath = function(x1, y1, x2, y2) {
     }
 
     function addNeighbours(x, y) {
-        addNeighbour(x - 1, y, x, y);
-        addNeighbour(x + 1, y, x, y);
-        addNeighbour(x, y - 1, x, y);
-        addNeighbour(x, y + 1, x, y);
+        shuffle(directions)
+        for (var d of directions) {
+            addNeighbour(x + d[0], y + d[1], x, y);
+        }
     }
 
     function addNeighbour(x, y, sx, sy) {
