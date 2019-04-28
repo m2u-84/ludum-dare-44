@@ -55,11 +55,17 @@ FacilityManager.prototype.nextState = function() {
     }
 };
 
-FacilityManager.prototype.paintExecution = function(ctx, frameCount, velocity, frames) {
+FacilityManager.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
     // determine sequential frame index using game time
+    const frameCount = frameIndexes.length;
     const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-    drawFrame(ctx, FacilityManager.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1 / 24, 1 / 24, 0.5, 0.98);
+    drawFrame(ctx, FacilityManager.image, frameIndexes[frameIndex], this.x, this.y, 0, this.directionFactor * 1 / 24, 1 / 24, 0.5, 0.98);
+};
+
+FacilityManager.prototype.getCharacterFrames = function(isMoving) {
+
+    return isMoving ? [0, 1, 2, 3, 2, 1] : [1, 4, 5, 5, 5, 4, 1, 1];
 };
 
 FacilityManager.prototype.walkToStoreRoom = function() {
