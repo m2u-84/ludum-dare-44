@@ -36,6 +36,7 @@ GameStage.prototype.preload = function () {
     Patient.load();
     FacilityManager.load();
     Bed.load();
+    Hospital.load();
     GameStage.load();
 
     this.facitlityManagerDelay = 1000;

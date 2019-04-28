@@ -6,6 +6,11 @@ function Hospital() {
     this.organs = 1;
 }
 
+Hospital.load = function() {
+    Hospital.moneyImage = loader.loadImage("assets/hud_money.png");
+    Hospital.organImage = loader.loadImage("assets/hud_organs.png");
+}
+
 Hospital.prototype.update = function(td, time) {
     if (time < this.lastTime || time > this.lastTime + this.revenueDelay) {
         this.lastTime = time;
@@ -43,7 +48,9 @@ Hospital.prototype.takeOrgan = function() {
 
 Hospital.prototype.draw = function(ctx) {
     // Balance
-    mainFont.drawText(ctx, "$" + Math.floor(this.balance), 3, 3, "money", 0);
+    drawImageToScreen(ctx, Hospital.moneyImage, 3, 3, 0, 1, 1, 0, 0);
+    mainFont.drawText(ctx, "" + Math.floor(this.balance), 55, 9, "money", 1);
     // Organs
-    mainFont.drawText(ctx, "Organs: " + this.organs, 3, 15, "organ", 0);
+    drawImageToScreen(ctx, Hospital.organImage, 3, 22, 0, 1, 1, 0, 0);
+    mainFont.drawText(ctx, "" + this.organs, 40, 27, "organ", 1);
 }
