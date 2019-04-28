@@ -24,8 +24,9 @@ WalkingPerson.prototype.update = function() {
     if (this.waitCheckCondition) {
         if (this.waitCheckCondition()) {
             if (this.waitFinished) {
-                this.waitFinished();
+                const callback = this.waitFinished;
                 this.endWaiting();
+                callback();
             }
         }
     }
