@@ -4,7 +4,7 @@ Story
   [ ] Spielziel: innerhalb Zeit möglichst viel Knete machen, Kickback an Mafia, Hinweis auf unlautere Methoden
   [ ] Warnung vor Polizei
   [ ] Warnung vor Mafia
-[ ] Namen für Spiel brainstormen
+[X] Namen für Spiel brainstormen
 
 Bugs
 [X] Laufgeschwindigkeit framerate-abhängig
@@ -17,21 +17,23 @@ Technik
 [X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
 [ ] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
-[ ] Canvas HighRes rendern
+[nope] Canvas HighRes rendern
 
 Features
 [ ] Startscreen: Logo/Geschlechtsauswahl
 [ ] (Anzeige) Tastenbelegung
 [ ] lahme Patienten: fast toter Patient halb so schnell wie gesunder Patient <-- Björn
 [ ] WASD zusätzlich supporten <-- Björn
-[ ] Shift durch Space erstzen <-- Björn
+[ ] Shift durch Space ersetzen <-- Björn
 [ ] Enter ausbauen, um Minigames zu entfernen <--- Björn
 [ ] Betriebskosten: periodische Abnahme des Kapitals
 [ ] Übungsmodus Mini-Games
 [ ] positives Geld-Geräusch
 [ ] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei <--- Björn
 [ ] Cash-Flow-Feed (in/out)
-[ ] Releasing
+[ ] Releasing / Automatisch heimgehen wenn Health voll
+[ ] Patienten-Timeout nach OPs
+[ ] Patienten zufällig wieder gehen bei zu langer Wartezeit
 [ ] Spieler informieren, wenn alle Betten voll
 [X] Verbrennungsgeräusch
 [X] Ambient-Sounds
@@ -48,15 +50,17 @@ Features
 [X] Sounds für Verbrennen von Leichen
 [X] Hausmeister verbrennt Leichen periodisch
 [ ] Spielende erkennen (Erfolg, Misserfolg)
-[ ] Organ-Inventory
+[ ] End-Screens mit Statistiken
+[X] Organ-Inventory
 [X] Verbessertes Organ-Bounce-Verhalten
 [X] Kontext-Menü für nächsten Patienten
 [X] Kontext-Menü Zoom-In
-[/] Kontext-Menü schön machen
+[X] Kontext-Menü schön machen
 [ ] Pausieren der Musik, wenn Stage in Pause ist
 [ ] Sound-Balancing
-[ ] Balacing Gameplay
+[ ] Balancing Gameplay
 (Optional)
+[ ] PowerUp Vending Machine
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
 [ ] schlecht behandelte Patienten bluten Boden voll und Arzt rutscht aus
 [ ] Turbo-Modus für Doktor (ggfs. mit Verlust von Geld / Injektion von Drogen / Verlust von Leben)

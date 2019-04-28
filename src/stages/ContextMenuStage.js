@@ -78,7 +78,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
     }
     if (price != null) {
       const priceColor = price == 0 ? "gray" : price > 0 ? "green" : "red";
-      const priceString = (price >= 0 ? "+ $ " : "") + price;
+      const priceString = (price >= 0 ? "+ $ " : "- $ ") + Math.abs(price);
       mainFont.drawText(ctx, priceString, 260, y, priceColor, 1);
     }
     ctx.globalAlpha = 1;

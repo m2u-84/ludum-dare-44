@@ -52,5 +52,5 @@ Hospital.prototype.draw = function(ctx) {
     mainFont.drawText(ctx, "" + Math.floor(this.balance), 55, 9, "money", 1);
     // Organs
     drawImageToScreen(ctx, Hospital.organImage, 3, 22, 0, 1, 1, 0, 0);
-    mainFont.drawText(ctx, "" + this.organs, 40, 27, "organ", 1);
+    mainFont.drawText(ctx, "" + this.organs, 55, 27, "organ", 1);
 }
