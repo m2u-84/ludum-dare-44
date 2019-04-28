@@ -237,7 +237,7 @@ Patient.prototype.getActions = function() {
     case PatientStates.WAIT_AT_RECEPTION:
       return ["Accept", "Send away"];
     case PatientStates.STAY_IN_BED:
-      const list = ["Antibiotics", "Give Organ"];
+      const list = ["Antibiotics", "Give Organ", "Release"];
       if (this.diagnosed) {
         list.unshift("Diagnose");
       }
@@ -276,8 +276,7 @@ Patient.prototype.executeAction = function(action) {
           }
           break;
         case "Send away":
-          this.moveTo(0, 15); // TODO use actual exits of level
-          this.state = PatientStates.WALK_HOME;
+          this.walkHome();
           break;
         default:
           throw new Error("Invalid action for waiting patient: " + action);
@@ -292,6 +291,12 @@ Patient.prototype.executeAction = function(action) {
         case "Give Organ":
           gameStage.transitionIn("organ");
           break;
+        case "Release":
+          this.inBed.releasePatient();
+          this.x = this.inBed.positions[0].x + 1;
+          this.inBed = null;
+          this.walkHome();
+          break;
         default:
           throw new Error("Invalid action for patient in bed: " + action);
       }
@@ -300,4 +305,11 @@ Patient.prototype.executeAction = function(action) {
     default:
       throw new Error("Patient doesn't take actions while in state " + this.state);
   }
+};
+
+Patient.prototype.walkHome = function() {
+  const endPoint = getRandomItem(this.gameState.level.spawnPoints);
+  console.log(endPoint);
+  this.moveTo(endPoint.x, endPoint.y);
+  this.state = PatientStates.WALK_HOME;
 };
