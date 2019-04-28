@@ -50,29 +50,42 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   mainFont.drawText(ctx, diagnosis, 80, 34, "orange");
   
   // Preferred option
-  drawOption(72, 1, this.actions[0], "Safe", 50);
+  drawOption(72, 1, this.actions[0], "Safe");
   for (var i = 1; i < this.actions.length; i++) {
     const action = this.actions[i];
     const y = 107 + 18 * i;
-    drawOption(y, i + 1, action, "Safe", 200);
+    drawOption(y, i + 1, action, "Safe");
     ctx.fillStyle = "#00000020";
     ctx.fillRect(20, y + 12, 240, 1);
   }
 
-  function drawOption(y, num, nameOrTreatment, safety, price) {
+  function drawOption(y, num, nameOrTreatment) {
     const name = nameOrTreatment instanceof Treatment ? nameOrTreatment.name : nameOrTreatment;
     mainFont.drawText(ctx, name, 20, y, "blue");
+    // Safety
+    const safety = "Yes";
     mainFont.drawText(ctx, safety, 140, y, "green");
     drawFrame(ctx, self.keyImage, num - 1, 0, y - 4, 0, 1, 1, 0, 0);
-    const priceColor = price == 0 ? "gray" : price > 0 ? "green" : "red";
-    const priceString = (price >= 0 ? "+ $ " : "") + price;
-    mainFont.drawText(ctx, priceString, 260, y, priceColor, 1);
+    // Price
+    let price = null;
+    if (nameOrTreatment instanceof Treatment) {
+      price = self.patient.getTreatmentPrice(nameOrTreatment);
+    }
+    if (price != null) {
+      const priceColor = price == 0 ? "gray" : price > 0 ? "green" : "red";
+      const priceString = (price >= 0 ? "+ $ " : "") + price;
+      mainFont.drawText(ctx, priceString, 260, y, priceColor, 1);
+    }
   }
 };
 
 ContextMenuStage.prototype.onkey = function(event) {
-  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(event.key) >= 0) {
+  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "w", "a", "s", "d"].indexOf(event.key) >= 0) {
     this.close();
+  } else if (event.key == "Escape") {
+    if (this.active) {
+      this.transitionIn("pause", 800);
+    }
   } else {
     const num = event.key - 1;
     if (num >= 0 && num < this.actions.length) {

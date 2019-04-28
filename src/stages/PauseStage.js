@@ -1,6 +1,6 @@
 
 function PauseStage() {
-  Stage.call(this, "pause", 5);
+  Stage.call(this, "pause", 8);
 }
 inherit(PauseStage, Stage);
 
