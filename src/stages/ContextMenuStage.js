@@ -82,6 +82,10 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
 ContextMenuStage.prototype.onkey = function(event) {
   if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(event.key) >= 0) {
     this.close();
+  } else if (event.key == "Escape") {
+    if (this.active) {
+      this.transitionIn("pause", 800);
+    }
   } else {
     const num = event.key - 1;
     if (num >= 0 && num < this.actions.length) {
