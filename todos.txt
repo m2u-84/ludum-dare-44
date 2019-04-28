@@ -40,8 +40,8 @@ Finanz-Controller
   [ ] auch Kassenpatienten müssen Geld einbringen können (muss aber an bestimmten Kriterien hängen, damit sich die tödliche Injektion lohnt)
 
 Patient-Visualisierung
-[ ] Leben
-[ ] Privat/Kasse
+[X] Leben
+[/] Privat/Kasse
 [ ] Schweregrad der Erkrankung
 [ ] Hotkey für Einblenden
 
