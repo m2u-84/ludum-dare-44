@@ -32,19 +32,20 @@ GameStage.prototype.render = function (ctx, timer) {
     ctx.translate(w / 2, h / 2);
     ctx.imageSmoothingEnabled = false;
     // Handle camera placement
-    let camZoom = 1;
-    let camX = this.gameState.doctor.x, camY = this.gameState.doctor.y;
+    let camZoom = 1, camTolerance = 0;
+    let camX = this.gameState.doctor.x, camY = this.gameState.doctor.y - 1;
     if (this.contextStage) {
       const p = this.contextStage.opacity;
-      const targetX = (this.gameState.doctor.x + this.contextStage.patient.x) / 2 + 1.6;
-      const targetY = (this.gameState.doctor.y + this.contextStage.patient.y) / 2 - 0.8;
+      camZoom = 1; // Interpolators.square(p, camZoom, 4);
+      const targetX = (this.gameState.doctor.x + this.contextStage.patient.x) / 2 + 6.4 / camZoom; // 1.6 for camZoom 4
+      const targetY = (this.gameState.doctor.y + this.contextStage.patient.y) / 2; // 0.8 for camZoom 4
       camX = Interpolators.cos(p, camX, targetX);
       camY = Interpolators.cos(p, camY, targetY);
-      camZoom = Interpolators.square(p, camZoom, 4);
+      camTolerance = 20 * p;
     }
     ctx.scale(cellSize * camZoom, cellSize * camZoom);
-    const minCamX = w / 2 / cellSize / camZoom, minCamY = h / 2 / cellSize / camZoom;
-    const maxCamX = (this.mapImage.width - w / 2 / camZoom) / cellSize;
+    const minCamX = w / 2 / cellSize / camZoom - camTolerance, minCamY = h / 2 / cellSize / camZoom;
+    const maxCamX = (this.mapImage.width - w / 2 / camZoom) / cellSize + camTolerance;
     const maxCamY = (this.mapImage.height - h / 2 / camZoom) / cellSize;
     let offx = clamp(-camX, -maxCamX, -minCamX), offy = clamp(-camY, -maxCamY, -minCamY);
     if (camZoom == 1) {
