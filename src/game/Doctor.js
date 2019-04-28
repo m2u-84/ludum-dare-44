@@ -84,6 +84,25 @@ Doctor.prototype.handleKeys = function() {
     }
 };
 
+Doctor.prototype.getClosestIdlePatient = function() {
+
+    let closestPatientIndex = -1;
+    let minDist = Infinity;
+    let patients = this.gameState.patients;
+    for (let patientIndex = 0; patientIndex < patients.length; patientIndex++) {
+        let patient = patients[patientIndex];
+        if (patient.isAddressable()) {
+            let dist = vectorLength(this.x - patient.x, this.y - patient.y);
+            if (dist < minDist) {
+                minDist = dist;
+                closestPatientIndex = patientIndex;
+            }
+        }
+    }
+
+    return {patient: closestPatientIndex > -1 ? patients[closestPatientIndex] : null, distance: minDist}
+};
+
 Doctor.prototype.getClosestBed = function() {
 
     let closestBedIndex = -1;
