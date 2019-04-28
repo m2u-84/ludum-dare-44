@@ -8,7 +8,7 @@ Story
 
 Bugs
 [X] Laufgeschwindigkeit framerate-abhängig
-[ ] verbrannte Leichen aus patients-Liste entfernen
+[X] verbrannte Leichen aus patients-Liste entfernen
 [X] Leiche im Bett für zu null-pointer-exception
 
 Technik
