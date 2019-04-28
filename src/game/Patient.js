@@ -20,6 +20,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.targetBed = null;
     this.state = PatientStates.SPAWNED;
     this.animationOffset = rnd(9999);
+    this.isHighlighted = false;
 
     this.movingVelocity = 4; // animation speed
     this.idleVelocity = 1;
@@ -45,6 +46,7 @@ Patient.load = function() {
 
 Patient.prototype.update = function() {
 
+    this.isHighlighted = this.gameState.closestPatientToDoctor === this;
     this.processPath();
 };
 
@@ -184,7 +186,7 @@ Patient.prototype.paint = function(ctx) {
     const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
 
     // determine sequential frame index using game time
-    const highlight = this.isRich;
+    const highlight = this.isHighlighted;
     const frameIndex = Math.floor((gameStage.time + this.animationOffset) / ((200 + this.animationOffset % 80)  / velocity)) % frameCount;
     const angle = 0; // wobble(gameStage.time, 5 + this.animationOffset/5000, this.animationOffset, 8) * 1;
     ctx.save();

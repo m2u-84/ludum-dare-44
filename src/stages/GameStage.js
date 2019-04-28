@@ -52,6 +52,8 @@ GameStage.prototype.update = function (timer) {
         return;
     }
     this.gameState.doctor.update();
+    this.gameState.closestPatientToDoctor = this.gameState.doctor.getClosestPatient().patient;
+
     this.gameState.patients.forEach(p => p.update());
 
     const currentTime = this.time;
