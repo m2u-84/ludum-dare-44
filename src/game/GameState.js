@@ -11,16 +11,17 @@ function GameState() {
         placeboSurgery: new Treatment('Placebo Surgery', 1000, 20),
         surgery: new Treatment('Proper Surgery', 1000, 500),
         organ: new Treatment('Give Organ', 150, 20),
-        antibiotics: new Treatment('Medication with Antibiotics', 500, 100),
+        antibiotics: new Treatment('Give Antibiotics', 500, 100),
         takeOrgan: new Treatment('Take Organ', 150, 20),
         fixLeg: new Treatment('Fix Fracture', 150, 20)
     };
+    this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     // common sicknesses
     var self = this;
     this.sicknesses = [
         new Sickness(0.0, 'Hypochondria', this.treatments.placeboSurgery),
         new Sickness(0.1, 'Common Cold', this.treatments.drugs),
-        new Sickness(0.2, 'Demonic Posession', this.treatments.takeOrgan),
+        new Sickness(0.2, 'Demonic Possession', this.treatments.takeOrgan),
         new Sickness(0.2, 'Depression', this.treatments.drugs),
         new Sickness(0.2, 'Bone Fracture', this.treatments.fixLeg),
         new Sickness(0.3, 'Influenza', this.treatments.drugs),
