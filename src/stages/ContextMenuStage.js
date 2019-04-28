@@ -37,7 +37,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   ctx.fillStyle = "white";
   for (var i = 0; i < this.actions.length; i++) {
     const action = this.actions[i];
-    mainFont.drawText(ctx, (i + 1) + " " + action, w / 2 + 30, 100 + 15 * i, "black", 0);
+    mainFont.drawText(ctx, (i + 1) + " " + action, x + 30, y + 100 + 15 * i, "black", 0);
   }
 };
 

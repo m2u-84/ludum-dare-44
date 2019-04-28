@@ -296,7 +296,6 @@ Patient.prototype.releaseFromBed = function() {
 
 Patient.prototype.walkHome = function() {
   const endPoint = getRandomItem(this.gameState.level.spawnPoints);
-  console.log(endPoint);
   this.moveTo(endPoint.x, endPoint.y);
   this.state = PatientStates.WALK_HOME;
 };

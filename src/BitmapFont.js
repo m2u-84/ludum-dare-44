@@ -72,7 +72,6 @@ BitmapFont.prototype.drawCharacter = function(ctx, char, x, y, color) {
   color = this.colorMap[color];
   const charIndex = (typeof char == "number") ? char : this.getCharIndex(char);
   const charX = this.charStartPoints[charIndex], charY = color * this.charHeight;
-  // if (Math.random() < 0.01) console.log("Drawing ", char, " to ", x, y, " with color ", color, charX, charY);
   ctx.drawImage(this.canvas, charX, charY, this.charWidths[charIndex], this.charHeight, x, y, this.charWidths[charIndex], this.charHeight);
 };
 
