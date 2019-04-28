@@ -21,7 +21,8 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.state = PatientStates.SPAWNED;
     this.animationOffset = rnd(9999);
     this.isHighlighted = false;
-    this.image = Patient.images[this.isRich ? 3 : rndInt(0, 3)];
+    this.imageIndex = this.isRich ? 3 : rndInt(0, 3);
+    this.image = Patient.images[this.imageIndex];
 }
 inherit(Patient, WalkingPerson);
 
