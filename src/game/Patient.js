@@ -50,6 +50,11 @@ Patient.prototype.update = function() {
     this.processPath();
 };
 
+Patient.prototype.isAddressable = function() {
+
+    return ((this.state === PatientStates.WAIT_AT_RECEPTION) || (this.state === PatientStates.STAY_IN_BED));
+}
+
 Patient.prototype.getFreePoint = function(points) {
 
     for (let i=0; i < points.length; i++) {

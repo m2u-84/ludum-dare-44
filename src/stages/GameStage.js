@@ -52,7 +52,12 @@ GameStage.prototype.update = function (timer) {
         return;
     }
     this.gameState.doctor.update();
-    this.gameState.closestPatientToDoctor = this.gameState.doctor.getClosestPatient().patient;
+    const closestPatientInfo = this.gameState.doctor.getClosestIdlePatient();
+    if (closestPatientInfo.distance < 1) {
+        this.gameState.closestPatientToDoctor = closestPatientInfo.patient;
+    } else {
+        this.gameState.closestPatientToDoctor = null;
+    }
 
     this.gameState.patients.forEach(p => p.update());
 
@@ -91,7 +96,8 @@ GameStage.prototype.onkey = function (event) {
     } else if (event.key === "Enter") {
         this.transitionIn(getRandomItem(["organ", "syringe"]));
     } else if (event.key === "Shift") {
-        // this.contextMenu = new ContextMenu(this.gameState.patients[0]);
-        this.transitionIn("context", 500, { patient: this.gameState.patients[0] });
+        if (this.gameState.closestPatientToDoctor !== null) {
+            this.transitionIn("context", 500, { patient: this.gameState.closestPatientToDoctor });
+        }
     }
 };
