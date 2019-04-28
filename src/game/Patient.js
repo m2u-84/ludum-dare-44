@@ -23,7 +23,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
     this.targetBed = null;
-    this.healthDecrease = 1; // per second TODO: adjust
+    this.healthDecrease = 2; // per second TODO: adjust
     this.deathDuration = 500; // millisecs
     this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
@@ -325,10 +325,6 @@ Patient.prototype.walkHome = function() {
 Patient.prototype.die = function() {
     if (!this.isDead()) {
         this.state = PatientStates.DEAD;
-        if (this.inBed) {
-            this.inBed.releasePatient();
-            this.inBed = null;
-        }
         this.finishPath();
         setTimeout(() => {
             this.gameState.hospital.loseRevenue(250, this.x, this.y);
