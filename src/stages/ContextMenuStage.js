@@ -7,6 +7,7 @@ function ContextMenuStage() {
 inherit(ContextMenuStage, Stage);
 
 ContextMenuStage.prototype.preload = function() {
+  this.background = loader.loadImage("assets/patientsheet.png");
 };
 
 ContextMenuStage.prototype.prestart = function(payload) {
@@ -22,13 +23,17 @@ ContextMenuStage.prototype.update = function(timer) {
 
 ContextMenuStage.prototype.render = function(ctx, timer) {
   const w = ctx.canvas.width, h = ctx.canvas.height;
-  const p = Interpolators.cubic3(this.opacity);
+  const p = Interpolators.cubic(this.opacity);
   // Black background
   ctx.globalAlpha = p * 0.3;
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, w, h);
-  // Draw Actions
+  // Background
   ctx.globalAlpha = 1;
+  const y = (h - this.background.height) / 2;
+  const x = w - this.background.width * p;
+  drawImageToScreen(ctx, this.background, x, y, 0, 1, 1, 0, 0);
+  // Draw Actions
   ctx.fillStyle = "white";
   for (var i = 0; i < this.actions.length; i++) {
     const action = this.actions[i];
