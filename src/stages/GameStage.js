@@ -31,7 +31,7 @@ GameStage.prototype.playMusicTrack = function() {
 };
 
 GameStage.prototype.preload = function () {
-    this.mapImage = loader.loadImage("./assets/map.png");
+    this.mapImage = loader.loadImage("./assets/images/map.png");
     Doctor.load();
     Patient.load();
     FacilityManager.load();

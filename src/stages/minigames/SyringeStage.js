@@ -5,11 +5,11 @@ function SyringeStage() {
 inherit(SyringeStage, MinigameStage);
 
 SyringeStage.prototype.preload = function() {
-  this.syringe = loader.loadImage("assets/syringe.png");
-  this.arrow = loader.loadImage("assets/arrow.png");
-  this.arm = loader.loadImage("assets/arm.png");
-  this.hand = loader.loadImage("assets/darthand_back.png");
-  this.thumb = loader.loadImage("assets/darthand_front.png");
+  this.syringe = loader.loadImage("assets/images/syringe.png");
+  this.arrow = loader.loadImage("assets/images/arrow.png");
+  this.arm = loader.loadImage("assets/images/arm.png");
+  this.hand = loader.loadImage("assets/images/darthand_back.png");
+  this.thumb = loader.loadImage("assets/images/darthand_front.png");
 };
 
 SyringeStage.prototype.prestart = function() {

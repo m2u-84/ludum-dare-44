@@ -6,8 +6,8 @@ function Bed(x, y) {
 }
 
 Bed.load = function() {
-    Bed.image = loader.loadImage("./assets/bed.png", 4, 2);
-    Bed.headImage = loader.loadImage("./assets/bed_patients.png", 4, 2);
+    Bed.image = loader.loadImage("./assets/images/bed.png", 4, 2);
+    Bed.headImage = loader.loadImage("./assets/images/bed_patients.png", 4, 2);
 };
 
 Bed.prototype.paint = function(ctx) {

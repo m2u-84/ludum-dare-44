@@ -44,7 +44,7 @@ Patient.load = function() {
       'patient3', // 2: Sick woman #1
       'patient4', // 3: Rich person
     ];
-    Patient.images = sprites.map(sprite => loader.loadImage("./assets/" + sprite +".png", 4, 3));
+    Patient.images = sprites.map(sprite => loader.loadImage("./assets/images/" + sprite + ".png", 4, 3));
 };
 
 Patient.prototype.update = function() {

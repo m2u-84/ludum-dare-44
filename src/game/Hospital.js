@@ -7,8 +7,8 @@ function Hospital() {
 }
 
 Hospital.load = function() {
-    Hospital.moneyImage = loader.loadImage("assets/hud_money.png");
-    Hospital.organImage = loader.loadImage("assets/hud_organs.png");
+    Hospital.moneyImage = loader.loadImage("assets/images/hud_money.png");
+    Hospital.organImage = loader.loadImage("assets/images/hud_organs.png");
 }
 
 Hospital.prototype.update = function(td, time) {

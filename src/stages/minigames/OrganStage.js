@@ -5,12 +5,12 @@ function OrganStage() {
 inherit(OrganStage, MinigameStage);
 
 OrganStage.prototype.preload = function() {
-  this.organ = loader.loadImage("assets/organ.png");
-  this.hand = loader.loadImage("assets/organ_hand_back.png");
-  this.thumb = loader.loadImage("assets/organ_hand_front.png");
-  this.dropHand = loader.loadImage("assets/organ_hand_back_open.png");
-  this.bodyBack = loader.loadImage("assets/organ_body_back.png");
-  this.bodyFront = loader.loadImage("assets/organ_body_front.png");
+  this.organ = loader.loadImage("assets/images/organ.png");
+  this.hand = loader.loadImage("assets/images/organ_hand_back.png");
+  this.thumb = loader.loadImage("assets/images/organ_hand_front.png");
+  this.dropHand = loader.loadImage("assets/images/organ_hand_back_open.png");
+  this.bodyBack = loader.loadImage("assets/images/organ_body_back.png");
+  this.bodyFront = loader.loadImage("assets/images/organ_body_front.png");
 };
 
 OrganStage.prototype.prestart = function() {

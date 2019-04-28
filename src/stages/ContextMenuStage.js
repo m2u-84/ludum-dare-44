@@ -7,8 +7,8 @@ function ContextMenuStage() {
 inherit(ContextMenuStage, Stage);
 
 ContextMenuStage.prototype.preload = function() {
-  this.background = loader.loadImage("assets/patientsheet.png");
-  this.keyImage = loader.loadImage("assets/keys.png", 9, 1);
+  this.background = loader.loadImage("assets/images/patientsheet.png");
+  this.keyImage = loader.loadImage("assets/images/keys.png", 9, 1);
 };
 
 ContextMenuStage.prototype.prestart = function(payload) {
@@ -48,7 +48,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   mainFont.drawText(ctx, wealth, 0, 34, "green");
   const diagnosis = this.patient.diagnosed ? this.patient.sickness.name : "???";
   mainFont.drawText(ctx, diagnosis, 80, 34, "orange");
-  
+
   // Preferred option
   drawOption(72, 1, this.actions[0], "Safe");
   for (var i = 1; i < this.actions.length; i++) {
