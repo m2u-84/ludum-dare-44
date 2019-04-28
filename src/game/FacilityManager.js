@@ -69,13 +69,15 @@ FacilityManager.prototype.nextState = function() {
 };
 
 FacilityManager.prototype.paint = function(ctx) {
+    WalkingPerson.prototype.paint.call(this, ctx);
+};
 
+FacilityManager.prototype.paintFire = function(ctx) {
     if (this.fireIsBurning) {
         const frame = Math.floor(gameStage.time / 100) % 4;
         const firePoint = this.gameState.level.firePoint;
         drawFrame(ctx, FacilityManager.imageFire, frame, firePoint.x, firePoint.y + 1, 0, 1 / 24, 1 / 24, 0, 1);
     }
-    WalkingPerson.prototype.paint.call(this, ctx);
 };
 
 FacilityManager.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
@@ -138,18 +140,23 @@ FacilityManager.prototype.walkToCorpse = function() {
         let pos = {x: null, y: null};
         if (corpse.inBed) {
             const bed = corpse.inBed;
-            const xl = bed.positions[0].x - 1;
-            const xr = bed.positions[0].x + 1;
-            const y = bed.positions[0].y;
+            const visitorPoints = bed.getVisitorPoints();
 
-            pos.y = y;
-            if (this.isFreeTile(xl, y)) {
-                pos.x = xl;
-            } else if (this.isFreeTile(xr, y)) {
-                pos.x = xr;
+            const distLeft = this.gameState.level.computePathAndLength(this.x, this.y,
+                visitorPoints.left.x, visitorPoints.left.y );
+            const distRight = this.gameState.level.computePathAndLength(this.x, this.y,
+                visitorPoints.right.x, visitorPoints.right.y);
+
+            if (distLeft < distRight) {
+                pos = visitorPoints.left;
+            } else if (distLeft > distRight) {
+                pos = visitorPoints.right;
             } else {
-                this.isFreeTile(xl, y);
-                throw new Error("no non-blocked space around bed");
+                if (Math.random() > 0.5) {
+                    pos = visitorPoints.left;
+                } else {
+                    pos = visitorPoints.right;
+                }
             }
         } else {
             pos.x = corpse.x;
