@@ -7,6 +7,10 @@ inherit(PauseStage, Stage);
 PauseStage.prototype.preload = function() {
 }
 
+PauseStage.prototype.prestart = function() {
+  this.angleOffset = rnd(10);
+}
+
 PauseStage.prototype.render = function(ctx, timer) {
   const w = ctx.canvas.width, h = ctx.canvas.height;
   const p = Interpolators.cubic3(this.opacity);
@@ -18,7 +22,7 @@ PauseStage.prototype.render = function(ctx, timer) {
   // Message
   const textX = w * (0.5 + 0.3 * wobble(this.time, 1, 0, 2)),
     textY = h * (0.4 + 0.25 * wobble(this.time, 1.6, 1, 3) - 0.7 * out),
-    angle = this.opacity * 1.5 * wobble(this.time, 2.5, 0, 1);
+    angle = this.opacity * 1.5 * wobble(this.time, 2.5, this.angleOffset, 1);
   ctx.textAlign = "center";
   ctx.font = "32px Arial";
   ctx.save();
