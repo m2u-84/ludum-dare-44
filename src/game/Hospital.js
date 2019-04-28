@@ -17,14 +17,14 @@ Hospital.prototype.collectRevenue = function() {
     gameStage.gameState.level.beds.forEach(bed => {
         const rev = bed.getRevenue();
         if (rev) {
-            this.giveRevenue(rev, bed.positions[0].x, bed.positions[0].y);
+            this.giveRevenue(rev, bed.occupiedBy.x, bed.occupiedBy.y - 1.0);
         }
     });
 };
 
 Hospital.prototype.giveRevenue = function(rev, x, y) {
     this.balance += rev;
-    // TODO draw floating text
+    gameStage.showFloatingText("+$" + rev, x, y, "#f0c030");
 };
 
 Hospital.prototype.draw = function(ctx) {

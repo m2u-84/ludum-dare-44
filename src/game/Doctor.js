@@ -18,11 +18,15 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
         [1, 4, 5, 5, 5, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1, 1], // idle
         [0, 1, 2, 3, 2, 1] // moving
     ];
+    this.image = Doctor.images[rndInt(0, 2)];
 }
 
 Doctor.load = function() {
-
-    Doctor.image = loader.loadImage("./assets/doctor_w.png", 4, 3);
+    let sprites = [
+        'doctor_m', // 0: Male Doctor
+        'doctor_w', // 1: Female Doctor
+      ]
+    Doctor.images = sprites.map(sprite => loader.loadImage("./assets/" + sprite +".png", 4, 3));
 };
 
 Doctor.prototype.update = function() {
@@ -167,5 +171,5 @@ Doctor.prototype.paint = function(ctx) {
     const frameCount = frames.length;
     const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
     const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-    drawFrame(ctx, Doctor.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+    drawFrame(ctx, this.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
 };
