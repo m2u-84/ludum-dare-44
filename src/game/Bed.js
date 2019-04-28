@@ -57,3 +57,15 @@ Bed.prototype.getRevenue = function() {
     }
     return 0;
 };
+
+Bed.prototype.getVisitorPoints = function() {
+
+    const xl = this.positions[0].x - 1;
+    const xr = this.positions[0].x + 1;
+    const y = this.positions[0].y;
+
+    const left = {x: xl, y: y};
+    const right = {x: xr, y: y};
+
+    return {left: left, right: right};
+};

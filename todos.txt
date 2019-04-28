@@ -10,23 +10,38 @@ Bugs
 [X] Laufgeschwindigkeit framerate-abhängig
 [X] verbrannte Leichen aus patients-Liste entfernen
 [X] Leiche im Bett für zu null-pointer-exception
+[ ] Doctor hinter Feuer <-- Markus
+[ ] $$ vom Patienten bei Tod funktioniert nicht mehr   <--- Björn
 
 Technik
 [X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
+[ ] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
 [ ] Canvas HighRes rendern
 
 Features
+[ ] Startscreen: Logo/Geschlechtsauswahl
+[ ] (Anzeige) Tastenbelegung
+[ ] lahme Patienten: fast toter Patient halb so schnell wie gesunder Patient <-- Björn
+[ ] WASD zusätzlich supporten <-- Björn
+[ ] Shift durch Space erstzen <-- Björn
+[ ] Enter ausbauen, um Minigames zu entfernen <--- Björn
+[ ] Betriebskosten: periodische Abnahme des Kapitals
+[ ] Übungsmodus Mini-Games
+[ ] positives Geld-Geräusch
+[ ] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei <--- Björn
+[ ] Cash-Flow-Feed (in/out)
+[ ] Releasing
 [X] Verbrennungsgeräusch
 [X] Ambient-Sounds
 [X] Randomisierung Rezeption
-[ ] Bett-Weg: kürzester Weg, bei gleicher Länge dann Randomisierung
+[ ] Bett-Weg: kürzester Weg, bei gleicher Länge dann Randomisierung  <-- Björn
 [X] Abstandserkennung nächster Patient
 [X] Tod von Patienten implementieren
 [X] Entlassung des Patienten
-[ ] Trennung Privat-/Kassenpatienten (über Betten)
+[X] Trennung Privat-/Kassenpatienten (nach Budget)
 [X] Entlassung nach Operation nur optional, um Patienten durch mehrere Operationen zu monetarisieren
-[ ] Kontroll-Wagen, der periodisch nach dem Rechten sieht
+[ ] Kontroll-Wagen, der periodisch nach dem Rechten sieht <-- Björn
 [X] Hausmeister-Basis implementieren
 [X] Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
 [X] Sounds für Verbrennen von Leichen
@@ -38,6 +53,8 @@ Features
 [X] Kontext-Menü Zoom-In
 [/] Kontext-Menü schön machen
 [ ] Pausieren der Musik, wenn Stage in Pause ist
+[ ] Sound-Balancing
+[ ] Balacing Gameplay
 (Optional)
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
 [ ] schlecht behandelte Patienten bluten Boden voll und Arzt rutscht aus
