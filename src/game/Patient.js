@@ -33,6 +33,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.imageIndex = this.isRich ? 3 : rndInt(0, 3);
     this.image = Patient.images[this.imageIndex];
     this.diagnosingUntil = 0;
+    this.gender = this.imageIndex === 3 ? 'female' : 'male';
 }
 inherit(Patient, WalkingPerson);
 
