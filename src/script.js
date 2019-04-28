@@ -9,8 +9,8 @@ window.onload = () => {
     "white": "white", "black": "black", "gray": "gray", "darkgray": "#333", "orange": "orange", "green": "green",
     "red": "red", "blue": "#4060ff", "money": "#f0c030"
     },
-    "abcdefghijklmnopqrstuvwxyz0123456789#$()[]+-?!',. ",
-    [5,5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,3,3,2,2,5,5,4,1,1,2,2,5]);
+    "abcdefghijklmnopqrstuvwxyz0123456789#$()[]+-?!',. :",
+    [5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,3,3,2,2,5,5,4,1,1,2,2,4,3]);
   keyHandler = new KeyHandler(canvas, [" ", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]);
   mouseHandler = new MouseHandler(canvas);
   mouse = mouseHandler.mouse;

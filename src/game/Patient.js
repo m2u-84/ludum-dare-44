@@ -9,14 +9,18 @@ const PatientStates = {
   DEAD: 6
 };
 
+Patient.count = 0;
+
 function Patient(x, y, health, wealth, sickness, gameState) {
 
     WalkingPerson.call(this, x, y, gameState);
+    this.id = (++Patient.count);
     this.health = health;
     this.wealth = wealth;
     this.sickness = sickness;
     this.diagnosed = false;
-    this.isRich = (wealth > 80);
+    this.wealthLevel = wealth >= 40 ? 2 : wealth > 80 ? 3 : 1;
+    this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
     this.targetBed = null;
     this.healthDecrease = 20; // per second TODO: adjust
