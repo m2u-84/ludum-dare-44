@@ -23,7 +23,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
     this.targetBed = null;
-    this.healthDecrease = 20; // per second TODO: adjust
+    this.healthDecrease = 1; // per second TODO: adjust
     this.deathDuration = 500; // millisecs
     this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
