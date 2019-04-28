@@ -213,7 +213,7 @@ Patient.prototype.hospitalize = function() {
     const bed = this.gameState.getRandomFreeBed();
     if (bed) {
         this.targetBed = bed;
-        this.moveTo(bed.positions[0].x + 1, bed.positions[0].y);
+        this.moveTo(bed.positions[0].x + 1, bed.positions[0].y + 1);
         this.state = PatientStates.WALK_TO_BED;
     } else {
         // TODO Inform player this does not work
