@@ -10,7 +10,7 @@ function GameState() {
         drugs: new Treatment('Prescribe Drugs', 100, 10),
         placeboSurgery: new Treatment('Placebo Surgery', 1000, 80),
         surgery: new Treatment('Proper Surgery', 1000, 500),
-        organ: new Treatment('Give Organ', 5000, 1000),
+        organ: new Treatment('Give Organ', 5000, 1000, () => this.hospital.organs > 0),
         antibiotics: new Treatment('Give Antibiotics', 200, 40),
         takeOrgan: new Treatment('Take Organ', 2000, 500),
         fixLeg: new Treatment('Fix Fracture', 800, 220)

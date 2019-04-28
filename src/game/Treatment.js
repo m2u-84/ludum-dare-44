@@ -1,11 +1,12 @@
 /**
  * 
  */
-function Treatment(name, costsForPatient, costsForHospital) {
+function Treatment(name, costsForPatient, costsForHospital, enabledCallback = () => true) {
     this.name = name;
     this.costsForPatient = costsForPatient;
     this.costsForHospital = costsForHospital;
     this.effects = {};
+    this.enabledCallback = enabledCallback;
 }
 
 Treatment.prototype.setRelation = function(sickness, effect) {
@@ -21,4 +22,8 @@ Treatment.prototype.getRandomizedEffect = function(sickness) {
     const mid = -0.6*Math.cos(Math.PI * base);
     const effect = mid + rnd(0.4) - rnd(0.4);
     return effect;
+};
+
+Treatment.prototype.isEnabled = function(patient) {
+    return this.enabledCallback(patient) && -patient.getTreatmentPrice(this) <= gameStage.gameState.hospital.balance;
 };

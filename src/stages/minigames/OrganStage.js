@@ -29,6 +29,10 @@ OrganStage.prototype.prestart = function() {
   this.firstBounceTime = 0;
 };
 
+OrganStage.prototype.prestop = function() {
+  gameStage.gameState.hospital.takeOrgan();
+};
+
 OrganStage.prototype.update = function(timer) {
   this.organX = this.w * 0.5;
   if (this.bounceHeight == 0) this.bounceHeight = this.h * 0.7;

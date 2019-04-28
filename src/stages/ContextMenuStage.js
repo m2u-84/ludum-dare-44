@@ -60,6 +60,11 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   }
 
   function drawOption(y, num, nameOrTreatment) {
+    if (nameOrTreatment instanceof Treatment) {
+      if (!nameOrTreatment.isEnabled(self.patient)) {
+        ctx.globalAlpha = 0.2;
+      }
+    }
     const name = nameOrTreatment instanceof Treatment ? nameOrTreatment.name : nameOrTreatment;
     mainFont.drawText(ctx, name, 20, y, "blue");
     // Safety
@@ -76,6 +81,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
       const priceString = (price >= 0 ? "+ $ " : "") + price;
       mainFont.drawText(ctx, priceString, 260, y, priceColor, 1);
     }
+    ctx.globalAlpha = 1;
   }
 };
 
@@ -89,6 +95,9 @@ ContextMenuStage.prototype.onkey = function(event) {
   } else {
     const num = event.key - 1;
     if (num >= 0 && num < this.actions.length) {
+      if (this.actions[num] instanceof Treatment && !this.actions[num].isEnabled(this.patient)) {
+        return;
+      }
       this.close();
       this.patient.executeAction(this.actions[num]);
     }

@@ -3,6 +3,7 @@ function Hospital() {
     this.inventory = [];
     this.lastTime = 0;
     this.revenueDelay = 10000;
+    this.organs = 1;
 }
 
 Hospital.prototype.update = function(td, time) {
@@ -32,7 +33,17 @@ Hospital.prototype.loseRevenue = function(rev, x, y) {
     gameStage.showFloatingText("-$" + rev, x, y, "#f0c030");
 };
 
+Hospital.prototype.takeOrgan = function() {
+    if (this.organs > 0) {
+        this.organs--;
+    } else {
+        throw new Error("Tried to remove an organ from hospital inventory, although there are none");
+    }
+}
+
 Hospital.prototype.draw = function(ctx) {
     // Balance
     mainFont.drawText(ctx, "$" + Math.floor(this.balance), 3, 3, "money", 0);
+    // Organs
+    mainFont.drawText(ctx, "Organs: " + this.organs, 3, 15, "organ", 0);
 }
