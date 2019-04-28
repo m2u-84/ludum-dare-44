@@ -61,14 +61,8 @@ WalkingPerson.prototype.planPath = function(path) {
 
     if (this.path === null) {
         this.path = path;
-        this.pathLength = 0;
-        for (let i=0; i < path.length - 1; i++) {
-            const currentPoint = path[i];
-            const destPoint = path[i+1];
-            const dist = vectorLength(currentPoint[0] - destPoint[0], currentPoint[1] - destPoint[1]);
-            this.pathLength += dist;
-            this.pathStartedTime = gameStage.time;
-        }
+        this.pathLength = this.gameState.level.computeLengthOfPath(path);
+        this.pathStartedTime = gameStage.time;
     }
 };
 

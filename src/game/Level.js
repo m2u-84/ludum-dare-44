@@ -183,5 +183,24 @@ Level.prototype.findPath = function(x1, y1, x2, y2) {
     }
 };
 
+Level.prototype.computeLengthOfPath = function(path) {
 
+    let pathLength = 0;
+    for (let i=0; i < path.length - 1; i++) {
+        const currentPoint = path[i];
+        const destPoint = path[i+1];
+        const dist = vectorLength(currentPoint[0] - destPoint[0], currentPoint[1] - destPoint[1]);
+        pathLength += dist;
+    }
+    return pathLength;
+};
 
+Level.prototype.computePathAndLength = function(x1, y1, x2, y2) {
+
+    const path = this.findPath(x1, y1, x2, y2);
+    if (path) {
+        return this.computeLengthOfPath(path);
+    } else {
+        return Infinity;
+    }
+};

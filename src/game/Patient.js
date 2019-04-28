@@ -341,3 +341,12 @@ Patient.prototype.die = function() {
         this.timeOfDeath = gameStage.time;
     }
 };
+
+Patient.prototype.getTreatmentPrice = function(treatment) {
+  const hospitalCosts = treatment.costsForHospital;
+  const patientBasePrice = treatment.costsForPatient;
+  const multiplier = (this.wealth / 100);
+  const exactPrice = patientBasePrice * multiplier - hospitalCosts;
+  const price = 10 * Math.round(exactPrice / 10);
+  return price;
+};

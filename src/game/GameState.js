@@ -7,13 +7,13 @@ function GameState() {
 
     // possible treatments
     this.treatments = {
-        drugs: new Treatment('Prescribe Drugs', 150, 20),
-        placeboSurgery: new Treatment('Placebo Surgery', 1000, 20),
+        drugs: new Treatment('Prescribe Drugs', 100, 10),
+        placeboSurgery: new Treatment('Placebo Surgery', 1000, 80),
         surgery: new Treatment('Proper Surgery', 1000, 500),
-        organ: new Treatment('Give Organ', 150, 20),
-        antibiotics: new Treatment('Give Antibiotics', 500, 100),
-        takeOrgan: new Treatment('Take Organ', 150, 20),
-        fixLeg: new Treatment('Fix Fracture', 150, 20)
+        organ: new Treatment('Give Organ', 5000, 1000),
+        antibiotics: new Treatment('Give Antibiotics', 200, 40),
+        takeOrgan: new Treatment('Take Organ', 2000, 500),
+        fixLeg: new Treatment('Fix Fracture', 800, 220)
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     // common sicknesses
