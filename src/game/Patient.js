@@ -1,6 +1,6 @@
 
 const PatientStates = {
-  DO_NOTHING: 0,
+  SPAWNED: 0,
   WALK_TO_RECEPTION: 1,
   WAIT_AT_RECEPTION: 2,
   WALK_TO_BED: 3,
@@ -17,7 +17,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.diagnosed = false;
     this.inBed = null;
     this.targetBed = null;
-    this.state = PatientStates.DO_NOTHING;
+    this.state = PatientStates.SPAWNED;
     this.animationOffset = rnd(9999);
 
     this.movingVelocity = 2; // animation speed
@@ -46,17 +46,6 @@ Patient.load = function() {
 Patient.prototype.update = function() {
 
     this.processPath();
-};
-
-Patient.prototype.introduceAtReception = function () {
-
-    const receptionPoint = this.getFreePoint(this.gameState.level.receptionPoints);
-    if (receptionPoint !== null) {
-        this.state = PatientStates.WALK_TO_RECEPTION;
-        this.moveTo(receptionPoint.x, receptionPoint.y);
-        return true;
-    }
-    return false;
 };
 
 Patient.prototype.getFreePoint = function(points) {
@@ -224,7 +213,21 @@ Patient.prototype.getActions = function() {
 
 Patient.prototype.executeAction = function(action) {
   switch (this.state) {
-    case PatientStates.WAIT_AT_RECEPTION: {
+      case PatientStates.SPAWNED: {
+          switch (action) {
+              case "Register":
+                  const receptionPoint = this.getFreePoint(this.gameState.level.receptionPoints);
+                  if (receptionPoint !== null) {
+                      this.state = PatientStates.WALK_TO_RECEPTION;
+                      this.moveTo(receptionPoint.x, receptionPoint.y);
+                      return true;
+                  }
+                  return false;
+              default:
+                  throw new Error("Invalid action for spawned patient: " + action);
+          }
+      }
+      case PatientStates.WAIT_AT_RECEPTION: {
       switch (action) {
         case "Accept":
           const bed = this.gameState.getRandomFreeBed();

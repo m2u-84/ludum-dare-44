@@ -67,7 +67,7 @@ GameStage.prototype.spawnPatient = function () {
             wealth = 100,
             sickness = this.gameState.sicknesses[0];
         const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);
-        if (patient.introduceAtReception()) {
+        if (patient.executeAction("Register")) {
           this.gameState.patients.push(patient);
         } // TODO: possibly try to respawn patient earlier if reception slot is blocked
     }
