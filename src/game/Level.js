@@ -12,7 +12,7 @@ function Level() {
         + '-----wwwwwww--wwwwwww-----\n'
         + '-----w-b-b-w--w-b-b-w-----\n'
         + '-----w-b-b-wwww-b-b-w-----\n'
-        + '-----w--------------w-----\n'
+        + '-----w--------------w--p--\n'
         + '-----wwwwwww--wwwwwww-----\n'
         + '-----w-b-b-w--w-b-b-w-----\n'
         + '-----w-b-b-w--w-b-b-w-----\n'
@@ -38,6 +38,7 @@ function Level() {
     this.spawnPoints = [];
     this.receptionPoints = [];
     this.facilityManagerWaitPoint = null;
+    this.pilePoint = null;
 
     const isTopmostBedTile = function(y) {
         let count = 0,
@@ -73,6 +74,10 @@ function Level() {
 
                 case 'f':
                     this.facilityManagerWaitPoint = {x: x, y: y};
+                    break;
+
+                case 'p':
+                    this.pilePoint = {x: x, y: y};
                     break;
 
                 case 'b':

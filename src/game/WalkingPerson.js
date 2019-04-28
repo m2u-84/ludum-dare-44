@@ -11,6 +11,9 @@ function WalkingPerson(x, y, gameState) {
     this.path = null;
     this.pathLength = 0;
     this.pathStartedTime = 0;
+    this.pathFinishedCallback = null;
+    this.waitCheckCondition = null;
+    this.waitFinished = null;
 
     this.gameState = gameState;
 }
@@ -18,12 +21,39 @@ function WalkingPerson(x, y, gameState) {
 WalkingPerson.prototype.update = function() {
 
     this.processPath();
+    if (this.waitCheckCondition) {
+        if (this.waitCheckCondition()) {
+            if (this.waitFinished) {
+                this.waitFinished();
+                this.endWaiting();
+            }
+        }
+    }
 };
 
-WalkingPerson.prototype.moveTo = function(targetX, targetY) {
+WalkingPerson.prototype.startWaiting = function(onCheckCondition, onFinished) {
+
+    this.waitCheckCondition = onCheckCondition;
+    this.waitFinished = onFinished;
+};
+
+WalkingPerson.prototype.startWaitingTime = function(time, onFinished) {
+
+    const startTime = gameStage.time;
+    this.startWaiting(() => gameStage.time - startTime >= time, onFinished);
+};
+
+WalkingPerson.prototype.endWaiting = function() {
+
+    this.waitCheckCondition = null;
+    this.waitFinished = null;
+};
+
+WalkingPerson.prototype.moveTo = function(targetX, targetY, finishCallback) {
 
     const path = this.gameState.level.findPath(this.x, this.y, targetX, targetY);
     this.planPath(path);
+    this.pathFinishedCallback = finishCallback;
 };
 
 WalkingPerson.prototype.planPath = function(path) {
@@ -75,11 +105,11 @@ WalkingPerson.prototype.processPath = function() {
 WalkingPerson.prototype.finishPath = function() {
 
     this.path = null;
-    this.pathFinished();
-};
-
-WalkingPerson.prototype.pathFinished = function() {
-
+    if (this.pathFinishedCallback) {
+        const callback = this.pathFinishedCallback;
+        this.pathFinishedCallback = null;
+        callback();
+    }
 };
 
 WalkingPerson.prototype.updateCharacterPosition = function(x, y) {

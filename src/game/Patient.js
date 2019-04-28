@@ -117,11 +117,6 @@ Patient.prototype.isInSameTile = function(x1, y1, x2, y2) {
     return (diffX < 0.5) && (diffY < 0.5);
 };
 
-Patient.prototype.pathFinished = function() {
-
-    this.nextState();
-};
-
 Patient.prototype.nextState = function() {
     switch (this.state) {
         case PatientStates.WALK_TO_RECEPTION:
@@ -279,7 +274,7 @@ Patient.prototype.seekHelp = function() {
     const receptionPoint = this.getFreePoint(this.gameState.level.receptionPoints);
     if (receptionPoint !== null) {
         this.state = PatientStates.WALK_TO_RECEPTION;
-        this.moveTo(receptionPoint.x, receptionPoint.y);
+        this.moveTo(receptionPoint.x, receptionPoint.y, () => this.nextState());
         return true;
     }
     return false;
@@ -290,7 +285,7 @@ Patient.prototype.hospitalize = function() {
     const bed = this.gameState.getRandomFreeBed();
     if (bed) {
         this.targetBed = bed;
-        this.moveTo(bed.positions[0].x + 1, bed.positions[0].y + 1);
+        this.moveTo(bed.positions[0].x + 1, bed.positions[0].y + 1, () => this.nextState());
         this.state = PatientStates.WALK_TO_BED;
     } else {
         // TODO Inform player this does not work
@@ -318,7 +313,7 @@ Patient.prototype.releaseFromBed = function() {
 
 Patient.prototype.walkHome = function() {
   const endPoint = getRandomItem(this.gameState.level.spawnPoints);
-  this.moveTo(endPoint.x, endPoint.y);
+  this.moveTo(endPoint.x, endPoint.y, () => this.nextState());
   this.state = PatientStates.WALK_HOME;
 };
 
