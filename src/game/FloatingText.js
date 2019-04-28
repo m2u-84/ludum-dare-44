@@ -27,6 +27,7 @@ FloatingText.prototype.render = function(ctx) {
     alpha = age / this.fadeInDuration;
   }
   ctx.save();
+  ctx.font = "0.4px Arial";
   ctx.globalAlpha = alpha;
   ctx.fillStyle = this.color;
   ctx.textAlign = "center";
