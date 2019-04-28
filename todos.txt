@@ -10,9 +10,9 @@ Bugs
 [X] Laufgeschwindigkeit framerate-abhängig
 
 Technik
-[ ] Canvas HighRes rendern
 [ ] Bitmap Font evaluieren
 [ ] Extraktion Laufcode
+[ ] Canvas HighRes rendern
 
 Features
 [X] Abstandserkennung nächster Patient
@@ -46,6 +46,7 @@ Finanz-Controller
 Patient-Visualisierung
 [X] Leben
 [/] Privat/Kasse
+[ ] Im Bett individuell rendern
 [ ] Schweregrad der Erkrankung
 [ ] Hotkey für Einblenden
 

@@ -7,14 +7,19 @@ function Bed(x, y) {
 
 Bed.load = function() {
     Bed.image = loader.loadImage("./assets/bed.png", 4, 2);
+    Bed.headImage = loader.loadImage("./assets/bed_patients.png", 4, 2);
 };
 
 Bed.prototype.paint = function(ctx) {
-    let frame = 0;
+    let frame = 0, headFrame = -1;
     if (this.occupiedBy) {
         frame = 1 + Math.floor((gameStage.time + this.occupiedBy.animationOffset) / 1600) % 2;
+        headFrame = this.occupiedBy.imageIndex;
     } 
     drawFrame(ctx, Bed.image, frame, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
+    if (headFrame >= 0) {
+        drawFrame(ctx, Bed.headImage, headFrame, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
+    }
 };
 
 Bed.prototype.occupy = function(patient) {
