@@ -54,11 +54,16 @@ FacilityManager.prototype.nextState = function() {
             this.burnPile();
             break;
         case FacilityManagerStates.BURN_PILE:
-            this.state = FacilityManagerStates.WALK_BACK_TO_STOREROOM;
-            this.walkBackToStoreRoom();
+            if (this.checkIfCorpseAvailable()) {
+                this.state = FacilityManagerStates.WALK_TO_CORPSE;
+                this.walkToCorpse();
+            } else {
+                this.state = FacilityManagerStates.WALK_BACK_TO_STOREROOM;
+                this.walkBackToStoreRoom();
+            }
             break;
         case FacilityManagerStates.WALK_BACK_TO_STOREROOM:
-            this.state = FacilityManagerStates.WAIT_IN_STOREROOM;
+            this.state = FacilityManagerStates.WALK_TO_STOREROOM;
             this.nextState();
     }
 };
@@ -84,8 +89,10 @@ FacilityManager.prototype.walkToStoreRoom = function() {
 
 FacilityManager.prototype.waitForCorpse = function() {
 
-    this.startWaiting(this.checkIfCorpseAvailable,
-        () => this.nextState());
+    this.startWaitingTime(3000, () => {
+        this.startWaiting(this.checkIfCorpseAvailable,
+            () => this.nextState());
+    })
 };
 
 FacilityManager.prototype.checkIfCorpseAvailable = function() {
@@ -108,10 +115,12 @@ FacilityManager.prototype.getFirstCorpse = function() {
 FacilityManager.prototype.walkToCorpse = function() {
 
     const corpse = this.getFirstCorpse();
-    this.moveTo(corpse.x, corpse.y, () => {
-        this.removeCorpse(corpse);
-        this.nextState();
-    });
+    if (corpse) {
+        this.moveTo(corpse.x, corpse.y, () => {
+            this.removeCorpse(corpse);
+            this.nextState();
+        });
+    }
 };
 
 FacilityManager.prototype.removeCorpse = function(corpse) {
