@@ -9,7 +9,7 @@ Story
 Bugs
 [X] Laufgeschwindigkeit framerate-abhängig
 [ ] verbrannte Leichen aus patients-Liste entfernen
-[ ] Leiche im Bett für zu null-pointer-exception
+[X] Leiche im Bett für zu null-pointer-exception
 
 Technik
 [X] Bitmap Font evaluieren
