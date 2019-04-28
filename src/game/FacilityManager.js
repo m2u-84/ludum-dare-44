@@ -14,11 +14,13 @@ function FacilityManager(x, y, gameState) {
     WalkingPerson.call(this, x, y, gameState);
     this.state = FacilityManagerStates.SPAWNED;
     this.image = gameState.doctor.isMale ? Doctor.images[1] : Doctor.images[0];
+    this.fireIsBurning = false;
 }
 inherit(FacilityManager, WalkingPerson);
 
 FacilityManager.load = function() {
 
+    FacilityManager.imageFire = loader.loadImage("./assets/dumpsterfire.png", 4, 1);
     FacilityManager.soundContainerDump = loader.loadAudio({src: "./assets/audio/sounds/container-dump/container-dump.mp3"});
     FacilityManager.soundBurn = loader.loadAudio({src: "./assets/audio/sounds/burning/burning.mp3"});
 };
@@ -64,6 +66,16 @@ FacilityManager.prototype.nextState = function() {
             this.state = FacilityManagerStates.WALK_TO_STOREROOM;
             this.nextState();
     }
+};
+
+FacilityManager.prototype.paint = function(ctx) {
+
+    if (this.fireIsBurning) {
+        const frame = Math.floor(gameStage.time / 100) % 4;
+        const firePoint = this.gameState.level.firePoint;
+        drawFrame(ctx, FacilityManager.imageFire, frame, firePoint.x, firePoint.y + 1, 0, 1 / 24, 1 / 24, 0, 1);
+    }
+    WalkingPerson.prototype.paint.call(this, ctx);
 };
 
 FacilityManager.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
@@ -172,8 +184,12 @@ FacilityManager.prototype.burnPile = function() {
     // burn randomly every three times
     if (Math.floor(Math.random() * 3) === 0) {
         this.startWaitingTime(1000, () => {
+            this.fireIsBurning = true;
             FacilityManager.soundBurn.play();
-            this.startWaitingTime(3000, () => this.nextState());
+            this.startWaitingTime(3000, () => {
+                this.fireIsBurning = false;
+                this.nextState();
+            });
         });
     } else {
         this.nextState();
