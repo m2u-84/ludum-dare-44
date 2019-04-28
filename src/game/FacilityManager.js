@@ -20,9 +20,13 @@ inherit(FacilityManager, WalkingPerson);
 
 FacilityManager.load = function() {
 
-    FacilityManager.imageFire = loader.loadImage("./assets/dumpsterfire.png", 4, 1);
-    FacilityManager.soundContainerDump = loader.loadAudio({src: "./assets/audio/sounds/container-dump/container-dump.mp3"});
-    FacilityManager.soundBurn = loader.loadAudio({src: "./assets/audio/sounds/burning/burning.mp3"});
+    const ASSETS_BASE_PATH = './assets/'
+    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/'
+
+    FacilityManager.imageFire = loader.loadImage(ASSETS_BASE_PATH + 'dumpsterfire.png', 4, 1);
+
+    FacilityManager.soundContainerDump = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/container-dump/container-dump.mp3'});
+    FacilityManager.soundBurn = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/burning/burning.mp3'});
 };
 
 FacilityManager.prototype.update = function() {

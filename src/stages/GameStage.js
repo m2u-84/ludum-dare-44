@@ -39,7 +39,7 @@ GameStage.prototype.preload = function () {
     Hospital.load();
     GameStage.load();
 
-    this.facitlityManagerDelay = 1000;
+    this.facilityManagerDelay = 1000;
 };
 
 GameStage.prototype.prestart = function() {
@@ -149,7 +149,7 @@ GameStage.prototype.update = function (timer) {
     }
     this.gameState.hospital.update(this.timeDif, this.time);
 
-    if ((this.gameState.facilityManager === null) && (this.time > this.facitlityManagerDelay)) {
+    if ((this.gameState.facilityManager === null) && (this.time > this.facilityManagerDelay)) {
         this.gameState.facilityManager = this.spawnFacilityManager();
     }
 
