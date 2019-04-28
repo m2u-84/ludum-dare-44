@@ -21,11 +21,11 @@ Stage.prototype.setManager = function(manager) {
 };
 
 Stage.prototype.transitionTo = function(stage, duration, payload) {
-  this.manager.crossfadeToStage(stage, duration, payload);
+  return this.manager.crossfadeToStage(stage, duration, payload);
 };
 
 Stage.prototype.transitionIn = function(stage, duration, payload) {
-  this.manager.fadeInStage(stage, duration, payload);
+  return this.manager.fadeInStage(stage, duration, payload);
 };
 
 Stage.prototype.transitionOut = function(duration) {

@@ -2,7 +2,7 @@ function GameStage() {
     Stage.call(this, "game", 0);
     this.gameState = null;
     this.lastPatientSpawnTime = 0;
-    this.contextMenu = null;
+    this.contextStage = null;
 }
 
 inherit(GameStage, Stage);
@@ -18,7 +18,7 @@ GameStage.prototype.prestart = function() {
   this.gameState = new GameState();
   this.gameState.init();
   this.lastPatientSpawnTime = 0;
-  this.contextMenu = null;
+  this.contextStage = null;
 };
 
 GameStage.prototype.render = function (ctx, timer) {
@@ -26,10 +26,27 @@ GameStage.prototype.render = function (ctx, timer) {
     const w = ctx.canvas.width, h = ctx.canvas.height;
     ctx.save();
     ctx.translate(w / 2, h / 2);
-    ctx.scale(cellSize, cellSize);
-    const offx = clamp(Math.round(-this.gameState.doctor.x * 24) / 24, -(this.mapImage.width - w / 2) / cellSize, -w / 2 / cellSize);
-    const offy = clamp(Math.round(-this.gameState.doctor.y * 24) / 24, -(this.mapImage.height - h / 2) / cellSize, -h / 2 / cellSize);
-    // console.log(offx, offy);
+    ctx.imageSmoothingEnabled = false;
+    // Handle camera placement
+    let camZoom = 1;
+    let camX = this.gameState.doctor.x, camY = this.gameState.doctor.y;
+    if (this.contextStage) {
+      const p = this.contextStage.opacity;
+      const targetX = (this.gameState.doctor.x + this.contextStage.patient.x) / 2 + 1.6;
+      const targetY = (this.gameState.doctor.y + this.contextStage.patient.y) / 2 - 0.8;
+      camX = Interpolators.cos(p, camX, targetX);
+      camY = Interpolators.cos(p, camY, targetY);
+      camZoom = Interpolators.square(p, camZoom, 4);
+    }
+    ctx.scale(cellSize * camZoom, cellSize * camZoom);
+    const minCamX = w / 2 / cellSize / camZoom, minCamY = h / 2 / cellSize / camZoom;
+    const maxCamX = (this.mapImage.width - w / 2 / camZoom) / cellSize;
+    const maxCamY = (this.mapImage.height - h / 2 / camZoom) / cellSize;
+    let offx = clamp(-camX, -maxCamX, -minCamX), offy = clamp(-camY, -maxCamY, -minCamY);
+    if (camZoom == 1) {
+      offx = Math.round(offx * 24) / 24;
+      offy = Math.round(offy * 24) / 24;
+    }
     ctx.translate(offx, offy);
 
     drawImage(ctx, this.mapImage, 0, 0, 0, 1 / cellSize, 1 / cellSize, 0, 0);
@@ -103,7 +120,7 @@ GameStage.prototype.onkey = function (event) {
         this.transitionIn(getRandomItem(["organ", "syringe"]));
     } else if (event.key === "Shift") {
         if (this.gameState.closestPatientToDoctor !== null) {
-            this.transitionIn("context", 500, { patient: this.gameState.closestPatientToDoctor });
+            this.contextStage = this.transitionIn("context", 300, { patient: this.gameState.closestPatientToDoctor });
         }
     }
 };

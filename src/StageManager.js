@@ -112,12 +112,14 @@ StageManager.prototype.fadeInStage = function(stage, fadeDuration = this.default
   // Push to stack
   this.currentStages.push(stage);
   this.activeStage = stage;
+  return stage;
 };
 
 StageManager.prototype.crossfadeToStage = function(stage, fadeDuration = this.defaultDuration, fadeInDuration = fadeDuration, payload) {
   if (this.activeStage)
     this.fadeOutStage(fadeDuration, false);
   this.fadeInStage(stage, fadeInDuration, payload);
+  return stage;
 };
 
 StageManager.prototype.get = function(stage) {
