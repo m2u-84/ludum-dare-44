@@ -15,13 +15,13 @@ window.onload = () => {
               .add(new ContextMenuStage())
               .add(new SyringeStage())
               .add(new OrganStage());
-  
+
   // Load stage content
   stageManager.load();
   canvas.focus();
   loader.loadAll().then(() => stageManager.crossfadeToStage("game", 2500, 0));
   handleFrame();
-}
+};
 
 function handleFrame() {
   timer.update();
