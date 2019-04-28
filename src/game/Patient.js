@@ -33,6 +33,9 @@ Patient.prototype.update = function() {
 
     this.isHighlighted = this.gameState.closestPatientToDoctor === this;
     WalkingPerson.prototype.update.call(this);
+    if (this.inBed) {
+        this.directionFactor = 0;
+    }
 };
 
 Patient.prototype.isAddressable = function() {

@@ -19,7 +19,7 @@ window.onload = () => {
   // Load stage content
   stageManager.load();
   canvas.focus();
-  loader.loadAll().then(() => stageManager.crossfadeToStage("game", 2500, 0));
+  loader.loadAll().then(() => stageManager.crossfadeToStage("game", 800, 0));
   handleFrame();
 };
 
