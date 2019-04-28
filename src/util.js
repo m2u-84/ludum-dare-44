@@ -7,6 +7,10 @@ function clamp(v, vmin = -Infinity, vmax = Infinity) {
   return v < vmin ? vmin : v > vmax ? vmax : v;
 }
 
+function noclamp(v) {
+  return v;
+}
+
 function getRandomItem(array) {
   if (!array || array.length < 1) { return null; }
   var index = Math.floor(Math.random() * array.length);
