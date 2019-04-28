@@ -139,13 +139,13 @@ Patient.prototype.paintAttachedUI = function(ctx) {
   ctx.fillStyle = getHealthColor(this.health / 100);
   ctx.fillRect(x - halfWidth, y, 2 * halfWidth * this.health / 100, height);
   // Wealth
-  ctx.font = "0.4px Arial";
+  /* ctx.font = "0.4px Arial";
   ctx.textAlign = "center";
   ctx.fillStyle = "#f0c040";
   const wealthLevel = this.wealth < 40 ? 1 : this.isRich ? 3 : 2;
   for (var i = 0; i < wealthLevel; i++) {
     ctx.fillText("$", x + (3 * i - 1) * px, y - 2 * px);
-  }
+  } */
 };
 
 Patient.prototype.getActions = function() {
