@@ -105,7 +105,6 @@ OrganStage.prototype.render = function(ctx, timer) {
   let scaleX = 1;
   if (this.bounces < 2) {
     scaleX = 1 + 0.2 * Math.sin((this.time - this.firstBounceTime) * 0.01);
-    console.log(scaleX);
   }
   if (this.organWellPlaced) drawImage(ctx, this.organ, this.x, this.y, this.angle, scaleX, 1/scaleX);
   // Hand

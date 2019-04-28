@@ -15,6 +15,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.wealth = wealth;
     this.sickness = sickness;
     this.diagnosed = false;
+    this.isRich = (wealth > 80);
     this.inBed = null;
     this.targetBed = null;
     this.state = PatientStates.SPAWNED;
@@ -171,7 +172,7 @@ Patient.prototype.paint = function(ctx) {
     const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
 
     // determine sequential frame index using game time
-    const highlight = false;
+    const highlight = this.isRich;
     const frameIndex = Math.floor((gameStage.time + this.animationOffset) / ((200 + this.animationOffset % 80)  / velocity)) % frameCount;
     const angle = 0; // wobble(gameStage.time, 5 + this.animationOffset/5000, this.animationOffset, 8) * 1;
     ctx.save();
@@ -198,6 +199,14 @@ Patient.prototype.paintAttachedUI = function(ctx) {
   ctx.fillRect(x - halfWidth, y, 2 * halfWidth, height);
   ctx.fillStyle = getHealthColor(this.health / 100);
   ctx.fillRect(x - halfWidth, y, 2 * halfWidth * this.health / 100, height);
+  // Wealth
+  ctx.font = "0.4px Arial";
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#f0c040";
+  const wealthLevel = this.wealth < 40 ? 1 : this.isRich ? 3 : 2;
+  for (var i = 0; i < wealthLevel; i++) {
+    ctx.fillText("$", x + (3 * i - 1) * px, y - 2 * px);
+  }
 };
 
 Patient.prototype.enterBed = function(bed) {

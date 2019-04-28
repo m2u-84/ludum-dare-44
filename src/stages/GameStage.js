@@ -66,7 +66,7 @@ GameStage.prototype.spawnPatient = function () {
     if (spawnPoint !== null) {
 
         const health = rndInt(20, 100),
-              wealth = rndInt(10, 100),
+              wealth = rndInt(15, 100),
               sickness = this.gameState.sicknesses[0];
         const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);
         if (patient.executeAction("Register")) {
