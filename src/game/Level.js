@@ -6,7 +6,9 @@ function Level() {
     // use w for wall, b for bed, r for receptionPoint, s for spawnPoint
     // cf. map_raster.png
     let rawMap =
-          '--------------------------\n'
+          '-----w--------------w-----\n'
+        + '-----w--------------w-----\n'
+        + '-----w--------------w-----\n'
         + '-----wwwwwww--wwwwwww-----\n'
         + '-----w-b-b-w--w-b-b-w-----\n'
         + '-----w-b-b-wwww-b-b-w-----\n'
