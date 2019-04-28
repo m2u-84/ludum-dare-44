@@ -38,7 +38,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   drawImageToScreen(ctx, this.background, 0, 0, 0, 1, 1, 0, 0);
   // Draw Patient Overview
   ctx.translate(14, 14);
-  // mainFont.drawText(ctx, "" + this.patient.id, 0, 0, "darkgray");
+  bigFont.drawText(ctx, "" + this.patient.id, 118, 0, "dark");
   // mainFont.drawText(ctx, "BUDGET:", 0, 20, "darkgray");
   // mainFont.drawText(ctx, "DIAGNOSIS:", 100, 20, "darkgray");
   ctx.globalAlpha = 0.2;

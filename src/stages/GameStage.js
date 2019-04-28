@@ -90,7 +90,7 @@ GameStage.prototype.update = function (timer) {
     }
     this.gameState.doctor.update();
     const closestPatientInfo = this.gameState.doctor.getClosestIdlePatient();
-    if (closestPatientInfo.distance < 1) {
+    if (closestPatientInfo.distance < 1.2) {
         this.gameState.closestPatientToDoctor = closestPatientInfo.patient;
     } else {
         this.gameState.closestPatientToDoctor = null;

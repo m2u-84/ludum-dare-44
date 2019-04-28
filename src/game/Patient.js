@@ -67,9 +67,17 @@ function updateHealth() {
 }
 
 Patient.prototype.isAddressable = function() {
-
     return ((this.state === PatientStates.WAIT_AT_RECEPTION) || (this.state === PatientStates.STAY_IN_BED));
 };
+
+Patient.prototype.getAddressablePosition = function() {
+  const result = {x: this.x, y: this.y};
+  // Modify position when waiting at counter
+  if (this.state == PatientStates.WAIT_AT_RECEPTION) {
+    result.y -= 0.8;
+  }
+  return result;
+}
 
 Patient.prototype.isDead = function() {
 
@@ -150,7 +158,7 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
         const angle = 0; // wobble(gameStage.time, 5 + this.animationOffset/5000, this.animationOffset, 8) * 1;
         ctx.save();
         if (highlight) {
-            ctx.shadowColor = '#e0b030';
+            ctx.shadowColor = '#009cff';
             ctx.shadowBlur = 1;
         }
         for (let i = 0; i < (highlight ? 8 : 1); i++) {
