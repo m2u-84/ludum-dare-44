@@ -1,7 +1,7 @@
 function GameState() {
     this.level = new Level();
     this.hospital = new Hospital();
-    this.doctor = new Doctor(13, 13, 0.5, 0.1, this);
+    this.doctor = new Doctor(13, 12.8, 0.5, 0.1, this);
     this.facilityManager = null;
     this.closestPatientToDoctor = null;
 
