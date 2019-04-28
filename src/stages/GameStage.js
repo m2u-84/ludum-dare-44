@@ -24,6 +24,7 @@ GameStage.prototype.prestart = function() {
 GameStage.prototype.render = function (ctx, timer) {
     var cellSize = 24;
     const w = ctx.canvas.width, h = ctx.canvas.height;
+    ctx.save();
     ctx.translate(w / 2, h / 2);
     ctx.scale(cellSize, cellSize);
     const offx = clamp(Math.round(-this.gameState.doctor.x * 24) / 24, -(this.mapImage.width - w / 2) / cellSize, -w / 2 / cellSize);
@@ -45,6 +46,10 @@ GameStage.prototype.render = function (ctx, timer) {
     // Draw health bars, also sorted by z-index
     people.forEach(p => { if (p instanceof Patient) { p.paintAttachedUI(ctx); } } );
 
+    ctx.restore();
+
+    // Screen space UI
+    this.gameState.hospital.draw(ctx);
 };
 
 GameStage.prototype.update = function (timer) {
@@ -60,6 +65,7 @@ GameStage.prototype.update = function (timer) {
     }
 
     this.gameState.patients.forEach(p => p.update());
+    this.gameState.hospital.update(this.timeDif, this.time);
 
     const currentTime = this.time;
     if (currentTime - this.lastPatientSpawnTime > 3000) {

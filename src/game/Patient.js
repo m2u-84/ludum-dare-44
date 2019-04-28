@@ -48,6 +48,9 @@ Patient.prototype.update = function() {
 
     this.isHighlighted = this.gameState.closestPatientToDoctor === this;
     this.processPath();
+    if (this.inBed) {
+      this.directionFactor = 0;
+    }
 };
 
 Patient.prototype.isAddressable = function() {
@@ -234,8 +237,8 @@ Patient.prototype.enterBed = function(bed) {
     }
     bed.occupy(this);
     this.inBed = bed;
-    this.x = bed.positions[0].x;
-    this.y = bed.positions[0].y;
+    this.x = bed.positions[0].x + 0.5;
+    this.y = bed.positions[0].y + 1.5;
     this.state = PatientStates.STAY_IN_BED;
 };
 
