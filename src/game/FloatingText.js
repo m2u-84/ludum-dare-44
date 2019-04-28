@@ -26,11 +26,7 @@ FloatingText.prototype.render = function(ctx) {
   } else if (age < this.fadeInDuration) {
     alpha = age / this.fadeInDuration;
   }
-  ctx.save();
-  ctx.font = "0.4px Arial";
   ctx.globalAlpha = alpha;
-  ctx.fillStyle = this.color;
-  ctx.textAlign = "center";
-  ctx.fillText(this.text, this.x, this.y - age / 2500 - 1.5);
-  ctx.restore();
+  mainFont.drawText(ctx, this.text, this.text, this.y - age / 2500 - 1.5, "money", 0.5);
+  ctx.globalAlpha = 1;
 }

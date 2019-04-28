@@ -34,6 +34,5 @@ Hospital.prototype.loseRevenue = function(rev, x, y) {
 
 Hospital.prototype.draw = function(ctx) {
     // Balance
-    ctx.fillStyle = "#f0c030";
-    ctx.fillText("$" + Math.floor(this.balance), 3, 11);
-};
+    mainFont.drawText(ctx, "$" + Math.floor(this.balance), 3, 3, "money", 0);
+}

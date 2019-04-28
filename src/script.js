@@ -5,6 +5,12 @@ window.onload = () => {
   const canvas = document.getElementById("gameCanvas");
   timer = new Timer();
   loader = new Loader();
+  mainFont = new BitmapFont("assets/fontsheet.png", {
+    "white": "white", "black": "black", "gray": "gray", "darkgray": "#333", "orange": "orange", "green": "green",
+    "red": "red", "blue": "#4060ff", "money": "#f0c030"
+    },
+    "abcdefghijklmnopqrstuvwxyz0123456789#$()[]+-?!',. ",
+    [5,5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,3,3,2,2,5,5,4,1,1,2,2,5]);
   keyHandler = new KeyHandler(canvas, [" ", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]);
   mouseHandler = new MouseHandler(canvas);
   mouse = mouseHandler.mouse;
