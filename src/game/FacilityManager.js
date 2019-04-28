@@ -69,13 +69,15 @@ FacilityManager.prototype.nextState = function() {
 };
 
 FacilityManager.prototype.paint = function(ctx) {
+    WalkingPerson.prototype.paint.call(this, ctx);
+};
 
+FacilityManager.prototype.paintFire = function(ctx) {
     if (this.fireIsBurning) {
         const frame = Math.floor(gameStage.time / 100) % 4;
         const firePoint = this.gameState.level.firePoint;
         drawFrame(ctx, FacilityManager.imageFire, frame, firePoint.x, firePoint.y + 1, 0, 1 / 24, 1 / 24, 0, 1);
     }
-    WalkingPerson.prototype.paint.call(this, ctx);
 };
 
 FacilityManager.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
