@@ -86,9 +86,11 @@ Patient.prototype.isDead = function() {
 
 Patient.prototype.getFreePoint = function(points) {
 
-    for (let i=0; i < points.length; i++) {
-        if (!this.isOccupiedByPatient(points[i].x, points[i].y)) {
-            return points[i];
+    let shuffled = points.slice();
+    shuffle(shuffled);
+    for (let i=0; i < shuffled.length; i++) {
+        if (!this.isOccupiedByPatient(shuffled[i].x, shuffled[i].y)) {
+            return shuffled[i];
         }
     }
     return null;
