@@ -29,6 +29,7 @@ Features
 [ ] Turbo-Modus für Doktor (ggfs. mit Verlust von Geld / Injektion von Drogen / Verlust von Leben)
 [ ] Organinventory
 [X] Verbessertes Organ-Bounce-Verhalten
+[X] Kontext-Menü für nächsten Patienten
 
 Strategie-Modul
 [ ] Schwierigkeitsgrad mit der Zeit steigern
