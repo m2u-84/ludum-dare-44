@@ -80,6 +80,10 @@ function wobble(t, speedFactor = 1, offset = 0, power = 1) {
   return v;
 }
 
+function sgn(value) {
+  return value > 0 ? 1 : value < 0 ? -1 : 0;
+}
+
 function sgnPow(value, exponent) {
   if (value < 0) {
     return -Math.pow(-value, exponent);
@@ -99,4 +103,11 @@ function vectorLength(x, y) {
 
 function interpolate(a, b, t) {
     return a + t * (b - a);
+}
+
+function getHealthColor(p) {
+  p = clamp(p, 0, 1);
+  const r = 255 * clamp(2 - 2 * p, 0, 1);
+  const g = 180 * clamp(2 * p, 0, 1);
+  return `rgb(${r},${g},0)`;
 }

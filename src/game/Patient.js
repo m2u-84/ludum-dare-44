@@ -185,6 +185,21 @@ Patient.prototype.paint = function(ctx) {
     ctx.restore();
 };
 
+Patient.prototype.paintAttachedUI = function(ctx) {
+  // Health bar
+  const directionFactor = sgn(this.directionFactor);
+  const px = 2 / 24;
+  const x = Math.round(this.x * 24 + 4 * directionFactor) / 24, y = Math.round((this.y - 2 - px) * 24) / 24;
+  const halfWidth = 6 / 24;
+  const height = 2 / 24;
+  ctx.fillStyle = "#00000000";
+  ctx.fillRect(x - halfWidth - px, y - px, 2 * halfWidth + 2 * px, height);
+  ctx.fillStyle = "white";
+  ctx.fillRect(x - halfWidth, y, 2 * halfWidth, height);
+  ctx.fillStyle = getHealthColor(this.health / 100);
+  ctx.fillRect(x - halfWidth, y, 2 * halfWidth * this.health / 100, height);
+};
+
 Patient.prototype.enterBed = function(bed) {
     if (this.inBed) {
       throw new Error("Can't enter bed while already in bed. Noob.");
