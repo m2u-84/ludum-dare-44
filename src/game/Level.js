@@ -26,7 +26,7 @@ function Level() {
         + '-------www--www---------\n'
         + '-----------------------s\n'
         + '------------------------\n'
-        + 'C-----------------Q-P---',
+        + 'C-------N-M-------Q-P---',
         x, y, collide;
 
     rawMap = rawMap.split('\n');
@@ -38,8 +38,10 @@ function Level() {
     this.spawnPoints = [];
     this.spawnPointCar = null;
     this.vanishingPointCar = null;
-    this.parkingPointCar = null;
-    this.breakingPointCar = null;
+    this.parkingPointPoliceCar = null;
+    this.breakingPointPoliceCar = null;
+    this.parkingPointMafiaCar = null;
+    this.breakingPointMafiaCar = null;
     this.receptionPoints = [];
     this.facilityManagerWaitPoint = null;
     this.pilePoint = null;
@@ -82,10 +84,19 @@ function Level() {
                     break;
 
                 case 'Q':
-                    this.breakingPointCar = {x: x, y: y};
+                    this.breakingPointPoliceCar = {x: x, y: y};
                     break;
+
                 case 'P':
-                    this.parkingPointCar = {x: x, y: y};
+                    this.parkingPointPoliceCar = {x: x, y: y};
+                    break;
+
+                case 'N':
+                    this.breakingPointMafiaCar = {x: x, y: y};
+                    break;
+
+                case 'M':
+                    this.parkingPointMafiaCar = {x: x, y: y};
                     break;
 
                 case 'r':

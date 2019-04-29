@@ -3,7 +3,7 @@ const CarStates = {
   SPAWNED: 0,
   DRIVE_TO_BREAKING_POINT: 1,
   BRAKE: 2,
-  DRIVE_TO_HOSPITAL: 3, // RENAME: DRIVE_TO_SPOT
+  DRIVE_TO_SPOT: 3, // RENAME: DRIVE_TO_SPOT
   WAIT_BEFORE_HOSPITAL: 4,
   DRIVE_TO_VANISHINGPOINT: 5
 };
@@ -53,12 +53,12 @@ Car.prototype.nextState = function() {
             this.brake(this.stopAtWayToPile);
             break;
         case CarStates.BRAKE:
-            this.setState(CarStates.DRIVE_TO_HOSPITAL);
-            this.driveToHospital();
+            this.setState(CarStates.DRIVE_TO_SPOT);
+            this.driveToSpot();
             break;
-        case CarStates.DRIVE_TO_HOSPITAL:
+        case CarStates.DRIVE_TO_SPOT:
             this.setState(CarStates.WAIT_BEFORE_HOSPITAL);
-            this.waitBeforeHospital(this.stopAtWayToPile);
+            this.waitAtSpot(this.stopAtWayToPile);
             break;
         case CarStates.WAIT_BEFORE_HOSPITAL:
             this.setState(CarStates.DRIVE_TO_VANISHINGPOINT);
@@ -82,9 +82,13 @@ Car.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
     const frameIndex = Math.floor(gameStage.time / 100) % frameIndexes.length;
     const yCorrection = this.directionFactor.y < 0 ? -1 : 0;
-    const angle = this.state === CarStates.DRIVE_TO_HOSPITAL ? Math.PI/20 : 0; // driving to hospital while breaking
-    drawFrame(ctx, PoliceCar.image, frameIndexes[frameIndex], this.x, this.y, angle,
+    const angle = this.state === CarStates.DRIVE_TO_SPOT ? Math.PI/20 : 0; // driving to hospital while breaking
+    drawFrame(ctx, this.getCarImage(), frameIndexes[frameIndex], this.x, this.y, angle,
         this.directionFactor.x * 1 / 24, this.directionFactor.y * 1 / 24, 0.5,  0.6 + yCorrection);
+};
+
+Car.prototype.getCarImage = function() {
+
 };
 
 Car.prototype.getCharacterFrames = function(isMoving) {
@@ -101,8 +105,12 @@ Car.prototype.getCharacterFrames = function(isMoving) {
 Car.prototype.driveToBreakingPoint = function() {
 
     Car.soundDriving.play();
-    const moveTarget = this.gameState.level.breakingPointCar;
+    const moveTarget = this.getBreakingPoint();
     this.moveTo(moveTarget.x, moveTarget.y, () => this.nextState(), false);
+};
+
+Car.prototype.getBreakingPoint = function() {
+
 };
 
 Car.prototype.brake = function(playSound) {
@@ -114,7 +122,7 @@ Car.prototype.brake = function(playSound) {
     this.nextState();
 };
 
-Car.prototype.driveToHospital = function() {
+Car.prototype.driveToSpot = function() {
 
     const moveTarget = this.getParkingPoint();
     this.moveTo(moveTarget.x, moveTarget.y, () => this.nextState(), false);
@@ -124,7 +132,7 @@ Car.prototype.getParkingPoint = function() {
 
 };
 
-Car.prototype.waitBeforeHospital = function(playSound) {
+Car.prototype.waitAtSpot = function(playSound) {
 
     if (playSound) {
         this.playWaitingSound();
@@ -165,4 +173,3 @@ Car.prototype.jumpToSpawnPoint = function() {
     const moveTarget = this.gameState.level.spawnPointCar;
     this.updateCharacterPosition(moveTarget.x, moveTarget.y);
 };
-

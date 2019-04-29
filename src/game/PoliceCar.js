@@ -28,9 +28,19 @@ PoliceCar.prototype.update = function() {
     }
 };
 
+PoliceCar.prototype.getCarImage = function() {
+
+    return PoliceCar.image;
+};
+
+PoliceCar.prototype.getBreakingPoint = function() {
+
+    return this.gameState.level.breakingPointPoliceCar;
+};
+
 PoliceCar.prototype.getParkingPoint = function() {
 
-    return this.gameState.level.parkingPointCar;
+    return this.gameState.level.parkingPointPoliceCar;
 };
 
 PoliceCar.prototype.playWaitingSound = function() {

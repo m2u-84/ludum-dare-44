@@ -39,6 +39,7 @@ GameStage.prototype.preload = function () {
     Hospital.load();
     Car.load();
     PoliceCar.load();
+    MafiaCar.load();
     GameStage.load();
 
     this.facilityManagerDelay = 1000;
@@ -51,7 +52,8 @@ GameStage.prototype.prestart = function(payload) {
   // Assign Doctor gender when coming from main menu
   if (payload) this.gameState.doctor.assignGender(payload.isMale);
   this.nextPatientSpawnTime = gameStage.time + 3000;
-  this.nextPoliceCarSpawnTime = gameStage.time + 20000;
+  this.nextPoliceCarSpawnTime = gameStage.time + 30000;
+  this.nextMafiaCarSpawnTime = gameStage.time + 20000;
 };
 
 GameStage.prototype.start = function() {
@@ -154,8 +156,11 @@ GameStage.prototype.spawnEntities = function() {
         this.spawnPatient();
     }
 
-    if (this.time > this.nextPoliceCarSpawnTime) {
+    if ((this.gameState.cars.length === 0) && (this.time > this.nextPoliceCarSpawnTime)) {
         this.spawnPoliceCar();
+    }
+    if ((this.gameState.cars.length === 0) && (this.time > this.nextMafiaCarSpawnTime)) {
+        this.spawnMafiaCar();
     }
 };
 
@@ -198,6 +203,21 @@ GameStage.prototype.spawnPoliceCar = function() {
     const car = new PoliceCar(spawnPoint.x, spawnPoint.y, this.gameState, () => {
         // spawn a new policy car between 60s and 90s
         this.nextPoliceCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
+        this.nextMafiaCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
+    });
+    this.gameState.cars.push(car);
+    car.nextState();
+
+};
+
+GameStage.prototype.spawnMafiaCar = function() {
+
+    this.nextMafiaCarSpawnTime = Infinity; // never spawn a new car until this car finishes
+    const spawnPoint = this.gameState.level.spawnPointCar;
+    const car = new MafiaCar(spawnPoint.x, spawnPoint.y, this.gameState, () => {
+        // spawn a new policy car between 60s and 90s
+        this.nextMafiaCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
+        this.nextPoliceCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
     });
     this.gameState.cars.push(car);
     car.nextState();
