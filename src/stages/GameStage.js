@@ -1,10 +1,10 @@
 function GameStage() {
     Stage.call(this, "game", 0);
     this.gameState = null;
-    this.lastPatientSpawnTime = 0;
     this.contextStage = null;
     this.floatingTexts = [];
     this.capslockMessageStart = -1;
+    this.cashflowFeed = new CashflowFeed();
 }
 
 inherit(GameStage, Stage);
@@ -46,8 +46,8 @@ GameStage.prototype.preload = function () {
 GameStage.prototype.prestart = function() {
   this.gameState = new GameState();
   this.gameState.init();
-  this.lastPatientSpawnTime = 0;
   this.contextStage = null;
+  this.nextPatientSpawnTime = gameStage.time + 3000;
 };
 
 GameStage.prototype.render = function (ctx, timer) {
@@ -109,6 +109,9 @@ GameStage.prototype.render = function (ctx, timer) {
     // Screen space UI
     this.gameState.hospital.draw(ctx);
 
+    // Cashflow Feed
+    this.cashflowFeed.draw(ctx);
+
     // Capslock message
     if (this.capslockMessageStart > 0) {
       const tdif = this.time - this.capslockMessageStart;
@@ -154,9 +157,7 @@ GameStage.prototype.update = function (timer) {
         this.gameState.facilityManager = this.spawnFacilityManager();
     }
 
-    const currentTime = this.time;
-    if (currentTime - this.lastPatientSpawnTime > 3000) {
-        this.lastPatientSpawnTime = currentTime;
+    if (this.time > this.nextPatientSpawnTime) {
         this.spawnPatient();
     }
 };
@@ -171,8 +172,10 @@ GameStage.prototype.spawnPatient = function () {
         const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);
         if (patient.executeAction("Register")) {
           this.gameState.patients.push(patient);
-        } // TODO: possibly try to respawn patient earlier if reception slot is blocked
+        }
     }
+    // spawn a new patient between 2s and 6s
+    this.nextPatientSpawnTime = gameStage.time + interpolate(2000, 6000, Math.random());
 };
 
 GameStage.prototype.spawnFacilityManager = function () {
@@ -215,6 +218,13 @@ GameStage.prototype.onkey = function (event) {
         if (this.gameState.closestPatientToDoctor !== null) {
             this.contextStage = this.transitionIn("context", 300, { patient: this.gameState.closestPatientToDoctor });
         }
+    }
+    // Cheats
+    if (event.ctrlKey) {
+      if (event.key == "k") {
+        // Kill all patients
+        this.gameState.patients.forEach( p => p.die() );
+      }
     }
 };
 

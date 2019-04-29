@@ -72,12 +72,11 @@ Patient.prototype.recomputeVelocity = function() {
 };
 
 function updateHealth() {
-
     if (!this.isDead()) {
         const healthDecrease = this.healthDecrease * gameStage.timeDif / 1000;
         this.health -= healthDecrease;
-        this.health = Math.max(0, this.health);
-        if (this.health === 0) {
+        this.health = clamp(this.health, 0, 100);
+        if (this.health <= 0) {
             this.die();
         }
     }
@@ -107,9 +106,7 @@ Patient.prototype.isDead = function() {
 };
 
 Patient.prototype.isCured = function() {
-    console.log("health", this.health);
-    return this.health === 100;
-
+    return this.health >= 100;
 }
 
 Patient.prototype.getFreePoint = function(points) {
@@ -365,6 +362,7 @@ Patient.prototype.die = function() {
         this.state = PatientStates.DEAD;
         this.finishPath();
         setTimeout(() => {
+            gameStage.cashflowFeed.addText("Lost $250 due to deceased patient");
             this.gameState.hospital.loseRevenue(250, this.x, this.y);
         }, this.deathDuration);
         this.timeOfDeath = gameStage.time;

@@ -10,19 +10,19 @@ Bugs
 [X] Laufgeschwindigkeit framerate-abhängig
 [X] verbrannte Leichen aus patients-Liste entfernen
 [X] Leiche im Bett für zu null-pointer-exception
-[ ] Doctor hinter Feuer
+[X] Doctor hinter Feuer
 [X] $$ vom Patienten bei Tod funktioniert nicht mehr
 
 Technik
 [X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
-[ ] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
+[X] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
 [ ] Hintergrund-Musik spielt nicht immer (preload-event)
 [nope] Canvas HighRes rendern
 
 Features
 [ ] Title Anzeige Tastenbelegung
-[ ] Intervalle des Patientspawns randomisieren
+[X] Intervalle des Patientspawns randomisieren
 [ ] Startscreen: Logo/Geschlechtsauswahl
 [X] lahme Patienten: fast toter Patient halb so schnell wie gesunder Patient
 [X] WASD zusätzlich supporten
@@ -35,7 +35,7 @@ Features
 [ ] Cash-Flow-Feed (in/out) <-- Markus
 [ ] Releasing / Automatisch heimgehen wenn Health voll
 [ ] Patienten-Timeout nach OPs
-[ ] Patienten zufällig wieder gehen bei zu langer Wartezeit
+[ ] Patienten zufällig wieder gehen bei zu langer Wartezeit <-- Björn
 [ ] Spieler informieren, wenn alle Betten voll / keine neuen Patienten annehmen können
 [X] Verbrennungsgeräusch
 [X] Ambient-Sounds
