@@ -9,6 +9,10 @@ CashflowFeed.prototype.addText = function(text, color) {
   this.texts.push(item);
 };
 
+CashflowFeed.prototype.clear = function() {
+  this.texts = [];
+};
+
 CashflowFeed.prototype.draw = function(ctx) {
   ctx.save();
   ctx.translate(Math.floor(ctx.canvas.width / 2), 8);

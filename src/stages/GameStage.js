@@ -54,6 +54,7 @@ GameStage.prototype.prestart = function(payload) {
   this.nextPatientSpawnTime = gameStage.time + 3000;
   this.nextPoliceCarSpawnTime = gameStage.time + 75000;
   this.nextMafiaCarSpawnTime = Infinity;
+  this.cashflowFeed.clear();
 };
 
 GameStage.prototype.start = function() {
