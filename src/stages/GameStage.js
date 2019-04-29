@@ -186,7 +186,7 @@ GameStage.prototype.spawnPatient = function() {
     }
     // spawn a new patient between 2s and 6s
 
-    this.nextPatientSpawnTimeFactor /= 1.03;
+    this.nextPatientSpawnTimeFactor /= 1.04;
     this.nextPatientSpawnTime = gameStage.time + interpolate(this.nextPatientSpawnTimeFactor * 13000,
         this.nextPatientSpawnTimeFactor * 23000, Math.random());
 };
