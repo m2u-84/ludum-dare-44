@@ -51,6 +51,10 @@ GameStage.prototype.prestart = function(payload) {
   this.nextPatientSpawnTime = gameStage.time + 3000;
 };
 
+GameStage.prototype.start = function() {
+    this.transitionIn("instructions", 800); 
+}
+
 GameStage.prototype.render = function (ctx, timer) {
     var cellSize = 24;
     const w = ctx.canvas.width, h = ctx.canvas.height;
