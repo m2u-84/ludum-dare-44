@@ -7,6 +7,7 @@ function GameState() {
     this.closestPatientToDoctor = null;
     this.policyBriberyAttempts = 0;
     this.danegeld = 1000;
+    this.gameOver = false;
     this.stats = {
         patientCount: 0,
         patientsAccepted: 0,
@@ -108,6 +109,14 @@ GameState.prototype.registerPoliceBribery = function() {
         this.policyBriberyAttempts++;
         return true;
     }
-    gameStage.transitionIn("gameover", 800, 1);
+    this.setGameOver("gameover", 800, 1);
     return false;
+};
+
+GameState.prototype.setGameOver = function(stage, duration, payload) {
+
+    if (!this.gameOver) {
+        this.gameOver = true;
+        gameStage.transitionIn(stage, duration, payload);
+    }
 };
