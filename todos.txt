@@ -17,6 +17,7 @@ Technik
 [X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
 [ ] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
+[ ] Hintergrund-Musik spielt nicht immer (preload-event)
 [nope] Canvas HighRes rendern
 
 Features
