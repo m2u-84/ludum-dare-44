@@ -89,7 +89,7 @@ GameStage.prototype.render = function (ctx, timer) {
     let people = [this.gameState.doctor].concat(this.gameState.patients);
     if (this.gameState.facilityManager) {
        people.push(this.gameState.facilityManager);
-       people.push({paint: () => this.gameState.facilityManager.paintFire(ctx), y: this.gameState.facilityManager.y - 0.1});
+       people.push({paint: () => this.gameState.facilityManager.paintFire(ctx), y: this.gameState.facilityManager.y - 1});
     }
     people.sort((a,b) => a.y - b.y);
     people.forEach(p => p.paint(ctx));
