@@ -38,10 +38,10 @@ Features
 [X] Shift durch Space ersetzen
 [X] Enter ausbauen, um Minigames zu entfernen
 [-] Betriebskosten: periodische Abnahme des Kapitals
-[X] Übungsmodus Mini-Games <-- Markus
+[X] Übungsmodus Mini-Games
 [ ] positives Geld-Geräusch <-- Matthias
 [X] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei
-[X] Cash-Flow-Feed (in/out) <-- Markus
+[X] Cash-Flow-Feed (in/out)
 [X] Releasing / Automatisch heimgehen wenn Health voll
 [X] Patienten-Timeout nach OPs
 [X] Patienten zufällig wieder gehen bei zu langer Wartezeit
@@ -70,7 +70,7 @@ Features
 [-] Pausieren der Musik, wenn Stage in Pause ist
 [ ] Sound-Balancing  <-- Matthias
 [ ] Balancing Gameplay <-- alle Björn Markus Edu Matthias
-[ ] Heimschicken deaktivieren <-- Markus
+[X] Heimschicken deaktivieren
 (Optional)
 [ ] PowerUp Vending Machine
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
@@ -85,7 +85,7 @@ Minigames
 [X] Fracture
 [X] Placebo Surgery
 [X] Take Organ
-[/] Give Drugs <-- Markus
+[X] Give Drugs <-- Markus
 [?] Regular Surgery
 
 Strategie-Modul
@@ -95,7 +95,7 @@ Finanz-Controller
 [ ] Geld bekommen wenn Patient geheilt nach Hause geht <-- Björn
 [X] Visualisierung Gewinn/Verlust
 [X] Visualisierung Spieldauer
-[X] Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge <-- Markus
+[X] Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge
   [X] Verlust durch Tod
   [X] Gewinn durch Bettenbelegung
   [-] auch Kassenpatienten müssen Geld einbringen können (muss aber an bestimmten Kriterien hängen, damit sich die tödliche Injektion lohnt)
