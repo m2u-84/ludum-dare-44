@@ -131,10 +131,10 @@ DrugStage.prototype.updatePill = function() {
       if (getDistance(this.x, this.y, this.bounceArea.x, this.bounceArea.y) <= this.bounceArea.r) {
         // bounce back
         const vel = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-        const dx = this.w * 0.88 - this.x, dy = this.h - this.y;
+        const dx = this.w * 0.92 - this.x, dy = this.h - this.y;
         const angle = Math.atan2(dx, dy);
-        this.vx = -0.9 * vel * Math.sin(angle);
-        this.vy = -0.9 * vel * Math.cos(angle);
+        this.vx = -0.8 * vel * Math.sin(angle);
+        this.vy = -0.8 * vel * Math.cos(angle);
         this.x += this.vx * this.timeDif;
         this.y += this.vy * this.timeDif;
       }

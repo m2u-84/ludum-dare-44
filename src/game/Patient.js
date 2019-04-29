@@ -364,9 +364,7 @@ Patient.prototype.executeAction = function(action) {
           gameStage.transitionIn("takeOrgan", undefined, {patient: this});
           break;
         case treatments.drugs:
-          // TODO: replace this with minigame
-          this.healthDecrease = -treatments.drugs.effects[this.sickness.name];
-          console.log("healthDecrease", this.healthDecrease);
+          gameStage.transitionIn("drug", undefined, {patient: this});
           break;
         case treatments.surgery:
           // TODO: replace this with minigame
