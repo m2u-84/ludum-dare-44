@@ -33,7 +33,7 @@ Features
 [ ] positives Geld-Geräusch
 [ ] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei <--- Björn
 [ ] Cash-Flow-Feed (in/out) <-- Markus
-[ ] Releasing / Automatisch heimgehen wenn Health voll <-- Björn
+[X] Releasing / Automatisch heimgehen wenn Health voll
 [ ] Patienten-Timeout nach OPs
 [X] Patienten zufällig wieder gehen bei zu langer Wartezeit
 [ ] Spieler informieren, wenn alle Betten voll / keine neuen Patienten annehmen können  <-- Markus
