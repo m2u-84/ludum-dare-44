@@ -1,5 +1,5 @@
 ﻿Story
-[ ] Rahmenstory erzählen
+[ ] Rahmenstory erzählen <-- Edu
   [ ] Mafia: Startkapital bereitgestellt
   [ ] Spielziel: innerhalb Zeit möglichst viel Knete machen, Kickback an Mafia, Hinweis auf unlautere Methoden
   [ ] Warnung vor Polizei
@@ -12,28 +12,32 @@ Bugs
 [X] Leiche im Bett für zu null-pointer-exception
 [X] Doctor hinter Feuer
 [X] $$ vom Patienten bei Tod funktioniert nicht mehr
+[X] Checken ob Demon-Leute durch Organentnahme sterben (sollen sie nicht)
+[ ] nur ein Organ pro Patient entnehmen <-- Markus
+[ ] negative Behandlungen verpuffen irgendwie <-- Markus
+[ ] take organ lässt patienten nicht schlafen <-- Markus
 
 Technik
 [X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
 [X] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
-[ ] Hintergrund-Musik spielt nicht immer (preload-event)
+[ ] Hintergrund-Musik spielt nicht immer (preload-event) <-- Björn testet Firefox, Markus schaut im Code
 [nope] Canvas HighRes rendern
 
 Features
-[ ] Schrittgeräusche
+[ ] Schrittgeräusche <-- Matthias / Björn
 [ ] Mafia-Sound, wenn Mafia-Auto hält  <-- Matthias / Björn
 [X] ESC bei Behandlungsauswahl soll Dialog wieder Schließen
-[ ] Title Anzeige Tastenbelegung
+[X] Title Anzeige Tastenbelegung
 [X] Intervalle des Patientspawns randomisieren
 [X] Startscreen: Logo/Geschlechtsauswahl
 [X] lahme Patienten: fast toter Patient halb so schnell wie gesunder Patient
 [X] WASD zusätzlich supporten
 [X] Shift durch Space ersetzen
 [X] Enter ausbauen, um Minigames zu entfernen
-[ ] Betriebskosten: periodische Abnahme des Kapitals
+[-] Betriebskosten: periodische Abnahme des Kapitals 
 [X] Übungsmodus Mini-Games <-- Markus
-[ ] positives Geld-Geräusch
+[ ] positives Geld-Geräusch <-- Matthias
 [X] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei
 [X] Cash-Flow-Feed (in/out) <-- Markus
 [X] Releasing / Automatisch heimgehen wenn Health voll
@@ -54,16 +58,17 @@ Features
 [X] Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
 [X] Sounds für Verbrennen von Leichen
 [X] Hausmeister verbrennt Leichen periodisch
-[ ] Spielende erkennen (Erfolg = 10k$ oder so eingenommen, Misserfolg = Polizei 3x abgestraft oder Geld < 0)
-[ ] End-Screens mit Statistiken
+[ ] Spielende erkennen (Erfolg = 10k$ oder so eingenommen, Misserfolg = Polizei 3x abgestraft oder Geld < 0) <-- Björn
+[ ] End-Screens mit Statistiken <-- Edu
 [X] Organ-Inventory
 [X] Verbessertes Organ-Bounce-Verhalten
 [X] Kontext-Menü für nächsten Patienten
 [X] Kontext-Menü Zoom-In
 [X] Kontext-Menü schön machen
-[ ] Pausieren der Musik, wenn Stage in Pause ist
+[-] Pausieren der Musik, wenn Stage in Pause ist
 [ ] Sound-Balancing  <-- Matthias
-[ ] Balancing Gameplay
+[ ] Balancing Gameplay <-- alle Björn Markus Edu Matthias
+[ ] Heimschicken deaktivieren <-- Markus
 (Optional)
 [ ] PowerUp Vending Machine
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
@@ -78,25 +83,26 @@ Minigames
 [X] Fracture
 [X] Placebo Surgery
 [X] Take Organ
-[ ] Give Drugs
+[/] Give Drugs <-- Markus
 [?] Regular Surgery
 
 Strategie-Modul
-[ ] Schwierigkeitsgrad mit der Zeit steigern
+[ ] Schwierigkeitsgrad mit der Zeit steigern <-- Björn Markus
 
 Finanz-Controller
+[ ] Geld bekommen wenn Patient geheilt nach Hause geht <-- Björn
 [X] Visualisierung Gewinn/Verlust
 [X] Visualisierung Spieldauer
-[ ] Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge <-- Markus
+[X] Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge <-- Markus
   [X] Verlust durch Tod
   [X] Gewinn durch Bettenbelegung
   [-] auch Kassenpatienten müssen Geld einbringen können (muss aber an bestimmten Kriterien hängen, damit sich die tödliche Injektion lohnt)
 
 Patient-Visualisierung
 [X] Leben
-[/] Privat/Kasse
+[X] Privat/Kasse
 [X] Im Bett individuell rendern
-[ ] Schweregrad der Erkrankung visualisieren
-[ ] Hotkey für Einblenden der Patientendaten visualisieren
+[nope?] Schweregrad der Erkrankung visualisieren
+[nope] Hotkey für Einblenden der Patientendaten visualisieren
 
 
