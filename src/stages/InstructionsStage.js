@@ -24,7 +24,6 @@ InstructionsStage.prototype.render = function(ctx, timer) {
 
   // Image
   ctx.globalAlpha = 1;
-  console.log(p);
   const y = (h - this.image.height) / 2 - ( (10 / p) - 10);
   const x = (w - this.image.width) / 2;
   ctx.translate(x, y);
