@@ -51,6 +51,6 @@ MafiaCar.prototype.performWaitingAction = function() {
     this.gameState.hospital.loseRevenue(danegeld, this.x, this.y);
 
     if (this.gameState.hospital.balance < 0) {
-        gameStage.transitionIn("gameover", 800, 2);
+        this.gameState.setGameOver("gameover", 800, 2);
     }
 };
