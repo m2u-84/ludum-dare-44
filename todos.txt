@@ -21,8 +21,9 @@ Technik
 [nope] Canvas HighRes rendern
 
 Features
-[ ] Mafia-Sound, wenn Mafia-Auto hält <--- Edu
-[X] ESC bei Behandlungsauswahl soll Dialog wieder Schließen <-- Björn
+[ ] Schrittgeräusche
+[ ] Mafia-Sound, wenn Mafia-Auto hält  <-- Matthias / Björn
+[X] ESC bei Behandlungsauswahl soll Dialog wieder Schließen
 [ ] Title Anzeige Tastenbelegung
 [X] Intervalle des Patientspawns randomisieren
 [X] Startscreen: Logo/Geschlechtsauswahl
@@ -33,7 +34,7 @@ Features
 [ ] Betriebskosten: periodische Abnahme des Kapitals
 [X] Übungsmodus Mini-Games <-- Markus
 [ ] positives Geld-Geräusch
-[ ] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei <--- Björn
+[X] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei
 [X] Cash-Flow-Feed (in/out) <-- Markus
 [X] Releasing / Automatisch heimgehen wenn Health voll
 [X] Patienten-Timeout nach OPs
@@ -61,7 +62,7 @@ Features
 [X] Kontext-Menü Zoom-In
 [X] Kontext-Menü schön machen
 [ ] Pausieren der Musik, wenn Stage in Pause ist
-[ ] Sound-Balancing
+[ ] Sound-Balancing  <-- Matthias
 [ ] Balancing Gameplay
 (Optional)
 [ ] PowerUp Vending Machine
@@ -71,21 +72,21 @@ Features
 [ ] Demonstranten / Passanten, wenn Rezeption voll
 [ ] Ausrufezeichen über Patienten, wenn Diagnose durch ist
 
-Minigames 
+Minigames
 [X] Antibiotics
 [X] Give Organ
 [X] Fracture
 [X] Placebo Surgery
-[X] Take Organ 
-[ ] Give Drugs 
+[X] Take Organ
+[ ] Give Drugs
 [?] Regular Surgery
 
 Strategie-Modul
 [ ] Schwierigkeitsgrad mit der Zeit steigern
 
 Finanz-Controller
-[ ] Visualisierung Gewinn/Verlust
-[ ] Visualisierung Spieldauer
+[X] Visualisierung Gewinn/Verlust
+[X] Visualisierung Spieldauer
 [ ] Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge <-- Markus
   [X] Verlust durch Tod
   [X] Gewinn durch Bettenbelegung
@@ -95,7 +96,7 @@ Patient-Visualisierung
 [X] Leben
 [/] Privat/Kasse
 [X] Im Bett individuell rendern
-[ ] Schweregrad der Erkrankung
-[ ] Hotkey für Einblenden
+[ ] Schweregrad der Erkrankung visualisieren
+[ ] Hotkey für Einblenden der Patientendaten visualisieren
 
 
