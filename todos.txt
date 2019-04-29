@@ -11,7 +11,7 @@ Bugs
 [X] verbrannte Leichen aus patients-Liste entfernen
 [X] Leiche im Bett für zu null-pointer-exception
 [ ] Doctor hinter Feuer <-- Markus
-[ ] $$ vom Patienten bei Tod funktioniert nicht mehr   <--- Björn
+[X] $$ vom Patienten bei Tod funktioniert nicht mehr
 
 Technik
 [X] Bitmap Font evaluieren
@@ -20,6 +20,7 @@ Technik
 [ ] Canvas HighRes rendern
 
 Features
+[ ] Intervalle des Patientspawns randomisieren
 [ ] Startscreen: Logo/Geschlechtsauswahl
 [ ] (Anzeige) Tastenbelegung
 [ ] lahme Patienten: fast toter Patient halb so schnell wie gesunder Patient <-- Björn
@@ -36,7 +37,7 @@ Features
 [X] Verbrennungsgeräusch
 [X] Ambient-Sounds
 [X] Randomisierung Rezeption
-[ ] Bett-Weg: kürzester Weg, bei gleicher Länge dann Randomisierung  <-- Björn
+[X] Bett-Weg: kürzester Weg, bei gleicher Länge dann Randomisierung
 [X] Abstandserkennung nächster Patient
 [X] Tod von Patienten implementieren
 [X] Entlassung des Patienten
