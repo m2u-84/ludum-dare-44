@@ -9,7 +9,7 @@ function PlaceboStage() {
   this.minBallSpeed = 0.1;
   this.maxBallSpeed = 0.5;
   this.dampingX = 0.9984;
-  this.dampingY = 0.997; 
+  this.dampingY = 0.997;
   this.strength = 0.25;
   this.bounces = 0;
   this.maxBounces = 0;
@@ -18,10 +18,20 @@ inherit(PlaceboStage, MinigameStage);
 
 PlaceboStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
-  // load graphics here
-  this.patientImage = loader.loadImage("assets/images/patient_head.png");
-  this.paddleImage = loader.loadImage("assets/images/tabletennis_hand.png");
-  this.ballImage = loader.loadImage("assets/images/tabletennis_ball.png");
+
+  const ASSETS_BASE_PATH = './assets/';
+  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
+  this.patientImage = loader.loadImage(IMAGES_BASE_PATH + 'patient_head.png');
+  this.paddleImage = loader.loadImage(IMAGES_BASE_PATH + 'tabletennis_hand.png');
+  this.ballImage = loader.loadImage(IMAGES_BASE_PATH + 'tabletennis_ball.png');
+
+  this.soundsBounce = [
+    loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/pingpong-volley/pingpong-volley-1.mp3'}),
+    loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/pingpong-volley/pingpong-volley-2.mp3'}),
+    loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/pingpong-volley/pingpong-volley-3.mp3'})
+  ];
 };
 
 PlaceboStage.prototype.prestart = function(payload) {
@@ -107,6 +117,8 @@ PlaceboStage.prototype.updateBall = function(tf) {
       const nearestPoint = getNearestPoint(this.ballX, this.ballY, px1, py1, px2, py2);
       const dis = nearestPoint.distance;
       if (dis <= this.ballR) {
+        this.soundsBounce[rndInt(0, 2)].play();
+
         // Reflect away from collision point
         const dx = nearestPoint.x - this.ballX, dy = nearestPoint.y - this.ballY;
         const vel = reflectVelocity(this.ballVX, this.ballVY, dx, dy);
@@ -118,7 +130,7 @@ PlaceboStage.prototype.updateBall = function(tf) {
         // Ensure minimal speed of ball
         const spd = Math.sqrt(this.ballVX * this.ballVX + this.ballVY * this.ballVY);
         if (spd == 0) {
-          // Hack in weird edge case that's never going  to happen
+          // Hack in weird edge case that's never going to happen
           this.ballVY = -0.3;
         } else {
           // Speed too low -> scale up
@@ -196,5 +208,5 @@ function reflectVelocity(vx, vy, dx, dy) {
     x: cos * nvx + sin * nvy,
     y: -sin * nvx + cos * nvy
   };
-  return result; 
+  return result;
 }
