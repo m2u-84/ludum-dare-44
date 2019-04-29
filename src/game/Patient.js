@@ -29,6 +29,8 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.deathDuration = 500; // millisecs
     this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
+    this.stateChangedTime = 0;
+    this.patience = interpolate(60000, 120000, Math.random());
     this.animationOffset = rnd(9999);
     this.isHighlighted = false;
     this.imageIndex = this.isRich ? 3 : rndInt(0, 3);
@@ -61,9 +63,21 @@ Patient.prototype.update = function() {
         this.directionFactor = 0;
     }
     updateHealth.call(this);
-    if (this.state == PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
+    if ((this.state === PatientStates.WAIT_AT_RECEPTION) && (gameStage.time - this.stateChangedTime > this.patience)) {
+        this.executeAction("Send away");
+    }
+    if ((this.state === PatientStates.STAY_IN_BED) && (this.isCured())) {
+        this.executeAction(this.gameState.treatments.release);
+    }
+    if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
       this.nextState();
     }
+};
+
+Patient.prototype.setState = function(state) {
+
+    this.state = state;
+    this.stateChangedTime = gameStage.time;
 };
 
 Patient.prototype.recomputeVelocity = function() {
@@ -100,14 +114,20 @@ Patient.prototype.getAddressablePosition = function() {
   return result;
 };
 
+Patient.prototype.isHealthy = function() {
+
+    return this.health >= 100;
+};
+
+Patient.prototype.isCured = function() {
+
+    return (this.isHealthy() && (this.healthDecrease <= 0));
+};
+
 Patient.prototype.isDead = function() {
 
     return this.state === PatientStates.DEAD;
 };
-
-Patient.prototype.isCured = function() {
-    return this.health >= 100;
-}
 
 Patient.prototype.getFreePoint = function(points) {
 
@@ -140,7 +160,7 @@ Patient.prototype.isOccupiedByPatient = function(x, y) {
 Patient.prototype.nextState = function() {
     switch (this.state) {
         case PatientStates.WALK_TO_RECEPTION:
-            this.state = PatientStates.WAIT_AT_RECEPTION;
+            this.setState(PatientStates.WAIT_AT_RECEPTION);
             break;
         case PatientStates.WALK_TO_BED:
             this.enterBed(this.targetBed);
@@ -149,7 +169,7 @@ Patient.prototype.nextState = function() {
             this.gameState.removePatient(this);
             break;
         case PatientStates.DIAGNOSING:
-            this.state = PatientStates.STAY_IN_BED;
+            this.setState(PatientStates.STAY_IN_BED);
             this.diagnosed = true;
             break;
     }
@@ -242,7 +262,7 @@ Patient.prototype.getActions = function() {
   }
   switch (this.state) {
     case PatientStates.WAIT_AT_RECEPTION:
-      return ["Accept", "Send away"];
+      return this.gameState.receptions;
     case PatientStates.STAY_IN_BED:
       const list = treatments;
       if (!this.diagnosed) {
@@ -269,11 +289,11 @@ Patient.prototype.executeAction = function(action) {
           }
       }
       case PatientStates.WAIT_AT_RECEPTION: {
-      switch (action) {
+      switch (action.name) {
         case "Accept":
             this.hospitalize();
             break;
-        case "Send away":
+        case "Send Away":
             this.walkHome();
             break;
         default:
@@ -285,7 +305,7 @@ Patient.prototype.executeAction = function(action) {
       switch (action) {
         case "Diagnose":
           this.diagnosingUntil = gameStage.time + rndInt(3000, 15000); // TODO change to ~7-40 seconds
-          this.state = PatientStates.DIAGNOSING;
+            this.setState(PatientStates.DIAGNOSING);
           break;
 
         case treatments.antibiotics:
@@ -345,7 +365,7 @@ Patient.prototype.seekHelp = function() {
 
     const receptionPoint = this.getFreePoint(this.gameState.level.receptionPoints);
     if (receptionPoint !== null) {
-        this.state = PatientStates.WALK_TO_RECEPTION;
+        this.setState(PatientStates.WALK_TO_RECEPTION);
         this.moveTo(receptionPoint.x, receptionPoint.y, () => this.nextState());
         return true;
     }
@@ -359,7 +379,7 @@ Patient.prototype.hospitalize = function() {
         this.targetBed = bed;
         const visitorPos = bed.getClosestVisitorPoint(this.x, this.y);
         this.moveTo(visitorPos.x, visitorPos.y, () => this.nextState());
-        this.state = PatientStates.WALK_TO_BED;
+        this.setState(PatientStates.WALK_TO_BED);
     } else {
         // TODO Inform player this does not work
     }
@@ -373,7 +393,7 @@ Patient.prototype.enterBed = function(bed) {
     this.inBed = bed;
     this.x = bed.positions[0].x + 0.5;
     this.y = bed.positions[0].y + 1.5;
-    this.state = PatientStates.STAY_IN_BED;
+    this.setState(PatientStates.STAY_IN_BED);
     this.targetBed = null;
 };
 
@@ -387,13 +407,13 @@ Patient.prototype.releaseFromBed = function() {
 Patient.prototype.walkHome = function() {
   const endPoint = getRandomItem(this.gameState.level.spawnPoints);
   this.moveTo(endPoint.x, endPoint.y, () => this.nextState());
-  this.state = PatientStates.WALK_HOME;
+    this.setState(PatientStates.WALK_HOME);
 };
 
 Patient.prototype.die = function() {
     if (!this.isDead()) {
         this.health = 0;
-        this.state = PatientStates.DEAD;
+        this.setState(PatientStates.DEAD);
         this.finishPath();
         setTimeout(() => {
             gameStage.cashflowFeed.addText("Lost $250 due to deceased patient");
@@ -416,7 +436,8 @@ Patient.prototype.addEffect = function(regeneration, absolute) {
     // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
     // thus value change has maximum of 50% of max hp, but exponent of 2 pulls values closer towards 0
     // console.log("Health starts at ", this.health, " deg at ", this.healthDecrease);
-    this.health = clamp(this.health + 50 * sgnPow(absolute, 2), 0, 100);
+    const maxHealth = (this.health + 100) / 2;
+    this.health = clamp(this.health + 50 * sgnPow(absolute, 2), 0, maxHealth);
     // console.log("Applying effect ", regeneration, absolute, " setting health to ", this.health);
     if (this.health <= 0) {
         this.die();

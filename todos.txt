@@ -1,4 +1,4 @@
-Story
+﻿Story
 [ ] Rahmenstory erzählen
   [ ] Mafia: Startkapital bereitgestellt
   [ ] Spielziel: innerhalb Zeit möglichst viel Knete machen, Kickback an Mafia, Hinweis auf unlautere Methoden
@@ -33,10 +33,10 @@ Features
 [ ] positives Geld-Geräusch
 [ ] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei <--- Björn
 [ ] Cash-Flow-Feed (in/out) <-- Markus
-[ ] Releasing / Automatisch heimgehen wenn Health voll
+[X] Releasing / Automatisch heimgehen wenn Health voll
 [ ] Patienten-Timeout nach OPs
-[ ] Patienten zufällig wieder gehen bei zu langer Wartezeit <-- Björn
-[ ] Spieler informieren, wenn alle Betten voll / keine neuen Patienten annehmen können
+[X] Patienten zufällig wieder gehen bei zu langer Wartezeit
+[ ] Spieler informieren, wenn alle Betten voll / keine neuen Patienten annehmen können  <-- Markus
 [X] Verbrennungsgeräusch
 [X] Ambient-Sounds
 [X] Randomisierung Rezeption
@@ -67,6 +67,7 @@ Features
 [ ] schlecht behandelte Patienten bluten Boden voll und Arzt rutscht aus
 [ ] Turbo-Modus für Doktor (ggfs. mit Verlust von Geld / Injektion von Drogen / Verlust von Leben)
 [ ] Demonstranten / Passanten, wenn Rezeption voll
+[ ] Ausrufezeichen über Patienten, wenn Diagnose durch ist
 
 
 Strategie-Modul

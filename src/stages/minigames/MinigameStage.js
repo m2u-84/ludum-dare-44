@@ -11,6 +11,7 @@ function MinigameStage(name) {
 inherit(MinigameStage, Stage);
 
 MinigameStage.prototype.preload = function() {
+  this.background = loader.loadImage("assets/images/minigames_background.png");
 };
 
 MinigameStage.prototype.prestart = function(payload) {
@@ -44,10 +45,9 @@ MinigameStage.prototype.render = function(ctx, timer) {
     ctx.translate(0, -(1 - p) * (h + 10));
   }
   // Background
-  ctx.fillStyle = "#806846";
   this.w = w - 2 * this.margin;
   this.h = h - 2 * this.margin;
-  ctx.fillRect(this.margin, this.margin, this.w, this.h);
+  ctx.drawImage(this.background, this.margin, this.margin, this.w, this.h);
   ctx.translate(this.margin, this.margin);
   // Clipping
   ctx.beginPath();
