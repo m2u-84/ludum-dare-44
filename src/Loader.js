@@ -61,16 +61,16 @@ Loader.prototype.loadAudio = function(soundData) {
   }
   sound.isPlaying = function() {
       return !!(this.currentTime > 0 && !this.paused && !this.ended && this.readyState > 2)
-  }
+  };
   sound.stop = function() {
       this.pause();
       this.currentTime = 0;
-  }
+  };
   sound.trigger = function () {
       if (!this.isPlaying()) {
           this.play();
       }
-  }
+  };
   sound.setVolume = function(volume) {
       if (this.minVolume && volume < this.minVolume) {
           this.volume = this.minVolume;
@@ -81,7 +81,7 @@ Loader.prototype.loadAudio = function(soundData) {
       } else {
           this.volume = volume;
       }
-  }
+  };
   return sound;
 }
 

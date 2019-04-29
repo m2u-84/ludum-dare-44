@@ -28,7 +28,7 @@ FloatingText.prototype.render = function(ctx) {
   }
   ctx.save();
   ctx.globalAlpha = alpha;
-  ctx.translate(this.x, this.y - age / 2500 - 1.5);
+  ctx.translate(this.x, this.y - age / 5000 - 1);
   ctx.scale(1/24, 1/24);
   mainFont.drawText(ctx, this.text, 0, 0, this.color, 0.5);
   ctx.restore();
