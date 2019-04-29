@@ -52,7 +52,8 @@ GameStage.prototype.prestart = function(payload) {
 };
 
 GameStage.prototype.start = function() {
-    this.transitionIn("instructions", 800); 
+    // Todo: Enable on release
+    // this.transitionIn("instructions", 800); 
 }
 
 GameStage.prototype.render = function (ctx, timer) {
