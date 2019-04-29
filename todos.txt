@@ -21,7 +21,7 @@ Technik
 [X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
 [X] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
-[ ] Hintergrund-Musik spielt nicht immer (preload-event) <-- Björn testet Firefox, Markus schaut im Code
+[ ] Hintergrund-Musik spielt im Firefox nicht, wenn man nicht beim Start in das Fenster klickt <-- Markus schaut ggfs. im Code
 [-] Canvas HighRes rendern
 
 Features
