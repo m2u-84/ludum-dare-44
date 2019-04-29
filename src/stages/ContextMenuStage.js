@@ -109,14 +109,10 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
 
 
 ContextMenuStage.prototype.onkey = function(event) {
-  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "w", "a", "s", "d"].indexOf(event.key) >= 0) {
+  if (["Escape", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "w", "a", "s", "d"].indexOf(event.key) >= 0) {
     // Prevent accidental closing when opening menu while still barely running
     if (this.opacity >= 0.95 && this.time > 200) {
       this.close();
-    }
-  } else if (event.key == "Escape") {
-    if (this.active) {
-      this.transitionIn("pause", 800);
     }
   } else {
     const num = event.key - 1;

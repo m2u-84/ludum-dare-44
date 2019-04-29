@@ -21,7 +21,8 @@ Technik
 [nope] Canvas HighRes rendern
 
 Features
-[ ] ESC bei Behandlungsauswahl soll Dialog wieder Schließen <-- Björn
+[ ] Mafia-Sound, wenn Mafia-Auto hält <--- Edu
+[X] ESC bei Behandlungsauswahl soll Dialog wieder Schließen <-- Björn
 [ ] Title Anzeige Tastenbelegung
 [X] Intervalle des Patientspawns randomisieren
 [ ] Startscreen: Logo/Geschlechtsauswahl
@@ -47,7 +48,7 @@ Features
 [X] Entlassung des Patienten
 [X] Trennung Privat-/Kassenpatienten (nach Budget)
 [X] Entlassung nach Operation nur optional, um Patienten durch mehrere Operationen zu monetarisieren
-[ ] Kontroll-Wagen, der periodisch nach dem Rechten sieht <-- Björn
+[X] Kontroll-Wagen, der periodisch nach dem Rechten sieht
 [X] Hausmeister-Basis implementieren
 [X] Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
 [X] Sounds für Verbrennen von Leichen
