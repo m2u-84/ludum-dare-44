@@ -11,8 +11,10 @@ CashflowFeed.prototype.addText = function(text, color) {
 
 CashflowFeed.prototype.draw = function(ctx) {
   ctx.save();
-  ctx.translate(Math.floor(ctx.canvas.width / 2) + 0.5, 5);
-  this.texts.forEach(t => t.drawAndUpdate(ctx));
+  ctx.translate(Math.floor(ctx.canvas.width / 2), 8);
+  for (var i = 0; i < this.texts.length; i++) {
+    this.texts[i].drawAndUpdate(ctx, i * 10);
+  }
   this.texts = this.texts.filter(t => !t.done);
   ctx.restore();
 }
@@ -28,7 +30,7 @@ function CasfhlowItem(text, color = "red") {
   this.done = false;
 }
 
-CasfhlowItem.prototype.drawAndUpdate = function(ctx) {
+CasfhlowItem.prototype.drawAndUpdate = function(ctx, off) {
   if (gameStage.time >= this.endTime) {
     this.p = 1;
     this.done = true;
@@ -37,5 +39,5 @@ CasfhlowItem.prototype.drawAndUpdate = function(ctx) {
   this.p = (gameStage.time - this.startTime) / this.duration;
   const alpha = this.p < 0.2 ? (this.p / 0.2) : this.p > 0.8 ? (1 - this.p) / 0.2 : 1;
   ctx.globalAlpha = alpha;
-  mainFont.drawText(ctx, this.text, 0, this.y, this.color, 0.5);
+  mainFont.drawText(ctx, this.text, 0, this.y + off, this.color, 0.5);
 };
