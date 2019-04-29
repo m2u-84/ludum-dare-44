@@ -14,7 +14,7 @@ Bugs
 [X] $$ vom Patienten bei Tod funktioniert nicht mehr
 [X] Checken ob Demon-Leute durch Organentnahme sterben (sollen sie nicht)
 [X] nur ein Organ pro Patient entnehmen
-[ ] negative Behandlungen verpuffen irgendwie <-- Markus
+[X] negative Behandlungen verpuffen irgendwie <-- Markus
 [X] take organ lässt patienten nicht schlafen
 [X] negatives Geld -> kann keine Patienten koordinieren
 [X] Hausmeister läuft in dem Moment los, wo die Leute umfallen
@@ -63,7 +63,7 @@ Features
 [X] Sounds für Verbrennen von Leichen
 [X] Hausmeister verbrennt Leichen periodisch
 [X] Spielende erkennen (Erfolg = 10k$ oder so eingenommen, Misserfolg = Polizei 3x abgestraft oder Geld < 0)
-[ ] End-Screens mit Statistiken <-- Edu
+[X] End-Screens mit Statistiken <-- Edu
 [X] Organ-Inventory
 [X] Verbessertes Organ-Bounce-Verhalten
 [X] Kontext-Menü für nächsten Patienten
