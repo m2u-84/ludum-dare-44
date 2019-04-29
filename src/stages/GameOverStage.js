@@ -5,16 +5,23 @@ function GameOverStage() {
 inherit(GameOverStage, Stage);
 
 GameOverStage.prototype.preload = function() {
+  const ASSETS_BASE_PATH = './assets/';
+  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
   let endings = [
     'modal_gameover_1', // 0: Mafia Ending
     'modal_gameover_2', // 1: Police Ending
     'modal_gameover_3', // 2: Money Ending
   ];
-  this.backgrounds = endings.map(ending => loader.loadImage("./assets/images/" + ending +".png"));
+
+  this.backgrounds = endings.map(ending => loader.loadImage(IMAGES_BASE_PATH + ending + '.png'));
+  this.soundGameOver = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/outcomes/outcomes-gameover.mp3'});
 }
 
 GameOverStage.prototype.prestart = function(payload) {
   this.gameOverNr = payload;
+  this.soundGameOver.play();
 }
 
 GameOverStage.prototype.render = function(ctx, timer) {
