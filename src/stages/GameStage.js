@@ -76,7 +76,7 @@ GameStage.prototype.render = function (ctx, timer) {
       camTolerance = 20 * p;
     }
     ctx.scale(cellSize * camZoom, cellSize * camZoom);
-    const minCamX = w / 2 / cellSize / camZoom - camTolerance, minCamY = h / 2 / cellSize / camZoom;
+    const minCamX = w / 2 / cellSize / camZoom, minCamY = h / 2 / cellSize / camZoom;
     const maxCamX = (this.mapImage.width - w / 2 / camZoom) / cellSize + camTolerance;
     const maxCamY = (this.mapImage.height - h / 2 / camZoom) / cellSize;
     let offx = clamp(-camX, -maxCamX, -minCamX), offy = clamp(-camY, -maxCamY, -minCamY);
