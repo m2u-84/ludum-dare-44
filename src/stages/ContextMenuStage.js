@@ -98,7 +98,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
       {max: 1, text: "ideal", color: "blue"},
     ];
     for (var i = 0; i < styles.length; i++) {
-      if (styles[i].max > v) {
+      if (styles[i].max >= v) {
         return styles[i];
       }
     }
