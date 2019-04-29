@@ -93,6 +93,12 @@ Patient.prototype.isDead = function() {
     return this.state === PatientStates.DEAD;
 };
 
+Patient.prototype.isCured = function() {
+    console.log("health", this.health);
+    return this.health === 100;
+
+}
+
 Patient.prototype.getFreePoint = function(points) {
 
     let shuffled = points.slice();
