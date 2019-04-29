@@ -170,7 +170,7 @@ DrugStage.prototype.render = function(ctx, timer) {
   ctx.fillStyle = "#784823";
   ctx.fillRect(this.tableLeft, this.tableTop, this.tableRight - this.tableLeft, 30);
   // Hand
-  drawImageToScreen(ctx, this.handImage, this.handX, this.handY, Math.PI / 2, 1, 1, 0.85, 0.12);
+  drawImageToScreen(ctx, this.handImage, this.handX, this.handY, Math.PI / 2, 1, 1, 0.91, 0.07);
   // Pill
   ctx.save();
   if (this.wellPlaced) {
@@ -181,7 +181,7 @@ DrugStage.prototype.render = function(ctx, timer) {
   drawImageToScreen(ctx, this.pillImage, this.x, this.y, this.angle, 1, 1, 0.5, 0.5);
   ctx.restore();
   // Thumb
-  drawImageToScreen(ctx, this.thumbImage, this.handX, this.handY, Math.PI / 2, 1, 1, 0.85, 0.12);
+  drawImageToScreen(ctx, this.thumbImage, this.handX, this.handY, Math.PI / 2, 1, 1, 0.91, 0.07);
   // win area
   /*
   ctx.fillStyle = "gray";

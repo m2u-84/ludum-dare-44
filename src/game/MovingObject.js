@@ -2,7 +2,7 @@ function MovingObject(x, y, gameState) {
     this.x = x;
     this.y = y;
 
-    this.movingVelocity = 12; // animation and moving speed
+    this.movingVelocity = 3; // animation and moving speed
     this.idleVelocity = 1; // animation speed
     this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
