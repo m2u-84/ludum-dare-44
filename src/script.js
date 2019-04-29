@@ -18,6 +18,7 @@ window.onload = () => {
   stageManager = new StageManager(canvas, timer);
   gameStage = new GameStage();
   stageManager.add(new LoadStage())
+              .add(new StartStage())
               .add(gameStage)
               .add(new PauseStage())
               .add(new ContextMenuStage())

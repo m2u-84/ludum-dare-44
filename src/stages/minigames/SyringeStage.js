@@ -5,6 +5,7 @@ function SyringeStage() {
 inherit(SyringeStage, MinigameStage);
 
 SyringeStage.prototype.preload = function() {
+  MinigameStage.prototype.preload.call(this);
   this.syringe = loader.loadImage("assets/images/syringe.png");
   this.arrow = loader.loadImage("assets/images/arrow.png");
   this.arm = loader.loadImage("assets/images/arm.png");

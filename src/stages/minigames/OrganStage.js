@@ -5,6 +5,7 @@ function OrganStage() {
 inherit(OrganStage, MinigameStage);
 
 OrganStage.prototype.preload = function() {
+  MinigameStage.prototype.preload.call(this);
   this.organ = loader.loadImage("assets/images/organ.png");
   this.hand = loader.loadImage("assets/images/organ_hand_back.png");
   this.thumb = loader.loadImage("assets/images/organ_hand_front.png");
