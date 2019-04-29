@@ -14,7 +14,7 @@ Bugs
 [X] $$ vom Patienten bei Tod funktioniert nicht mehr
 [X] Checken ob Demon-Leute durch Organentnahme sterben (sollen sie nicht)
 [X] nur ein Organ pro Patient entnehmen
-[ ] negative Behandlungen verpuffen irgendwie <-- Markus
+[X] negative Behandlungen verpuffen irgendwie <-- Markus
 [X] take organ lässt patienten nicht schlafen
 [X] negatives Geld -> kann keine Patienten koordinieren
 [X] Hausmeister läuft in dem Moment los, wo die Leute umfallen
@@ -29,6 +29,7 @@ Technik
 [-] Canvas HighRes rendern
 
 Features
+[ ] Weiterspielen können nach erfolgreichem Spielabschluss
 [ ] Schrittgeräusche <-- Matthias / Björn
 [X] Mafia-Sound, wenn Mafia-Auto hält
 [X] ESC bei Behandlungsauswahl soll Dialog wieder Schließen
@@ -41,7 +42,7 @@ Features
 [X] Enter ausbauen, um Minigames zu entfernen
 [-] Betriebskosten: periodische Abnahme des Kapitals
 [X] Übungsmodus Mini-Games
-[ ] positives Geld-Geräusch <-- Matthias
+[X] positives Geld-Geräusch <-- Matthias
 [X] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei
 [X] Cash-Flow-Feed (in/out)
 [X] Releasing / Automatisch heimgehen wenn Health voll
@@ -63,7 +64,7 @@ Features
 [X] Sounds für Verbrennen von Leichen
 [X] Hausmeister verbrennt Leichen periodisch
 [X] Spielende erkennen (Erfolg = 10k$ oder so eingenommen, Misserfolg = Polizei 3x abgestraft oder Geld < 0)
-[ ] End-Screens mit Statistiken <-- Edu
+[X] End-Screens mit Statistiken <-- Edu
 [X] Organ-Inventory
 [X] Verbessertes Organ-Bounce-Verhalten
 [X] Kontext-Menü für nächsten Patienten
@@ -71,7 +72,12 @@ Features
 [X] Kontext-Menü schön machen
 [-] Pausieren der Musik, wenn Stage in Pause ist
 [ ] Sound-Balancing  <-- Matthias
+  [X] Auto-Sound leiser
+  [ ] Flatline raus
 [ ] Balancing Gameplay <-- alle Björn Markus Edu Matthias
+  [X] Startgeld 5000
+  [X] Spätere Autos
+[ ] CHEATS RAUS
 [X] Heimschicken deaktivieren
 (Optional)
 [ ] PowerUp Vending Machine

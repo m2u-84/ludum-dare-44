@@ -1,4 +1,5 @@
 function GameState() {
+    this.startTime = gameStage.time;
     this.level = new Level();
     this.hospital = new Hospital();
     this.doctor = new Doctor(11, 12.8, 0.5, 0.1, this);

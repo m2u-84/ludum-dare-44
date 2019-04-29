@@ -12,7 +12,6 @@ inherit(GameStage, Stage);
 GameStage.load = function() {
 
     GameStage.audioAmbient = loader.loadAudio({src: "./assets/audio/ambience/ambience.mp3"});
-    GameStage.audioTrack1 = loader.loadAudio({src: "./assets/audio/music/music-1.mp3"});
     GameStage.audioTrack2 = loader.loadAudio({src: "./assets/audio/music/music-2.mp3"});
 };
 
@@ -53,8 +52,9 @@ GameStage.prototype.prestart = function(payload) {
   // Assign Doctor gender when coming from main menu
   if (payload) this.gameState.doctor.assignGender(payload.isMale);
   this.nextPatientSpawnTime = gameStage.time + 3000;
-  this.nextPoliceCarSpawnTime = gameStage.time + 30000;
-  this.nextMafiaCarSpawnTime = gameStage.time + 20000;
+  this.nextPoliceCarSpawnTime = gameStage.time + 75000;
+  this.nextMafiaCarSpawnTime = Infinity;
+  this.cashflowFeed.clear();
 };
 
 GameStage.prototype.start = function() {
@@ -184,11 +184,10 @@ GameStage.prototype.spawnPatient = function() {
           this.gameState.patients.push(patient);
         }
     }
-    // spawn a new patient between 2s and 6s
-
-    this.nextPatientSpawnTimeFactor /= 1.03;
-    this.nextPatientSpawnTime = gameStage.time + interpolate(this.nextPatientSpawnTimeFactor * 13000,
-        this.nextPatientSpawnTimeFactor * 23000, Math.random());
+    this.nextPatientSpawnTimeFactor /= 1.04;
+    const minTime = Math.max(4000, this.nextPatientSpawnTimeFactor * 13000);
+    const maxTime = Math.min(8000, this.nextPatientSpawnTimeFactor * 23000);
+    this.nextPatientSpawnTime = gameStage.time + interpolate(minTime, maxTime, Math.random());
 };
 
 GameStage.prototype.spawnFacilityManager = function() {
@@ -211,7 +210,6 @@ GameStage.prototype.spawnPoliceCar = function() {
     this.nextPoliceCarSpawnTime = Infinity; // never spawn a new car until this car finishes
     const spawnPoint = this.gameState.level.spawnPointCar;
     const car = new PoliceCar(spawnPoint.x, spawnPoint.y, this.gameState, () => {
-        // spawn a new policy car between 60s and 90s
         this.nextPoliceCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
         this.nextMafiaCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
     });
@@ -225,7 +223,6 @@ GameStage.prototype.spawnMafiaCar = function() {
     this.nextMafiaCarSpawnTime = Infinity; // never spawn a new car until this car finishes
     const spawnPoint = this.gameState.level.spawnPointCar;
     const car = new MafiaCar(spawnPoint.x, spawnPoint.y, this.gameState, () => {
-        // spawn a new policy car between 60s and 90s
         this.nextMafiaCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
         this.nextPoliceCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
     });

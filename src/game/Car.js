@@ -26,7 +26,7 @@ Car.load = function() {
 
     Car.soundBrakes = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/police-braking/police-braking.mp3'});
     Car.soundDriving = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/car-driving/car-driving.mp3'});
-    Car.soundDriving.volume = 0.5;
+    Car.soundDriving.volume = 0.3;
     Car.soundDriving.loop = true;
 };
 
