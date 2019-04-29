@@ -92,7 +92,7 @@ GameState.prototype.removePatient = function(patient) {
 };
 
 GameState.prototype.registerPoliceBribery = function() {
-    if (this.policyBriberyAttempts < 0) {
+    if (this.policyBriberyAttempts < 2) {
         this.policyBriberyAttempts++;
         return true;
     }
