@@ -5,17 +5,23 @@ function InstructionsStage() {
 inherit(InstructionsStage, Stage);
 
 InstructionsStage.prototype.preload = function() {
-  this.image = loader.loadImage("./assets/images/modal_intro.png");
+  const ASSETS_BASE_PATH = './assets/';
+  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
+  this.image = loader.loadImage(IMAGES_BASE_PATH + 'modal_intro.png');
+
+  this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
 }
 
 InstructionsStage.prototype.prestart = function() {
-  
+  this.soundSliding.play();
 }
 
 InstructionsStage.prototype.render = function(ctx, timer) {
   const w = ctx.canvas.width, h = ctx.canvas.height;
   const p = Interpolators.cubic3(this.opacity);
-  
+
 
   // Black background
   ctx.globalAlpha = 0.5 * p;
@@ -33,6 +39,8 @@ InstructionsStage.prototype.render = function(ctx, timer) {
 
 InstructionsStage.prototype.onkey = function(event) {
   if (this.active && event.key == " ") {
+    this.soundSliding.play();
+
     this.transitionOut(800);
   }
 }
