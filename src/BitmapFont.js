@@ -82,7 +82,7 @@ BitmapFont.prototype.drawText = function(ctx, text, x, y, color, align = 0) {
     const index = this.getCharIndex(char);
     width += this.charWidths[index] + 1;
   }
-  const offX = -align * width;
+  const offX = Math.round(-align * width);
   for (let i = 0; i < text.length; i++) {
     const index = this.getCharIndex(text[i]);
     this.drawCharacter(ctx, index, x + offX, y, color);
