@@ -63,13 +63,6 @@ Patient.load = function() {
 
     Patient.images = sprites.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
 
-    // Patient.soundDyingMale1 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-1.mp3'});
-    // Patient.soundDyingMale2 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-2.mp3'});
-    // Patient.soundDyingMale3 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-3.mp3'});
-    // Patient.soundDyingFemale1 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-1.mp3'});
-    // Patient.soundDyingFemale2 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-2.mp3'});
-    // Patient.soundDyingFemale3 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-3.mp3'});
-
     Patient.soundsDying = {
         male: [
             loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-1.mp3'}),
