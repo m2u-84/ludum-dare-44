@@ -11,12 +11,10 @@ const PatientStates = {
   ASLEEP: 8
 };
 
-Patient.count = 0;
-
 function Patient(x, y, health, wealth, sickness, gameState) {
 
     MovingObject.call(this, x, y, gameState);
-    this.id = (++Patient.count);
+    this.id = (++gameState.stats.patientCount);
     this.health = health;
     this.wealth = wealth;
     this.sickness = sickness;
@@ -196,6 +194,7 @@ Patient.prototype.nextState = function() {
             break;
         case PatientStates.DIAGNOSING:
             this.setState(PatientStates.STAY_IN_BED);
+            this.gameState.stats.diagnoses++;
             this.diagnosed = true;
             break;
         case PatientStates.ASLEEP:
@@ -322,9 +321,11 @@ Patient.prototype.executeAction = function(action) {
       switch (action.name) {
         case "Accept":
             this.hospitalize();
+            this.gameState.stats.patientsAccepted++;
             break;
         case "Send Away":
             this.walkHome();
+            this.gameState.stats.patientsRejected++;
             break;
         default:
             throw new Error("Invalid action for waiting patient: " + action);
@@ -352,6 +353,7 @@ Patient.prototype.executeAction = function(action) {
         case this.gameState.releaseTreatment:
           this.releaseFromBed();
           this.walkHome();
+          this.gameState.stats.patientsCured++;
           break;
         case treatments.takeOrgan:
           gameStage.transitionIn("takeOrgan", undefined, {patient: this});
@@ -426,6 +428,7 @@ Patient.prototype.walkHome = function() {
 
 Patient.prototype.die = function() {
     if (!this.isDead()) {
+        this.gameState.stats.patientsDied++;
         this.health = 0;
         this.setState(PatientStates.DEAD);
         this.finishPath();

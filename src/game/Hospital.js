@@ -45,6 +45,7 @@ Hospital.prototype.giveRevenue = function(rev, x, y) {
     if (rev < 0) {
         this.loseRevenue(-rev);
     }
+    gameStage.gameState.stats.moneyEarned += rev;
     this.balance += rev;
     gameStage.showFloatingText("+$" + rev, x, y, "money");
 
