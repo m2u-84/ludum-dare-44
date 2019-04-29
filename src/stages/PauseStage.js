@@ -5,10 +5,17 @@ function PauseStage() {
 inherit(PauseStage, Stage);
 
 PauseStage.prototype.preload = function() {
+  const ASSETS_BASE_PATH = './assets/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
+  this.soundPausing = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-pausing/game-pausing-pause.mp3'});
+  this.soundUnpausing = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-pausing/game-pausing-unpause.mp3'});
 }
 
 PauseStage.prototype.prestart = function() {
   this.angleOffset = rnd(10);
+
+  this.soundPausing.play();
 }
 
 PauseStage.prototype.render = function(ctx, timer) {
@@ -49,6 +56,8 @@ PauseStage.prototype.render = function(ctx, timer) {
 
 PauseStage.prototype.onkey = function(event) {
   if (this.active && event.key == "Escape") {
+    this.soundUnpausing.play();
+
     this.transitionOut(400);
   }
 }
