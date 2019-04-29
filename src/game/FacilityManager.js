@@ -177,19 +177,14 @@ FacilityManager.prototype.carryCorpseToPile = function() {
 FacilityManager.prototype.burnPile = function() {
 
     FacilityManager.soundContainerDump.play();
-    // burn randomly every three times
-    if (Math.floor(Math.random() * 3) === 0) {
-        this.startWaitingTime(1000, () => {
-            this.fireIsBurning = true;
-            FacilityManager.soundBurn.play();
-            this.startWaitingTime(3000, () => {
-                this.fireIsBurning = false;
-                this.nextState();
-            });
+    this.startWaitingTime(1000, () => {
+        this.fireIsBurning = true;
+        FacilityManager.soundBurn.play();
+        this.startWaitingTime(3000, () => {
+            this.fireIsBurning = false;
+            this.nextState();
         });
-    } else {
-        this.nextState();
-    }
+    });
 };
 
 FacilityManager.prototype.walkBackToStoreRoom = function() {
