@@ -457,6 +457,7 @@ Patient.prototype.getTreatmentPrice = function(treatment) {
 };
 
 Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
+    console.log("Adding effect");
     // Mark patient as treated (does not mean cured, only that doctor did something with patient)
     this.treated = true;
     if (this.sickness && treatment == this.sickness.treatment && regeneration > 0 && absolute > 0) {
@@ -483,6 +484,7 @@ Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
 };
 
 Patient.prototype.beginSleep = function(time) {
+    console.log("Beginning sleep: ", time);
     this.sleepTime = time;
     this.setState(PatientStates.ASLEEP);
 };
