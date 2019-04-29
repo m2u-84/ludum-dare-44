@@ -19,6 +19,7 @@ Bugs
 [X] negatives Geld -> kann keine Patienten koordinieren
 [X] Hausmeister läuft in dem Moment los, wo die Leute umfallen
 [X] Remove Surgery from everywhere, does not exist
+[ ] Mafia kommt auch bei negativem Saldo kassieren und zieht wieder ab
 
 Technik
 [X] Bitmap Font evaluieren
