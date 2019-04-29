@@ -7,6 +7,12 @@ function MinigameStage(name) {
   this.margin = 32;
   this.treatment = undefined; // set this in constructor of extending class!
   this.success = false;
+  this.numberOfExecutions = 0;
+  this.firstAttempt = true; // first attempt -> multiple tries
+  this.trainingLeft = false;
+  this.succeededOnce = false;
+  this.helpText = "";
+  this.paused = false;
 }
 inherit(MinigameStage, Stage);
 
@@ -16,8 +22,12 @@ MinigameStage.prototype.preload = function() {
 
 MinigameStage.prototype.prestart = function(payload) {
   this.success = false;
+  this.paused = false;
+  this.payload = payload;
   this.patient = payload.patient;
-}
+  this.firstAttempt = (this.numberOfExecutions == 0 || !this.trainingLeft);
+  this.numberOfExecutions++;
+};
 
 MinigameStage.prototype.stop = function() {
   if (this.success) {
@@ -33,8 +43,25 @@ MinigameStage.prototype.stop = function() {
   gameStage.gameState.hospital.giveRevenue(money, this.patient.x, this.patient.y - 2);
 };
 
-MinigameStage.prototype.update = function(timer) {
+MinigameStage.prototype.close = function(success) {
+  this.success = success;
+  if (this.firstAttempt) {
+    if (success) {
+      this.succeededOnce = true;
+    }
+    this.paused = true;
+    setTimeout(() => this.prestart(this.payload), 700);
+  } else {
+    this.paused = true;
+    setTimeout(() => this.transitionOut(), 700);
+  }
+}
 
+MinigameStage.prototype.update = function(timer) {
+  if (this.getKeyState("Enter") && this.succeededOnce) {
+    this.trainingLeft = true;
+    this.prestart(this.payload);
+  }
 };
 
 MinigameStage.prototype.render = function(ctx, timer) {
@@ -57,4 +84,29 @@ MinigameStage.prototype.render = function(ctx, timer) {
   ctx.lineTo(0, this.h);
   ctx.closePath();
   ctx.clip();
+};
+
+MinigameStage.prototype.renderOnTop = function(ctx, timer) {
+  // Help Text
+  if (this.firstAttempt) {
+    ctx.globalAlpha = 0.7 + 0.25 * Math.sin(this.time * 0.002);
+    const text = "Training mode" + (this.succeededOnce ? " - press enter to begin treatment" : "");
+    mainFont.drawText(ctx, text, this.w / 2, 5, "white", 0.5);
+    if (this.helpText) {
+      mainFont.drawText(ctx, this.helpText, this.w / 2, 15, "white", 0.5);
+    }
+    ctx.globalAlpha = 1;
+  }
+  // Success or not
+  if (this.paused) {
+    if (this.success) {
+      // Checkmark
+      ctx.fillStyle = "green";
+      ctx.fillRect(50, 50, 100, 100);
+    } else {
+      // Nope
+      ctx.fillStyle = "red";
+      ctx.fillRect(50, 50, 100, 100);
+    }
+  }
 };

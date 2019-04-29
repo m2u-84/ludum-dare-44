@@ -1,6 +1,7 @@
 
 function SyringeStage() {
   MinigameStage.call(this, "syringe");
+  this.helpText = "Hold space to control syringe"
 }
 inherit(SyringeStage, MinigameStage);
 
@@ -25,7 +26,9 @@ SyringeStage.prototype.prestart = function(payload) {
 };
 
 SyringeStage.prototype.update = function(timer) {
-  this.targetY = this.h * 0.6;
+  if (this.paused) { return; }
+  MinigameStage.prototype.update.call(this, timer);
+  this.targetY = this.h * 0.64;
   this.armLeft = this.w - 90;
   this.armRight = this.w - 30;
   this.armCenter = (this.armLeft + this.armRight) / 2;
@@ -69,8 +72,7 @@ SyringeStage.prototype.updateFlight = function() {
   this.angle = Math.atan2(this.vy, this.vx);
   if (this.active && (this.x > this.armLeft - 20 || this.y > this.h + 100)) {
     this.x = this.armLeft - 20;
-    this.success = (Math.abs(this.y - this.targetY) < 0.12 * this.h);
-    this.transitionOut();
+    this.close(Math.abs(this.y - this.targetY) < 0.12 * this.h);
   }
 };
 
@@ -92,4 +94,6 @@ SyringeStage.prototype.render = function(ctx, timer) {
   drawImage(ctx, this.syringe, this.x, this.y, this.angle, 0.75);
   // Draw thumb
   drawImage(ctx, this.thumb, this.x, this.y, hangle, 1, 1, 0.85, 0.12);
+  // MinigameStage handles overlay stuff / UI
+  MinigameStage.prototype.renderOnTop.call(this, ctx, timer);
 };
