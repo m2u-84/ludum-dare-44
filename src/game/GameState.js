@@ -19,6 +19,10 @@ function GameState() {
         release:        new Treatment('Release as cured',      0,    0,  0.0,  0.0, (p) => p.isCured()) // release as cured only if patient is cured
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
+    this.receptions = [
+        new Treatment("Accept", 0, 0, 0, 0, (p) => !this.allBedsOccupied()),
+        new Treatment("Send Away", 0, 0, 0, 0)
+    ];
     // common sicknesses
     var self = this;
     this.sicknesses = [
