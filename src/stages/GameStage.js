@@ -38,6 +38,7 @@ GameStage.prototype.preload = function () {
     Bed.load();
     Hospital.load();
     Car.load();
+    PoliceCar.load();
     GameStage.load();
 
     this.facilityManagerDelay = 1000;
@@ -194,7 +195,7 @@ GameStage.prototype.spawnPoliceCar = function() {
 
     this.nextPoliceCarSpawnTime = Infinity; // never spawn a new car until this car finishes
     const spawnPoint = this.gameState.level.spawnPointCar;
-    const car = new Car(spawnPoint.x, spawnPoint.y, this.gameState, () => {
+    const car = new PoliceCar(spawnPoint.x, spawnPoint.y, this.gameState, () => {
         // spawn a new policy car between 60s and 90s
         this.nextPoliceCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
     });

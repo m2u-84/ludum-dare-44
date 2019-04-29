@@ -3,7 +3,7 @@ const CarStates = {
   SPAWNED: 0,
   DRIVE_TO_BREAKING_POINT: 1,
   BRAKE: 2,
-  DRIVE_TO_HOSPITAL: 3,
+  DRIVE_TO_HOSPITAL: 3, // RENAME: DRIVE_TO_SPOT
   WAIT_BEFORE_HOSPITAL: 4,
   DRIVE_TO_VANISHINGPOINT: 5
 };
@@ -24,10 +24,7 @@ Car.load = function() {
     const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
     const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
-    Car.image = loader.loadImage(IMAGES_BASE_PATH + 'police_car.png', 4, 2);
     Car.soundBrakes = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/police-braking/police-braking.mp3'});
-    Car.soundSiren = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/police-siren/police-siren.mp3'});
-    Car.soundSiren.loop = true;
     Car.soundDriving = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/car-driving/car-driving.mp3'});
     Car.soundDriving.volume = 0.5;
     Car.soundDriving.loop = true;
@@ -36,12 +33,6 @@ Car.load = function() {
 Car.prototype.update = function() {
 
     MovingObject.prototype.update.call(this);
-    if (this.gameState.facilityManager) {
-        if ((this.gameState.facilityManager.state === FacilityManagerStates.CARRY_CORPSE_TO_PILE) ||
-            (this.gameState.facilityManager.state === FacilityManagerStates.BURN_PILE)) {
-            this.stopAtWayToPile = true;
-        }
-    }
 };
 
 Car.prototype.setState = function(state) {
@@ -89,11 +80,10 @@ Car.prototype.paint = function(ctx) {
 
 Car.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
-    // TODO: angle and isMoving for braking
     const frameIndex = Math.floor(gameStage.time / 100) % frameIndexes.length;
     const yCorrection = this.directionFactor.y < 0 ? -1 : 0;
     const angle = this.state === CarStates.DRIVE_TO_HOSPITAL ? Math.PI/20 : 0; // driving to hospital while breaking
-    drawFrame(ctx, Car.image, frameIndexes[frameIndex], this.x, this.y, angle,
+    drawFrame(ctx, PoliceCar.image, frameIndexes[frameIndex], this.x, this.y, angle,
         this.directionFactor.x * 1 / 24, this.directionFactor.y * 1 / 24, 0.5,  0.6 + yCorrection);
 };
 
@@ -126,25 +116,38 @@ Car.prototype.brake = function(playSound) {
 
 Car.prototype.driveToHospital = function() {
 
-    const moveTarget = this.gameState.level.parkingPointCar;
+    const moveTarget = this.getParkingPoint();
     this.moveTo(moveTarget.x, moveTarget.y, () => this.nextState(), false);
+};
+
+Car.prototype.getParkingPoint = function() {
+
 };
 
 Car.prototype.waitBeforeHospital = function(playSound) {
 
     if (playSound) {
-        Car.soundSiren.play();
+        this.playWaitingSound();
         this.startWaitingTime(3000, () => {
-            Car.soundSiren.stop();
-            if (this.gameState.registerPoliceBribery()) {
-                gameStage.cashflowFeed.addText("Lost $1000 due to police bribery");
-                this.gameState.hospital.loseRevenue(1000, this.x, this.y);
-            }
+            this.stopWaitingSound();
+            this.performWaitingAction();
             this.nextState();
         }, false);
     } else {
         this.nextState();
     }
+};
+
+Car.prototype.playWaitingSound = function() {
+
+};
+
+Car.prototype.stopWaitingSound = function() {
+
+};
+
+Car.prototype.performWaitingAction = function() {
+
 };
 
 Car.prototype.driveToVanishingPoint = function() {
