@@ -7,11 +7,18 @@ inherit(SyringeStage, MinigameStage);
 
 SyringeStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
-  this.syringe = loader.loadImage("assets/images/syringe.png");
-  this.arrow = loader.loadImage("assets/images/arrow.png");
-  this.arm = loader.loadImage("assets/images/arm.png");
-  this.hand = loader.loadImage("assets/images/darthand_back.png");
-  this.thumb = loader.loadImage("assets/images/darthand_front.png");
+
+  const ASSETS_BASE_PATH = './assets/';
+  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
+  this.syringe = loader.loadImage(IMAGES_BASE_PATH + 'syringe.png');
+  this.arrow = loader.loadImage(IMAGES_BASE_PATH + 'arrow.png');
+  this.arm = loader.loadImage(IMAGES_BASE_PATH + 'arm.png');
+  this.hand = loader.loadImage(IMAGES_BASE_PATH + 'darthand_back.png');
+  this.thumb = loader.loadImage(IMAGES_BASE_PATH + 'darthand_front.png');
+
+  this.soundDarting = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/syringe-darting/syringe-darting.mp3'});
 };
 
 SyringeStage.prototype.prestart = function(payload) {
@@ -49,6 +56,8 @@ SyringeStage.prototype.update = function(timer) {
     // Setting force
     if (!this.getKeyState(" ")) {
       // Start flight
+      this.soundDarting.play();
+
       this.isFlying = true;
       this.vx = this.force * Math.cos(this.angle);
       this.vy = this.force * Math.sin(this.angle);
