@@ -37,6 +37,9 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.gender = this.imageIndex === 3 ? 'female' : 'male';
     // Patients have takable organ initially, but not after player takes one
     this.hasOrgan = true; // TODO take organ away after organ taking minigame
+
+    this.baseVelocity = this.movingVelocity;
+    this.movingVelocity = computeMovingVelocity(this.baseVelocity, this.health);
 }
 inherit(Patient, WalkingPerson);
 
@@ -63,6 +66,11 @@ Patient.prototype.update = function() {
     }
 };
 
+Patient.prototype.recomputeVelocity = function() {
+
+    this.movingVelocity = computeMovingVelocity(this.baseVelocity, this.health);
+};
+
 function updateHealth() {
 
     if (!this.isDead()) {
@@ -73,6 +81,11 @@ function updateHealth() {
             this.die();
         }
     }
+}
+
+function computeMovingVelocity(baseVelocity, health) {
+
+    return interpolate(0.5 * baseVelocity, baseVelocity, health / 100);
 }
 
 Patient.prototype.isAddressable = function() {

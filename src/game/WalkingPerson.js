@@ -2,8 +2,8 @@ function WalkingPerson(x, y, gameState) {
     this.x = x;
     this.y = y;
 
-    this.movingVelocity = 12; // animation speed
-    this.idleVelocity = 1;
+    this.movingVelocity = 12; // animation and moving speed
+    this.idleVelocity = 1; // animation speed
     this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
     this.directionFactor = 1;
@@ -50,8 +50,13 @@ WalkingPerson.prototype.endWaiting = function() {
     this.waitFinished = null;
 };
 
+WalkingPerson.prototype.recomputeVelocity = function() {
+
+};
+
 WalkingPerson.prototype.moveTo = function(targetX, targetY, finishCallback) {
 
+    this.recomputeVelocity();
     const path = this.gameState.level.findPath(this.x, this.y, targetX, targetY);
     this.planPath(path);
     this.pathFinishedCallback = finishCallback;
