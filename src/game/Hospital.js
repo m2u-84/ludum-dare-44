@@ -24,6 +24,9 @@ Hospital.prototype.update = function(td, time) {
         this.lastTime = time;
         this.collectRevenue();
     }
+    if (this.balance >= 10000) {
+        setTimeout(() => gameStage.gameState.setGameOver("gameover", 800, 2), 1000);
+    }
 };
 
 Hospital.prototype.collectRevenue = function() {

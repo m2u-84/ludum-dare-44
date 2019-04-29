@@ -7,6 +7,7 @@ function GameState() {
     this.closestPatientToDoctor = null;
     this.policyBriberyAttempts = 0;
     this.danegeld = 1000;
+    this.gameOver = false;
     this.stats = {
         patientCount: 0,
         patientsAccepted: 0,
@@ -42,7 +43,7 @@ function GameState() {
     var self = this;
     this.sicknesses = [
         new Sickness(0.0, 'Hypochondria', this.treatments.placeboSurgery),
-        new Sickness(0.1, 'Common Cold', this.treatments.drugs),
+        new Sickness(0.1, 'Common Cold', this.treatments.placeboSurgery),
         new Sickness(0.2, 'Demonic Possession', this.treatments.takeOrgan),
         new Sickness(0.2, 'Depression', this.treatments.drugs),
         new Sickness(0.2, 'Bone Fracture', this.treatments.fixLeg),
@@ -108,6 +109,14 @@ GameState.prototype.registerPoliceBribery = function() {
         this.policyBriberyAttempts++;
         return true;
     }
-    gameStage.transitionIn("gameover", 800, 1);
+    this.setGameOver("gameover", 800, 1);
     return false;
+};
+
+GameState.prototype.setGameOver = function(stage, duration, payload) {
+
+    if (!this.gameOver) {
+        this.gameOver = true;
+        gameStage.transitionIn(stage, duration, payload);
+    }
 };
