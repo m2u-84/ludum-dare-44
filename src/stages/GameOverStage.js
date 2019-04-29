@@ -8,7 +8,7 @@ GameOverStage.prototype.preload = function() {
   let endings = [
     'modal_gameover_1', // 0: Mafia Ending
     'modal_gameover_2', // 1: Police Ending
-    'modal_gameover_3', // 1: Money Ending
+    'modal_gameover_3', // 2: Money Ending
   ];
   this.backgrounds = endings.map(ending => loader.loadImage("./assets/images/" + ending +".png"));
 }

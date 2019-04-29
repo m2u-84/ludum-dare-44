@@ -95,6 +95,6 @@ GameState.prototype.registerPoliceBribery = function() {
         this.policyBriberyAttempts++;
         return true;
     }
-    gameStage.transitionIn("gameover", 800, 0);
+    gameStage.transitionIn("gameover", 800, 1);
     return false;
 };
