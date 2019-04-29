@@ -412,7 +412,8 @@ Patient.prototype.addEffect = function(regeneration, absolute) {
     // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
     // thus value change has maximum of 50% of max hp, but exponent of 2 pulls values closer towards 0
     // console.log("Health starts at ", this.health, " deg at ", this.healthDecrease);
-    this.health = clamp(this.health + 50 * sgnPow(absolute, 2), 0, 100);
+    const maxHealth = (this.health + 100) / 2;
+    this.health = clamp(this.health + 50 * sgnPow(absolute, 2), 0, maxHealth);
     // console.log("Applying effect ", regeneration, absolute, " setting health to ", this.health);
     if (this.health <= 0) {
         this.die();
