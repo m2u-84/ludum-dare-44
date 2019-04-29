@@ -1,4 +1,4 @@
-function WalkingPerson(x, y, gameState) {
+function MovingObject(x, y, gameState) {
     this.x = x;
     this.y = y;
 
@@ -18,7 +18,7 @@ function WalkingPerson(x, y, gameState) {
     this.gameState = gameState;
 }
 
-WalkingPerson.prototype.update = function() {
+MovingObject.prototype.update = function() {
 
     this.processPath();
     if (this.waitCheckCondition) {
@@ -32,29 +32,29 @@ WalkingPerson.prototype.update = function() {
     }
 };
 
-WalkingPerson.prototype.startWaiting = function(onCheckCondition, onFinished) {
+MovingObject.prototype.startWaiting = function(onCheckCondition, onFinished) {
 
     this.waitCheckCondition = onCheckCondition;
     this.waitFinished = onFinished;
 };
 
-WalkingPerson.prototype.startWaitingTime = function(time, onFinished) {
+MovingObject.prototype.startWaitingTime = function(time, onFinished) {
 
     const startTime = gameStage.time;
     this.startWaiting(() => gameStage.time - startTime >= time, onFinished);
 };
 
-WalkingPerson.prototype.endWaiting = function() {
+MovingObject.prototype.endWaiting = function() {
 
     this.waitCheckCondition = null;
     this.waitFinished = null;
 };
 
-WalkingPerson.prototype.recomputeVelocity = function() {
+MovingObject.prototype.recomputeVelocity = function() {
 
 };
 
-WalkingPerson.prototype.moveTo = function(targetX, targetY, finishCallback) {
+MovingObject.prototype.moveTo = function(targetX, targetY, finishCallback) {
 
     this.recomputeVelocity();
     const path = this.gameState.level.findPath(this.x, this.y, targetX, targetY);
@@ -62,7 +62,7 @@ WalkingPerson.prototype.moveTo = function(targetX, targetY, finishCallback) {
     this.pathFinishedCallback = finishCallback;
 };
 
-WalkingPerson.prototype.planPath = function(path) {
+MovingObject.prototype.planPath = function(path) {
 
     if (this.path === null) {
         this.path = path;
@@ -71,7 +71,7 @@ WalkingPerson.prototype.planPath = function(path) {
     }
 };
 
-WalkingPerson.prototype.getPathProgress = function() {
+MovingObject.prototype.getPathProgress = function() {
 
     const millsecsForPath = this.pathLength / this.movingVelocity * 1000;
     const elapsedMillisecs = gameStage.time - this.pathStartedTime;
@@ -84,7 +84,7 @@ WalkingPerson.prototype.getPathProgress = function() {
     return {waypointIndex: waypointIndex, betweenPercent: betweenPercent};
 };
 
-WalkingPerson.prototype.processPath = function() {
+MovingObject.prototype.processPath = function() {
 
     if (this.path !== null) {
         const pos = this.getPathProgress();
@@ -102,7 +102,7 @@ WalkingPerson.prototype.processPath = function() {
     }
 };
 
-WalkingPerson.prototype.finishPath = function() {
+MovingObject.prototype.finishPath = function() {
 
     this.path = null;
     if (this.pathFinishedCallback) {
@@ -112,7 +112,7 @@ WalkingPerson.prototype.finishPath = function() {
     }
 };
 
-WalkingPerson.prototype.updateCharacterPosition = function(x, y) {
+MovingObject.prototype.updateCharacterPosition = function(x, y) {
 
     this.lastMoveDelta = {x: x - this.x, y: y - this.y};
     if ((this.lastMoveDelta.x !== 0) || (this.lastMoveDelta.y !== 0)) {
@@ -123,7 +123,7 @@ WalkingPerson.prototype.updateCharacterPosition = function(x, y) {
     }
 };
 
-WalkingPerson.prototype.getMoveTarget = function() {
+MovingObject.prototype.getMoveTarget = function() {
 
     if ((this.path !== null) && (this.path.length > 0)) {
         const last = this.path[this.path.length - 1];
@@ -132,7 +132,7 @@ WalkingPerson.prototype.getMoveTarget = function() {
     return null;
 };
 
-WalkingPerson.prototype.paint = function(ctx) {
+MovingObject.prototype.paint = function(ctx) {
 
     // Reset character state (idle, moving) shortly after walking ends
     if (gameStage.time - this.lastMoveTime > 100) {
@@ -147,23 +147,22 @@ WalkingPerson.prototype.paint = function(ctx) {
     this.paintExecution(ctx, velocity, frameIndexes);
 };
 
-WalkingPerson.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
+MovingObject.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
 };
 
-WalkingPerson.prototype.getCharacterFrames = function(isMoving) {
+MovingObject.prototype.getCharacterFrames = function(isMoving) {
 
 };
 
-WalkingPerson.prototype.isInSameTile = function(x1, y1, x2, y2) {
+MovingObject.prototype.isInSameTile = function(x1, y1, x2, y2) {
 
     const diffX = Math.abs(x1 - x2);
     const diffY = Math.abs(y1 - y2);
     return (diffX < 0.5) && (diffY < 0.5);
 };
 
-WalkingPerson.prototype.isFreeTile = function (x, y) {
+MovingObject.prototype.isFreeTile = function (x, y) {
 
     return !gameStage.gameState.level.isBlocked({x: x, y: y});
 };
-

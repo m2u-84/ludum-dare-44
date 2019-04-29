@@ -14,7 +14,7 @@ Patient.count = 0;
 
 function Patient(x, y, health, wealth, sickness, gameState) {
 
-    WalkingPerson.call(this, x, y, gameState);
+    MovingObject.call(this, x, y, gameState);
     this.id = (++Patient.count);
     this.health = health;
     this.wealth = wealth;
@@ -43,7 +43,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.baseVelocity = this.movingVelocity;
     this.movingVelocity = computeMovingVelocity(this.baseVelocity, this.health);
 }
-inherit(Patient, WalkingPerson);
+inherit(Patient, MovingObject);
 
 Patient.load = function() {
     let sprites = [
@@ -58,7 +58,7 @@ Patient.load = function() {
 Patient.prototype.update = function() {
 
     this.isHighlighted = this.gameState.closestPatientToDoctor === this;
-    WalkingPerson.prototype.update.call(this);
+    MovingObject.prototype.update.call(this);
     if (this.inBed) {
         this.directionFactor = 0;
     }
@@ -180,7 +180,7 @@ Patient.prototype.paint = function(ctx) {
       return;
     }
 
-    WalkingPerson.prototype.paint.call(this, ctx);
+    MovingObject.prototype.paint.call(this, ctx);
 };
 
 Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
@@ -312,13 +312,13 @@ Patient.prototype.executeAction = function(action) {
           gameStage.transitionIn("syringe", undefined, {patient: this});
           break;
 
-        case treatments.drugs: 
+        case treatments.drugs:
           // TODO: replace this with minigame
           this.healthDecrease = -treatments.drugs.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
           break;
 
-        case treatments.fixLeg: 
+        case treatments.fixLeg:
           // TODO: replace this with minigame
           this.healthDecrease = -treatments.fixLeg.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
@@ -328,7 +328,7 @@ Patient.prototype.executeAction = function(action) {
           gameStage.transitionIn("organ", undefined, {patient: this});
           break;
 
-        case treatments.placeboSurgery: 
+        case treatments.placeboSurgery:
           // TODO: replace this with minigame
           this.healthDecrease = -treatments.placeboSurgery.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
@@ -339,18 +339,18 @@ Patient.prototype.executeAction = function(action) {
           this.walkHome();
           break;
 
-        case treatments.surgery: 
+        case treatments.surgery:
           // TODO: replace this with minigame
           this.healthDecrease = -treatments.surgery.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
           break;
 
-        case treatments.takeOrgan: 
+        case treatments.takeOrgan:
           // TODO: replace this with minigame
           this.health = 0;
           this.gameState.hospital.organs = this.gameState.hospital.organs + 1;
           break;
-        
+
         default:
           throw new Error("Invalid action for patient in bed: " + action);
       }
