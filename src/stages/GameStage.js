@@ -50,6 +50,7 @@ GameStage.prototype.prestart = function(payload) {
   // Assign Doctor gender when coming from main menu
   if (payload) this.gameState.doctor.assignGender(payload.isMale);
   this.nextPatientSpawnTime = gameStage.time + 3000;
+  this.nextPoliceCarSpawnTime = gameStage.time + 20000;
 };
 
 GameStage.prototype.start = function() {
@@ -139,6 +140,11 @@ GameStage.prototype.update = function (timer) {
     this.gameState.hospital.update(this.timeDif, this.time);
     this.gameState.cars.forEach(c => c.update());
 
+    this.spawnEntities();
+};
+
+GameStage.prototype.spawnEntities = function() {
+
     if ((this.gameState.facilityManager === null) && (this.time > this.facilityManagerDelay)) {
         this.gameState.facilityManager = this.spawnFacilityManager();
     }
@@ -147,18 +153,13 @@ GameStage.prototype.update = function (timer) {
         this.spawnPatient();
     }
 
-    // TODO: implement game logic for proper spawning
-    if ((this.gameState.cars.length === 0) && (gameStage.time > 300)) {
-
-        const spawnPoint = this.gameState.level.spawnPointCar;
-        const car = new Car(spawnPoint.x, spawnPoint.y, this.gameState);
-        this.gameState.cars.push(car);
-        car.nextState();
+    if (this.time > this.nextPoliceCarSpawnTime) {
+        this.spawnPoliceCar();
     }
-
 };
 
-GameStage.prototype.spawnPatient = function () {
+
+GameStage.prototype.spawnPatient = function() {
     const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
     if (spawnPoint !== null) {
 
@@ -174,7 +175,7 @@ GameStage.prototype.spawnPatient = function () {
     this.nextPatientSpawnTime = gameStage.time + interpolate(2000, 6000, Math.random());
 };
 
-GameStage.prototype.spawnFacilityManager = function () {
+GameStage.prototype.spawnFacilityManager = function() {
     const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
     if (spawnPoint !== null) {
 
@@ -187,6 +188,19 @@ GameStage.prototype.spawnFacilityManager = function () {
 
         return facilityManager;
     }
+};
+
+GameStage.prototype.spawnPoliceCar = function() {
+
+    this.nextPoliceCarSpawnTime = Infinity; // never spawn a new car until this car finishes
+    const spawnPoint = this.gameState.level.spawnPointCar;
+    const car = new Car(spawnPoint.x, spawnPoint.y, this.gameState, () => {
+        // spawn a new policy car between 60s and 90s
+        this.nextPoliceCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
+    });
+    this.gameState.cars.push(car);
+    car.nextState();
+
 };
 
 GameStage.prototype.showFloatingText = function(t, x, y, color) {
