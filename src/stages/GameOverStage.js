@@ -32,6 +32,22 @@ GameOverStage.prototype.render = function(ctx, timer) {
   const x = (w - this.backgrounds[this.gameOverNr].width) / 2;
   ctx.translate(x, y);
   drawImageToScreen(ctx, this.backgrounds[this.gameOverNr], 0, 0, 0, 1, 1, 0, 0);
+
+  // Draw Statistics
+  mainFont.drawText(ctx, gameStage.gameState.stats.patientCount, 135, 79, "darkgray", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.patientsAccepted, 135, 90, "darkgray", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.patientsRejected, 135, 101, "darkgray", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.patientsDied, 135, 112, "darkgray", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.patientsCured, 135, 123, "darkgray", 1);
+
+  mainFont.drawText(ctx, gameStage.gameState.stats.treatments, 310, 79, "darkgray", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.treatmentsFailed, 310, 90, "darkgray", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.treatmentsSucceeded, 310, 101, "darkgray", 1);
+
+  mainFont.drawText(ctx, gameStage.gameState.stats.diagnoses, 310, 121, "darkgray", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.moneyEarned, 310, 132, "darkgray", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.pingPongBounces, 310, 143, "darkgray", 1);
+
 };
 
 GameOverStage.prototype.onkey = function(event) {
