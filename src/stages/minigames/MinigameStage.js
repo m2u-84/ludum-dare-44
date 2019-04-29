@@ -18,6 +18,8 @@ inherit(MinigameStage, Stage);
 
 MinigameStage.prototype.preload = function() {
   this.background = loader.loadImage("assets/images/minigames_background.png");
+  this.successIcon = loader.loadImage("assets/images/tick.png");
+  this.failIcon = loader.loadImage("assets/images/cross.png");
 };
 
 MinigameStage.prototype.prestart = function(payload) {
@@ -103,12 +105,10 @@ MinigameStage.prototype.renderOnTop = function(ctx, timer) {
   if (this.paused) {
     if (this.success) {
       // Checkmark
-      ctx.fillStyle = "green";
-      ctx.fillRect(50, 50, 100, 100);
+      drawImageToScreen(ctx, this.successIcon, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5);
     } else {
       // Nope
-      ctx.fillStyle = "red";
-      ctx.fillRect(50, 50, 100, 100);
+      drawImageToScreen(ctx, this.failIcon, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5);
     }
   }
 };
