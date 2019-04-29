@@ -94,7 +94,7 @@ Strategie-Modul
 [ ] Schwierigkeitsgrad mit der Zeit steigern <-- Björn Markus
 
 Finanz-Controller
-[ ] Geld bekommen wenn Patient geheilt nach Hause geht <-- Björn
+[X] Geld bekommen wenn Patient geheilt nach Hause geht
 [X] Visualisierung Gewinn/Verlust
 [X] Visualisierung Spieldauer
 [X] Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge
