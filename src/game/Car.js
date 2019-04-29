@@ -8,11 +8,13 @@ const CarStates = {
   DRIVE_TO_VANISHINGPOINT: 5
 };
 
-function Car(x, y, gameState) {
+function Car(x, y, gameState, driveFinishedCallback) {
 
     MovingObject.call(this, x, y, gameState);
     this.state = CarStates.SPAWNED;
-    this.movingVelocity = 2;
+    this.movingVelocity = 10;
+    this.stopAtWayToPile = false;
+    this.driveFinishedCallback = driveFinishedCallback;
 }
 inherit(Car, MovingObject);
 
@@ -27,12 +29,19 @@ Car.load = function() {
     Car.soundSiren = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/police-siren/police-siren.mp3'});
     Car.soundSiren.loop = true;
     Car.soundDriving = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/car-driving/car-driving.mp3'});
+    Car.soundDriving.volume = 0.5;
     Car.soundDriving.loop = true;
 };
 
 Car.prototype.update = function() {
 
     MovingObject.prototype.update.call(this);
+    if (this.gameState.facilityManager) {
+        if ((this.gameState.facilityManager.state === FacilityManagerStates.CARRY_CORPSE_TO_PILE) ||
+            (this.gameState.facilityManager.state === FacilityManagerStates.BURN_PILE)) {
+            this.stopAtWayToPile = true;
+        }
+    }
 };
 
 Car.prototype.setState = function(state) {
@@ -50,7 +59,7 @@ Car.prototype.nextState = function() {
             break;
         case CarStates.DRIVE_TO_BREAKING_POINT:
             this.setState(CarStates.BRAKE);
-            this.brake();
+            this.brake(this.stopAtWayToPile);
             break;
         case CarStates.BRAKE:
             this.setState(CarStates.DRIVE_TO_HOSPITAL);
@@ -58,7 +67,7 @@ Car.prototype.nextState = function() {
             break;
         case CarStates.DRIVE_TO_HOSPITAL:
             this.setState(CarStates.WAIT_BEFORE_HOSPITAL);
-            this.waitBeforeHospital();
+            this.waitBeforeHospital(this.stopAtWayToPile);
             break;
         case CarStates.WAIT_BEFORE_HOSPITAL:
             this.setState(CarStates.DRIVE_TO_VANISHINGPOINT);
@@ -67,7 +76,8 @@ Car.prototype.nextState = function() {
         case CarStates.DRIVE_TO_VANISHINGPOINT:
             this.setState(CarStates.SPAWNED);
             this.jumpToSpawnPoint();
-            this.nextState();
+            this.gameState.cars.remove(this);
+            this.driveFinishedCallback();
             break;
     }
 };
@@ -105,10 +115,12 @@ Car.prototype.driveToBreakingPoint = function() {
     this.moveTo(moveTarget.x, moveTarget.y, () => this.nextState(), false);
 };
 
-Car.prototype.brake = function() {
+Car.prototype.brake = function(playSound) {
 
-    Car.soundDriving.stop();
-    Car.soundBrakes.play();
+    if (playSound) {
+        Car.soundDriving.stop();
+        Car.soundBrakes.play();
+    }
     this.nextState();
 };
 
@@ -118,13 +130,17 @@ Car.prototype.driveToHospital = function() {
     this.moveTo(moveTarget.x, moveTarget.y, () => this.nextState(), false);
 };
 
-Car.prototype.waitBeforeHospital = function() {
+Car.prototype.waitBeforeHospital = function(playSound) {
 
-    Car.soundSiren.play();
-    this.startWaitingTime(3000, () => {
-        Car.soundSiren.stop();
+    if (playSound) {
+        Car.soundSiren.play();
+        this.startWaitingTime(3000, () => {
+            Car.soundSiren.stop();
+            this.nextState();
+        }, false);
+    } else {
         this.nextState();
-    }, false);
+    }
 };
 
 Car.prototype.driveToVanishingPoint = function() {

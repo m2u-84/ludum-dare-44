@@ -38,13 +38,16 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   drawImageToScreen(ctx, this.background, 0, 0, 0, 1, 1, 0, 0);
   // Draw Patient Overview
   ctx.translate(14, 14);
+  // ID
   bigFont.drawText(ctx, "" + this.patient.id, 118, 0, "dark");
   ctx.globalAlpha = 0.2;
+  // Wealth
   const wealth = this.patient.wealthLevel == 1 ? "$" : this.patient.wealthLevel == 2 ? "$$" : "$$$";
   mainFont.drawText(ctx, "$$$", 0, 34, "green");
   ctx.globalAlpha = 1;
   mainFont.drawText(ctx, wealth, 0, 34, "green");
-  const diagnosis = this.patient.diagnosed ? this.patient.sickness.name : "???";
+  // Diagnosis
+  const diagnosis = this.patient.diagnosed ? (this.patient.cured ? "Cured" : this.patient.sickness.name) : "???";
   mainFont.drawText(ctx, diagnosis, 80, 34, "orange");
 
   // Preferred option
