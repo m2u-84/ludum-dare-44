@@ -134,6 +134,10 @@ Car.prototype.waitBeforeHospital = function(playSound) {
 
     if (playSound) {
         Car.soundSiren.play();
+        if (this.gameState.registerPoliceBribery()) {
+            gameStage.cashflowFeed.addText("Lost $1000 due to police bribery");
+            this.gameState.hospital.loseRevenue(1000, this.x, this.y);
+        }
         this.startWaitingTime(3000, () => {
             Car.soundSiren.stop();
             this.nextState();

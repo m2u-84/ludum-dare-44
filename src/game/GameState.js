@@ -5,6 +5,7 @@ function GameState() {
     this.cars = [];
     this.facilityManager = null;
     this.closestPatientToDoctor = null;
+    this.policyBriberyAttempts = 0;
 
     // possible treatments
     this.treatments = {
@@ -88,4 +89,13 @@ GameState.prototype.allBedsOccupied = function() {
 
 GameState.prototype.removePatient = function(patient) {
     this.patients = this.patients.filter(p => p != patient);
+};
+
+GameState.prototype.registerPoliceBribery = function() {
+    if (this.policyBriberyAttempts < 2) {
+        this.policyBriberyAttempts++;
+        return true;
+    }
+    alert("Game Over");
+    return false;
 };

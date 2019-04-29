@@ -56,7 +56,7 @@ GameStage.prototype.prestart = function(payload) {
 GameStage.prototype.start = function() {
     // Todo: Enable on release
     // this.transitionIn("instructions", 800);
-}
+};
 
 GameStage.prototype.render = function (ctx, timer) {
     var cellSize = 24;
