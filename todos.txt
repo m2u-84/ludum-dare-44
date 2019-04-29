@@ -1,9 +1,9 @@
 ﻿Story
-[ ] Rahmenstory erzählen <-- Edu
-  [ ] Mafia: Startkapital bereitgestellt
-  [ ] Spielziel: innerhalb Zeit möglichst viel Knete machen, Kickback an Mafia, Hinweis auf unlautere Methoden
-  [ ] Warnung vor Polizei
-  [ ] Warnung vor Mafia
+[X] Rahmenstory erzählen <-- Edu
+  [X] Mafia: Startkapital bereitgestellt
+  [X] Spielziel: innerhalb Zeit möglichst viel Knete machen, Kickback an Mafia, Hinweis auf unlautere Methoden
+  [X] Warnung vor Polizei
+  [X] Warnung vor Mafia
 [X] Namen für Spiel brainstormen
 
 Bugs
@@ -19,13 +19,13 @@ Bugs
 [X] negatives Geld -> kann keine Patienten koordinieren
 [X] Hausmeister läuft in dem Moment los, wo die Leute umfallen
 [X] Remove Surgery from everywhere, does not exist
-[ ] Mafia kommt auch bei negativem Saldo kassieren und zieht wieder ab
+[X] Mafia kommt auch bei negativem Saldo kassieren und zieht wieder ab
 
 Technik
 [X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
 [X] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
-[ ] Hintergrund-Musik spielt im Firefox nicht, wenn man nicht beim Start in das Fenster klickt <-- Markus schaut ggfs. im Code
+[X] Hintergrund-Musik spielt im Firefox nicht, wenn man nicht beim Start in das Fenster klickt <-- Markus schaut ggfs. im Code
 [-] Canvas HighRes rendern
 
 Features
@@ -87,11 +87,11 @@ Minigames
 [X] Fracture
 [X] Placebo Surgery
 [X] Take Organ
-[X] Give Drugs <-- Markus
-[?] Regular Surgery
+[X] Give Drugs
+[-] Regular Surgery
 
 Strategie-Modul
-[ ] Schwierigkeitsgrad mit der Zeit steigern <-- Björn Markus
+[X] Schwierigkeitsgrad mit der Zeit steigern
 
 Finanz-Controller
 [X] Geld bekommen wenn Patient geheilt nach Hause geht

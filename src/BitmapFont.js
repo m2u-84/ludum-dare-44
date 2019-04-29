@@ -76,6 +76,7 @@ BitmapFont.prototype.drawCharacter = function(ctx, char, x, y, color) {
 };
 
 BitmapFont.prototype.drawText = function(ctx, text, x, y, color, align = 0) {
+  text = ""+text;
   if (!this.ready) { return; }
   let width = 0;
   for (var char of text) {
