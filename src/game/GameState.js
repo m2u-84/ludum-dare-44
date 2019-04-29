@@ -6,7 +6,8 @@ function GameState() {
     this.facilityManager = null;
     this.closestPatientToDoctor = null;
     this.policyBriberyAttempts = 0;
-    this.danegeld = 1000;
+    this.danegeld = 400;
+    this.gameOver = false;
 
     this.releaseTreatment = new Treatment('Release as cured',      0,    0,  0.0,  0.0);
     // possible treatments
@@ -97,4 +98,12 @@ GameState.prototype.registerPoliceBribery = function() {
     }
     gameStage.transitionIn("gameover", 800, 1);
     return false;
+};
+
+GameState.prototype.setGameOver = function(stage, duration, payload) {
+
+    if (!this.gameOver) {
+        this.gameOver = true;
+        gameStage.transitionIn(stage, duration, payload);
+    }
 };

@@ -263,6 +263,8 @@ GameStage.prototype.onkey = function (event) {
     } else if (event.key == "i") {
       // Diagnose all patients
       this.gameState.patients.forEach( p => p.diagnosed = true );
+    } else if (event.key == "l") {
+        this.gameState.hospital.balance += 100;
     }
 };
 

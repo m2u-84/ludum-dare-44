@@ -46,7 +46,7 @@ MafiaCar.prototype.stopWaitingSound = function() {
 MafiaCar.prototype.performWaitingAction = function() {
 
     const danegeld = this.gameState.danegeld;
-    this.gameState.danegeld += 500;
+    this.gameState.danegeld += 400;
     gameStage.cashflowFeed.addText("The Mafia kindly asked for $" + danegeld + " danegeld");
 
     if (this.gameState.hospital.balance - danegeld < 0) {
