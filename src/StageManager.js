@@ -207,7 +207,8 @@ StageManager.prototype.render = function() {
 };
 
 StageManager.prototype.handleKeyDown = function(event) {
-  event.preventDefault();
+  // Todo: Enable again on release
+  // event.preventDefault();
   event.stopPropagation();
   this.activeStage.onkey(event);
 };

@@ -1,7 +1,7 @@
 function GameState() {
     this.level = new Level();
     this.hospital = new Hospital();
-    this.doctor = new Doctor(13, 12.8, 0.5, 0.1, this);
+    this.doctor = new Doctor(11, 12.8, 0.5, 0.1, this);
     this.facilityManager = null;
     this.closestPatientToDoctor = null;
 
@@ -20,8 +20,8 @@ function GameState() {
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     this.receptions = [
-        new Treatment("Accept", 0, 0, 0, 0, (p) => !this.allBedsOccupied()),
-        new Treatment("Send Away", 0, 0, 0, 0)
+        new Treatment("Accept", 0, 0, 0, 0, 0, () => !this.allBedsOccupied()),
+        new Treatment("Send Away", 0, 0, 0, 0, 0)
     ];
     // common sicknesses
     var self = this;

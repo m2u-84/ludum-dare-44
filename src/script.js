@@ -24,12 +24,15 @@ window.onload = () => {
               .add(new PauseStage())
               .add(new ContextMenuStage())
               .add(new SyringeStage())
+              .add(new FractureStage())
               .add(new OrganStage());
 
   // Load stage content
   stageManager.load();
   canvas.focus();
-  loader.loadAll().then(() => stageManager.crossfadeToStage("start", 800, 0));
+
+  // loader.loadAll().then(() => stageManager.crossfadeToStage("start", 800, 0));
+  loader.loadAll().then(() => stageManager.crossfadeToStage("game", 800, 0));
   handleFrame();
 };
 
