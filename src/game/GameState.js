@@ -14,7 +14,8 @@ function GameState() {
         organ:          new Treatment('Give Organ',         5000, 1000, -0.1, -0.3, () => this.hospital.organs > 0),
         antibiotics:    new Treatment('Give Antibiotics',    200,   40, -0.1, -0.1),
         takeOrgan:      new Treatment('Take Organ',         2000,  500, -0.2, -0.4, (p) => p.hasOrgan),
-        fixLeg:         new Treatment('Fix Fracture',        800,  220, -0.1, -0.3)
+        fixLeg:         new Treatment('Fix Fracture',        800,  220, -0.1, -0.3),
+        release:        new Treatment('Release as cured',      0,    0,  0.0,  0.0)
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     // common sicknesses
@@ -40,6 +41,7 @@ function GameState() {
     setRelations(this.treatments.antibiotics,    [0.3, 0.1,-0.1, 0.0, 0.0, 0.3, 0.7, 0.0, 0.5,-0.1,-0.1]);
     setRelations(this.treatments.takeOrgan,      [0.1,-1.0, 1.0,-0.4,-1.0,-1.0,-0.6,-1.0,-1.0, 0.0,-0.8]);
     setRelations(this.treatments.fixLeg,         [0.2,-0.3, 0.0,-0.2, 1.0,-0.4,-0.5,-0.3,-0.4,-0.5,-0.4]);
+    setRelations(this.treatments.release,        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
 
     // start with 0 patients
     this.patients = [];

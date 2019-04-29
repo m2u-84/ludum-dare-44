@@ -273,7 +273,7 @@ Patient.prototype.executeAction = function(action) {
         case treatments.organ:
           gameStage.transitionIn("organ", undefined, {patient: this});
           break;
-        case "Release":
+        case treatments.release:
             this.releaseFromBed();
             this.walkHome();
             break;
