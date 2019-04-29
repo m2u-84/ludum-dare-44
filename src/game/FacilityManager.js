@@ -140,20 +140,22 @@ FacilityManager.prototype.getFirstCorpse = function() {
 
 FacilityManager.prototype.walkToCorpse = function() {
 
-    const corpse = this.getFirstCorpse();
-    if (corpse) {
-        let pos = {x: null, y: null};
-        if (corpse.inBed) {
-            pos = corpse.inBed.getClosestVisitorPoint(this.x, this.y);
-        } else {
-            pos.x = corpse.x;
-            pos.y = corpse.y;
+    this.startWaitingTime(1000, () => {
+        const corpse = this.getFirstCorpse();
+        if (corpse) {
+            let pos = {x: null, y: null};
+            if (corpse.inBed) {
+                pos = corpse.inBed.getClosestVisitorPoint(this.x, this.y);
+            } else {
+                pos.x = corpse.x;
+                pos.y = corpse.y;
+            }
+            this.moveTo(pos.x, pos.y, () => {
+                this.removeCorpse(corpse);
+                this.nextState();
+            });
         }
-        this.moveTo(pos.x, pos.y, () => {
-            this.removeCorpse(corpse);
-            this.nextState();
-        });
-    }
+    });
 };
 
 FacilityManager.prototype.removeCorpse = function(corpse) {

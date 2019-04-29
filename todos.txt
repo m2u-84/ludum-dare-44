@@ -16,7 +16,8 @@ Bugs
 [X] nur ein Organ pro Patient entnehmen <-- Markus
 [ ] negative Behandlungen verpuffen irgendwie <-- Markus
 [X] take organ lässt patienten nicht schlafen <-- Markus
-[X] negatives Geld -> kann keine Patienten koordinieren  
+[X] negatives Geld -> kann keine Patienten koordinieren
+[X] Hausmeister läuft in dem Moment los, wo die Leute umfallen
 
 Technik
 [X] Bitmap Font evaluieren
