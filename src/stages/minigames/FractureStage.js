@@ -11,6 +11,7 @@ FractureStage.prototype.preload = function() {
   this.lowerLeg = loader.loadImage("assets/images/hammer_leg_front.png");
   this.nailImage = loader.loadImage("assets/images/hammer_nail.png");
   this.hammerImage = loader.loadImage("assets/images/hammer_hand.png");
+  this.curtainImage = loader.loadImage("assets/images/curtain.png");
 };
 
 FractureStage.prototype.prestart = function(payload) {
@@ -129,8 +130,7 @@ FractureStage.prototype.render = function(ctx, timer) {
   // Hammer
   drawImageToScreen(ctx, this.hammerImage, Math.round(this.hammerX), Math.round(this.hammerY), 0, -1, 1, 0.95, 0.94);
   // Veal
-  ctx.fillStyle = "#c0c0c0";
-  ctx.fillRect(this.w * 0.6, 0, this.w, this.h);
+  drawImageToScreen(ctx, this.curtainImage, this.w * 0.64, 0, 0, 1, 1, 0, 0);
   // MinigameStage handles overlay stuff / UI
   MinigameStage.prototype.renderOnTop.call(this, ctx, timer);
 };
