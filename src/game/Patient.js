@@ -64,7 +64,7 @@ Patient.prototype.update = function() {
     }
     updateHealth.call(this);
     if ((this.state === PatientStates.WAIT_AT_RECEPTION) && (gameStage.time - this.stateChangedTime > this.patience)) {
-        this.executeAction("Send away");
+        this.executeAction(this.gameState.receptions[1]);
     }
     if ((this.state === PatientStates.STAY_IN_BED) && (this.isCured())) {
         this.executeAction(this.gameState.treatments.release);
