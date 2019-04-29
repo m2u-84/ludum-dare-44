@@ -7,7 +7,7 @@ function GameState() {
 
     // possible treatments
     this.treatments = {
-        //                            name       price for pat.  hosp.  failure  
+        //                            name       price for pat.  hosp.  failure
         drugs:          new Treatment('Prescribe Drugs',     100,   10,  0.0,  0.0),
         placeboSurgery: new Treatment('Placebo Surgery',    1000,   80,  0.0,  0.0),
         surgery:        new Treatment('Proper Surgery',     1000,  500, -0.1, -0.3),
@@ -56,21 +56,31 @@ function GameState() {
 
 GameState.prototype.init = function() {
     this.level.init();
-}
+};
 
 GameState.prototype.isBlocked = function(target) {
     return this.level.isBlocked(target);
-}
+};
 
 GameState.prototype.getBed = function(target) {
     return this.level.getBed(target);
-}
+};
 
 GameState.prototype.getRandomFreeBed = function() {
-    const freeBeds = this.level.beds.filter(bed => !bed.occupiedBy && this.patients.every(p => !(p.targetBed == bed)));
+
+    const freeBeds = this.getFreeBeds();
     return getRandomItem(freeBeds);
-}
+};
+
+GameState.prototype.getFreeBeds = function() {
+    return this.level.beds.filter(bed => !bed.occupiedBy && this.patients.every(p => !(p.targetBed == bed)));
+};
+
+GameState.prototype.allBedsOccupied = function() {
+
+    return (this.getFreeBeds().length === 0);
+};
 
 GameState.prototype.removePatient = function(patient) {
     this.patients = this.patients.filter(p => p != patient);
-}
+};
