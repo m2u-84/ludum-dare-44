@@ -7,7 +7,7 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
     this.y = y;
     this.sizeX = sizeX;
     this.sizeY = sizeY;
-    this.movingVelocity = 4; // tiles per second TODO: reduce to 2
+    this.movingVelocity = 3; // tiles per second TODO: reduce to 2
     this.idleVelocity = 1;
     this.gameState = gameState;
     this.lastMoveDelta = {x: 0, y: 0};

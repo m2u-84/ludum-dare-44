@@ -21,6 +21,7 @@ window.onload = () => {
               .add(new StartStage())
               .add(gameStage)
               .add(new InstructionsStage())
+              .add(new GameOverStage())
               .add(new PauseStage())
               .add(new ContextMenuStage())
               .add(new SyringeStage())
@@ -33,8 +34,8 @@ window.onload = () => {
   stageManager.load();
   canvas.focus();
 
-  // loader.loadAll().then(() => stageManager.crossfadeToStage("start", 800, 0));
-  loader.loadAll().then(() => stageManager.crossfadeToStage("game", 800, 0));
+  loader.loadAll().then(() => stageManager.crossfadeToStage("start", 800, 0));
+  // loader.loadAll().then(() => stageManager.crossfadeToStage("game", 800, 0));
   handleFrame();
 };
 
