@@ -22,6 +22,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.sickness = sickness;
     this.diagnosed = false;
     this.treated = false;
+    this.cured = false;
     this.wealthLevel = wealth >= 80 ? 3 : wealth >= 40 ? 2 : 1;
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
@@ -432,6 +433,10 @@ Patient.prototype.getTreatmentPrice = function(treatment) {
 Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
     // Mark patient as treated (does not mean cured, only that doctor did something with patient)
     this.treated = true;
+    if (this.sickness && treatment == this.sickness.treatment && regeneration > 0 && absolute > 0) {
+        // No sickness anymore
+        this.cured = true;
+    }
     // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
     // thus value change has maximum of 50% of max hp, but exponent of 2 pulls values closer towards 0
     // console.log("Health starts at ", this.health, " deg at ", this.healthDecrease);
