@@ -29,6 +29,7 @@ Technik
 [-] Canvas HighRes rendern
 
 Features
+[ ] Weiterspielen können nach erfolgreichem Spielabschluss
 [ ] Schrittgeräusche <-- Matthias / Björn
 [X] Mafia-Sound, wenn Mafia-Auto hält
 [X] ESC bei Behandlungsauswahl soll Dialog wieder Schließen
@@ -72,10 +73,10 @@ Features
 [-] Pausieren der Musik, wenn Stage in Pause ist
 [ ] Sound-Balancing  <-- Matthias
   [X] Auto-Sound leiser
-  [ ] Flatline raus 
+  [ ] Flatline raus
 [ ] Balancing Gameplay <-- alle Björn Markus Edu Matthias
   [X] Startgeld 5000
-  [X] Spätere Autos 
+  [X] Spätere Autos
 [ ] CHEATS RAUS
 [X] Heimschicken deaktivieren
 (Optional)
