@@ -53,8 +53,8 @@ GameStage.prototype.prestart = function(payload) {
   // Assign Doctor gender when coming from main menu
   if (payload) this.gameState.doctor.assignGender(payload.isMale);
   this.nextPatientSpawnTime = gameStage.time + 3000;
-  this.nextPoliceCarSpawnTime = gameStage.time + 30000;
-  this.nextMafiaCarSpawnTime = gameStage.time + 20000;
+  this.nextPoliceCarSpawnTime = gameStage.time + 75000;
+  this.nextMafiaCarSpawnTime = Infinity;
 };
 
 GameStage.prototype.start = function() {

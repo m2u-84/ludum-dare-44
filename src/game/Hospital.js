@@ -1,5 +1,5 @@
 function Hospital() {
-    this.balance = 9000;
+    this.balance = 2500;
     this.inventory = [];
     this.lastTime = 0;
     this.revenueDelay = 10000;
