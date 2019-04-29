@@ -7,7 +7,8 @@ const PatientStates = {
   STAY_IN_BED: 4,
   WALK_HOME: 5,
   DEAD: 6,
-  DIAGNOSING: 7
+  DIAGNOSING: 7,
+  ASLEEP: 8
 };
 
 Patient.count = 0;
@@ -37,6 +38,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.imageIndex = this.isRich ? 3 : rndInt(0, 3);
     this.image = Patient.images[this.imageIndex];
     this.diagnosingUntil = 0;
+    this.sleepTime = 0;
     this.gender = this.imageIndex === 3 ? 'female' : 'male';
     // Patients have takable organ initially, but not after player takes one
     this.hasOrgan = true; // TODO take organ away after organ taking minigame
@@ -71,12 +73,14 @@ Patient.prototype.update = function() {
         this.executeAction(this.gameState.treatments.release);
     }
     if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
-      this.nextState();
+        this.nextState();
+    }
+    if (this.state === PatientStates.ASLEEP && gameStage.time > this.stateChangedTime + this.sleepTime) {
+        this.nextState();
     }
 };
 
 Patient.prototype.setState = function(state) {
-
     this.state = state;
     this.stateChangedTime = gameStage.time;
 };
@@ -172,6 +176,9 @@ Patient.prototype.nextState = function() {
         case PatientStates.DIAGNOSING:
             this.setState(PatientStates.STAY_IN_BED);
             this.diagnosed = true;
+            break;
+        case PatientStates.ASLEEP:
+            this.setState(PatientStates.STAY_IN_BED);
             break;
     }
 };
@@ -434,7 +441,7 @@ Patient.prototype.getTreatmentPrice = function(treatment) {
   return price;
 };
 
-Patient.prototype.addEffect = function(regeneration, absolute) {
+Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
     // Mark patient as treated (does not mean cured, only that doctor did something with patient)
     this.treated = true;
     // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
@@ -452,4 +459,11 @@ Patient.prototype.addEffect = function(regeneration, absolute) {
         this.healthDecrease = clump(this.healthDecrease, -0.3, 0.3, 0.25);
         // console.log("Setting health decrease to ", this.healthDecrease);
     }
-}
+    // Change state
+    this.beginSleep(treatment.sleepTime);
+};
+
+Patient.prototype.beginSleep = function(time) {
+    this.sleepTime = time;
+    this.setState(PatientStates.ASLEEP);
+};

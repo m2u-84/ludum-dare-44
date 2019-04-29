@@ -7,7 +7,7 @@ function Bed(x, y) {
 
 Bed.load = function() {
     Bed.image = loader.loadImage("./assets/images/bed.png", 4, 2);
-    Bed.headImage = loader.loadImage("./assets/images/bed_patients.png", 4, 2);
+    Bed.headImage = loader.loadImage("./assets/images/bed_patients.png", 4, 3);
     Bed.exclamationImage = loader.loadImage("./assets/images/attention.png", 5, 1);
     Bed.exclamationFrames = [0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 2, 2, 1];
     Bed.busyImage = loader.loadImage("./assets/images/busy.png", 6, 1);
@@ -22,10 +22,14 @@ Bed.prototype.paint = function(ctx) {
         headFrame = patient.imageIndex;
         if (patient.state == PatientStates.DEAD) {
             headFrame += 4;
-            frame = 1;
+            frame = 4;
+        } else if (patient.state == PatientStates.ASLEEP) {
+            headFrame += 8;
         }
     }
+    // Bed itself
     drawFrame(ctx, Bed.image, frame, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
+    // Head in bed
     if (headFrame >= 0) {
         drawFrame(ctx, Bed.headImage, headFrame, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
     }
