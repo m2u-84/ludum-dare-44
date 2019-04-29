@@ -28,6 +28,7 @@ window.onload = () => {
               .add(new FractureStage())
               .add(new PlaceboStage())
               .add(new TakeOrganStage())
+              .add(new DrugStage())
               .add(new OrganStage());
 
   // Load stage content
