@@ -7,11 +7,18 @@ function ContextMenuStage() {
 inherit(ContextMenuStage, Stage);
 
 ContextMenuStage.prototype.preload = function() {
-  this.background = loader.loadImage("assets/images/patientsheet.png");
-  this.keyImage = loader.loadImage("assets/images/keys.png", 9, 1);
+  const ASSETS_BASE_PATH = './assets/';
+  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
+  this.background = loader.loadImage(IMAGES_BASE_PATH + 'patientsheet.png');
+  this.keyImage = loader.loadImage(IMAGES_BASE_PATH + 'keys.png', 9, 1);
+
+  this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
 };
 
 ContextMenuStage.prototype.prestart = function(payload) {
+  this.soundSliding.play();
   this.patient = payload.patient;
   this.actions = this.patient ? this.patient.getActions() : [];
 };
@@ -128,6 +135,8 @@ ContextMenuStage.prototype.onkey = function(event) {
 
 ContextMenuStage.prototype.close = function() {
   if (this.active) {
+    this.soundSliding.play();
+
     this.transitionOut(300);
   }
 };
