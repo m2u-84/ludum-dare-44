@@ -220,11 +220,9 @@ GameStage.prototype.onkey = function (event) {
         }
     }
     // Cheats
-    if (event.ctrlKey) {
-      if (event.key == "k") {
+    if (event.key == "k") {
         // Kill all patients
         this.gameState.patients.forEach( p => p.die() );
-      }
     }
 };
 
