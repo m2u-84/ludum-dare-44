@@ -36,9 +36,11 @@ MinigameStage.prototype.stop = function() {
     const regenerationEffect = this.treatment.getRandomizedEffect(this.patient.sickness);
     const absoluteEffect = this.treatment.getRandomizedEffect(this.patient.sickness);
     this.patient.addEffect(regenerationEffect, absoluteEffect, this.treatment);
+    this.patient.gameState.stats.treatmentsSucceeded++;
   } else {
     const {regenerative, absolute} = this.treatment.getFailureEffects();
     this.patient.addEffect(regenerative, absolute, this.treatment);
+    this.patient.gameState.stats.treatmentsFailed++;
   }
   // Award money
   const money = this.patient.getTreatmentPrice(this.treatment);
