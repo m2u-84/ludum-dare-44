@@ -287,16 +287,26 @@ Patient.prototype.executeAction = function(action) {
           this.diagnosingUntil = gameStage.time + rndInt(3000, 15000); // TODO change to ~7-40 seconds
           this.state = PatientStates.DIAGNOSING;
           break;
+
         case treatments.antibiotics:
           gameStage.transitionIn("syringe", undefined, {patient: this});
           break;
+
         case treatments.organ:
           gameStage.transitionIn("organ", undefined, {patient: this});
           break;
+
+        case treatments.takeOrgan: 
+          // TODO: replace this with minigame
+          this.health = 0;
+          this.gameState.hospital.organs = this.gameState.hospital.organs + 1;
+          break;
+        
         case treatments.release:
             this.releaseFromBed();
             this.walkHome();
             break;
+
         default:
           throw new Error("Invalid action for patient in bed: " + action);
       }
