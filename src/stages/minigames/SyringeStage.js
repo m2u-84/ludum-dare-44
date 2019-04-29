@@ -72,7 +72,7 @@ SyringeStage.prototype.updateFlight = function() {
   this.angle = Math.atan2(this.vy, this.vx);
   if (this.active && (this.x > this.armLeft - 20 || this.y > this.h + 100)) {
     this.x = this.armLeft - 20;
-    this.close(Math.abs(this.y - this.targetY) < 0.12 * this.h);
+    this.close(Math.abs(this.y - this.targetY) < 0.1 * this.h);
   }
 };
 

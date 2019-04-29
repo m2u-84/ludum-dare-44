@@ -24,6 +24,7 @@ window.onload = () => {
               .add(new PauseStage())
               .add(new ContextMenuStage())
               .add(new SyringeStage())
+              .add(new FractureStage())
               .add(new OrganStage());
 
   // Load stage content
