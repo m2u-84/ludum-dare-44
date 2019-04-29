@@ -12,7 +12,7 @@ function Level() {
         + '-----wwwwwww--wwwwwww-----\n'
         + '-----wwb-b-w--w-b-bww-----\n'
         + '-----w-b-b-wwww-b-b-w-Fww-\n'
-        + '-----w--------------w-www-\n'
+        + '-----w--------------wwwww-\n'
         + '-----wwwwwww--wwwwwww-p---\n'
         + '-----wwb-b-w--w-b-bww-----\n'
         + '-----w-b-b-w--w-b-b-w-----\n'
