@@ -16,12 +16,17 @@ Treatment.prototype.setRelation = function(sickness, effect) {
     this.effects[sickness.name] = effect;
 };
 
+Treatment.prototype.getBaseSafetyFor = function(sickness) {
+    if (sickness instanceof Sickness) { sickness = sickness.name; }
+    const base = 0.5 + 0.5 * this.effects[sickness];
+    return base;
+};
+
 /**
  * Gets sickness, returns value between -1 and 1 representing whether in any particular case of that sickness this treatment helps or not.
  */
 Treatment.prototype.getRandomizedEffect = function(sickness) {
-    if (sickness instanceof Sickness) { sickness = sickness.name; }
-    const base = 0.5 + 0.5 * this.effects[sickness];
+    const base = this.getBaseSafetyFor(sickness);
     const mid = -0.6*Math.cos(Math.PI * base);
     const effect = mid + rnd(0.4) - rnd(0.4);
     return effect;

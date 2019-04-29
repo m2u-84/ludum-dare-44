@@ -15,7 +15,8 @@ function GameState() {
         antibiotics:    new Treatment('Give Antibiotics',    200,   40, -0.1, -0.1),
         takeOrgan:      new Treatment('Take Organ',         2000,  500, -0.2, -0.4, (p) => p.hasOrgan),
         fixLeg:         new Treatment('Fix Fracture',        800,  220, -0.1, -0.3),
-        release:        new Treatment('Release as cured',      0,    0,  0.0,  0.0)
+        // comment out the following line if release of patient by doctor should be disabled
+        release:        new Treatment('Release as cured',      0,    0,  0.0,  0.0, (p) => p.isCured === true) // release as cured only if patient is cured
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     // common sicknesses
