@@ -253,7 +253,7 @@ Patient.prototype.getActions = function() {
   }
   switch (this.state) {
     case PatientStates.WAIT_AT_RECEPTION:
-      return ["Accept", "Send away"];
+      return this.gameState.receptions;
     case PatientStates.STAY_IN_BED:
       const list = treatments;
       if (!this.diagnosed) {
@@ -280,11 +280,11 @@ Patient.prototype.executeAction = function(action) {
           }
       }
       case PatientStates.WAIT_AT_RECEPTION: {
-      switch (action) {
+      switch (action.name) {
         case "Accept":
             this.hospitalize();
             break;
-        case "Send away":
+        case "Send Away":
             this.walkHome();
             break;
         default:
