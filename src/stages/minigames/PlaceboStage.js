@@ -82,7 +82,9 @@ PlaceboStage.prototype.update = function(timer) {
   const steps = 5;
   const td = this.timeDif / steps;
   for (var i = 0; i < steps; i++) {
-    this.updateBall(td);
+    if (this.updateBall(td)) {
+      break;
+    }
   }
 };
 
@@ -101,12 +103,12 @@ PlaceboStage.prototype.updateBall = function(tf) {
   // Lose Condition = Patient Collision
   if (this.ballX >= this.w - 110 && this.ballY >= this.h - 80) {
     this.close(false);
-    return;
+    return true;
   }
   // Win condition (leave screen)
   if (this.ballY > this.h + 30) {
     this.close(true);
-    return;
+    return true;
   }
   // Collision with paddle. First check if it's within paddle's bounding box
   if (this.ballX >= this.paddleX - this.paddleW && this.ballX <= this.paddleX + this.paddleW || true) {

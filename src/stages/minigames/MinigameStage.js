@@ -32,7 +32,7 @@ MinigameStage.prototype.prestart = function(payload) {
 };
 
 MinigameStage.prototype.stop = function() {
-  this.gameState.stats.treatments++;
+  this.patient.gameState.stats.treatments++;
   if (this.success) {
     const regenerationEffect = this.treatment.getRandomizedEffect(this.patient.sickness);
     const absoluteEffect = this.treatment.getRandomizedEffect(this.patient.sickness);
