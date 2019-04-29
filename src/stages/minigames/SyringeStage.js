@@ -89,11 +89,11 @@ SyringeStage.prototype.render = function(ctx, timer) {
   }
   // Draw back of hand
   const hangle = this.handAngle;
-  drawImage(ctx, this.hand, this.x, this.y, hangle, 1, 1, 0.85, 0.12);
+  drawImage(ctx, this.hand, this.x, this.y, hangle, 1, 1, 0.91, 0.07);
   // Draw Syringe
   drawImage(ctx, this.syringe, this.x, this.y, this.angle, 0.75);
   // Draw thumb
-  drawImage(ctx, this.thumb, this.x, this.y, hangle, 1, 1, 0.85, 0.12);
+  drawImage(ctx, this.thumb, this.x, this.y, hangle, 1, 1, 0.91, 0.07);
   // MinigameStage handles overlay stuff / UI
   MinigameStage.prototype.renderOnTop.call(this, ctx, timer);
 };
