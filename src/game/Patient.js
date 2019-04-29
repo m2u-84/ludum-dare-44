@@ -316,42 +316,32 @@ Patient.prototype.executeAction = function(action) {
           this.diagnosingUntil = gameStage.time + rndInt(3000, 15000); // TODO change to ~7-40 seconds
             this.setState(PatientStates.DIAGNOSING);
           break;
-
         case treatments.antibiotics:
           gameStage.transitionIn("syringe", undefined, {patient: this});
           break;
-
+        case treatments.fixLeg:
+          gameStage.transitionIn("fracture", undefined, {patient: this});
+          break;
+        case treatments.organ:
+          gameStage.transitionIn("organ", undefined, {patient: this});
+          break;
+        case treatments.placeboSurgery:
+            gameStage.transitionIn("placebo", undefined, {patient: this});
+          break;
+        case treatments.release:
+          this.releaseFromBed();
+          this.walkHome();
+          break;
         case treatments.drugs:
           // TODO: replace this with minigame
           this.healthDecrease = -treatments.drugs.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
           break;
-
-        case treatments.fixLeg:
-          gameStage.transitionIn("fracture", undefined, {patient: this});
-          break;
-
-        case treatments.organ:
-          gameStage.transitionIn("organ", undefined, {patient: this});
-          break;
-
-        case treatments.placeboSurgery:
-          // TODO: replace this with minigame
-          this.healthDecrease = -treatments.placeboSurgery.effects[this.sickness.name];
-          console.log("healthDecrease", this.healthDecrease);
-          break;
-
-        case treatments.release:
-          this.releaseFromBed();
-          this.walkHome();
-          break;
-
         case treatments.surgery:
           // TODO: replace this with minigame
           this.healthDecrease = -treatments.surgery.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
           break;
-
         case treatments.takeOrgan:
           // TODO: replace this with minigame
           this.health = 0;
