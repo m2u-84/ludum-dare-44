@@ -20,7 +20,7 @@ GameStage.prototype.playAmbientMusic = function() {
     const music = GameStage.audioAmbient;
     music.loop = true;
     music.play();
-    music.currentTime = Math.random() * music.duration;
+    music.currentTime = Math.random() * (music.duration || 0);
 };
 
 GameStage.prototype.playMusicTrack = function() {
@@ -77,7 +77,7 @@ GameStage.prototype.render = function (ctx, timer) {
       camTolerance = 20 * p;
     }
     ctx.scale(cellSize * camZoom, cellSize * camZoom);
-    const minCamX = w / 2 / cellSize / camZoom - camTolerance, minCamY = h / 2 / cellSize / camZoom;
+    const minCamX = w / 2 / cellSize / camZoom, minCamY = h / 2 / cellSize / camZoom;
     const maxCamX = (this.mapImage.width - w / 2 / camZoom) / cellSize + camTolerance;
     const maxCamY = (this.mapImage.height - h / 2 / camZoom) / cellSize;
     let offx = clamp(-camX, -maxCamX, -minCamX), offy = clamp(-camY, -maxCamY, -minCamY);
@@ -234,7 +234,7 @@ GameStage.prototype.onkey = function (event) {
         // Kill all patients
         this.gameState.patients.forEach( p => p.die() );
     } else if (event.key == "f") {
-      this.transitionIn("fracture", 300, { patient: new Patient(5, 5, 100, 50, this.gameState.sicknesses[4], this.gameState)})
+      this.transitionIn("placebo", 300, { patient: new Patient(5, 5, 100, 50, this.gameState.sicknesses[4], this.gameState)})
     } else if (event.key == "i") {
       // Diagnose all patients
       this.gameState.patients.forEach( p => p.diagnosed = true );

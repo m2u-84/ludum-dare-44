@@ -61,6 +61,8 @@ MinigameStage.prototype.update = function(timer) {
   if (this.getKeyState("Enter") && this.succeededOnce) {
     this.trainingLeft = true;
     this.prestart(this.payload);
+  } else if (this.getKeyState("Escape") && this.active && !stageManager.get("pause").alive) {
+    this.transitionIn("pause", 400);
   }
 };
 

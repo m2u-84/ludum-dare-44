@@ -12,7 +12,7 @@ window.onload = () => {
     "abcdefghijklmnopqrstuvwxyz0123456789#$()[]+-?!',. :",
     [5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,3,3,2,2,5,5,4,1,1,2,2,4,3]);
   bigFont = new BitmapFont("assets/images/bignumbers.png", {"dark": "#5d5d5d"}, "0123456789", [11,6,11,11,10,11,11,11,11,11]);
-  keyHandler = new KeyHandler(canvas, [" ", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", , "W", "A", "S", "D", "Enter"]);
+  keyHandler = new KeyHandler(canvas, [" ", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", , "W", "A", "S", "D", "Enter", "Escape"]);
   mouseHandler = new MouseHandler(canvas);
   mouse = mouseHandler.mouse;
   stageManager = new StageManager(canvas, timer);
@@ -25,6 +25,7 @@ window.onload = () => {
               .add(new ContextMenuStage())
               .add(new SyringeStage())
               .add(new FractureStage())
+              .add(new PlaceboStage())
               .add(new OrganStage());
 
   // Load stage content

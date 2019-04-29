@@ -22,6 +22,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.sickness = sickness;
     this.diagnosed = false;
     this.treated = false;
+    this.cured = false;
     this.wealthLevel = wealth >= 80 ? 3 : wealth >= 40 ? 2 : 1;
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
@@ -316,42 +317,32 @@ Patient.prototype.executeAction = function(action) {
           this.diagnosingUntil = gameStage.time + rndInt(3000, 15000); // TODO change to ~7-40 seconds
             this.setState(PatientStates.DIAGNOSING);
           break;
-
         case treatments.antibiotics:
           gameStage.transitionIn("syringe", undefined, {patient: this});
           break;
-
+        case treatments.fixLeg:
+          gameStage.transitionIn("fracture", undefined, {patient: this});
+          break;
+        case treatments.organ:
+          gameStage.transitionIn("organ", undefined, {patient: this});
+          break;
+        case treatments.placeboSurgery:
+            gameStage.transitionIn("placebo", undefined, {patient: this});
+          break;
+        case treatments.release:
+          this.releaseFromBed();
+          this.walkHome();
+          break;
         case treatments.drugs:
           // TODO: replace this with minigame
           this.healthDecrease = -treatments.drugs.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
           break;
-
-        case treatments.fixLeg:
-          gameStage.transitionIn("fracture", undefined, {patient: this});
-          break;
-
-        case treatments.organ:
-          gameStage.transitionIn("organ", undefined, {patient: this});
-          break;
-
-        case treatments.placeboSurgery:
-          // TODO: replace this with minigame
-          this.healthDecrease = -treatments.placeboSurgery.effects[this.sickness.name];
-          console.log("healthDecrease", this.healthDecrease);
-          break;
-
-        case treatments.release:
-          this.releaseFromBed();
-          this.walkHome();
-          break;
-
         case treatments.surgery:
           // TODO: replace this with minigame
           this.healthDecrease = -treatments.surgery.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
           break;
-
         case treatments.takeOrgan:
           // TODO: replace this with minigame
           this.health = 0;
@@ -442,6 +433,10 @@ Patient.prototype.getTreatmentPrice = function(treatment) {
 Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
     // Mark patient as treated (does not mean cured, only that doctor did something with patient)
     this.treated = true;
+    if (this.sickness && treatment == this.sickness.treatment && regeneration > 0 && absolute > 0) {
+        // No sickness anymore
+        this.cured = true;
+    }
     // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
     // thus value change has maximum of 50% of max hp, but exponent of 2 pulls values closer towards 0
     // console.log("Health starts at ", this.health, " deg at ", this.healthDecrease);
