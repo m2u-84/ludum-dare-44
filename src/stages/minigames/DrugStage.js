@@ -11,11 +11,19 @@ inherit(DrugStage, MinigameStage);
 
 DrugStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
-  // load graphics here
-  this.headImage = loader.loadImage("assets/images/pill_head.png");
-  this.pillImage = loader.loadImage("assets/images/pill.png");
-  this.handImage = loader.loadImage("assets/images/darthand_back.png");
-  this.thumbImage = loader.loadImage("assets/images/darthand_front.png");
+
+  const ASSETS_BASE_PATH = './assets/';
+  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
+  this.headImage = loader.loadImage(IMAGES_BASE_PATH + 'pill_head.png');
+  this.pillImage = loader.loadImage(IMAGES_BASE_PATH + 'pill.png');
+  this.handImage = loader.loadImage(IMAGES_BASE_PATH + 'darthand_back.png');
+  this.thumbImage = loader.loadImage(IMAGES_BASE_PATH + 'darthand_front.png');
+
+  this.soundThrowing = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-whoosh.mp3'});
+  this.soundBumping = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-bump.mp3'});
+  this.soundGulping = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-gulp.mp3'});
 };
 
 DrugStage.prototype.prestart = function(payload) {
@@ -83,11 +91,15 @@ DrugStage.prototype.updateWobblyHand = function() {
   this.handY = cur.y;
   this.vx = (cur.x - prev.x) * 14;
   this.vy = (cur.y - prev.y) * 14;
+
   // Place Pill in hand
   this.x = this.handX;
   this.y = this.handY;
+
   // Throw
   if (this.getKeyState(" ")) {
+    this.soundThrowing.play();
+
     this.flying = true;
     this.throwFromX = this.x;
   }
@@ -104,6 +116,8 @@ DrugStage.prototype.updatePill = function() {
   this.angle = (-Math.PI / 4) - (Math.PI / 2) * p_angle;
   // Lying on Table?
   if (this.x >= this.tableLeft && this.x <= this.tableRight && this.y >= this.tableTopPill) {
+    this.soundBumping.play();
+
     this.y = this.tableTopPill;
     this.flying = false;
     this.lying = true;
@@ -114,22 +128,29 @@ DrugStage.prototype.updatePill = function() {
     this.pillBaseX = this.x;
     this.pillBaseY = this.y;
   } else if (this.x < -200 || this.x > this.w + 200 || this.y > this.h + 80) {
+    this.soundBumping.play();
+
     if (this.wellPlaced) {
       this.close(true);
       return;
     }
+
     // out of bounds
     this.close(false);
     return;
   } else {
     // Check collision with mouth
     if (getDistance(this.x, this.y, this.target.x, this.target.y) <= this.target.r) {
+      this.soundGulping.play();
+
       this.wellPlaced = true;
     }
     // Check collision with head
     if (!this.wellPlaced) {
       if (getDistance(this.x, this.y, this.bounceArea.x, this.bounceArea.y) <= this.bounceArea.r) {
         // bounce back
+        this.soundBumping.play();
+
         const vel = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         const dx = this.w * 0.92 - this.x, dy = this.h - this.y;
         const angle = Math.atan2(dx, dy);
