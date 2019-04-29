@@ -42,7 +42,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.sleepTime = 0;
     this.isMale = this.imageIndex === 3 ? false : true;
     // Patients have takable organ initially, but not after player takes one
-    this.hasOrgan = true; // TODO take organ away after organ taking minigame
+    this.hasOrgan = true;
 
     this.baseVelocity = this.movingVelocity;
     this.movingVelocity = computeMovingVelocity(this.baseVelocity, this.health);
@@ -285,11 +285,11 @@ Patient.prototype.paintAttachedUI = function(ctx) {
 
 Patient.prototype.getActions = function() {
   const treatments = this.gameState.treatmentArray.slice();
-  if (this.diagnosed) {
+  /* if (this.diagnosed) {
       treatments.sort((t1, t2) => t2.getBaseSafetyFor(this.sickness) - t1.getBaseSafetyFor(this.sickness))
   } else {
     treatments.sort((t1, t2) => this.getTreatmentPrice(t2) - this.getTreatmentPrice(t1));
-  }
+  } */
   switch (this.state) {
     case PatientStates.WAIT_AT_RECEPTION:
       return this.gameState.receptions.slice();
@@ -334,7 +334,7 @@ Patient.prototype.executeAction = function(action) {
     case PatientStates.STAY_IN_BED: {
       switch (action) {
         case "Diagnose":
-          this.diagnosingUntil = gameStage.time + rndInt(3000, 15000); // TODO change to ~7-40 seconds
+          this.diagnosingUntil = gameStage.time + 1000 * rndInt(7, 40);
             this.setState(PatientStates.DIAGNOSING);
           break;
         case treatments.antibiotics:
@@ -359,11 +359,11 @@ Patient.prototype.executeAction = function(action) {
         case treatments.drugs:
           gameStage.transitionIn("drug", undefined, {patient: this});
           break;
-        case treatments.surgery:
-          // TODO: replace this with minigame
+        /* case treatments.surgery:
+          // ...replace this with minigame
           this.healthDecrease = -treatments.surgery.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
-          break;
+          break; */
 
         default:
           throw new Error("Invalid action for patient in bed: " + action);
@@ -395,7 +395,7 @@ Patient.prototype.hospitalize = function() {
         this.moveTo(visitorPos.x, visitorPos.y, () => this.nextState());
         this.setState(PatientStates.WALK_TO_BED);
     } else {
-        // TODO Inform player this does not work
+        // Inform player this does not work? No, action is disabled in menu, all good
     }
 };
 
