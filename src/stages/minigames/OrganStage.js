@@ -5,15 +5,17 @@ function OrganStage() {
 inherit(OrganStage, MinigameStage);
 
 OrganStage.prototype.preload = function() {
-  this.organ = loader.loadImage("assets/organ.png");
-  this.hand = loader.loadImage("assets/organ_hand_back.png");
-  this.thumb = loader.loadImage("assets/organ_hand_front.png");
-  this.dropHand = loader.loadImage("assets/organ_hand_back_open.png");
-  this.bodyBack = loader.loadImage("assets/organ_body_back.png");
-  this.bodyFront = loader.loadImage("assets/organ_body_front.png");
+  this.organ = loader.loadImage("assets/images/organ.png");
+  this.hand = loader.loadImage("assets/images/organ_hand_back.png");
+  this.thumb = loader.loadImage("assets/images/organ_hand_front.png");
+  this.dropHand = loader.loadImage("assets/images/organ_hand_back_open.png");
+  this.bodyBack = loader.loadImage("assets/images/organ_body_back.png");
+  this.bodyFront = loader.loadImage("assets/images/organ_body_front.png");
 };
 
-OrganStage.prototype.prestart = function() {
+OrganStage.prototype.prestart = function(payload) {
+  MinigameStage.prototype.prestart.call(this, payload);
+  this.treatment = gameStage.gameState.treatments.organ;
   this.isFlying = false;
   this.vx = 0;
   this.vy = 0;
@@ -27,6 +29,10 @@ OrganStage.prototype.prestart = function() {
   this.angle = 0;
   this.organWellPlaced = false;
   this.firstBounceTime = 0;
+};
+
+OrganStage.prototype.prestop = function() {
+  gameStage.gameState.hospital.takeOrgan();
 };
 
 OrganStage.prototype.update = function(timer) {
@@ -90,6 +96,7 @@ OrganStage.prototype.updateFlight = function() {
   }
   // Success or no success
   if (this.active && (this.y > this.h + 100)) {
+    this.success = this.organWellPlaced;
     this.transitionOut();
   }
 };

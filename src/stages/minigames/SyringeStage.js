@@ -5,14 +5,16 @@ function SyringeStage() {
 inherit(SyringeStage, MinigameStage);
 
 SyringeStage.prototype.preload = function() {
-  this.syringe = loader.loadImage("assets/syringe.png");
-  this.arrow = loader.loadImage("assets/arrow.png");
-  this.arm = loader.loadImage("assets/arm.png");
-  this.hand = loader.loadImage("assets/darthand_back.png");
-  this.thumb = loader.loadImage("assets/darthand_front.png");
+  this.syringe = loader.loadImage("assets/images/syringe.png");
+  this.arrow = loader.loadImage("assets/images/arrow.png");
+  this.arm = loader.loadImage("assets/images/arm.png");
+  this.hand = loader.loadImage("assets/images/darthand_back.png");
+  this.thumb = loader.loadImage("assets/images/darthand_front.png");
 };
 
-SyringeStage.prototype.prestart = function() {
+SyringeStage.prototype.prestart = function(payload) {
+  MinigameStage.prototype.prestart.call(this, payload);
+  this.treatment = gameStage.gameState.treatments.antibiotics;
   this.isAiming = true;
   this.isFlying = false;
   this.angle = 0;
@@ -22,6 +24,7 @@ SyringeStage.prototype.prestart = function() {
 };
 
 SyringeStage.prototype.update = function(timer) {
+  this.targetY = this.h * 0.6;
   this.armLeft = this.w - 90;
   this.armRight = this.w - 30;
   this.armCenter = (this.armLeft + this.armRight) / 2;
@@ -65,6 +68,7 @@ SyringeStage.prototype.updateFlight = function() {
   this.angle = Math.atan2(this.vy, this.vx);
   if (this.active && (this.x > this.armLeft - 20 || this.y > this.h + 100)) {
     this.x = this.armLeft - 20;
+    this.success = (Math.abs(this.y - this.targetY) < 0.12 * this.h);
     this.transitionOut();
   }
 };

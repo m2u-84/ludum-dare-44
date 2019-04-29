@@ -24,7 +24,8 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
     this.targetBed = null;
-    this.healthDecrease = 2; // per second TODO: adjust
+    this.healthDecrease = 2 * sickness.deadliness * (1 + rnd(0.5) - rnd(0.3)); // per second TODO: adjust
+    this.healthDecrease = clump(this.healthDecrease, -0.3, 0.3);
     this.deathDuration = 500; // millisecs
     this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
@@ -33,6 +34,9 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.imageIndex = this.isRich ? 3 : rndInt(0, 3);
     this.image = Patient.images[this.imageIndex];
     this.diagnosingUntil = 0;
+    this.gender = this.imageIndex === 3 ? 'female' : 'male';
+    // Patients have takable organ initially, but not after player takes one
+    this.hasOrgan = true; // TODO take organ away after organ taking minigame
 }
 inherit(Patient, WalkingPerson);
 
@@ -43,7 +47,7 @@ Patient.load = function() {
       'patient3', // 2: Sick woman #1
       'patient4', // 3: Rich person
     ];
-    Patient.images = sprites.map(sprite => loader.loadImage("./assets/" + sprite +".png", 4, 3));
+    Patient.images = sprites.map(sprite => loader.loadImage("./assets/images/" + sprite + ".png", 4, 3));
 };
 
 Patient.prototype.update = function() {
@@ -88,6 +92,12 @@ Patient.prototype.isDead = function() {
 
     return this.state === PatientStates.DEAD;
 };
+
+Patient.prototype.isCured = function() {
+    console.log("health", this.health);
+    return this.health === 100;
+
+}
 
 Patient.prototype.getFreePoint = function(points) {
 
@@ -264,12 +274,12 @@ Patient.prototype.executeAction = function(action) {
           this.state = PatientStates.DIAGNOSING;
           break;
         case treatments.antibiotics:
-          gameStage.transitionIn("syringe")
+          gameStage.transitionIn("syringe", undefined, {patient: this});
           break;
         case treatments.organ:
-          gameStage.transitionIn("organ");
+          gameStage.transitionIn("organ", undefined, {patient: this});
           break;
-        case "Release":
+        case treatments.release:
             this.releaseFromBed();
             this.walkHome();
             break;
@@ -334,6 +344,7 @@ Patient.prototype.walkHome = function() {
 
 Patient.prototype.die = function() {
     if (!this.isDead()) {
+        this.health = 0;
         this.state = PatientStates.DEAD;
         this.finishPath();
         setTimeout(() => {
@@ -351,3 +362,20 @@ Patient.prototype.getTreatmentPrice = function(treatment) {
   const price = 10 * Math.round(exactPrice / 10);
   return price;
 };
+
+Patient.prototype.addEffect = function(regeneration, absolute) {
+    // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
+    // thus value change has maximum of 50% of max hp, but exponent of 2 pulls values closer towards 0
+    // console.log("Health starts at ", this.health, " deg at ", this.healthDecrease);
+    this.health = clamp(this.health + 50 * sgnPow(absolute, 2), 0, 100);
+    // console.log("Applying effect ", regeneration, absolute, " setting health to ", this.health);
+    if (this.health <= 0) {
+        this.die();
+    } else {
+        // Apply 50% damping to keep de/regeneration relatively close to 0 even after many actions
+        // thus recent actions will always have bigger effect on patient's well-being than long term history
+        this.healthDecrease = 0.5 * this.healthDecrease - 3 * regeneration - 0.2;
+        this.healthDecrease = clump(this.healthDecrease, -0.3, 0.3, 0.25);
+        // console.log("Setting health decrease to ", this.healthDecrease);
+    }
+}

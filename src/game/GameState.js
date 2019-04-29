@@ -7,13 +7,15 @@ function GameState() {
 
     // possible treatments
     this.treatments = {
-        drugs: new Treatment('Prescribe Drugs', 100, 10),
-        placeboSurgery: new Treatment('Placebo Surgery', 1000, 80),
-        surgery: new Treatment('Proper Surgery', 1000, 500),
-        organ: new Treatment('Give Organ', 5000, 1000),
-        antibiotics: new Treatment('Give Antibiotics', 200, 40),
-        takeOrgan: new Treatment('Take Organ', 2000, 500),
-        fixLeg: new Treatment('Fix Fracture', 800, 220)
+        //                            name       price for pat.  hosp.  failure  
+        drugs:          new Treatment('Prescribe Drugs',     100,   10,  0.0,  0.0),
+        placeboSurgery: new Treatment('Placebo Surgery',    1000,   80,  0.0,  0.0),
+        surgery:        new Treatment('Proper Surgery',     1000,  500, -0.1, -0.3),
+        organ:          new Treatment('Give Organ',         5000, 1000, -0.1, -0.3, () => this.hospital.organs > 0),
+        antibiotics:    new Treatment('Give Antibiotics',    200,   40, -0.1, -0.1),
+        takeOrgan:      new Treatment('Take Organ',         2000,  500, -0.2, -0.4, (p) => p.hasOrgan),
+        fixLeg:         new Treatment('Fix Fracture',        800,  220, -0.1, -0.3),
+        release:        new Treatment('Release as cured',      0,    0,  0.0,  0.0)
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     // common sicknesses
@@ -36,9 +38,10 @@ function GameState() {
     setRelations(this.treatments.placeboSurgery, [1.0, 0.6, 0.3, 0.2, 0.0, 0.0,-0.3, 0.0, 0.0,-0.1, 0.1]);
     setRelations(this.treatments.surgery,        [0.5,-0.5, 0.2,-0.6,-0.3,-0.8, 0.2,-0.4,-0.3, 0.2, 0.7]);
     setRelations(this.treatments.organ,          [0.6,-0.3,-0.2,-0.3,-0.2,-0.5, 0.1,-0.2, 0.2, 0.6, 0.4]);
-    setRelations(this.treatments.antibiotics,    [0.3, 0.1, 0.2, 0.0, 0.0, 0.3, 0.7, 0.0, 0.5, 0.1,-0.1]);
+    setRelations(this.treatments.antibiotics,    [0.3, 0.1,-0.1, 0.0, 0.0, 0.3, 0.7, 0.0, 0.5,-0.1,-0.1]);
     setRelations(this.treatments.takeOrgan,      [0.1,-1.0, 1.0,-0.4,-1.0,-1.0,-0.6,-1.0,-1.0, 0.0,-0.8]);
     setRelations(this.treatments.fixLeg,         [0.2,-0.3, 0.0,-0.2, 1.0,-0.4,-0.5,-0.3,-0.4,-0.5,-0.4]);
+    setRelations(this.treatments.release,        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
 
     // start with 0 patients
     this.patients = [];

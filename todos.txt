@@ -4,36 +4,38 @@ Story
   [ ] Spielziel: innerhalb Zeit möglichst viel Knete machen, Kickback an Mafia, Hinweis auf unlautere Methoden
   [ ] Warnung vor Polizei
   [ ] Warnung vor Mafia
-[ ] Namen für Spiel brainstormen
+[X] Namen für Spiel brainstormen
 
 Bugs
 [X] Laufgeschwindigkeit framerate-abhängig
 [X] verbrannte Leichen aus patients-Liste entfernen
 [X] Leiche im Bett für zu null-pointer-exception
-[ ] Doctor hinter Feuer <-- Markus
-[X] $$ vom Patienten bei Tod funktioniert nicht mehr
+[X] Doctor hinter Feuer <-- Markus
+[ ] $$ vom Patienten bei Tod funktioniert nicht mehr   <--- Björn
 
 Technik
 [X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
 [ ] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
-[ ] Canvas HighRes rendern
+[nope] Canvas HighRes rendern
 
 Features
+[ ] Title Anzeige Tastenbelegung
 [ ] Intervalle des Patientspawns randomisieren
 [ ] Startscreen: Logo/Geschlechtsauswahl
-[ ] (Anzeige) Tastenbelegung
 [ ] lahme Patienten: fast toter Patient halb so schnell wie gesunder Patient <-- Björn
 [ ] WASD zusätzlich supporten <-- Björn
-[ ] Shift durch Space erstzen <-- Björn
+[ ] Shift durch Space ersetzen <-- Björn
 [ ] Enter ausbauen, um Minigames zu entfernen <--- Björn
 [ ] Betriebskosten: periodische Abnahme des Kapitals
-[ ] Übungsmodus Mini-Games
+[ ] Übungsmodus Mini-Games <-- Markus
 [ ] positives Geld-Geräusch
 [ ] periodische Mafia-Gebühren via Mafia-Auto, nicht gleichzeitig mit Polizei <--- Björn
-[ ] Cash-Flow-Feed (in/out)
-[ ] Releasing
-[ ] Spieler informieren, wenn alle Betten voll
+[ ] Cash-Flow-Feed (in/out) <-- Markus
+[ ] Releasing / Automatisch heimgehen wenn Health voll
+[ ] Patienten-Timeout nach OPs
+[ ] Patienten zufällig wieder gehen bei zu langer Wartezeit
+[ ] Spieler informieren, wenn alle Betten voll / keine neuen Patienten annehmen können
 [X] Verbrennungsgeräusch
 [X] Ambient-Sounds
 [X] Randomisierung Rezeption
@@ -48,16 +50,18 @@ Features
 [X] Hausmeister / zweiter Arzt räumt Leichen ab und bringt sie neben das Krankenhaus
 [X] Sounds für Verbrennen von Leichen
 [X] Hausmeister verbrennt Leichen periodisch
-[ ] Spielende erkennen (Erfolg, Misserfolg)
-[ ] Organ-Inventory
+[ ] Spielende erkennen (Erfolg = 10k$ oder so eingenommen, Misserfolg = Polizei 3x abgestraft oder Geld < 0)
+[ ] End-Screens mit Statistiken
+[X] Organ-Inventory
 [X] Verbessertes Organ-Bounce-Verhalten
 [X] Kontext-Menü für nächsten Patienten
 [X] Kontext-Menü Zoom-In
-[/] Kontext-Menü schön machen
+[X] Kontext-Menü schön machen
 [ ] Pausieren der Musik, wenn Stage in Pause ist
 [ ] Sound-Balancing
-[ ] Balacing Gameplay
+[ ] Balancing Gameplay
 (Optional)
+[ ] PowerUp Vending Machine
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
 [ ] schlecht behandelte Patienten bluten Boden voll und Arzt rutscht aus
 [ ] Turbo-Modus für Doktor (ggfs. mit Verlust von Geld / Injektion von Drogen / Verlust von Leben)
@@ -70,10 +74,10 @@ Strategie-Modul
 Finanz-Controller
 [ ] Visualisierung Gewinn/Verlust
 [ ] Visualisierung Spieldauer
-[ ] Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge
+[ ] Gewinne/Verluste durch Behandlung, Betten (Privat/Kasse), Behandlungserfolge, Behandlungsmisserfolge <-- Markus
   [X] Verlust durch Tod
   [X] Gewinn durch Bettenbelegung
-  [ ] auch Kassenpatienten müssen Geld einbringen können (muss aber an bestimmten Kriterien hängen, damit sich die tödliche Injektion lohnt)
+  [-] auch Kassenpatienten müssen Geld einbringen können (muss aber an bestimmten Kriterien hängen, damit sich die tödliche Injektion lohnt)
 
 Patient-Visualisierung
 [X] Leben

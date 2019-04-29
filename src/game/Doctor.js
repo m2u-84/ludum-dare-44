@@ -27,7 +27,7 @@ Doctor.load = function() {
         'doctor_m', // 0: Male Doctor
         'doctor_w', // 1: Female Doctor
       ]
-    Doctor.images = sprites.map(sprite => loader.loadImage("./assets/" + sprite +".png", 4, 3));
+    Doctor.images = sprites.map(sprite => loader.loadImage("./assets/images/" + sprite +".png", 4, 3));
 };
 
 Doctor.prototype.update = function() {

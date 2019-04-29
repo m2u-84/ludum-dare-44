@@ -5,10 +5,28 @@ function MinigameStage(name) {
   this.w = 0;
   this.h = 0;
   this.margin = 32;
+  this.treatment = undefined; // set this in constructor of extending class!
+  this.success = false;
 }
 inherit(MinigameStage, Stage);
 
 MinigameStage.prototype.preload = function() {
+};
+
+MinigameStage.prototype.prestart = function(payload) {
+  this.success = false;
+  this.patient = payload.patient;
+}
+
+MinigameStage.prototype.stop = function() {
+  if (this.success) {
+    const regenerationEffect = this.treatment.getRandomizedEffect(this.patient.sickness);
+    const absoluteEffect = this.treatment.getRandomizedEffect(this.patient.sickness);
+    this.patient.addEffect(regenerationEffect, absoluteEffect);
+  } else {
+    const {regenerative, absolute} = this.treatment.getFailureEffects();
+    this.patient.addEffect(regenerative, absolute);
+  }
 };
 
 MinigameStage.prototype.update = function(timer) {

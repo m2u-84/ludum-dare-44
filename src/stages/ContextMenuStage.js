@@ -7,8 +7,8 @@ function ContextMenuStage() {
 inherit(ContextMenuStage, Stage);
 
 ContextMenuStage.prototype.preload = function() {
-  this.background = loader.loadImage("assets/patientsheet.png");
-  this.keyImage = loader.loadImage("assets/keys.png", 9, 1);
+  this.background = loader.loadImage("assets/images/patientsheet.png");
+  this.keyImage = loader.loadImage("assets/images/keys.png", 9, 1);
 };
 
 ContextMenuStage.prototype.prestart = function(payload) {
@@ -48,7 +48,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   mainFont.drawText(ctx, wealth, 0, 34, "green");
   const diagnosis = this.patient.diagnosed ? this.patient.sickness.name : "???";
   mainFont.drawText(ctx, diagnosis, 80, 34, "orange");
-  
+
   // Preferred option
   drawOption(72, 1, this.actions[0], "Safe");
   for (var i = 1; i < this.actions.length; i++) {
@@ -60,6 +60,11 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   }
 
   function drawOption(y, num, nameOrTreatment) {
+    if (nameOrTreatment instanceof Treatment) {
+      if (!nameOrTreatment.isEnabled(self.patient)) {
+        ctx.globalAlpha = 0.2;
+      }
+    }
     const name = nameOrTreatment instanceof Treatment ? nameOrTreatment.name : nameOrTreatment;
     mainFont.drawText(ctx, name, 20, y, "blue");
     // Safety
@@ -73,9 +78,10 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
     }
     if (price != null) {
       const priceColor = price == 0 ? "gray" : price > 0 ? "green" : "red";
-      const priceString = (price >= 0 ? "+ $ " : "") + price;
+      const priceString = (price >= 0 ? "+ $ " : "- $ ") + Math.abs(price);
       mainFont.drawText(ctx, priceString, 260, y, priceColor, 1);
     }
+    ctx.globalAlpha = 1;
   }
 };
 
@@ -89,6 +95,9 @@ ContextMenuStage.prototype.onkey = function(event) {
   } else {
     const num = event.key - 1;
     if (num >= 0 && num < this.actions.length) {
+      if (this.actions[num] instanceof Treatment && !this.actions[num].isEnabled(this.patient)) {
+        return;
+      }
       this.close();
       this.patient.executeAction(this.actions[num]);
     }
