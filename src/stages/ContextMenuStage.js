@@ -65,12 +65,17 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
         ctx.globalAlpha = 0.2;
       }
     }
+    // Key symbol
+    drawFrame(ctx, self.keyImage, num - 1, 0, y - 4, 0, 1, 1, 0, 0);
+    // Option name
     const name = nameOrTreatment instanceof Treatment ? nameOrTreatment.name : nameOrTreatment;
     mainFont.drawText(ctx, name, 20, y, "blue");
     // Safety
-    const safety = "Yes";
-    mainFont.drawText(ctx, safety, 140, y, "green");
-    drawFrame(ctx, self.keyImage, num - 1, 0, y - 4, 0, 1, 1, 0, 0);
+    if (self.patient.diagnosed && nameOrTreatment instanceof Treatment) {
+      const safetyLevel = nameOrTreatment.getBaseSafetyFor(self.patient.sickness);
+      const safety = getSafetyStyle(safetyLevel);
+      mainFont.drawText(ctx, safety.text, 140, y, safety.color);
+    }
     // Price
     let price = null;
     if (nameOrTreatment instanceof Treatment) {
@@ -83,7 +88,24 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
     }
     ctx.globalAlpha = 1;
   }
+
+  function getSafetyStyle(v) {
+    const styles = [
+      {max: 0.2, text: "dangerous", color: "red"},
+      {max: 0.45, text: "unsafe", color: "orange"},
+      {max: 0.6, text: "moderate", color: "yellow"},
+      {max: 0.8, text: "safe", color: "green"},
+      {max: 1, text: "ideal", color: "blue"},
+    ];
+    for (var i = 0; i < styles.length; i++) {
+      if (styles[i].max > v) {
+        return styles[i];
+      }
+    }
+    return {max: 0, text: "unknown", color: "gray"};
+  }
 };
+
 
 ContextMenuStage.prototype.onkey = function(event) {
   if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "w", "a", "s", "d"].indexOf(event.key) >= 0) {

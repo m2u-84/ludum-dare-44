@@ -225,7 +225,11 @@ Patient.prototype.paintAttachedUI = function(ctx) {
 
 Patient.prototype.getActions = function() {
   const treatments = this.gameState.treatmentArray.slice();
-  shuffle(treatments);
+  if (this.diagnosed) {
+      treatments.sort((t1, t2) => t2.getBaseSafetyFor(this.sickness) - t1.getBaseSafetyFor(this.sickness))
+  } else {
+    treatments.sort((t1, t2) => this.getTreatmentPrice(t2) - this.getTreatmentPrice(t1));
+  }
   switch (this.state) {
     case PatientStates.WAIT_AT_RECEPTION:
       return ["Accept", "Send away"];
