@@ -90,7 +90,7 @@ FacilityManager.prototype.paintExecution = function(ctx, velocity, frameIndexes)
     // determine sequential frame index using game time
     const frameCount = frameIndexes.length;
     const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-    drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, 0, this.directionFactor * 1 / 24, 1 / 24, 0.5, 0.98);
+    drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, 0, this.directionFactor.x * 1 / 24, 1 / 24, 0.5, 0.98);
 };
 
 FacilityManager.prototype.getCharacterFrames = function(isMoving) {

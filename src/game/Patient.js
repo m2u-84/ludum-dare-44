@@ -63,7 +63,7 @@ Patient.prototype.update = function() {
     this.isHighlighted = this.gameState.closestPatientToDoctor === this;
     MovingObject.prototype.update.call(this);
     if (this.inBed) {
-        this.directionFactor = 0;
+        this.directionFactor = {x: 0, y: 0};
     }
     updateHealth.call(this);
     if ((this.state === PatientStates.WAIT_AT_RECEPTION) && (gameStage.time - this.stateChangedTime > this.patience)) {
@@ -209,7 +209,7 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
             ctx.shadowBlur = 1;
         }
         for (let i = 0; i < (highlight ? 8 : 1); i++) {
-            drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+            drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, angle, this.directionFactor.x * 1/24, 1/24, 0.5, 0.98);
         }
         ctx.restore();
     } else {
@@ -221,7 +221,7 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
         if (frameIndex > 2) {
             angle += Math.PI / 7;
         }
-        drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x - dyingPercentage * this.directionFactor, this.y, this.directionFactor * angle, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+        drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x - dyingPercentage * this.directionFactor.x, this.y, this.directionFactor.x * angle, this.directionFactor.x * 1/24, 1/24, 0.5, 0.98);
     }
 };
 
@@ -239,7 +239,7 @@ Patient.prototype.paintAttachedUI = function(ctx) {
     if (!this.isDead()) {
 
         // Health bar
-        const directionFactor = sgn(this.directionFactor);
+        const directionFactor = sgn(this.directionFactor.x);
         const px = 2 / 24;
         const x = Math.round(this.x * 24 + 4 * directionFactor) / 24,
             y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24) / 24;

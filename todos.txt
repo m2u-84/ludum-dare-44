@@ -21,7 +21,7 @@ Technik
 [nope] Canvas HighRes rendern
 
 Features
-[ ] ESC bei Behandlungsauswahl soll Dialog wieder Schließen
+[ ] ESC bei Behandlungsauswahl soll Dialog wieder Schließen <-- Björn
 [ ] Title Anzeige Tastenbelegung
 [X] Intervalle des Patientspawns randomisieren
 [ ] Startscreen: Logo/Geschlechtsauswahl

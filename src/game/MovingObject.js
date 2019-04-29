@@ -6,7 +6,7 @@ function MovingObject(x, y, gameState) {
     this.idleVelocity = 1; // animation speed
     this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
-    this.directionFactor = 1;
+    this.directionFactor = {x: 1, y: 1};
     this.isCharacterMoving = false;
     this.path = null;
     this.pathLength = 0;
@@ -54,10 +54,10 @@ MovingObject.prototype.recomputeVelocity = function() {
 
 };
 
-MovingObject.prototype.moveTo = function(targetX, targetY, finishCallback) {
+MovingObject.prototype.moveTo = function(targetX, targetY, finishCallback, doShufflePath = true) {
 
     this.recomputeVelocity();
-    const path = this.gameState.level.findPath(this.x, this.y, targetX, targetY);
+    const path = this.gameState.level.findPath(this.x, this.y, targetX, targetY, doShufflePath);
     this.planPath(path);
     this.pathFinishedCallback = finishCallback;
 };
@@ -140,7 +140,8 @@ MovingObject.prototype.paint = function(ctx) {
     }
 
     // Mirror character depending on last movement direction
-    this.directionFactor = this.lastMoveDelta.x !== 0 ? Math.sign(this.lastMoveDelta.x) : this.directionFactor;
+    this.directionFactor.x = this.lastMoveDelta.x !== 0 ? Math.sign(this.lastMoveDelta.x) : this.directionFactor.x;
+    this.directionFactor.y = this.lastMoveDelta.y !== 0 ? Math.sign(this.lastMoveDelta.y) : this.directionFactor.y;
     const frameIndexes = this.getCharacterFrames(this.isCharacterMoving);
     const velocity = this.isCharacterMoving === 0 ? this.movingVelocity : this.idleVelocity;
 

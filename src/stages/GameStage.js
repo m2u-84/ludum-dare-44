@@ -37,6 +37,7 @@ GameStage.prototype.preload = function () {
     FacilityManager.load();
     Bed.load();
     Hospital.load();
+    Car.load();
     GameStage.load();
 
     this.facilityManagerDelay = 1000;
@@ -53,7 +54,7 @@ GameStage.prototype.prestart = function(payload) {
 
 GameStage.prototype.start = function() {
     // Todo: Enable on release
-    // this.transitionIn("instructions", 800); 
+    // this.transitionIn("instructions", 800);
 }
 
 GameStage.prototype.render = function (ctx, timer) {
@@ -92,7 +93,7 @@ GameStage.prototype.render = function (ctx, timer) {
     }
 
     // Draw people sorted by z-index
-    let people = [this.gameState.doctor].concat(this.gameState.patients);
+    let people = [this.gameState.doctor].concat(this.gameState.patients).concat(this.gameState.cars);
     if (this.gameState.facilityManager) {
        people.push(this.gameState.facilityManager);
        people.push({paint: () => this.gameState.facilityManager.paintFire(ctx), y: this.gameState.facilityManager.y - 1});
@@ -136,6 +137,7 @@ GameStage.prototype.update = function (timer) {
         this.gameState.facilityManager.update();
     }
     this.gameState.hospital.update(this.timeDif, this.time);
+    this.gameState.cars.forEach(c => c.update());
 
     if ((this.gameState.facilityManager === null) && (this.time > this.facilityManagerDelay)) {
         this.gameState.facilityManager = this.spawnFacilityManager();
@@ -144,6 +146,16 @@ GameStage.prototype.update = function (timer) {
     if (this.time > this.nextPatientSpawnTime) {
         this.spawnPatient();
     }
+
+    // TODO: implement game logic for proper spawning
+    if ((this.gameState.cars.length === 0) && (gameStage.time > 300)) {
+
+        const spawnPoint = this.gameState.level.spawnPointCar;
+        const car = new Car(spawnPoint.x, spawnPoint.y, this.gameState);
+        this.gameState.cars.push(car);
+        car.nextState();
+    }
+
 };
 
 GameStage.prototype.spawnPatient = function () {

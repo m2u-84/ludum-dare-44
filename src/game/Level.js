@@ -6,7 +6,7 @@ function Level() {
     // use w for wall, b for bed, r for receptionPoint, s for spawnPoint
     // cf. map_raster.png
     let rawMap =
-          '--sw--------------w-----\n'
+          'c-sw--------------w-----\n'
         + '---w--------------w-----\n'
         + '---w--------------w-----\n'
         + '---wwwwwww--wwwwwww-----\n'
@@ -26,7 +26,7 @@ function Level() {
         + '-------www--www---------\n'
         + '-----------------------s\n'
         + '------------------------\n'
-        + '------------------------',
+        + 'C-----------------Q-P---',
         x, y, collide;
 
     rawMap = rawMap.split('\n');
@@ -36,6 +36,10 @@ function Level() {
         .map(tile => new Array(rawMap[0].length).fill(null));
     this.beds = [];
     this.spawnPoints = [];
+    this.spawnPointCar = null;
+    this.vanishingPointCar = null;
+    this.parkingPointCar = null;
+    this.breakingPointCar = null;
     this.receptionPoints = [];
     this.facilityManagerWaitPoint = null;
     this.pilePoint = null;
@@ -67,6 +71,21 @@ function Level() {
 
                 case 's':
                     this.spawnPoints.push({x: x, y: y});
+                    break;
+
+                case 'c':
+                    this.spawnPointCar = {x: x, y: y};
+                    break;
+
+                case 'C':
+                    this.vanishingPointCar = {x: x, y: y};
+                    break;
+
+                case 'Q':
+                    this.breakingPointCar = {x: x, y: y};
+                    break;
+                case 'P':
+                    this.parkingPointCar = {x: x, y: y};
                     break;
 
                 case 'r':
@@ -104,7 +123,7 @@ Level.pathFindingCount = 0;
 
 Level.prototype.init = function() {
     this.placeBeds();
-}
+};
 
 Level.prototype.isBlocked = function(target) {
     // target is x and y
@@ -113,7 +132,7 @@ Level.prototype.isBlocked = function(target) {
     }
     var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
     return tile.collides;
-}
+};
 
 Level.prototype.getBed = function(target) {
     // target is x and y
@@ -122,7 +141,7 @@ Level.prototype.getBed = function(target) {
     }
     var tile = this.tilemap[Math.floor(target.y)][Math.floor(target.x)];
     return tile.bed;
-}
+};
 
 Level.prototype.placeBeds = function() {
     for (var i = 0; i < this.beds.length; i++) {
@@ -133,11 +152,11 @@ Level.prototype.placeBeds = function() {
         var y2 = this.beds[i].positions[1].y;
         this.tilemap[y2][x2].bed = this.beds[i];
     }
-}
+};
 
-Level.prototype.findPath = function(x1, y1, x2, y2) {
+Level.prototype.findPath = function(x1, y1, x2, y2, doShuffle = true) {
     const self = this;
-    const directions = [ [-1,0], [1,0], [0,1], [0,-1] ];
+    const directions = [ [0,1], [1,0], [-1,0], [0,-1] ]; // hack: special order for car movement
     x1 = Math.floor(x1);
     y1 = Math.floor(y1);
     x2 = Math.floor(x2);
@@ -168,7 +187,9 @@ Level.prototype.findPath = function(x1, y1, x2, y2) {
     }
 
     function addNeighbours(x, y) {
-        shuffle(directions)
+        if (doShuffle) {
+            shuffle(directions)
+        }
         for (var d of directions) {
             addNeighbour(x + d[0], y + d[1], x, y);
         }
