@@ -349,7 +349,7 @@ Patient.prototype.executeAction = function(action) {
         case treatments.placeboSurgery:
             gameStage.transitionIn("placebo", undefined, {patient: this});
           break;
-        case treatments.release:
+        case this.gameState.releaseTreatment:
           this.releaseFromBed();
           this.walkHome();
           break;
