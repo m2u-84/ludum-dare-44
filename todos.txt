@@ -29,8 +29,7 @@ Technik
 [-] Canvas HighRes rendern
 
 Features
-[ ] Weiterspielen können nach erfolgreichem Spielabschluss
-[ ] Schrittgeräusche <-- Matthias / Björn
+[X] Weiterspielen können nach erfolgreichem Spielabschluss
 [X] Mafia-Sound, wenn Mafia-Auto hält
 [X] ESC bei Behandlungsauswahl soll Dialog wieder Schließen
 [X] Title Anzeige Tastenbelegung
@@ -77,8 +76,10 @@ Features
 [ ] Balancing Gameplay <-- alle Björn Markus Edu Matthias
   [X] Startgeld 5000
   [X] Spätere Autos
-[ ] CHEATS RAUS
 [X] Heimschicken deaktivieren
+[ ] CHEATS RAUS
+[ ] Spiel publishen
+
 (Optional)
 [ ] PowerUp Vending Machine
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
@@ -86,6 +87,8 @@ Features
 [ ] Turbo-Modus für Doktor (ggfs. mit Verlust von Geld / Injektion von Drogen / Verlust von Leben)
 [ ] Demonstranten / Passanten, wenn Rezeption voll
 [ ] Ausrufezeichen über Patienten, wenn Diagnose durch ist
+[ ] Schrittgeräusche <-- Matthias / Björn
+
 
 Minigames
 [X] Antibiotics
