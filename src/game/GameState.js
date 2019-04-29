@@ -7,6 +7,7 @@ function GameState() {
     this.closestPatientToDoctor = null;
     this.policyBriberyAttempts = 0;
 
+    this.releaseTreatment = new Treatment('Release as cured',      0,    0,  0.0,  0.0);
     // possible treatments
     this.treatments = {
         //                            name        sleepTime[s]   price pat|hosp  failure
@@ -16,9 +17,7 @@ function GameState() {
         organ:          new Treatment('Give Organ',         30,     5000, 1000, -0.1, -0.3, () => this.hospital.organs > 0),
         antibiotics:    new Treatment('Give Antibiotics',    5,      200,   40, -0.1, -0.1),
         takeOrgan:      new Treatment('Take Organ',         30,     2000,  500, -0.2, -0.4, (p) => p.hasOrgan),
-        fixLeg:         new Treatment('Fix Fracture',       20,      800,  220, -0.1, -0.3),
-        // comment out the following line if release of patient by doctor should be disabled
-        release:        new Treatment('Release as cured',      0,    0,  0.0,  0.0, (p) => p.isHealthy()) // release as cured only if patient is cured
+        fixLeg:         new Treatment('Fix Fracture',       20,      800,  220, -0.1, -0.3)
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     this.receptions = [
@@ -48,7 +47,6 @@ function GameState() {
     setRelations(this.treatments.antibiotics,    [0.3, 0.1,-0.1, 0.0, 0.0, 0.3, 0.7, 0.0, 0.5,-0.1,-0.1]);
     setRelations(this.treatments.takeOrgan,      [0.1,-1.0, 1.0,-0.4,-1.0,-1.0,-0.6,-1.0,-1.0, 0.0,-0.8]);
     setRelations(this.treatments.fixLeg,         [0.2,-0.3, 0.0,-0.2, 1.0,-0.4,-0.5,-0.3,-0.4,-0.5,-0.4]);
-    setRelations(this.treatments.release,        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
 
     // start with 0 patients
     this.patients = [];
@@ -92,7 +90,7 @@ GameState.prototype.removePatient = function(patient) {
 };
 
 GameState.prototype.registerPoliceBribery = function() {
-    if (this.policyBriberyAttempts < 0) {
+    if (this.policyBriberyAttempts < 2) {
         this.policyBriberyAttempts++;
         return true;
     }

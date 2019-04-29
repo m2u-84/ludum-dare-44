@@ -89,7 +89,9 @@ Patient.prototype.update = function() {
         this.executeAction(this.gameState.receptions[1]);
     }
     if ((this.state === PatientStates.STAY_IN_BED) && (this.isCured())) {
-        this.executeAction(this.gameState.treatments.release);
+        gameStage.cashflowFeed.addText("Release happily rewarded with $500 bucks");
+        this.gameState.hospital.giveRevenue(500, this.x, this.y);
+        this.executeAction(this.gameState.releaseTreatment);
     }
     if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
         this.nextState();
@@ -355,9 +357,7 @@ Patient.prototype.executeAction = function(action) {
           gameStage.transitionIn("takeOrgan", undefined, {patient: this});
           break;
         case treatments.drugs:
-          // TODO: replace this with minigame
-          this.healthDecrease = -treatments.drugs.effects[this.sickness.name];
-          console.log("healthDecrease", this.healthDecrease);
+          gameStage.transitionIn("drug", undefined, {patient: this});
           break;
         case treatments.surgery:
           // TODO: replace this with minigame
@@ -450,6 +450,7 @@ Patient.prototype.getTreatmentPrice = function(treatment) {
 };
 
 Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
+    console.log("Adding effect");
     // Mark patient as treated (does not mean cured, only that doctor did something with patient)
     this.treated = true;
     if (this.sickness && treatment == this.sickness.treatment && regeneration > 0 && absolute > 0) {
@@ -476,6 +477,7 @@ Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
 };
 
 Patient.prototype.beginSleep = function(time) {
+    console.log("Beginning sleep: ", time);
     this.sleepTime = time;
     this.setState(PatientStates.ASLEEP);
 };

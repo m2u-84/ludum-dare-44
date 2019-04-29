@@ -13,9 +13,11 @@ Bugs
 [X] Doctor hinter Feuer
 [X] $$ vom Patienten bei Tod funktioniert nicht mehr
 [X] Checken ob Demon-Leute durch Organentnahme sterben (sollen sie nicht)
-[ ] nur ein Organ pro Patient entnehmen <-- Markus
+[X] nur ein Organ pro Patient entnehmen <-- Markus
 [ ] negative Behandlungen verpuffen irgendwie <-- Markus
-[ ] take organ lässt patienten nicht schlafen <-- Markus
+[X] take organ lässt patienten nicht schlafen <-- Markus
+[X] negatives Geld -> kann keine Patienten koordinieren
+[X] Hausmeister läuft in dem Moment los, wo die Leute umfallen
 
 Technik
 [X] Bitmap Font evaluieren

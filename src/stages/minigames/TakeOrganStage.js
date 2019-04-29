@@ -32,8 +32,10 @@ TakeOrganStage.prototype.prestart = function(payload) {
 };
 
 TakeOrganStage.prototype.stop = function() {
+  MinigameStage.prototype.stop.call(this);
   if (this.success) {
     gameStage.gameState.hospital.giveOrgan();
+    this.patient.hasOrgan = false;
   }
 };
 
