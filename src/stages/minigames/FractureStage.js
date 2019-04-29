@@ -1,7 +1,6 @@
 
 function FractureStage() {
   MinigameStage.call(this, "fracture");
-  this.helpText = "If required, this explains how to play the game during training mode";
 }
 inherit(FractureStage, MinigameStage);
 
@@ -16,6 +15,7 @@ FractureStage.prototype.preload = function() {
 
 FractureStage.prototype.prestart = function(payload) {
   MinigameStage.prototype.prestart.call(this, payload);
+  this.treatment = gameStage.gameState.treatments.fixLeg;
   // Reset minigame logics here
   this.legAngle = 0;
   this.maxLegAngle = 20 * Math.PI / 180;
@@ -120,7 +120,8 @@ FractureStage.prototype.render = function(ctx, timer) {
   MinigameStage.prototype.render.call(this, ctx, timer);
   // Leg
   const legy = Math.round(this.nailY + 25);
-  const lowerLegAngle = this.legAngle + wobble(this.time, 7) * 0.1 * (1 - this.nailProgress);
+  const wobbleLeg = (this.patient.sickness == this.treatment.sickness || this.legAngle != 0);
+  const lowerLegAngle = this.legAngle + (wobbleLeg ? wobble(this.time, 7) * 0.1 * (1 - this.nailProgress) : 0);
   drawImageToScreen(ctx, this.upperLeg, 0, legy, 0, 1, 1, 0, 0.7);
   drawImageToScreen(ctx, this.lowerLeg, 102, legy - 17, lowerLegAngle, 1, 1, 0.17, 0.4);
   // Nail

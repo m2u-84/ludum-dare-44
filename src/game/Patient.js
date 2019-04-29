@@ -271,7 +271,7 @@ Patient.prototype.getActions = function() {
   }
   switch (this.state) {
     case PatientStates.WAIT_AT_RECEPTION:
-      return this.gameState.receptions;
+      return this.gameState.receptions.slice();
     case PatientStates.STAY_IN_BED:
       const list = treatments;
       if (!this.diagnosed) {
@@ -328,9 +328,6 @@ Patient.prototype.executeAction = function(action) {
           break;
 
         case treatments.fixLeg:
-          // TODO: replace this with minigame
-          this.healthDecrease = -treatments.fixLeg.effects[this.sickness.name];
-          console.log("healthDecrease", this.healthDecrease);
           gameStage.transitionIn("fracture", undefined, {patient: this});
           break;
 

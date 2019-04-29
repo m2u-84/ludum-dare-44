@@ -13,6 +13,7 @@ TemplateStage.prototype.preload = function() {
 
 TemplateStage.prototype.prestart = function(payload) {
   MinigameStage.prototype.prestart.call(this, payload);
+  this.treatment = gameStage.gameState.treatments.WhicheverTreatmentItIs; // define the minigame's treatment here
   // Reset minigame logics here
 };
 
