@@ -35,11 +35,17 @@ Hospital.prototype.collectRevenue = function() {
 };
 
 Hospital.prototype.giveRevenue = function(rev, x, y) {
+    if (rev < 0) {
+        this.loseRevenue(-rev);
+    }
     this.balance += rev;
     gameStage.showFloatingText("+$" + rev, x, y, "money");
 };
 
 Hospital.prototype.loseRevenue = function(rev, x, y) {
+    if (rev < 0) {
+        this.giveRevenue(-rev);
+    }
     this.balance -= rev;
     gameStage.showFloatingText("-$" + rev, x, y, "red");
 };

@@ -89,11 +89,6 @@ FractureStage.prototype.update = function(timer) {
       }
     }
   }
-  // If minigame is won or lost:
-  if (false) {
-    success = true;
-    this.close(success);
-  }
 };
 
 FractureStage.prototype.hitNail = function() {
