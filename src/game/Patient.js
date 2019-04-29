@@ -7,7 +7,8 @@ const PatientStates = {
   STAY_IN_BED: 4,
   WALK_HOME: 5,
   DEAD: 6,
-  DIAGNOSING: 7
+  DIAGNOSING: 7,
+  ASLEEP: 8
 };
 
 Patient.count = 0;
@@ -20,6 +21,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.wealth = wealth;
     this.sickness = sickness;
     this.diagnosed = false;
+    this.treated = false;
     this.wealthLevel = wealth >= 80 ? 3 : wealth >= 40 ? 2 : 1;
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
@@ -36,6 +38,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.imageIndex = this.isRich ? 3 : rndInt(0, 3);
     this.image = Patient.images[this.imageIndex];
     this.diagnosingUntil = 0;
+    this.sleepTime = 0;
     this.gender = this.imageIndex === 3 ? 'female' : 'male';
     // Patients have takable organ initially, but not after player takes one
     this.hasOrgan = true; // TODO take organ away after organ taking minigame
@@ -70,12 +73,14 @@ Patient.prototype.update = function() {
         this.executeAction(this.gameState.treatments.release);
     }
     if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
-      this.nextState();
+        this.nextState();
+    }
+    if (this.state === PatientStates.ASLEEP && gameStage.time > this.stateChangedTime + this.sleepTime) {
+        this.nextState();
     }
 };
 
 Patient.prototype.setState = function(state) {
-
     this.state = state;
     this.stateChangedTime = gameStage.time;
 };
@@ -172,6 +177,9 @@ Patient.prototype.nextState = function() {
             this.setState(PatientStates.STAY_IN_BED);
             this.diagnosed = true;
             break;
+        case PatientStates.ASLEEP:
+            this.setState(PatientStates.STAY_IN_BED);
+            break;
     }
 };
 
@@ -233,7 +241,8 @@ Patient.prototype.paintAttachedUI = function(ctx) {
         // Health bar
         const directionFactor = sgn(this.directionFactor);
         const px = 2 / 24;
-        const x = Math.round(this.x * 24 + 4 * directionFactor) / 24, y = Math.round((this.y - 2 - px) * 24) / 24;
+        const x = Math.round(this.x * 24 + 4 * directionFactor) / 24,
+            y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24) / 24;
         const halfWidth = 6 / 24;
         const height = 2 / 24;
         ctx.fillStyle = "#00000000";
@@ -432,7 +441,9 @@ Patient.prototype.getTreatmentPrice = function(treatment) {
   return price;
 };
 
-Patient.prototype.addEffect = function(regeneration, absolute) {
+Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
+    // Mark patient as treated (does not mean cured, only that doctor did something with patient)
+    this.treated = true;
     // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
     // thus value change has maximum of 50% of max hp, but exponent of 2 pulls values closer towards 0
     // console.log("Health starts at ", this.health, " deg at ", this.healthDecrease);
@@ -448,4 +459,11 @@ Patient.prototype.addEffect = function(regeneration, absolute) {
         this.healthDecrease = clump(this.healthDecrease, -0.3, 0.3, 0.25);
         // console.log("Setting health decrease to ", this.healthDecrease);
     }
-}
+    // Change state
+    this.beginSleep(treatment.sleepTime);
+};
+
+Patient.prototype.beginSleep = function(time) {
+    this.sleepTime = time;
+    this.setState(PatientStates.ASLEEP);
+};

@@ -21,7 +21,7 @@ Stage.prototype.setManager = function(manager) {
 };
 
 Stage.prototype.transitionTo = function(stage, duration, payload) {
-  return this.manager.crossfadeToStage(stage, duration, payload);
+  return this.manager.crossfadeToStage(stage, duration, undefined, payload);
 };
 
 Stage.prototype.transitionIn = function(stage, duration, payload) {

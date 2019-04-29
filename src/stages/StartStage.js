@@ -6,6 +6,7 @@ inherit(StartStage, Stage);
 
 StartStage.prototype.preload = function() {
   // Load images here
+  this.menuImage = loader.loadImage("./assets/images/menu.png");
 }
 
 StartStage.prototype.render = function(ctx, timer) {
@@ -14,18 +15,12 @@ StartStage.prototype.render = function(ctx, timer) {
   if (p < 1) {
     ctx.translate(0, -(1 - p) * (h + 10));
   }
-  // Black background if required?
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, w, h);
-  // Image
-  // ctx.drawImage(this.image, 0, 0);
-  // Bar at the bottom
-  ctx.fillStyle = "#666";
-  ctx.fillRect(0, h + 1, w, 4);
+
+  drawImage(ctx, this.menuImage, 0, 0, 0, 1, 1, 0, 0);
 };
 
 StartStage.prototype.onkey = function(event) {
-  if (event.key == "Enter") {
-    this.transitionTo("game");
+  if (event.key == "1" || event.key == "2") {
+    this.transitionTo("game", undefined, {isMale: event.key == "1"});
   }
 }

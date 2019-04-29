@@ -42,10 +42,12 @@ GameStage.prototype.preload = function () {
     this.facilityManagerDelay = 1000;
 };
 
-GameStage.prototype.prestart = function() {
+GameStage.prototype.prestart = function(payload) {
   this.gameState = new GameState();
   this.gameState.init();
   this.contextStage = null;
+  // Assign Doctor gender when coming from main menu
+  if (payload) this.gameState.doctor.assignGender(payload.isMale);
   this.nextPatientSpawnTime = gameStage.time + 3000;
 };
 

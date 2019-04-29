@@ -20,12 +20,17 @@ Hospital.prototype.update = function(td, time) {
 
 Hospital.prototype.collectRevenue = function() {
     // Update each bed on its own
+    let sum = 0;
     gameStage.gameState.level.beds.forEach(bed => {
         const rev = bed.getRevenue();
         if (rev) {
+            sum += rev;
             this.giveRevenue(rev, bed.occupiedBy.x, bed.occupiedBy.y - 1.0);
         }
     });
+    if (sum > 0) {
+        gameStage.cashflowFeed.addText("earned $" + sum + " in bed rent", "gold");
+    }
 };
 
 Hospital.prototype.giveRevenue = function(rev, x, y) {

@@ -142,3 +142,25 @@ Array.prototype.remove = function() {
   }
   return this;
 };
+
+function getCycleFrame(absoluteNumber, min, max, alternate, firstRepeat = 1, lastRepeat = 1) {
+  const individualCount = max - min + 1;
+  const cycleCount = 2 * individualCount - 1 + (firstRepeat - 1) + (lastRepeat - 1);
+  let frame = absoluteNumber % cycleCount;
+  if (frame < firstRepeat) {
+    return min;
+  } else if (frame < individualCount + firstRepeat - 2) {
+    return min + frame - firstRepeat + 1;
+  } else if (frame < individualCount + firstRepeat - 2 + lastRepeat) {
+    return max;
+  } else {
+    const dif = frame - individualCount + firstRepeat - 2 + lastRepeat;
+    return max - dif;
+  }
+}
+
+function getArrayFrame(absoluteNumber, frames) {
+  absoluteNumber = Math.floor(absoluteNumber)
+  const id = absMod(absoluteNumber, frames.length);
+  return frames[id];
+}

@@ -1,9 +1,10 @@
 /**
  * 
  */
-function Treatment(name, costsForPatient, costsForHospital, failureRegenerative = 0.3,
+function Treatment(name, sleepTime, costsForPatient, costsForHospital, failureRegenerative = 0.3,
         failureAbsolute = failureRegenerative, enabledCallback = () => true) {
     this.name = name;
+    this.sleepTime = sleepTime * 1000;
     this.costsForPatient = costsForPatient;
     this.costsForHospital = costsForHospital;
     this.effects = {};
