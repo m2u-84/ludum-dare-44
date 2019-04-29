@@ -76,8 +76,10 @@ Features
 [ ] Balancing Gameplay <-- alle Björn Markus Edu Matthias
   [X] Startgeld 5000
   [X] Spätere Autos
-[ ] CHEATS RAUS
 [X] Heimschicken deaktivieren
+[ ] CHEATS RAUS
+[ ] Spiel publishen
+
 (Optional)
 [ ] PowerUp Vending Machine
 [ ] weitere Behandlungsmethode: tödliche Injektion ("sinnvoll", wenn Patient zu viel kostet und nichts einbringt)
