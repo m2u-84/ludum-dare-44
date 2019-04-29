@@ -93,7 +93,7 @@ MinigameStage.prototype.renderOnTop = function(ctx, timer) {
     const text = "Training mode" + (this.succeededOnce ? " - press enter to begin treatment" : "");
     mainFont.drawText(ctx, text, this.w / 2, 5, "white", 0.5);
     if (this.helpText) {
-      mainFont.drawText(ctx, this.helpText, this.w / 2, 15, "white", 0.5);
+      mainFont.drawText(ctx, this.helpText, this.w / 2, 18, "white", 0.5);
     }
     ctx.globalAlpha = 1;
   }

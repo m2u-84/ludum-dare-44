@@ -331,6 +331,7 @@ Patient.prototype.executeAction = function(action) {
           // TODO: replace this with minigame
           this.healthDecrease = -treatments.fixLeg.effects[this.sickness.name];
           console.log("healthDecrease", this.healthDecrease);
+          gameStage.transitionIn("fracture", undefined, {patient: this});
           break;
 
         case treatments.organ:

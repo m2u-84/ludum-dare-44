@@ -38,6 +38,6 @@ function drawImageToScreen(ctx, image, x = 0, y = 0, angle = 0, scaleX = 1, scal
   ctx.translate(x, y);
   ctx.rotate(angle);
   ctx.scale(scaleX, scaleY);
-  ctx.drawImage(image, -image.width * centerX, -image.height * centerY);
+  ctx.drawImage(image, Math.round(-image.width * centerX), Math.round(-image.height * centerY));
   ctx.restore();
 }
