@@ -7,9 +7,16 @@ function Hospital() {
 }
 
 Hospital.load = function() {
-    Hospital.moneyImage = loader.loadImage("assets/images/hud_money.png");
-    Hospital.organImage = loader.loadImage("assets/images/hud_organs.png");
-    Hospital.timeImage = loader.loadImage("assets/images/hud_time.png");
+    const ASSETS_BASE_PATH = './assets/';
+    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
+    Hospital.moneyImage = loader.loadImage(IMAGES_BASE_PATH + 'hud_money.png');
+    Hospital.organImage = loader.loadImage(IMAGES_BASE_PATH + 'hud_organs.png');
+    Hospital.timeImage = loader.loadImage(IMAGES_BASE_PATH + 'hud_time.png');
+
+    Hospital.soundGainMoney = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/money-handling/money-gain.mp3'});
+    Hospital.soundLoseMoney = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/money-handling/money-loss.mp3'});
 }
 
 Hospital.prototype.update = function(td, time) {
@@ -40,6 +47,8 @@ Hospital.prototype.giveRevenue = function(rev, x, y) {
     }
     this.balance += rev;
     gameStage.showFloatingText("+$" + rev, x, y, "money");
+
+    Hospital.soundGainMoney.play();
 };
 
 Hospital.prototype.loseRevenue = function(rev, x, y) {
@@ -48,6 +57,8 @@ Hospital.prototype.loseRevenue = function(rev, x, y) {
     }
     this.balance -= rev;
     gameStage.showFloatingText("-$" + rev, x, y, "red");
+
+    Hospital.soundLoseMoney.play();
 };
 
 Hospital.prototype.takeOrgan = function() {

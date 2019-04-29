@@ -14,7 +14,7 @@ function GameState() {
         //                            name        sleepTime[s]   price pat|hosp  failure
         drugs:          new Treatment('Prescribe Drugs',     5,      100,   10,  0.0,  0.0),
         placeboSurgery: new Treatment('Placebo Surgery',    10,     1000,   80,  0.0,  0.0),
-        surgery:        new Treatment('Proper Surgery',     20,     1000,  500, -0.1, -0.3),
+        // surgery:        new Treatment('Proper Surgery',     20,     1000,  500, -0.1, -0.3),
         organ:          new Treatment('Give Organ',         30,     5000, 1000, -0.1, -0.3, () => this.hospital.organs > 0),
         antibiotics:    new Treatment('Give Antibiotics',    5,      200,   40, -0.1, -0.1),
         takeOrgan:      new Treatment('Take Organ',         30,     2000,  500, -0.2, -0.4, (p) => p.hasOrgan),
@@ -35,19 +35,19 @@ function GameState() {
         new Sickness(0.2, 'Bone Fracture', this.treatments.fixLeg),
         new Sickness(0.3, 'Influenza', this.treatments.drugs),
         new Sickness(0.2, 'Diarrhea', this.treatments.antibiotics),
-        new Sickness(0.6, 'Stroke', this.treatments.surgery),
+        // new Sickness(0.6, 'Stroke', this.treatments.surgery),
         new Sickness(0.8, 'Anthrax', this.treatments.antibiotics),
         new Sickness(0.8, 'Kidney Failure', this.treatments.organ),
-        new Sickness(0.8, 'Lung Cancer', this.treatments.surgery)
+        // new Sickness(0.8, 'Lung Cancer', this.treatments.surgery)
     ];
-    // Relations between sickness & treatment     Hyp  CCl  Dem  Dep  Frc  Flu  Drh  Stk  Ant  Kid  Cnc
-    setRelations(this.treatments.drugs,          [0.5, 1.0, 0.0, 0.6, 0.0, 0.8, 0.2, 0.1, 0.3, 0.0, 0.1]);
-    setRelations(this.treatments.placeboSurgery, [1.0, 0.6, 0.3, 0.2, 0.0, 0.0,-0.3, 0.0, 0.0,-0.1, 0.1]);
-    setRelations(this.treatments.surgery,        [0.5,-0.5, 0.2,-0.6,-0.3,-0.8, 0.2,-0.4,-0.3, 0.2, 0.7]);
-    setRelations(this.treatments.organ,          [0.6,-0.3,-0.2,-0.3,-0.2,-0.5, 0.1,-0.2, 0.2, 0.6, 0.4]);
-    setRelations(this.treatments.antibiotics,    [0.3, 0.1,-0.1, 0.0, 0.0, 0.3, 0.7, 0.0, 0.5,-0.1,-0.1]);
-    setRelations(this.treatments.takeOrgan,      [0.1,-1.0, 1.0,-0.4,-1.0,-1.0,-0.6,-1.0,-1.0, 0.0,-0.8]);
-    setRelations(this.treatments.fixLeg,         [0.2,-0.3, 0.0,-0.2, 1.0,-0.4,-0.5,-0.3,-0.4,-0.5,-0.4]);
+    // Relations between sickness & treatment     Hyp  CCl  Dem  Dep  Frc  Flu  Drh    Stk  Ant  Kid     Cnc
+    setRelations(this.treatments.drugs,          [0.5, 1.0, 0.0, 0.6, 0.0, 0.8, 0.2/* 0.1*/, 0.3, 0.0/* 0.1*/]);
+    setRelations(this.treatments.placeboSurgery, [1.0, 0.6, 0.3, 0.2, 0.0, 0.0,-0.3/* 0.0*/, 0.0,-0.1/* 0.1*/]);
+    // setRelations(this.treatments.surgery,        [0.5,-0.5, 0.2,-0.6,-0.3,-0.8, 0.2,-0.4,-0.3, 0.2,0.7]);
+    setRelations(this.treatments.organ,          [0.6,-0.3,-0.2,-0.3,-0.2,-0.5, 0.1/*-0.2*/, 0.2, 0.6/* 0.4*/]);
+    setRelations(this.treatments.antibiotics,    [0.3, 0.1,-0.1, 0.0, 0.0, 0.3, 0.7/* 0.0*/, 0.5,-0.1/*-0.1*/]);
+    setRelations(this.treatments.takeOrgan,      [0.1,-1.0, 1.0,-0.4,-1.0,-1.0,-0.6/*-1.0*/,-1.0, 0.0/*-0.8*/]);
+    setRelations(this.treatments.fixLeg,         [0.2,-0.3, 0.0,-0.2, 1.0,-0.4,-0.5/*-0.3*/,-0.4,-0.5/*-0.4*/]);
 
     // start with 0 patients
     this.patients = [];

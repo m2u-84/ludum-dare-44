@@ -32,7 +32,6 @@ MinigameStage.prototype.prestart = function(payload) {
 };
 
 MinigameStage.prototype.stop = function() {
-  console.log("Stopping minigame");
   if (this.success) {
     const regenerationEffect = this.treatment.getRandomizedEffect(this.patient.sickness);
     const absoluteEffect = this.treatment.getRandomizedEffect(this.patient.sickness);
@@ -61,7 +60,7 @@ MinigameStage.prototype.close = function(success) {
 }
 
 MinigameStage.prototype.update = function(timer) {
-  if (this.getKeyState("Enter") && this.succeededOnce) {
+  if (this.getKeyState("Enter")) { // && this.succeededOnce) {
     this.trainingLeft = true;
     this.prestart(this.payload);
   } else if (this.getKeyState("Escape") && this.active && !stageManager.get("pause").alive) {
@@ -96,7 +95,7 @@ MinigameStage.prototype.renderOnTop = function(ctx, timer) {
   // Help Text
   if (this.firstAttempt) {
     ctx.globalAlpha = 0.7 + 0.25 * Math.sin(this.time * 0.002);
-    const text = "Training mode" + (this.succeededOnce ? " - press enter to begin treatment" : "");
+    const text = "Training mode" + (this.succeededOnce || true ? " - press enter to begin treatment" : "");
     mainFont.drawText(ctx, text, this.w / 2, 5, "white", 0.5);
     if (this.helpText) {
       mainFont.drawText(ctx, this.helpText, this.w / 2, 18, "white", 0.5);
