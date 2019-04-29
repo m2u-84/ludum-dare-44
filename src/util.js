@@ -45,7 +45,6 @@ function shuffle(array) {
 
 function moveToTop(list, item) {
   const index = list.findIndex(el => el == item);
-  console.log(list, item, index);
   if (index > 0) {
     list.splice(index, 1);
     list.unshift(item);

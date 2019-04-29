@@ -49,7 +49,7 @@ Hospital.prototype.takeOrgan = function() {
 Hospital.prototype.draw = function(ctx) {
     // Balance
     drawImageToScreen(ctx, Hospital.moneyImage, 3, 3, 0, 1, 1, 0, 0);
-    mainFont.drawText(ctx, "" + Math.floor(this.balance), 55, 9, "money", 1);
+    mainFont.drawText(ctx, "" + Math.floor(this.balance), 55, 9, "gold", 1);
     // Organs
     drawImageToScreen(ctx, Hospital.organImage, 3, 22, 0, 1, 1, 0, 0);
     mainFont.drawText(ctx, "" + this.organs, 55, 27, "organ", 1);

@@ -27,6 +27,9 @@ MinigameStage.prototype.stop = function() {
     const {regenerative, absolute} = this.treatment.getFailureEffects();
     this.patient.addEffect(regenerative, absolute);
   }
+  // Award money
+  const money = this.patient.getTreatmentPrice(this.treatment);
+  gameStage.gameState.hospital.giveRevenue(money, this.patient.x, this.patient.y - 2);
 };
 
 MinigameStage.prototype.update = function(timer) {
