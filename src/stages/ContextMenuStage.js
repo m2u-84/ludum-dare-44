@@ -39,8 +39,6 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   // Draw Patient Overview
   ctx.translate(14, 14);
   bigFont.drawText(ctx, "" + this.patient.id, 118, 0, "dark");
-  // mainFont.drawText(ctx, "BUDGET:", 0, 20, "darkgray");
-  // mainFont.drawText(ctx, "DIAGNOSIS:", 100, 20, "darkgray");
   ctx.globalAlpha = 0.2;
   const wealth = this.patient.wealthLevel == 1 ? "$" : this.patient.wealthLevel == 2 ? "$$" : "$$$";
   mainFont.drawText(ctx, "$$$", 0, 34, "green");

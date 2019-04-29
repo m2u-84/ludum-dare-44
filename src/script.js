@@ -6,7 +6,7 @@ window.onload = () => {
   timer = new Timer();
   loader = new Loader();
   mainFont = new BitmapFont("assets/images/fontsheet.png", {
-    "white": "white", "black": "black", "gray": "gray", "darkgray": "#333", "orange": "#d9913c", "green": "#81bc1b",
+    "white": "white", "black": "black", "gray": "gray", "darkgray": "#181818", "orange": "#d9913c", "green": "#81bc1b",
     "red": "red", "blue": "#009cff", "gold": "#f0c030", "organ": "#a00824", "yellow": "#d0c800", "money": "#81bc1b"
     },
     "abcdefghijklmnopqrstuvwxyz0123456789#$()[]+-?!',. :",

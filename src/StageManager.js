@@ -207,5 +207,7 @@ StageManager.prototype.render = function() {
 };
 
 StageManager.prototype.handleKeyDown = function(event) {
+  event.preventDefault();
+  event.stopPropagation();
   this.activeStage.onkey(event);
 };
