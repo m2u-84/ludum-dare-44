@@ -433,7 +433,7 @@ Patient.prototype.die = function() {
         this.setState(PatientStates.DEAD);
         this.finishPath();
 
-        Patient.soundsDying[this.isMale ? 'male' : 'female'][rndInt(0, 2)].play();
+        Patient.soundsDying[this.isMale ? 'male' : 'female'][rndInt(0, 3)].play();
 
         setTimeout(() => {
             gameStage.cashflowFeed.addText("Lost $250 due to deceased patient");

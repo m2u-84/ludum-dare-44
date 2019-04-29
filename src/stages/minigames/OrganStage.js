@@ -88,7 +88,7 @@ OrganStage.prototype.updateFlight = function() {
   this.angle = this.startAngle + this.angleSpeed * (this.time - this.angleRotationStart);
   // Bounce
   if (this.y > this.bounceHeight) {
-    this.soundsBounce[rndInt(0, 2)].play();
+    this.soundsBounce[rndInt(0, 3)].play();
 
     if (this.organWellPlaced) {
       this.vx = 0;

@@ -119,7 +119,7 @@ PlaceboStage.prototype.updateBall = function(tf) {
       const nearestPoint = getNearestPoint(this.ballX, this.ballY, px1, py1, px2, py2);
       const dis = nearestPoint.distance;
       if (dis <= this.ballR) {
-        this.soundsBounce[rndInt(0, 2)].play();
+        this.soundsBounce[rndInt(0, 3)].play();
 
         // Reflect away from collision point
         const dx = nearestPoint.x - this.ballX, dy = nearestPoint.y - this.ballY;
