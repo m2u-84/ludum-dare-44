@@ -11,7 +11,9 @@ Bed.load = function() {
     Bed.exclamationImage = loader.loadImage("./assets/images/attention.png", 5, 1);
     Bed.exclamationFrames = [0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 2, 2, 1];
     Bed.busyImage = loader.loadImage("./assets/images/busy.png", 6, 1);
-    Bed.busyFrames = [0, 0, 0, 1, 1, 2, 2, 3, 4, 5]
+    Bed.busyFrames = [0, 0, 0, 1, 1, 2, 2, 3, 4, 5];
+    Bed.sleepImage = loader.loadImage("./assets/images/sleeping.png", 4, 1);
+    Bed.sleepFrames = [0, 1, 2, 3, 2, 1];
 };
 
 Bed.prototype.paint = function(ctx) {
@@ -45,6 +47,9 @@ Bed.prototype.paint = function(ctx) {
         } else if (patient.state == PatientStates.STAY_IN_BED && patient.diagnosed && !patient.treated) {
             const frame = getArrayFrame(gameStage.time / 50, Bed.exclamationFrames);
             drawFrame(ctx, Bed.exclamationImage, frame, this.positions[1].x + 0.5, this.positions[1].y - 1.3, 0, 1/24, 1/24, 0.5, 1);
+        } else if (patient.state == PatientStates.ASLEEP) {
+            const frame = getArrayFrame(gameStage.time / 300, Bed.sleepFrames);
+            drawFrame(ctx, Bed.sleepImage, frame, this.positions[1].x + 0.5, this.positions[1].y - 1.4, 0, 1/24, 1/24, 0.5, 1);
         }
     }
 };
