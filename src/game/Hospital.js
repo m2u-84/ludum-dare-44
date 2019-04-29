@@ -58,6 +58,10 @@ Hospital.prototype.takeOrgan = function() {
     }
 }
 
+Hospital.prototype.giveOrgan = function() {
+    this.organs++;
+}
+
 Hospital.prototype.draw = function(ctx) {
     const offy = 19;
     // Time
