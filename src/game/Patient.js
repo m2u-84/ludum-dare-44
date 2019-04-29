@@ -333,7 +333,6 @@ Patient.prototype.executeAction = function(action) {
       break;
     }
     case PatientStates.STAY_IN_BED: {
-      this.gameState.stats.treatments++;
       switch (action) {
         case "Diagnose":
           this.diagnosingUntil = gameStage.time + 1000 * rndInt(7, 40);
