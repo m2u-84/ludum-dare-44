@@ -147,6 +147,7 @@ PlaceboStage.prototype.updateBall = function(tf) {
         // Bounces
         this.bounces++;
         this.maxBounces = Math.max(this.bounces, this.maxBounces);
+        this.patient.gameState.stats.pingPongBounces = Math.max(this.patient.gameState.stats.pingPongBounces, this.maxBounces);
       }
     }
   }
