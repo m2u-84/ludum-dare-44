@@ -211,9 +211,7 @@ GameStage.prototype.onkey = function (event) {
     }
     if (event.key === "Escape") {
         this.transitionIn("pause", 400);
-    } else if (event.key === "Enter") {
-        this.transitionIn(getRandomItem(["organ", "syringe"]));
-    } else if (event.key === "Shift") {
+    } else if (event.key === " ") {
         if (this.gameState.closestPatientToDoctor !== null) {
             this.contextStage = this.transitionIn("context", 300, { patient: this.gameState.closestPatientToDoctor });
         }

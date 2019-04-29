@@ -1,7 +1,7 @@
 
 
 
-function FloatingText(t, x, y, color) {
+function FloatingText(t, x, y, color = "money") {
   this.text = t;
   this.x = x;
   this.y = y;
@@ -30,6 +30,6 @@ FloatingText.prototype.render = function(ctx) {
   ctx.globalAlpha = alpha;
   ctx.translate(this.x, this.y - age / 2500 - 1.5);
   ctx.scale(1/24, 1/24);
-  mainFont.drawText(ctx, this.text, 0, 0, "money", 0.5);
+  mainFont.drawText(ctx, this.text, 0, 0, this.color, 0.5);
   ctx.restore();
 }

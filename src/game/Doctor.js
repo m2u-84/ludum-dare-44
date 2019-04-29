@@ -38,16 +38,16 @@ Doctor.prototype.update = function() {
 Doctor.prototype.getDeltaFromKeys = function() {
 
     let moveDelta = {x: 0, y: 0};
-    if (gameStage.getKeyState("ArrowUp")) {
+    if ((gameStage.getKeyState("ArrowUp")) || (gameStage.getKeyState("W"))) {
         moveDelta.y -= 1;
     }
-    if (gameStage.getKeyState("ArrowDown")) {
+    if ((gameStage.getKeyState("ArrowDown")) || (gameStage.getKeyState("S"))) {
         moveDelta.y += 1;
     }
-    if (gameStage.getKeyState("ArrowLeft")) {
+    if ((gameStage.getKeyState("ArrowLeft")) || (gameStage.getKeyState("A"))) {
         moveDelta.x -= 1;
     }
-    if (gameStage.getKeyState("ArrowRight")) {
+    if ((gameStage.getKeyState("ArrowRight")) || (gameStage.getKeyState("D"))) {
         moveDelta.x += 1;
     }
     return moveDelta;
