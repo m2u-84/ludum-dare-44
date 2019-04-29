@@ -78,8 +78,9 @@ MinigameStage.prototype.render = function(ctx, timer) {
   // Background
   this.w = w - 2 * this.margin;
   this.h = h - 2 * this.margin;
-  ctx.drawImage(this.background, this.margin, this.margin, this.w, this.h);
-  ctx.translate(this.margin, this.margin);
+  const x = this.margin * 1.9;
+  ctx.drawImage(this.background, x, this.margin, this.w, this.h);
+  ctx.translate(x, this.margin);
   // Clipping
   ctx.beginPath();
   ctx.moveTo(0, 0);
