@@ -63,10 +63,13 @@ Patient.prototype.update = function() {
         this.directionFactor = 0;
     }
     updateHealth.call(this);
-    if ((this.state == PatientStates.WAIT_AT_RECEPTION) && (gameStage.time - this.stateChangedTime > this.patience)) {
+    if ((this.state === PatientStates.WAIT_AT_RECEPTION) && (gameStage.time - this.stateChangedTime > this.patience)) {
         this.executeAction("Send away");
     }
-    if (this.state == PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
+    if ((this.state === PatientStates.STAY_IN_BED) && (this.isCured())) {
+        this.executeAction(this.gameState.treatments.release);
+    }
+    if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
       this.nextState();
     }
 };
@@ -111,14 +114,20 @@ Patient.prototype.getAddressablePosition = function() {
   return result;
 };
 
+Patient.prototype.isHealthy = function() {
+
+    return this.health >= 100;
+};
+
+Patient.prototype.isCured = function() {
+
+    return (this.isHealthy() && (this.healthDecrease <= 0));
+};
+
 Patient.prototype.isDead = function() {
 
     return this.state === PatientStates.DEAD;
 };
-
-Patient.prototype.isCured = function() {
-    return this.health >= 100;
-}
 
 Patient.prototype.getFreePoint = function(points) {
 
@@ -307,12 +316,12 @@ Patient.prototype.executeAction = function(action) {
           gameStage.transitionIn("organ", undefined, {patient: this});
           break;
 
-        case treatments.takeOrgan: 
+        case treatments.takeOrgan:
           // TODO: replace this with minigame
           this.health = 0;
           this.gameState.hospital.organs = this.gameState.hospital.organs + 1;
           break;
-        
+
         case treatments.release:
             this.releaseFromBed();
             this.walkHome();
