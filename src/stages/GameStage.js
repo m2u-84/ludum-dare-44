@@ -184,11 +184,10 @@ GameStage.prototype.spawnPatient = function() {
           this.gameState.patients.push(patient);
         }
     }
-    // spawn a new patient between 2s and 6s
-
     this.nextPatientSpawnTimeFactor /= 1.04;
-    this.nextPatientSpawnTime = gameStage.time + interpolate(this.nextPatientSpawnTimeFactor * 13000,
-        this.nextPatientSpawnTimeFactor * 23000, Math.random());
+    const minTime = Math.max(4000, this.nextPatientSpawnTimeFactor * 13000);
+    const maxTime = Math.min(8000, this.nextPatientSpawnTimeFactor * 23000);
+    this.nextPatientSpawnTime = gameStage.time + interpolate(minTime, maxTime, Math.random());
 };
 
 GameStage.prototype.spawnFacilityManager = function() {
@@ -211,7 +210,6 @@ GameStage.prototype.spawnPoliceCar = function() {
     this.nextPoliceCarSpawnTime = Infinity; // never spawn a new car until this car finishes
     const spawnPoint = this.gameState.level.spawnPointCar;
     const car = new PoliceCar(spawnPoint.x, spawnPoint.y, this.gameState, () => {
-        // spawn a new policy car between 60s and 90s
         this.nextPoliceCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
         this.nextMafiaCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
     });
@@ -225,7 +223,6 @@ GameStage.prototype.spawnMafiaCar = function() {
     this.nextMafiaCarSpawnTime = Infinity; // never spawn a new car until this car finishes
     const spawnPoint = this.gameState.level.spawnPointCar;
     const car = new MafiaCar(spawnPoint.x, spawnPoint.y, this.gameState, () => {
-        // spawn a new policy car between 60s and 90s
         this.nextMafiaCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
         this.nextPoliceCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
     });
