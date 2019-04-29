@@ -260,17 +260,18 @@ GameStage.prototype.onkey = function (event) {
             this.contextStage = this.transitionIn("context", 300, { patient: this.gameState.closestPatientToDoctor });
         }
     }
-    // Cheats TODO REMOVE THEM
-    if (event.key == "k") {
-        // Kill all patients
-        this.gameState.patients.forEach( p => p.die() );
-    } else if (event.key == "f") {
-      this.transitionIn("takeOrgan", 300, { patient: new Patient(5, 5, 100, 50, this.gameState.sicknesses[4], this.gameState)})
-    } else if (event.key == "i") {
-      // Diagnose all patients
-      this.gameState.patients.forEach( p => p.diagnosed = true );
-    } else if (event.key == "l") {
-        this.gameState.hospital.balance += 100;
+    if (window["cheats"]) {
+      if (event.key == "k") {
+          // Kill all patients
+          this.gameState.patients.forEach( p => p.die() );
+      } else if (event.key == "f") {
+        this.transitionIn("takeOrgan", 300, { patient: new Patient(5, 5, 100, 50, this.gameState.sicknesses[4], this.gameState)})
+      } else if (event.key == "i") {
+        // Diagnose all patients
+        this.gameState.patients.forEach( p => p.diagnosed = true );
+      } else if (event.key == "l") {
+          this.gameState.hospital.balance += 100;
+      }
     }
 };
 
