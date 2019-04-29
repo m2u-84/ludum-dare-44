@@ -54,9 +54,6 @@ GameOverStage.prototype.onkey = function(event) {
   if (this.active && event.key == " ") {
     this.transitionTo("start");
   }
-}
-
-GameOverStage.prototype.onkey = function(event) {
   if (this.active && event.key == "1" && this.gameOverNr == 2) {
     this.transitionOut(800);
   }
