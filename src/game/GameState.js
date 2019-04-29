@@ -6,6 +6,7 @@ function GameState() {
     this.facilityManager = null;
     this.closestPatientToDoctor = null;
     this.policyBriberyAttempts = 0;
+    this.danegeld = 1000;
 
     this.releaseTreatment = new Treatment('Release as cured',      0,    0,  0.0,  0.0);
     // possible treatments

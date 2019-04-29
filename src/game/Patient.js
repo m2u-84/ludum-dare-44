@@ -27,8 +27,8 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
     this.targetBed = null;
-    this.healthDecrease = 2 * sickness.deadliness * (1 + rnd(0.5) - rnd(0.3)); // per second TODO: adjust
-    this.healthDecrease = clump(this.healthDecrease, -0.3, 0.3);
+    this.healthDecrease = 2 * sickness.deadliness * (1 + rnd(0.5) - rnd(0.3)); // per second
+    this.healthDecrease = 0.75 * clump(this.healthDecrease, -0.3, 0.3);
     this.deathDuration = 500; // millisecs
     this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
