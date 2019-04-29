@@ -292,8 +292,37 @@ Patient.prototype.executeAction = function(action) {
           gameStage.transitionIn("syringe", undefined, {patient: this});
           break;
 
+        case treatments.drugs: 
+          // TODO: replace this with minigame
+          this.healthDecrease = -treatments.drugs.effects[this.sickness.name];
+          console.log("healthDecrease", this.healthDecrease);
+          break;
+
+        case treatments.fixLeg: 
+          // TODO: replace this with minigame
+          this.healthDecrease = -treatments.fixLeg.effects[this.sickness.name];
+          console.log("healthDecrease", this.healthDecrease);
+          break;
+
         case treatments.organ:
           gameStage.transitionIn("organ", undefined, {patient: this});
+          break;
+
+        case treatments.placeboSurgery: 
+          // TODO: replace this with minigame
+          this.healthDecrease = -treatments.placeboSurgery.effects[this.sickness.name];
+          console.log("healthDecrease", this.healthDecrease);
+          break;
+
+        case treatments.release:
+          this.releaseFromBed();
+          this.walkHome();
+          break;
+
+        case treatments.surgery: 
+          // TODO: replace this with minigame
+          this.healthDecrease = -treatments.surgery.effects[this.sickness.name];
+          console.log("healthDecrease", this.healthDecrease);
           break;
 
         case treatments.takeOrgan: 
@@ -302,11 +331,6 @@ Patient.prototype.executeAction = function(action) {
           this.gameState.hospital.organs = this.gameState.hospital.organs + 1;
           break;
         
-        case treatments.release:
-            this.releaseFromBed();
-            this.walkHome();
-            break;
-
         default:
           throw new Error("Invalid action for patient in bed: " + action);
       }
