@@ -6,12 +6,20 @@ inherit(FractureStage, MinigameStage);
 
 FractureStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
-  // load graphics here
-  this.upperLeg = loader.loadImage("assets/images/hammer_leg_back.png");
-  this.lowerLeg = loader.loadImage("assets/images/hammer_leg_front.png");
-  this.nailImage = loader.loadImage("assets/images/hammer_nail.png");
-  this.hammerImage = loader.loadImage("assets/images/hammer_hand.png");
-  this.curtainImage = loader.loadImage("assets/images/curtain.png");
+
+  const ASSETS_BASE_PATH = './assets/';
+  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
+  this.upperLeg = loader.loadImage(IMAGES_BASE_PATH + 'hammer_leg_back.png');
+  this.lowerLeg = loader.loadImage(IMAGES_BASE_PATH + 'hammer_leg_front.png');
+  this.nailImage = loader.loadImage(IMAGES_BASE_PATH + 'hammer_nail.png');
+  this.hammerImage = loader.loadImage(IMAGES_BASE_PATH + 'hammer_hand.png');
+  this.curtainImage = loader.loadImage(IMAGES_BASE_PATH + 'curtain.png');
+
+  this.soundWhoosh = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/hammer-hitting/hammer-hitting-whoosh.mp3'});
+  this.soundNail = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/hammer-hitting/hammer-hitting-nail.mp3'});
+  this.soundKnee = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/hammer-hitting/hammer-hitting-knee.mp3'});
 };
 
 FractureStage.prototype.prestart = function(payload) {
@@ -54,6 +62,8 @@ FractureStage.prototype.update = function(timer) {
   } else {
     if (this.hammering) {
       // Hammer down
+      this.soundWhoosh.play();
+
       this.hammerVelocity += this.timeDif * 0.005;
       this.hammerY += this.hammerVelocity * this.timeDif;
       const maxY = this.wellPlaced ? (this.nailY - 39 + 35 * this.nextNailProgress) : (this.nailY + 6);
@@ -93,19 +103,26 @@ FractureStage.prototype.update = function(timer) {
 };
 
 FractureStage.prototype.hitNail = function() {
+  this.soundNail.play();
+
   this.nailProgress = this.nextNailProgress;
   this.nextNailProgress += rnd(0.3, 0.6);
   this.nextNailProgress = clamp(this.nextNailProgress, 0, this.nailProgress < 0.84 ? 0.94 : 1);
+
   if (this.nailProgress >= 1.0) {
     this.nailProgress = 1.0;
     this.close(true);
   }
+
   this.legAngle = rnd(this.maxLegAngle) * rndSgn();
   this.maxLegAngle = Math.abs(this.legAngle);
 };
 
 FractureStage.prototype.hitPatient = function() {
+  this.soundKnee.play();
+
   this.misses++;
+
   if (this.misses >= 3) {
     this.close(false);
   }
