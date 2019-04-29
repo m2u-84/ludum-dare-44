@@ -4,6 +4,7 @@ function GameStage() {
     this.contextStage = null;
     this.floatingTexts = [];
     this.capslockMessageStart = -1;
+    this.cashflowFeed = new CashflowFeed();
 }
 
 inherit(GameStage, Stage);
@@ -107,6 +108,9 @@ GameStage.prototype.render = function (ctx, timer) {
 
     // Screen space UI
     this.gameState.hospital.draw(ctx);
+
+    // Cashflow Feed
+    this.cashflowFeed.draw(ctx);
 
     // Capslock message
     if (this.capslockMessageStart > 0) {
@@ -214,6 +218,13 @@ GameStage.prototype.onkey = function (event) {
         if (this.gameState.closestPatientToDoctor !== null) {
             this.contextStage = this.transitionIn("context", 300, { patient: this.gameState.closestPatientToDoctor });
         }
+    }
+    // Cheats
+    if (event.ctrlKey) {
+      if (event.key == "k") {
+        // Kill all patients
+        this.gameState.patients.forEach( p => p.die() );
+      }
     }
 };
 
