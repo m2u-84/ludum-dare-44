@@ -10,23 +10,24 @@ Bugs
 [X] Laufgeschwindigkeit framerate-abhängig
 [X] verbrannte Leichen aus patients-Liste entfernen
 [X] Leiche im Bett für zu null-pointer-exception
-[X] Doctor hinter Feuer <-- Markus
-[ ] $$ vom Patienten bei Tod funktioniert nicht mehr   <--- Björn
+[ ] Doctor hinter Feuer
+[X] $$ vom Patienten bei Tod funktioniert nicht mehr
 
 Technik
 [X] Bitmap Font evaluieren
 [X] Extraktion Laufcode
 [ ] Aspect-Ratio-Probleme durch ganzzahlige Skalierung lösen
+[ ] Hintergrund-Musik spielt nicht immer (preload-event)
 [nope] Canvas HighRes rendern
 
 Features
 [ ] Title Anzeige Tastenbelegung
 [ ] Intervalle des Patientspawns randomisieren
 [ ] Startscreen: Logo/Geschlechtsauswahl
-[ ] lahme Patienten: fast toter Patient halb so schnell wie gesunder Patient <-- Björn
-[ ] WASD zusätzlich supporten <-- Björn
-[ ] Shift durch Space ersetzen <-- Björn
-[ ] Enter ausbauen, um Minigames zu entfernen <--- Björn
+[X] lahme Patienten: fast toter Patient halb so schnell wie gesunder Patient
+[X] WASD zusätzlich supporten
+[X] Shift durch Space ersetzen
+[X] Enter ausbauen, um Minigames zu entfernen
 [ ] Betriebskosten: periodische Abnahme des Kapitals
 [ ] Übungsmodus Mini-Games <-- Markus
 [ ] positives Geld-Geräusch
