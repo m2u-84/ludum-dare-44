@@ -40,7 +40,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.image = Patient.images[this.imageIndex];
     this.diagnosingUntil = 0;
     this.sleepTime = 0;
-    this.gender = this.imageIndex === 3 ? 'female' : 'male';
+    this.isMale = this.imageIndex === 3 ? false : true;
     // Patients have takable organ initially, but not after player takes one
     this.hasOrgan = true; // TODO take organ away after organ taking minigame
 
@@ -50,13 +50,38 @@ function Patient(x, y, health, wealth, sickness, gameState) {
 inherit(Patient, MovingObject);
 
 Patient.load = function() {
+    const ASSETS_BASE_PATH = './assets/';
+    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
     let sprites = [
       'patient1', // 0: Sick Man #1
       'patient2', // 1: Sick Man #2
       'patient3', // 2: Sick woman #1
       'patient4', // 3: Rich person
     ];
-    Patient.images = sprites.map(sprite => loader.loadImage("./assets/images/" + sprite + ".png", 4, 3));
+
+    Patient.images = sprites.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
+
+    // Patient.soundDyingMale1 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-1.mp3'});
+    // Patient.soundDyingMale2 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-2.mp3'});
+    // Patient.soundDyingMale3 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-3.mp3'});
+    // Patient.soundDyingFemale1 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-1.mp3'});
+    // Patient.soundDyingFemale2 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-2.mp3'});
+    // Patient.soundDyingFemale3 = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-3.mp3'});
+
+    Patient.soundsDying = {
+        male: [
+            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-1.mp3'}),
+            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-2.mp3'}),
+            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-3.mp3'})
+        ],
+        female: [
+            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-1.mp3'}),
+            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-2.mp3'}),
+            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-3.mp3'})
+        ]
+    }
 };
 
 Patient.prototype.update = function() {
@@ -411,6 +436,9 @@ Patient.prototype.die = function() {
         this.health = 0;
         this.setState(PatientStates.DEAD);
         this.finishPath();
+
+        Patient.soundsDying[this.isMale ? 'male' : 'female'][rndInt(0, 2)].play();
+
         setTimeout(() => {
             gameStage.cashflowFeed.addText("Lost $250 due to deceased patient");
             this.gameState.hospital.loseRevenue(250, this.x, this.y);
