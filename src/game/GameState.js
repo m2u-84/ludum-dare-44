@@ -43,7 +43,7 @@ function GameState() {
     var self = this;
     this.sicknesses = [
         new Sickness(0.0, 'Hypochondria', this.treatments.placeboSurgery),
-        new Sickness(0.1, 'Common Cold', this.treatments.drugs),
+        new Sickness(0.1, 'Common Cold', this.treatments.placeboSurgery),
         new Sickness(0.2, 'Demonic Possession', this.treatments.takeOrgan),
         new Sickness(0.2, 'Depression', this.treatments.drugs),
         new Sickness(0.2, 'Bone Fracture', this.treatments.fixLeg),
