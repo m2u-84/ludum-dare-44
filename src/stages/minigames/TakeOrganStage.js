@@ -9,8 +9,7 @@ inherit(TakeOrganStage, MinigameStage);
 TakeOrganStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
   this.organ = loader.loadImage("assets/images/organ.png");
-  this.hand = loader.loadImage("assets/images/organ_hand_back.png");
-  this.thumb = loader.loadImage("assets/images/organ_hand_front.png");
+  this.hookImage = loader.loadImage("assets/images/grabmachine.png", 2, 1);
   this.openHand = loader.loadImage("assets/images/organ_hand_back_open.png");
   this.bodyBack = loader.loadImage("assets/images/organ_body_back.png");
   this.bodyFront = loader.loadImage("assets/images/organ_body_front.png");
@@ -54,7 +53,7 @@ TakeOrganStage.prototype.update = function(timer) {
       // Take it
       this.wellPlaced = (Math.abs(this.handX - this.w * 0.46) < this.w * 0.15);
       this.isTaking = true;
-      this.takeHeight = this.h * (this.wellPlaced ? 1 : 0.5);
+      this.takeHeight = this.h * (this.wellPlaced ? 0.85 : 0.4);
       this.takeStart = this.time;
       this.duration = (this.wellPlaced ? this.takeDuration : this.failDuration);
     }
@@ -87,21 +86,16 @@ TakeOrganStage.prototype.render = function(ctx, timer) {
   MinigameStage.prototype.render.call(this, ctx, timer);
   // Back of body + inner body
   const bx = this.w * 0.5, by = Math.round(this.h * 0.65);
-  drawImage(ctx, this.bodyBack, bx, by);
-  // Hand
-  if (this.takeProgress > 0.5 && this.wellPlaced) {
-    drawImage(ctx, this.hand, this.handX, this.handY, 0, 1, 1, 0.4, 0.7);
-  } else {
-    drawImage(ctx, this.openHand, this.handX, this.handY, 0, 1, 1, 0.4, 0.9);
-  }
+  drawImageToScreen(ctx, this.bodyBack, bx, by);
   // Organ
   if (this.takeProgress > 0.5 && this.wellPlaced) {
-    drawImage(ctx, this.organ, this.handX, this.handY, 0, 1, 1);
+    drawImageToScreen(ctx, this.organ, Math.round(this.handX), Math.round(this.handY) + 60, 0, 1, 1);
   }
-  // Thumb
-  drawImage(ctx, this.thumb, this.isFlying ? this.handX - 15 : this.handX, this.handY, this.isFlying ? 0.6 : 0, 1, 1, 0.4, 0.7);
+  // Hook
+  const frame = (this.takeProgress > 0.5 && this.wellPlaced) ? 1 : 0;
+  drawFrame(ctx, this.hookImage, frame, Math.round(this.handX), Math.round(this.handY), 0, 1, 1, 0.5, 0.9);
   // Front of Body
-  drawImage(ctx, this.bodyFront, bx, by - 1);
+  drawImageToScreen(ctx, this.bodyFront, bx, by - 1);
   // MinigameStage handles overlay stuff / UI
   MinigameStage.prototype.renderOnTop.call(this, ctx, timer);
 };
