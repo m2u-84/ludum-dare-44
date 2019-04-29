@@ -30,6 +30,8 @@ OrganStage.prototype.prestart = function(payload) {
   this.angle = 0;
   this.organWellPlaced = false;
   this.firstBounceTime = 0;
+  this.sessionStart = this.time;
+  this.sessionOffset = (rnd() < 0.5) ? Math.PI : 0;
 };
 
 OrganStage.prototype.prestop = function() {
@@ -37,11 +39,12 @@ OrganStage.prototype.prestop = function() {
 };
 
 OrganStage.prototype.update = function(timer) {
-  this.organX = this.w * 0.5;
+  if (this.paused) { return; }
+  MinigameStage.prototype.update.call(this, timer);
   if (this.bounceHeight == 0) this.bounceHeight = this.h * 0.7;
   if (!this.isFlying) {
     const speed = 2.5;
-    const t = this.time * 0.001 * speed;
+    const t = (this.time - this.sessionStart + this.sessionOffset) * 0.001 * speed;
     this.x = this.w * (0.5 + 0.35 * Math.sin(t)) + 8 * wobble(this.time, 10, 0, 2);
     this.y = this.h * 0.2 + 10 * wobble(this.time, 13.7, 1, 2);
     this.handX = this.x;
@@ -65,7 +68,9 @@ OrganStage.prototype.updateFlight = function() {
   const f = this.timeDif * 0.75;
   this.x += this.vx * f;
   this.y += this.vy * f;
-  this.organWellPlaced = this.isFlying && this.y > 0.3 * this.h && (this.x >= 0.4 * this.w && this.x <= 0.6 * this.w);
+  if (this.y < this.h - 50) {
+    this.organWellPlaced = this.isFlying && this.y > 0.3 * this.h && (this.x >= 0.4 * this.w && this.x <= 0.6 * this.w);
+  }
   // Gravity
   this.vy += f * 0.002;
   // Angle
@@ -96,9 +101,8 @@ OrganStage.prototype.updateFlight = function() {
     }
   }
   // Success or no success
-  if (this.active && (this.y > this.h + 100)) {
-    this.success = this.organWellPlaced;
-    this.transitionOut();
+  if (this.active && (this.y > this.h + 100 || this.x < -90 || this.x > this.w + 90)) {
+    this.close(this.organWellPlaced);
   }
 };
 
@@ -127,4 +131,6 @@ OrganStage.prototype.render = function(ctx, timer) {
   if (!this.organWellPlaced) drawImage(ctx, this.organ, this.x, this.y, this.angle, scaleX, 1/scaleX);
   // Thumb
   drawImage(ctx, this.thumb, this.isFlying ? this.handX - 15 : this.handX, this.handY, this.isFlying ? 0.6 : 0, 1, 1, 0.4, 0.7);
+  // MinigameStage handles overlay stuff / UI
+  MinigameStage.prototype.renderOnTop.call(this, ctx, timer);
 };

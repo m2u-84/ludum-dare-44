@@ -11,12 +11,12 @@ const FacilityManagerStates = {
 
 function FacilityManager(x, y, gameState) {
 
-    WalkingPerson.call(this, x, y, gameState);
+    MovingObject.call(this, x, y, gameState);
     this.state = FacilityManagerStates.SPAWNED;
     this.image = gameState.doctor.isMale ? Doctor.images[1] : Doctor.images[0];
     this.fireIsBurning = false;
 }
-inherit(FacilityManager, WalkingPerson);
+inherit(FacilityManager, MovingObject);
 
 FacilityManager.load = function() {
 
@@ -32,7 +32,7 @@ FacilityManager.load = function() {
 
 FacilityManager.prototype.update = function() {
 
-    WalkingPerson.prototype.update.call(this);
+    MovingObject.prototype.update.call(this);
 };
 
 FacilityManager.prototype.nextState = function() {
@@ -74,7 +74,7 @@ FacilityManager.prototype.nextState = function() {
 };
 
 FacilityManager.prototype.paint = function(ctx) {
-    WalkingPerson.prototype.paint.call(this, ctx);
+    MovingObject.prototype.paint.call(this, ctx);
 };
 
 FacilityManager.prototype.paintFire = function(ctx) {

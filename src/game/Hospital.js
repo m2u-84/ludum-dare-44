@@ -9,6 +9,7 @@ function Hospital() {
 Hospital.load = function() {
     Hospital.moneyImage = loader.loadImage("assets/images/hud_money.png");
     Hospital.organImage = loader.loadImage("assets/images/hud_organs.png");
+    Hospital.timeImage = loader.loadImage("assets/images/hud_time.png");
 }
 
 Hospital.prototype.update = function(td, time) {
@@ -52,10 +53,18 @@ Hospital.prototype.takeOrgan = function() {
 }
 
 Hospital.prototype.draw = function(ctx) {
+    const offy = 19;
+    // Time
+    let seconds = Math.floor(gameStage.time / 1000);
+    const minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    const time = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    drawImageToScreen(ctx, Hospital.timeImage, 3, 3, 0, 1, 1, 0, 0);
+    mainFont.drawText(ctx, time, 55, 9, "darkgray", 1);
     // Balance
-    drawImageToScreen(ctx, Hospital.moneyImage, 3, 3, 0, 1, 1, 0, 0);
-    mainFont.drawText(ctx, "" + Math.floor(this.balance), 55, 9, "gold", 1);
+    drawImageToScreen(ctx, Hospital.moneyImage, 3, 3 + offy, 0, 1, 1, 0, 0);
+    mainFont.drawText(ctx, "" + Math.floor(this.balance), 55, 9 + offy, "gold", 1);
     // Organs
-    drawImageToScreen(ctx, Hospital.organImage, 3, 22, 0, 1, 1, 0, 0);
-    mainFont.drawText(ctx, "" + this.organs, 55, 27, "organ", 1);
+    drawImageToScreen(ctx, Hospital.organImage, 3, 3 + 2 * offy, 0, 1, 1, 0, 0);
+    mainFont.drawText(ctx, "" + this.organs, 55, 9 + 2 * offy, "organ", 1);
 }
