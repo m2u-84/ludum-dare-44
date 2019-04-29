@@ -12,7 +12,6 @@ inherit(GameStage, Stage);
 GameStage.load = function() {
 
     GameStage.audioAmbient = loader.loadAudio({src: "./assets/audio/ambience/ambience.mp3"});
-    GameStage.audioTrack1 = loader.loadAudio({src: "./assets/audio/music/music-1.mp3"});
     GameStage.audioTrack2 = loader.loadAudio({src: "./assets/audio/music/music-2.mp3"});
 };
 
