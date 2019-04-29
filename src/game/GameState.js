@@ -55,8 +55,8 @@ function GameState() {
         // new Sickness(0.8, 'Lung Cancer', this.treatments.surgery)
     ];
     // Relations between sickness & treatment     Hyp  CCl  Dem  Dep  Frc  Flu  Drh    Stk  Ant  Kid     Cnc
-    setRelations(this.treatments.drugs,          [0.5, 1.0, 0.0, 0.6, 0.0, 0.8, 0.2/* 0.1*/, 0.3, 0.0/* 0.1*/]);
-    setRelations(this.treatments.placeboSurgery, [1.0, 0.6, 0.3, 0.2, 0.0, 0.0,-0.3/* 0.0*/, 0.0,-0.1/* 0.1*/]);
+    setRelations(this.treatments.drugs,          [0.5, 0.4, 0.1, 0.6, 0.1, 0.8, 0.2/* 0.1*/, 0.3, 0.1/* 0.1*/]);
+    setRelations(this.treatments.placeboSurgery, [1.0, 0.5, 0.3, 0.2, 0.0, 0.0,-0.3/* 0.0*/, 0.0,-0.1/* 0.1*/]);
     // setRelations(this.treatments.surgery,        [0.5,-0.5, 0.2,-0.6,-0.3,-0.8, 0.2,-0.4,-0.3, 0.2,0.7]);
     setRelations(this.treatments.organ,          [0.6,-0.3,-0.2,-0.3,-0.2,-0.5, 0.1/*-0.2*/, 0.2, 0.6/* 0.4*/]);
     setRelations(this.treatments.antibiotics,    [0.3, 0.1,-0.1, 0.0, 0.0, 0.3, 0.7/* 0.0*/, 0.5,-0.1/*-0.1*/]);
