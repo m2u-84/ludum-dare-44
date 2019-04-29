@@ -6,8 +6,21 @@ function GameState() {
     this.facilityManager = null;
     this.closestPatientToDoctor = null;
     this.policyBriberyAttempts = 0;
-    this.danegeld = 400;
+    this.danegeld = 1000;
     this.gameOver = false;
+    this.stats = {
+        patientCount: 0,
+        patientsAccepted: 0,
+        patientsRejected: 0,
+        patientsDied: 0,
+        moneyEarned: 0,
+        patientsCured: 0,
+        treatments: 0,
+        diagnoses: 0,
+        pingPongBounces: 0,
+        treatmentsFailed: 0,
+        treatmentsSucceeded: 0
+    }
 
     this.releaseTreatment = new Treatment('Release as cured',      0,    0,  0.0,  0.0);
     // possible treatments

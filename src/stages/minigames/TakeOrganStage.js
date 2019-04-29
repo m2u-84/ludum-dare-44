@@ -8,11 +8,18 @@ inherit(TakeOrganStage, MinigameStage);
 
 TakeOrganStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
-  this.organ = loader.loadImage("assets/images/organ.png");
-  this.hookImage = loader.loadImage("assets/images/grabmachine.png", 2, 1);
-  this.openHand = loader.loadImage("assets/images/organ_hand_back_open.png");
-  this.bodyBack = loader.loadImage("assets/images/organ_body_back.png");
-  this.bodyFront = loader.loadImage("assets/images/organ_body_front.png");
+
+  const ASSETS_BASE_PATH = './assets/';
+  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
+  this.organ = loader.loadImage(IMAGES_BASE_PATH + 'organ.png');
+  this.hookImage = loader.loadImage(IMAGES_BASE_PATH + 'grabmachine.png', 2, 1);
+  this.openHand = loader.loadImage(IMAGES_BASE_PATH + 'organ_hand_back_open.png');
+  this.bodyBack = loader.loadImage(IMAGES_BASE_PATH + 'organ_body_back.png');
+  this.bodyFront = loader.loadImage(IMAGES_BASE_PATH + 'organ_body_front.png');
+
+  this.soundPicking = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/picker-moving/picker-moving.mp3'});
 };
 
 TakeOrganStage.prototype.prestart = function(payload) {
@@ -51,6 +58,8 @@ TakeOrganStage.prototype.update = function(timer) {
     this.handY = this.y;
     if (this.getKeyState(" ")) {
       // Take it
+      this.soundPicking.play();
+
       this.wellPlaced = (Math.abs(this.handX - this.w * 0.46) < this.w * 0.15);
       this.isTaking = true;
       this.takeHeight = this.h * (this.wellPlaced ? 0.85 : 0.4);
