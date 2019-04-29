@@ -4,6 +4,7 @@ function GameStage() {
     this.contextStage = null;
     this.floatingTexts = [];
     this.cashflowFeed = new CashflowFeed();
+    this.nextPatientSpawnTimeFactor = 1;
 }
 
 inherit(GameStage, Stage);
@@ -178,7 +179,10 @@ GameStage.prototype.spawnPatient = function() {
         }
     }
     // spawn a new patient between 2s and 6s
-    this.nextPatientSpawnTime = gameStage.time + interpolate(2000, 6000, Math.random());
+
+    this.nextPatientSpawnTimeFactor /= 1.03;
+    this.nextPatientSpawnTime = gameStage.time + interpolate(this.nextPatientSpawnTimeFactor * 13000,
+        this.nextPatientSpawnTimeFactor * 23000, Math.random());
 };
 
 GameStage.prototype.spawnFacilityManager = function() {
