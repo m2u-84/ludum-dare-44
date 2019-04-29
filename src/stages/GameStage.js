@@ -52,8 +52,9 @@ GameStage.prototype.prestart = function(payload) {
   // Assign Doctor gender when coming from main menu
   if (payload) this.gameState.doctor.assignGender(payload.isMale);
   this.nextPatientSpawnTime = gameStage.time + 3000;
-  this.nextPoliceCarSpawnTime = gameStage.time + 30000;
-  this.nextMafiaCarSpawnTime = gameStage.time + 20000;
+  this.nextPoliceCarSpawnTime = gameStage.time + 75000;
+  this.nextMafiaCarSpawnTime = Infinity;
+  this.cashflowFeed.clear();
 };
 
 GameStage.prototype.start = function() {
@@ -185,7 +186,7 @@ GameStage.prototype.spawnPatient = function() {
     }
     // spawn a new patient between 2s and 6s
 
-    this.nextPatientSpawnTimeFactor /= 1.03;
+    this.nextPatientSpawnTimeFactor /= 1.04;
     this.nextPatientSpawnTime = gameStage.time + interpolate(this.nextPatientSpawnTimeFactor * 13000,
         this.nextPatientSpawnTimeFactor * 23000, Math.random());
 };

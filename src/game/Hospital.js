@@ -1,5 +1,5 @@
 function Hospital() {
-    this.balance = 9000;
+    this.balance = 2500;
     this.inventory = [];
     this.lastTime = 0;
     this.revenueDelay = 10000;
@@ -80,7 +80,7 @@ Hospital.prototype.giveOrgan = function() {
 Hospital.prototype.draw = function(ctx) {
     const offy = 19;
     // Time
-    let seconds = Math.floor(gameStage.time / 1000);
+    let seconds = Math.floor((gameStage.time - gameStage.gameState.startTime) / 1000);
     const minutes = Math.floor(seconds / 60);
     seconds = seconds % 60;
     const time = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
