@@ -20,6 +20,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.wealth = wealth;
     this.sickness = sickness;
     this.diagnosed = false;
+    this.treated = false;
     this.wealthLevel = wealth >= 80 ? 3 : wealth >= 40 ? 2 : 1;
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
@@ -233,7 +234,8 @@ Patient.prototype.paintAttachedUI = function(ctx) {
         // Health bar
         const directionFactor = sgn(this.directionFactor);
         const px = 2 / 24;
-        const x = Math.round(this.x * 24 + 4 * directionFactor) / 24, y = Math.round((this.y - 2 - px) * 24) / 24;
+        const x = Math.round(this.x * 24 + 4 * directionFactor) / 24,
+            y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24) / 24;
         const halfWidth = 6 / 24;
         const height = 2 / 24;
         ctx.fillStyle = "#00000000";
@@ -433,6 +435,8 @@ Patient.prototype.getTreatmentPrice = function(treatment) {
 };
 
 Patient.prototype.addEffect = function(regeneration, absolute) {
+    // Mark patient as treated (does not mean cured, only that doctor did something with patient)
+    this.treated = true;
     // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
     // thus value change has maximum of 50% of max hp, but exponent of 2 pulls values closer towards 0
     // console.log("Health starts at ", this.health, " deg at ", this.healthDecrease);
