@@ -180,8 +180,12 @@ GameStage.prototype.spawnPatient = function() {
     if (spawnPoint !== null) {
 
         const health = (this.gameState.stats.patientCount < 4) ? 100 : rndInt(25, 100),
-              wealth = rndInt(15, 100),
-              sickness = getRandomItem(this.gameState.sicknesses);
+              wealth = rndInt(15, 100);
+        let sickness = getRandomItem(this.gameState.sicknesses);
+        if (this.gameState.stats.patientCount < this.gameState.sicknesses.length) {
+            // First 7 or so patients all have different disease, so you see all the minigames if you're a good doctor
+            sickness = this.gameState.sicknesses[this.gameState.stats.patientCount];
+        }
         const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);
         if (patient.executeAction("Register")) {
           this.gameState.patients.push(patient);
