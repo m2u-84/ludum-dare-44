@@ -36,7 +36,7 @@ Features
 [X] Releasing / Automatisch heimgehen wenn Health voll
 [ ] Patienten-Timeout nach OPs
 [X] Patienten zufällig wieder gehen bei zu langer Wartezeit
-[ ] Spieler informieren, wenn alle Betten voll / keine neuen Patienten annehmen können  <-- Markus
+[X] Spieler informieren, wenn alle Betten voll / keine neuen Patienten annehmen können
 [X] Verbrennungsgeräusch
 [X] Ambient-Sounds
 [X] Randomisierung Rezeption
