@@ -87,7 +87,7 @@ Patient.prototype.update = function() {
         this.executeAction(this.gameState.receptions[1]);
     }
     if ((this.state === PatientStates.STAY_IN_BED) && (this.isCured())) {
-        gameStage.cashflowFeed.addText("Release happily rewarded with $500 bucks");
+        gameStage.cashflowFeed.addText("Release happily rewarded with $500 bucks", "gold");
         this.gameState.hospital.giveRevenue(500, this.x, this.y);
         this.executeAction(this.gameState.releaseTreatment);
     }
