@@ -9,7 +9,7 @@ function PlaceboStage() {
   this.minBallSpeed = 0.1;
   this.maxBallSpeed = 0.5;
   this.dampingX = 0.9984;
-  this.dampingY = 0.997;
+  this.dampingY = 0.9985;
   this.strength = 0.25;
   this.bounces = 0;
   this.maxBounces = 0;
@@ -55,6 +55,7 @@ PlaceboStage.prototype.prestart = function(payload) {
   this.paddleVY = 0;
   this.markX = 0;
   this.markY = 0;
+  this.w = this.h = 300;
 };
 
 PlaceboStage.prototype.update = function(timer) {
@@ -67,7 +68,7 @@ PlaceboStage.prototype.update = function(timer) {
       ((this.getKeyState("w") || this.getKeyState("ArrowUp")) ? 1 : 0);
   this.controlledPaddleX += this.timeDif * rl * this.strength;
   this.controlledPaddleY += this.timeDif * ud * this.strength;
-  this.controlledPaddleY = Math.max(this.controlledPaddleY, -18);
+  this.controlledPaddleY = Math.max(this.controlledPaddleY, -30);
   // Force to center
   this.controlledPaddleX *= Math.pow(this.dampingX, this.timeDif);
   this.controlledPaddleY *= Math.pow(this.dampingY, this.timeDif);
@@ -80,7 +81,7 @@ PlaceboStage.prototype.update = function(timer) {
   this.paddleAngle = this.controlledPaddleAngle + 0.2 * wobble(this.time, 5, 0, 1.5) - this.paddleVX * 0.3;
   // Ball
   const steps = 5;
-  const td = this.timeDif / steps;
+  const td = Math.min(this.timeDif, 100) / steps;
   for (var i = 0; i < steps; i++) {
     if (this.updateBall(td)) {
       break;

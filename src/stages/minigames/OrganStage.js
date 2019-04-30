@@ -55,7 +55,7 @@ OrganStage.prototype.update = function(timer) {
   if (this.bounceHeight == 0) this.bounceHeight = this.h * 0.7;
   if (!this.isFlying) {
     const speed = 2.5;
-    const t = (this.time - this.sessionStart + this.sessionOffset) * 0.001 * speed;
+    const t = (this.time - this.sessionStart) * 0.001 * speed  + this.sessionOffset;
     this.x = this.w * (0.5 + 0.35 * Math.sin(t)) + 8 * wobble(this.time, 10, 0, 2);
     this.y = this.h * 0.2 + 10 * wobble(this.time, 13.7, 1, 2);
     this.handX = this.x;

@@ -111,11 +111,12 @@ MinigameStage.prototype.render = function(ctx, timer) {
 MinigameStage.prototype.renderOnTop = function(ctx, timer) {
   // Help Text
   if (this.firstAttempt) {
-    ctx.globalAlpha = 0.7 + 0.25 * Math.sin(this.time * 0.002);
+    const helpY = 32;
+    ctx.globalAlpha = 0.7 + 0.25 * Math.sin(this.time * 0.0032);
     const text = "Training mode" + (this.succeededOnce || true ? " - press enter to begin treatment" : "");
-    mainFont.drawText(ctx, text, this.w / 2, 5, "white", 0.5);
+    mainFont.drawText(ctx, text, this.w / 2, helpY, "white", 0.5);
     if (this.helpText) {
-      mainFont.drawText(ctx, this.helpText, this.w / 2, 18, "white", 0.5);
+      mainFont.drawText(ctx, this.helpText, this.w / 2, helpY + 20, "white", 0.5);
     }
     ctx.globalAlpha = 1;
   }
