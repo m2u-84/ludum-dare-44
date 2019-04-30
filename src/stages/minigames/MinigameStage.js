@@ -77,7 +77,7 @@ MinigameStage.prototype.close = function(success) {
 }
 
 MinigameStage.prototype.update = function(timer) {
-  if (this.getKeyState("Enter")) { // && this.succeededOnce) {
+  if (this.getKeyState("Enter") && !this.trainingLeft) { // && this.succeededOnce) {
     this.trainingLeft = true;
     this.prestart(this.payload);
   } else if (this.getKeyState("Escape") && this.active && !stageManager.get("pause").alive) {

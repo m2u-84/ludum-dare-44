@@ -58,10 +58,12 @@ GameOverStage.prototype.render = function(ctx, timer) {
 };
 
 GameOverStage.prototype.onkey = function(event) {
-  if (this.active && event.key == " ") {
-    this.transitionTo("start");
-  }
-  if (this.active && event.key == "1" && this.gameOverNr == 2) {
-    this.transitionOut(800);
+  if (this.time > 1500) {
+    if (this.active && event.key == " ") {
+      this.transitionTo("start");
+    }
+    if (this.active && event.key == "1" && this.gameOverNr == 2) {
+      this.transitionOut(800);
+    }
   }
 }
