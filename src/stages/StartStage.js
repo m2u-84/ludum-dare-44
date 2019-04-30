@@ -1,7 +1,7 @@
 
 function StartStage() {
   Stage.call(this, "start", 4);
-  this.creditsText = "Sick Hospital - We Care a Lot (About Money)   is a contribution to Ludum Dare Game Jam Contest #44. " + 
+  this.creditsText = "Sick Business - We Care a Lot (About Money)   is a contribution to Ludum Dare Game Jam Contest #44. " + 
       "Created by Eduard But, Bjoern Kopiske, Nils Kreutzer, Gordon Lawrenz, Markus Over, Olav Schettler, Jennifer van Veen, " + 
       "and Matthias Wetter, within 72 hours.   Special thanks to ip.labs GmbH for location and coffee.";
 }
