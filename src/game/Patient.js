@@ -319,7 +319,7 @@ Patient.prototype.executeAction = function(action) {
       }
       case PatientStates.WAIT_AT_RECEPTION: {
       switch (action.name) {
-        case "Accept":
+        case "Admit Patient":
             this.hospitalize();
             this.gameState.stats.patientsAccepted++;
             break;

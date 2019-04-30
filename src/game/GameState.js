@@ -37,7 +37,7 @@ function GameState() {
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     this.receptions = [
-        new Treatment("Accept", 0, 0, 0, 0, 0, () => !this.allBedsOccupied()),
+        new Treatment("Admit Patient", 0, 0, 0, 0, 0, () => !this.allBedsOccupied()),
         new Treatment("Send Away", 0, 0, 0, 0, 0)
     ];
     // common sicknesses
