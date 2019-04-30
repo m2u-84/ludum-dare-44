@@ -269,7 +269,7 @@ GameStage.prototype.onkey = function (event) {
           // Kill all patients
           this.gameState.patients.forEach( p => p.die() );
       } else if (event.key == "f") {
-        this.transitionIn("takeOrgan", 300, { patient: new Patient(5, 5, 100, 50, this.gameState.sicknesses[4], this.gameState)})
+        this.transitionIn("drug", 300, { patient: new Patient(5, 5, 100, 50, this.gameState.sicknesses[4], this.gameState)})
       } else if (event.key == "i") {
         // Diagnose all patients
         this.gameState.patients.forEach( p => p.diagnosed = true );

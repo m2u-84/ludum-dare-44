@@ -43,6 +43,7 @@ DrugStage.prototype.prestart = function(payload) {
   this.angle = -Math.PI / 4;
   this.throwFromX = 0;
   this.grabStart = 0;
+  this.attempts = 0;
 };
 
 DrugStage.prototype.update = function(timer) {
@@ -70,6 +71,7 @@ DrugStage.prototype.update = function(timer) {
 };
 
 DrugStage.prototype.updateWobble = function() {
+  var self = this;
   // Mighty Wobble
   const speed = 5.5;
   const cur = wobbleToPos(wobble(this.time, speed, 0, 1, 0.5)*0.5 + 0.5*Math.sin(this.time*0.001*speed));
@@ -79,8 +81,10 @@ DrugStage.prototype.updateWobble = function() {
   this.wobbles = [cur, prev];
 
   function wobbleToPos(v) {
-    const x = 90 + 70 * Math.sin(v);
-    const y = 90 - 60 * Math.sin(v);
+    const ease = Math.min(1, 0.3 * self.attempts);
+    const ease1 = 1 - ease;
+    const x = 90 + (ease1 * 70 + ease * 80) * Math.sin(v);
+    const y = 90 - (ease1 * 60 + ease * 20) * Math.sin(v);
     return {x, y};
   }
 };
@@ -127,6 +131,7 @@ DrugStage.prototype.updatePill = function() {
     this.handBaseY = this.handY;
     this.pillBaseX = this.x;
     this.pillBaseY = this.y;
+    this.attempts++;
   } else if (this.x < -200 || this.x > this.w + 200 || this.y > this.h + 80) {
     this.soundBumping.play();
 
