@@ -18,16 +18,22 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
         [1, 4, 5, 5, 5, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1, 1], // idle
         [0, 1, 2, 3, 2, 1] // moving
     ];
+    this.lastFrameIndex = -1;
+
     this.isMale = true;
     this.image = Doctor.images[this.isMale ? 0 : 1];
 }
 
 Doctor.load = function() {
+
+    const ASSETS_BASE_PATH = './assets/';
+    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
     let sprites = [
         'doctor_m', // 0: Male Doctor
         'doctor_w', // 1: Female Doctor
-      ]
+      ];
     Doctor.images = sprites.map(sprite => loader.loadImage("./assets/images/" + sprite +".png", 4, 3));
+    Doctor.soundWalking = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/feet-walking/feet-walking.mp3'});
 };
 
 Doctor.prototype.update = function() {
@@ -150,6 +156,7 @@ Doctor.prototype.paint = function(ctx) {
     */
     if (gameStage.time - this.lastMoveTime > 100) {
         this.characterStateIndex = 0;
+        Doctor.soundWalking.stop();
     }
 
     this.directionFactor = this.lastMoveDelta.x !== 0 ? Math.sign(this.lastMoveDelta.x) : this.directionFactor;
@@ -157,5 +164,11 @@ Doctor.prototype.paint = function(ctx) {
     const frameCount = frames.length;
     const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
     const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
+
+    if ((this.characterStateIndex === 1) && (frameIndex !== this.lastFrameIndex)) {
+        this.lastFrameIndex = frameIndex;
+        Doctor.soundWalking.play();
+    }
+
     drawFrame(ctx, this.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
 };
