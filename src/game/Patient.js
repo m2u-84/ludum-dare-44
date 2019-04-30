@@ -85,16 +85,13 @@ Patient.prototype.update = function() {
     updateHealth.call(this);
     if ((this.state === PatientStates.WAIT_AT_RECEPTION) && (gameStage.time - this.stateChangedTime > this.patience)) {
         this.executeAction(this.gameState.receptions[1]);
-    }
-    if ((this.state === PatientStates.STAY_IN_BED) && (this.isCured())) {
-        gameStage.cashflowFeed.addText("Release happily rewarded with $500 bucks", "gold");
+    } else if ((this.state === PatientStates.STAY_IN_BED) && (this.isCured())) {
+        gameStage.cashflowFeed.addText("Release happily rewarded with $500", "gold");
         this.gameState.hospital.giveRevenue(500, this.x, this.y);
         this.executeAction(this.gameState.releaseTreatment);
-    }
-    if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
+    } else if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
         this.nextState();
-    }
-    if (this.state === PatientStates.ASLEEP && gameStage.time > this.stateChangedTime + this.sleepTime) {
+    } else if (this.state === PatientStates.ASLEEP && gameStage.time > this.stateChangedTime + this.sleepTime) {
         this.nextState();
     }
 };
@@ -414,7 +411,10 @@ Patient.prototype.enterBed = function(bed) {
 };
 
 Patient.prototype.releaseFromBed = function() {
-
+    if (!this.inBed) {
+        console.error("Patient " + this.id + " tried to leave bed without being in one");
+        return;
+    }
     this.inBed.releasePatient();
     this.x = this.inBed.positions[0].x + 1;
     this.inBed = null;
