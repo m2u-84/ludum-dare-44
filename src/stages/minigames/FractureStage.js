@@ -1,6 +1,7 @@
 
 function FractureStage() {
   MinigameStage.call(this, "fracture");
+  this.helpText = "Press Space to hammer";
 }
 inherit(FractureStage, MinigameStage);
 

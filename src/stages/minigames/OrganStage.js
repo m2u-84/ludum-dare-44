@@ -1,6 +1,7 @@
 
 function OrganStage() {
   MinigameStage.call(this, "organ");
+  this.helpText = "Press Space to throw organ into opening";
 }
 inherit(OrganStage, MinigameStage);
 

@@ -29,6 +29,7 @@ GameStage.prototype.playAmbientMusic = function() {
 GameStage.prototype.playMusicTrack = function() {
 
     const music = GameStage.audioMusic[rndInt(0, 2)];
+    GameStage.audioMusic.forEach(music => music.stop());
     music.loop = true;
     music.play();
 };
@@ -58,6 +59,7 @@ GameStage.prototype.prestart = function(payload) {
   this.nextPoliceCarSpawnTime = gameStage.time + 75000;
   this.nextMafiaCarSpawnTime = Infinity;
   this.cashflowFeed.clear();
+  this.floatingTexts = [];
 };
 
 GameStage.prototype.start = function() {

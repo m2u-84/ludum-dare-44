@@ -1,6 +1,7 @@
 
 function DrugStage() {
   MinigameStage.call(this, "drug");
+  this.helpText = "Press space to throw";
   this.tableLeft = 10;
   this.tableRight = 260;
   this.tableTop = 220;

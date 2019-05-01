@@ -207,8 +207,10 @@ StageManager.prototype.render = function() {
 };
 
 StageManager.prototype.handleKeyDown = function(event) {
-  // Todo: Enable again on release
-  event.preventDefault();
-  event.stopPropagation();
+  // Only allow F keys, prevent others to propagate to browser
+  if (event.key && (event.key.length < 2 || event.key.length > 3 || event.key[0].toUpperCase() != "F")) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
   this.activeStage.onkey(event);
 };

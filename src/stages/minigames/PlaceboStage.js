@@ -1,7 +1,7 @@
 
 function PlaceboStage() {
   MinigameStage.call(this, "placebo");
-  this.helpText = "WASD to move paddle. Don't hit the patient.";
+  this.helpText = "WASD to move paddle. Don't hit the patient!";
   this.paddleW = 50;
   this.paddleW2 = this.paddleW / 2;
   this.ballSize = 14;

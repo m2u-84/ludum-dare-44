@@ -1,6 +1,7 @@
 
 function TakeOrganStage() {
   MinigameStage.call(this, "takeOrgan");
+  this.helpText = "Press space over opening to extract organ";
   this.takeDuration = 1200;
   this.failDuration = 800;
 }
