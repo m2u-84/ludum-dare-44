@@ -354,10 +354,12 @@ Patient.prototype.executeAction = function(action) {
         case "Admit Patient":
             this.hospitalize();
             this.gameState.stats.patientsAccepted++;
+            this.gameState.hospital.giveRevenue(this.getTreatmentPrice(this.gameState.acceptReception), this.x, this.y);
             break;
         case "Send Away":
             this.walkHome();
             this.gameState.stats.patientsRejected++;
+            this.gameState.hospital.giveRevenue(this.getTreatmentPrice(this.gameState.rejectReception), this.x, this.y);
             break;
         default:
             throw new Error("Invalid action for waiting patient: " + action);

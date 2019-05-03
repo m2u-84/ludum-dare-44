@@ -116,7 +116,7 @@ MinigameStage.prototype.renderOnTop = function(ctx, timer) {
   if (this.firstAttempt) {
     const helpY = 32;
     ctx.globalAlpha = Interpolators.cubic3(Math.sqrt(0.5 + 0.5 * Math.sin(this.time * 0.0032)));
-    const text = this.succeededOnce ? "press enter to quit training" : "Training mode";
+    const text = this.succeededOnce ? "press enter when you've trained enough" : "Training mode";
     mainFont.drawText(ctx, text, this.w / 2, helpY, "white", 0.5, BitmapFontStyle.OUTLINE);
     if (this.helpText && !this.succeededOnce) {
       mainFont.drawText(ctx, this.helpText, this.w / 2, helpY + 20, "white", 0.5, BitmapFontStyle.OUTLINE);
