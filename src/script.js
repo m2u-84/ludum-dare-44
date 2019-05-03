@@ -7,7 +7,8 @@ window.onload = () => {
   loader = new Loader();
   mainFont = new BitmapFont("assets/images/fontsheet.png", {
     "white": "white", "black": "black", "gray": "gray", "darkgray": "#181818", "orange": "#d9913c", "green": "#81bc1b",
-    "red": "red", "blue": "#009cff", "gold": "#f0c030", "organ": "#a00824", "yellow": "#d0c800", "money": "#81bc1b"
+    "red": "red", "blue": "#009cff", "gold": "#f0c030", "organ": "#a00824", "yellow": "#d0c800", "money": "#81bc1b", 
+    "shadow": "rgba(0,0,0,128)", "outline": "#303030"
     },
     "abcdefghijklmnopqrstuvwxyz0123456789#$()[]+-?!',. :",
     [5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,3,3,2,2,5,5,4,1,1,2,2,4,3]);

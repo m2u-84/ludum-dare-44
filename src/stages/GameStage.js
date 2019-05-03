@@ -125,8 +125,9 @@ GameStage.prototype.render = function (ctx, timer) {
 
     // Space Hint for first patient
     if (this.gameState.closestPatientToDoctor && this.gameState.closestPatientToDoctor.id == 1 &&
-        this.gameState.closestPatientToDoctor.state == PatientStates.WAIT_AT_RECEPTION) {
-      mainFont.drawText(ctx, "Press space to talk to patient", ctx.canvas.width / 2, ctx.canvas.height * 0.7, "black", align = 0.5);
+        this.gameState.closestPatientToDoctor.state == PatientStates.WAIT_AT_RECEPTION && this.active) {
+      mainFont.drawText(ctx, "Press space to talk to patient", ctx.canvas.width / 2, ctx.canvas.height * 0.7,
+            "red", align = 0.5, BitmapFontStyle.OUTLINE);
     }
 
     // Screen space UI
