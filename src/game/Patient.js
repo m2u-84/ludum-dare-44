@@ -501,8 +501,10 @@ Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
     const maxHealth = (this.health + 100) / 2;
     this.health = clamp(this.health + 50 * sgnPow(absolute, 2), 0, maxHealth);
     // console.log("Applying effect ", regeneration, absolute, " setting health to ", this.health);
-    if (this.health <= 0) {
+    if (this.health <= 0 || rnd() < treatment.getRiskOfDeath()) {
         this.die();
+        gameStage.cashflowFeed.addText("Sadly the patient died from complications", "red");
+        return;
     } else {
         // Apply 50% damping to keep de/regeneration relatively close to 0 even after many actions
         // thus recent actions will always have bigger effect on patient's well-being than long term history

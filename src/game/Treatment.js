@@ -2,7 +2,7 @@
  * 
  */
 function Treatment(name, sleepTime, costsForPatient, costsForHospital, failureRegenerative = 0.3,
-        failureAbsolute = failureRegenerative, enabledCallback = () => true) {
+        failureAbsolute = failureRegenerative, riskOfDeath = 0, enabledCallback = () => true) {
     this.name = name;
     this.sleepTime = sleepTime * 1000;
     this.costsForPatient = costsForPatient;
@@ -10,6 +10,7 @@ function Treatment(name, sleepTime, costsForPatient, costsForHospital, failureRe
     this.effects = {};
     this.failureRegenerative = failureRegenerative;
     this.failureAbsolute = failureAbsolute;
+    this.riskOfDeath = riskOfDeath;
     this.enabledCallback = enabledCallback;
 }
 
@@ -21,6 +22,10 @@ Treatment.prototype.getBaseSafetyFor = function(sickness) {
     if (sickness instanceof Sickness) { sickness = sickness.name; }
     const base = 0.5 + 0.5 * this.effects[sickness];
     return base;
+};
+
+Treatment.prototype.getRiskOfDeath = function() {
+    return this.riskOfDeath;
 };
 
 /**
