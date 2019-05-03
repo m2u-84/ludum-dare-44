@@ -34,7 +34,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.patience = interpolate(60000, 120000, Math.random());
     this.animationOffset = rnd(9999);
     this.isHighlighted = false;
-    this.imageIndex = this.isRich ? 3 : rndInt(0, 3);
+    this.imageIndex = Patient.getImage(this.isRich);
     this.image = Patient.images[this.imageIndex];
     this.diagnosingUntil = 0;
     this.sleepTime = 0;
@@ -73,6 +73,23 @@ Patient.load = function() {
             loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-3.mp3'})
         ]
     }
+};
+
+Patient.lastImages = [];
+Patient.getImage = function(rich) {
+    if (rich) { return 3; }
+    // Not rich -> randomize
+    let index = rndInt(0, 3);
+    let count = 0;
+    while (Patient.lastImages.includes(index) && count++ < 100) {
+        index = rndInt(0, 3);
+    }
+    // Push to array
+    if (Patient.lastImages.length >= 1) {
+        Patient.lastImages.splice(0, 1);
+    }
+    Patient.lastImages.push(index);
+    return index;
 };
 
 Patient.prototype.update = function() {
