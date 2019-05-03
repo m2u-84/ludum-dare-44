@@ -40,7 +40,7 @@ Hospital.prototype.collectRevenue = function() {
         }
     });
     if (sum > 0) {
-        gameStage.cashflowFeed.addText("earned $" + sum + " in bed rent", "gold");
+        gameStage.cashflowFeed.addText("earned $" + sum + " in bed rent", "money");
     }
 };
 

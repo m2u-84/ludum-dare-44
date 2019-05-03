@@ -182,7 +182,7 @@ GameStage.prototype.spawnPatient = function() {
     const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
     if (spawnPoint !== null) {
 
-        const health = (this.gameState.stats.patientCount < 4) ? 100 : rndInt(25, 100),
+        const health = (this.gameState.stats.patientCount < 4) ? 100 : rndInt(35, 100),
               wealth = rndInt(15, 100);
         let sickness = getRandomItem(this.gameState.sicknesses);
         if (this.gameState.stats.patientCount < this.gameState.sicknesses.length) {

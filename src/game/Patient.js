@@ -25,7 +25,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
     this.targetBed = null;
-    this.healthDecrease = 2 * sickness.deadliness * (1 + rnd(0.5) - rnd(0.3)); // per second
+    this.healthDecrease = 1.5 * sickness.deadliness * (1 + rnd(0.5) - rnd(0.3)); // per second
     this.healthDecrease = 0.75 * clump(this.healthDecrease, -0.3, 0.3);
     this.deathDuration = 500; // millisecs
     this.timeOfDeath = 0;
@@ -255,19 +255,41 @@ Patient.prototype.paintAttachedUI = function(ctx) {
 
     if (!this.isDead()) {
 
+        if (this.health < 20 && this.inBed) {
+            if (this.health < 5) {
+                this.shiverX = rndInt(-1, 2);
+                this.shiverY = rndInt(-1, 2);
+            } else if (this.health < 10) {
+                this.shiverX = rndInt(-1, 2);
+                this.shiverY = rndInt(-1, 1);
+            } else if (this.health < 15) {
+                this.shiverX = rndInt(-1, 2);
+                this.shiverY = 0;
+            } else {
+                this.shiverX = rndInt(-1, 1);
+                this.shiverY = 0;
+            }
+        } else {
+            // Shiver effect is set by bed when patient is almost dead
+            this.shiverX = 0;
+            this.shiverY = 0;
+        }
+
         // Health bar
         const directionFactor = sgn(this.directionFactor.x);
         const px = 2 / 24;
-        const x = Math.round(this.x * 24 + 4 * directionFactor) / 24,
-            y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24) / 24;
+        const x = Math.round(this.x * 24 + 4 * directionFactor + this.shiverX) / 24,
+            y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24 + this.shiverY) / 24;
         const halfWidth = 6 / 24;
         const height = 2 / 24;
         // ctx.fillStyle = "#00000000";
         // ctx.fillRect(x - halfWidth - px, y - px, 2 * halfWidth + 2 * px, height);
         ctx.fillStyle = "white";
         ctx.fillRect(x - halfWidth, y, 2 * halfWidth, height);
-        ctx.fillStyle = getHealthColor(this.health / 100);
-        ctx.fillRect(x - halfWidth, y, 2 * halfWidth * this.health / 100, height);
+        // Use power > 0 to make hp seem lower than they are, for a more tense/dramatic experience
+        const displayedHealth = Math.pow(this.health / 100, 1.5);
+        ctx.fillStyle = getHealthColor(displayedHealth);
+        ctx.fillRect(x - halfWidth, y, 2 * halfWidth * displayedHealth, height);
         // Wealth
         /* ctx.font = "0.4px Arial";
         ctx.textAlign = "center";

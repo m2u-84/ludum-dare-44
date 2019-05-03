@@ -17,6 +17,8 @@ Bed.load = function() {
 };
 
 Bed.prototype.paint = function(ctx) {
+    let x = this.positions[1].x, y = this.positions[1].y;
+    const px = 1 / 24;
     let frame = 0, headFrame = -1;
     const patient = this.occupiedBy;
     if (patient) {
@@ -28,28 +30,33 @@ Bed.prototype.paint = function(ctx) {
         } else if (patient.state == PatientStates.ASLEEP) {
             headFrame += 8;
         }
+        // Shake in case of death
+        if (patient.state != PatientStates.DEAD && gameStage.timeDif > 0) {
+            x += px * patient.shiverX;
+            y += px * patient.shiverY;
+        }
     }
     // Bed itself
-    drawFrame(ctx, Bed.image, frame, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
+    drawFrame(ctx, Bed.image, frame, x, y, 0, px, px, 0, 0.56);
     // Head in bed
     if (headFrame >= 0) {
-        drawFrame(ctx, Bed.headImage, headFrame, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
+        drawFrame(ctx, Bed.headImage, headFrame, x, y, 0, px, px, 0, 0.56);
     }
     // Highlight
     if (patient && patient == gameStage.gameState.closestPatientToDoctor) {
-        drawFrame(ctx, Bed.image, 3, this.positions[1].x, this.positions[1].y, 0, 1/24, 1/24, 0, 0.56);
+        drawFrame(ctx, Bed.image, 3, x, y, 0, px, px, 0, 0.56);
     }
     // Patient state dependent icons
     if (patient) {
         if (patient.state == PatientStates.DIAGNOSING) {
             const frame = getArrayFrame(gameStage.time / 150, Bed.busyFrames);
-            drawFrame(ctx, Bed.busyImage, frame, this.positions[1].x + 0.5, this.positions[1].y - 1.33, 0, 1/24, 1/24, 0.5, 1);
+            drawFrame(ctx, Bed.busyImage, frame, x + 0.5, y - 1.33, 0, px, px, 0.5, 1);
         } else if (patient.state == PatientStates.STAY_IN_BED && patient.diagnosed && !patient.treated) {
             const frame = getArrayFrame(gameStage.time / 50, Bed.exclamationFrames);
-            drawFrame(ctx, Bed.exclamationImage, frame, this.positions[1].x + 0.5, this.positions[1].y - 1.3, 0, 1/24, 1/24, 0.5, 1);
+            drawFrame(ctx, Bed.exclamationImage, frame, x + 0.5, y - 1.3, 0, px, px, 0.5, 1);
         } else if (patient.state == PatientStates.ASLEEP) {
             const frame = getArrayFrame(gameStage.time / 300, Bed.sleepFrames);
-            drawFrame(ctx, Bed.sleepImage, frame, this.positions[1].x + 0.5, this.positions[1].y - 1.4, 0, 1/24, 1/24, 0.5, 1);
+            drawFrame(ctx, Bed.sleepImage, frame, x + 0.5, y - 1.4, 0, px, px, 0.5, 1);
         }
     }
 };
