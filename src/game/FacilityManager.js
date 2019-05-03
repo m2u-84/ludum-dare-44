@@ -102,6 +102,10 @@ FacilityManager.prototype.getCharacterFrames = function(isMoving) {
     }
 };
 
+FacilityManager.prototype.isOutside = function() {
+    return this.x >= 18 || this.y >= 15;
+};
+
 FacilityManager.prototype.isCarryingCorpse = function() {
 
     return this.state === FacilityManagerStates.CARRY_CORPSE_TO_PILE;

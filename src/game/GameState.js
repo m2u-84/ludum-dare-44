@@ -7,6 +7,7 @@ function GameState() {
     this.facilityManager = null;
     this.closestPatientToDoctor = null;
     this.policyBriberyAttempts = 0;
+    this.lastBriberyAttempt = -99999;
     this.danegeld = 1000;
     this.gameOver = false;
     this.stats = {
@@ -108,8 +109,9 @@ GameState.prototype.removePatient = function(patient) {
 };
 
 GameState.prototype.registerPoliceBribery = function() {
-    if (this.policyBriberyAttempts < 2) {
-        this.policyBriberyAttempts++;
+    this.policyBriberyAttempts++;
+    if (this.policyBriberyAttempts < 3) {
+        this.lastBriberyAttempt = gameStage.time;
         return true;
     }
     this.setGameOver("gameover", 800, 1);

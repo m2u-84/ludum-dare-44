@@ -14,7 +14,7 @@ PoliceCar.load = function() {
 
     PoliceCar.image = loader.loadImage(IMAGES_BASE_PATH + 'police_car.png', 4, 2);
     PoliceCar.soundSiren = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/police-siren/police-siren.mp3'});
-    PoliceCar.soundSiren.loop = true;
+    // PoliceCar.soundSiren.loop = true;
 };
 
 PoliceCar.prototype.update = function() {
@@ -23,7 +23,9 @@ PoliceCar.prototype.update = function() {
     if (this.gameState.facilityManager) {
         if ((this.gameState.facilityManager.state === FacilityManagerStates.CARRY_CORPSE_TO_PILE) ||
             (this.gameState.facilityManager.state === FacilityManagerStates.BURN_PILE)) {
-            this.stopAtWayToPile = true;
+            if (this.gameState.facilityManager.isOutside()) {
+                this.stopAtWayToPile = true;
+            }
         }
     }
 };

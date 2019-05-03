@@ -4,6 +4,7 @@ function Hospital() {
     this.lastTime = 0;
     this.revenueDelay = 25000;
     this.organs = 1;
+    this.lastOrganSpent = 0;
 }
 
 Hospital.load = function() {
@@ -14,6 +15,8 @@ Hospital.load = function() {
     Hospital.moneyImage = loader.loadImage(IMAGES_BASE_PATH + 'hud_money.png');
     Hospital.organImage = loader.loadImage(IMAGES_BASE_PATH + 'hud_organs.png');
     Hospital.timeImage = loader.loadImage(IMAGES_BASE_PATH + 'hud_time.png');
+    Hospital.policeImage = loader.loadImage(IMAGES_BASE_PATH + 'hud_police.png');
+    Hospital.policeStrikeImage = loader.loadImage(IMAGES_BASE_PATH + 'hud_strike.png');
 
     Hospital.soundGainMoney = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/money-handling/money-gain.mp3'});
     Hospital.soundLoseMoney = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/money-handling/money-loss.mp3'});
@@ -69,7 +72,11 @@ Hospital.prototype.loseRevenue = function(rev, x, y) {
 
 Hospital.prototype.takeOrgan = function() {
     if (this.organs > 0) {
+        this.lastOrganSpent = gameStage.time;
         this.organs--;
+        if (this.organs <= 0) {
+            gameStage.cashflowFeed.addText("You gave away your last organ", "red");
+        }
     } else {
         throw new Error("Tried to remove an organ from hospital inventory, although there are none");
     }
@@ -81,17 +88,40 @@ Hospital.prototype.giveOrgan = function() {
 
 Hospital.prototype.draw = function(ctx) {
     const offy = 19;
+    let y = 3;
     // Time
     let seconds = Math.floor((gameStage.time - gameStage.gameState.startTime) / 1000);
     const minutes = Math.floor(seconds / 60);
     seconds = seconds % 60;
     const time = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
-    drawImageToScreen(ctx, Hospital.timeImage, 3, 3, 0, 1, 1, 0, 0);
-    mainFont.drawText(ctx, time, 55, 9, "darkgray", 1);
+    drawImageToScreen(ctx, Hospital.timeImage, 3, y, 0, 1, 1, 0, 0);
+    mainFont.drawText(ctx, time, 55, y + 6, "darkgray", 1);
     // Balance
-    drawImageToScreen(ctx, Hospital.moneyImage, 3, 3 + offy, 0, 1, 1, 0, 0);
-    mainFont.drawText(ctx, "" + Math.floor(this.balance), 55, 9 + offy, "gold", 1);
+    y += offy;
+    drawImageToScreen(ctx, Hospital.moneyImage, 3, y, 0, 1, 1, 0, 0);
+    if (this.balance <= gameStage.gameState.danegeld) { this.flashWarning(ctx, 3, y); }
+    mainFont.drawText(ctx, "" + Math.floor(this.balance), 55, y + 6, "gold", 1);
     // Organs
-    drawImageToScreen(ctx, Hospital.organImage, 3, 3 + 2 * offy, 0, 1, 1, 0, 0);
-    mainFont.drawText(ctx, "" + this.organs, 55, 9 + 2 * offy, "organ", 1);
-}
+    y += offy;
+    drawImageToScreen(ctx, Hospital.organImage, 3, y, 0, 1, 1, 0, 0);
+    if (this.organs <= 0 && gameStage.time - this.lastOrganSpent < 5000) { this.flashWarning(ctx, 3, y); }
+    mainFont.drawText(ctx, "" + this.organs, 55, y + 6, "organ", 1);
+    // Police
+    y += offy;
+    drawImageToScreen(ctx, Hospital.policeImage, 3, y, 0, 1, 1, 0, 0);
+    if (gameStage.gameState.policyBriberyAttempts >= 2 ||
+            gameStage.time - gameStage.gameState.lastBriberyAttempt < 12000) { this.flashWarning(ctx, 3, y); }
+    for (let i = 0; i < 3; i++) {
+        const alpha = (i < gameStage.gameState.policyBriberyAttempts) ? 1 : 0.2;
+        drawImageToScreen(ctx, Hospital.policeStrikeImage, 23 + 11 * i, y + 4, 0, 1, 1, 0, 0, alpha);
+    }
+};
+
+Hospital.prototype.flashWarning = function(ctx, x, y) {
+    if (gameStage.time % 560 < 300) {
+        ctx.save();
+        ctx.fillStyle = "rgba(255,0,0,0.3)";
+        ctx.fillRect(x + 1, y + 1, 53, 16);
+        ctx.restore();
+    }
+};
