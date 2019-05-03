@@ -53,7 +53,9 @@ MinigameStage.prototype.stop = function() {
   }
   // Award money
   const money = this.patient.getTreatmentPrice(this.treatment);
-  gameStage.gameState.hospital.giveRevenue(money, this.patient.x, this.patient.y - 2);
+  if (money) {
+    gameStage.gameState.hospital.giveRevenue(money, this.patient.x, this.patient.y - 2);
+  }
 };
 
 MinigameStage.prototype.close = function(success) {

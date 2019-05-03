@@ -291,12 +291,13 @@ Patient.prototype.paintAttachedUI = function(ctx) {
             this.shiverX = 0;
             this.shiverY = 0;
         }
+        const offX = gameStage.active ? this.shiverX : 0, offY = gameStage.active ? this.shiverY : 0;
 
         // Health bar
         const directionFactor = sgn(this.directionFactor.x);
         const px = 2 / 24;
-        const x = Math.round(this.x * 24 + 4 * directionFactor + this.shiverX) / 24,
-            y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24 + this.shiverY) / 24;
+        const x = Math.round(this.x * 24 + 4 * directionFactor + offX) / 24,
+            y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24 + offY) / 24;
         const halfWidth = 6 / 24;
         const height = 2 / 24;
         // ctx.fillStyle = "#00000000";
@@ -485,6 +486,7 @@ Patient.prototype.die = function() {
 Patient.prototype.getTreatmentPrice = function(treatment) {
   const hospitalCosts = treatment.costsForHospital;
   const patientBasePrice = treatment.costsForPatient;
+  if (hospitalCosts == null || patientBasePrice == null) { return null; }
   const multiplier = (this.wealth / 100);
   const exactPrice = patientBasePrice * multiplier - hospitalCosts;
   const price = 10 * Math.round(exactPrice / 10);

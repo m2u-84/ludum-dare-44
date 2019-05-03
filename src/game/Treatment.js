@@ -42,5 +42,5 @@ Treatment.prototype.getFailureEffects = function() {
 
 Treatment.prototype.isEnabled = function(patient) {
     const price = patient.getTreatmentPrice(this);
-    return this.enabledCallback(patient) && (price >= 0 || Math.abs(price) <= gameStage.gameState.hospital.balance);
+    return this.enabledCallback(patient) && (!price || price > 0 || Math.abs(price) <= gameStage.gameState.hospital.balance);
 };
