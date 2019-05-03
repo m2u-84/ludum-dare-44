@@ -60,6 +60,7 @@ Patient.load = function() {
     ];
 
     Patient.images = sprites.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
+    Patient.indicatorImage = loader.loadImage(IMAGES_BASE_PATH + "indicator.png");
 
     Patient.soundsDying = {
         male: [
@@ -300,22 +301,16 @@ Patient.prototype.paintAttachedUI = function(ctx) {
             y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24 + offY) / 24;
         const halfWidth = 6 / 24;
         const height = 2 / 24;
-        // ctx.fillStyle = "#00000000";
-        // ctx.fillRect(x - halfWidth - px, y - px, 2 * halfWidth + 2 * px, height);
+        // Health bar background
         ctx.fillStyle = "white";
         ctx.fillRect(x - halfWidth, y, 2 * halfWidth, height);
-        // Use power > 0 to make hp seem lower than they are, for a more tense/dramatic experience
+        // Direction indicator
+        const frame = absMod( Math.round(-this.healthDecrease * gameStage.time / 200), Patient.indicatorImage.height);
+        ctx.drawImage(Patient.indicatorImage, 0, frame, 24 * 2 * halfWidth, 1, x - halfWidth, y, 2 * halfWidth, px);
+        // Actual health bar; use power > 0 to make hp seem lower than they are, for a more tense/dramatic experience
         const displayedHealth = Math.pow(this.health / 100, 1.5);
         ctx.fillStyle = getHealthColor(displayedHealth);
         ctx.fillRect(x - halfWidth, y, 2 * halfWidth * displayedHealth, height);
-        // Wealth
-        /* ctx.font = "0.4px Arial";
-        ctx.textAlign = "center";
-        ctx.fillStyle = "#f0c040";
-        const wealthLevel = this.wealth < 40 ? 1 : this.isRich ? 3 : 2;
-        for (var i = 0; i < wealthLevel; i++) {
-          ctx.fillText("$", x + (3 * i - 1) * px, y - 2 * px);
-        } */
     }
 };
 
