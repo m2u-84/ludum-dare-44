@@ -2,7 +2,7 @@ function Hospital() {
     this.balance = 2500;
     this.inventory = [];
     this.lastTime = 0;
-    this.revenueDelay = 10000;
+    this.revenueDelay = 25000;
     this.organs = 1;
 }
 

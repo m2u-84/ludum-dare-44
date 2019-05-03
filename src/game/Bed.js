@@ -71,9 +71,9 @@ Bed.prototype.releasePatient = function() {
 Bed.prototype.getRevenue = function() {
     if (this.occupiedBy) {
         if (this.occupiedBy.isRich) {
-            return 50;
+            return 150;
         } else {
-            return 10;
+            return 50;
         }
     }
     return 0;
