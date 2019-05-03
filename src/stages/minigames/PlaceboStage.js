@@ -165,7 +165,7 @@ PlaceboStage.prototype.render = function(ctx, timer) {
   // Ball
   drawImageToScreen(ctx, this.ballImage, this.ballX, this.ballY, 0, 1, 1, 0.5, 0.5);
   // Ball position
-  ctx.fillStyle = "#ffffff60";
+  ctx.fillStyle = "rgba(255,255,255,.5)";
   ctx.fillRect(this.ballX - 2, this.h - 5, 3, 3);
   // MinigameStage handles overlay stuff / UI
   MinigameStage.prototype.renderOnTop.call(this, ctx, timer);

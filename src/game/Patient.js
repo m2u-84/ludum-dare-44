@@ -262,8 +262,8 @@ Patient.prototype.paintAttachedUI = function(ctx) {
             y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24) / 24;
         const halfWidth = 6 / 24;
         const height = 2 / 24;
-        ctx.fillStyle = "#00000000";
-        ctx.fillRect(x - halfWidth - px, y - px, 2 * halfWidth + 2 * px, height);
+        // ctx.fillStyle = "#00000000";
+        // ctx.fillRect(x - halfWidth - px, y - px, 2 * halfWidth + 2 * px, height);
         ctx.fillStyle = "white";
         ctx.fillRect(x - halfWidth, y, 2 * halfWidth, height);
         ctx.fillStyle = getHealthColor(this.health / 100);

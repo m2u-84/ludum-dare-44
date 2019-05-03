@@ -18,8 +18,10 @@ html, body {
   top: 0;
   bottom: 0;
   box-sizing: border-box;
-  image-rendering: pixelated;
   image-rendering: -moz-crisp-edges;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
 #gameCanvas:hover {

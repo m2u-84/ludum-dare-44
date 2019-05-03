@@ -63,7 +63,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
     const action = this.actions[i];
     const y = 107 + 18 * i;
     drawOption(y, i + 1, action, "Safe");
-    ctx.fillStyle = "#00000020";
+    ctx.fillStyle = "rgba(0,0,0,.12)";
     ctx.fillRect(20, y + 12, 240, 1);
   }
 

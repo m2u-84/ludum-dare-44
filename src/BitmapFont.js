@@ -4,8 +4,8 @@ function BitmapFont(src, colors, charMap, charWidths, charMargin = 1) {
   this.sourceImage = new Image();
   this.canvas = document.createElement("canvas");
 
-  this.colorMap = { ... colors };
-  // this.colorMap = Object.assign({}, colors);
+  // this.colorMap = { ... colors };
+  this.colorMap = Object.assign({}, colors);
 
   this.ready = false;
   this.sourceImage.onload = () => {
@@ -27,8 +27,8 @@ function BitmapFont(src, colors, charMap, charWidths, charMargin = 1) {
 
 BitmapFont.prototype.prepareColors = function(colorMap) {
 
-  const originalMap = { ... colorMap };
-  // const originalMap = Object.assign({}, colorMap);
+  // const originalMap = { ... colorMap };
+  const originalMap = Object.assign({}, colorMap);
 
   const colors = Object.keys(colorMap);
   const count = colors.length;
