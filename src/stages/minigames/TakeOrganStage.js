@@ -32,7 +32,7 @@ TakeOrganStage.prototype.prestart = function(payload) {
   this.angle = 0;
   this.wellPlaced = false;
   this.sessionStart = this.time;
-  this.sessionOffset = (rnd() < 0.5) ? Math.PI : 0;
+  this.sessionOffset = Math.PI / 2 + ((rnd() < 0.5) ? Math.PI : 0);
   this.takeProgress = 0;
   this.takeStart = 0;
   this.duration = 0;
@@ -52,7 +52,7 @@ TakeOrganStage.prototype.update = function(timer) {
   if (!this.isTaking) {
     // Hand movement
     const speed = 2.5;
-    const t = (this.time - this.sessionStart + this.sessionOffset) * 0.001 * speed;
+    const t = (this.time - this.sessionStart) * 0.001 * speed + this.sessionOffset;
     this.x = this.w * (0.5 + 0.35 * Math.sin(t)) + 8 * wobble(this.time, 10, 0, 2);
     this.y = this.h * 0.2 + 10 * wobble(this.time, 13.7, 1, 2);
     this.handX = this.x;
