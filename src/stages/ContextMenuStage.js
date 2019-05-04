@@ -12,6 +12,9 @@ ContextMenuStage.prototype.preload = function() {
   const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
   this.background = loader.loadImage(IMAGES_BASE_PATH + 'patientsheet.png');
+  this.postIt = loader.loadImage(IMAGES_BASE_PATH + 'postit.png');
+  this.dollar = loader.loadImage(IMAGES_BASE_PATH + 'dollar.png', 6, 1);
+  this.dollarAnimation = [0, 0, 0, 0, 0, 0, 1, 2, 3, 4];
   this.keyImage = loader.loadImage(IMAGES_BASE_PATH + 'keys.png', 9, 1);
 
   this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
@@ -43,19 +46,25 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   const x = w - this.background.width * p;
   ctx.translate(x, y);
   drawImageToScreen(ctx, this.background, 0, 0, 0, 1, 1, 0, 0);
+
+  
+  // Draw Wealth Postit
+  drawImageToScreen(ctx, this.postIt, -42, 7, 0, 1, 1, 0, 0);
+  const frame = getArrayFrame(timer.gameTime / 100, this.dollarAnimation);
+  drawFrame(ctx, this.dollar, this.patient.wealthLevel > 0 ? frame : 5, -35, 27, 0, 1, 1, 0, 0);
+  drawFrame(ctx, this.dollar, this.patient.wealthLevel > 1 ? frame : 5, -20, 25, 0, 1, 1, 0, 0);
+  drawFrame(ctx, this.dollar, this.patient.wealthLevel > 2 ? frame : 5, -5, 30, 0, 1, 1, 0, 0);
+
   // Draw Patient Overview
   ctx.translate(14, 14);
   // ID
-  bigFont.drawText(ctx, "" + this.patient.id, 118, 0, "dark");
+  bigFont.drawText(ctx, "" + this.patient.id, 130, 6, "dark");
   ctx.globalAlpha = 0.2;
-  // Wealth
-  const wealth = this.patient.wealthLevel == 1 ? "$" : this.patient.wealthLevel == 2 ? "$$" : "$$$";
-  mainFont.drawText(ctx, "$$$", 0, 34, "green");
-  ctx.globalAlpha = 1;
-  mainFont.drawText(ctx, wealth, 0, 34, "green");
+
   // Diagnosis
+  ctx.globalAlpha = 1;
   const diagnosis = this.patient.diagnosed ? (this.patient.cured ? "Cured" : this.patient.sickness.name) : "???";
-  mainFont.drawText(ctx, diagnosis, 80, 34, "orange");
+  mainFont.drawText(ctx, diagnosis, 70, 28, "orange");
 
   // Preferred option
   drawOption(72, 1, this.actions[0], "Safe");
