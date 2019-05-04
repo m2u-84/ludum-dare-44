@@ -13,7 +13,7 @@ function FacilityManager(x, y, gameState) {
 
     MovingObject.call(this, x, y, gameState);
     this.state = FacilityManagerStates.SPAWNED;
-    this.image = gameState.doctor.isMale ? Doctor.images[1] : Doctor.images[0];
+    this.image = FacilityManager.image;
     this.fireIsBurning = false;
 }
 inherit(FacilityManager, MovingObject);
@@ -25,6 +25,7 @@ FacilityManager.load = function() {
     const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/'
 
     FacilityManager.imageFire = loader.loadImage(IMAGES_BASE_PATH + 'dumpsterfire.png', 4, 1);
+    FacilityManager.image = loader.loadImage(IMAGES_BASE_PATH + 'facility_manager.png', 4, 3);
 
     FacilityManager.soundContainerDump = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/container-dump/container-dump.mp3'});
     FacilityManager.soundBurn = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/burning/burning.mp3'});
@@ -96,9 +97,9 @@ FacilityManager.prototype.paintExecution = function(ctx, velocity, frameIndexes)
 FacilityManager.prototype.getCharacterFrames = function(isMoving) {
 
     if (this.isCarryingCorpse()) {
-        return [8, 9, 10, 11]
+        return [8, 9, 10, 11, 10, 9]
     } else {
-        return isMoving ? [0, 1, 2, 3, 2, 1] : [1, 4, 5, 5, 5, 4, 1, 1];
+        return isMoving ? [0, 1, 2, 3, 2, 1] : [4, 5, 6, 6, 6, 6, 5, 4, 4, 4];
     }
 };
 
