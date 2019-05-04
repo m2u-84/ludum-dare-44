@@ -8,11 +8,12 @@ window.onload = () => {
   mainFont = new BitmapFont("assets/images/fontsheet.png", {
     "white": "white", "black": "black", "gray": "gray", "darkgray": "#181818", "orange": "#d9913c", "green": "#81bc1b",
     "red": "red", "blue": "#009cff", "gold": "#f0c030", "organ": "#a00824", "yellow": "#d0c800", "money": "#81bc1b", 
-    "shadow": "rgba(0,0,0,128)", "outline": "#303030"
+    "shadow": "rgba(0,0,0,128)", "outline": "black"
     },
     "abcdefghijklmnopqrstuvwxyz0123456789#$()[]+-?!',. :",
     [5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,3,5,5,5,5,5,5,5,5,5,5,3,3,2,2,5,5,4,1,1,2,2,4,3]);
-  bigFont = new BitmapFont("assets/images/bignumbers.png", {"dark": "#5d5d5d"}, "0123456789", [11,6,11,11,10,11,11,11,11,11]);
+  bigFont = new BitmapFont("assets/images/bignumbers.png", {"dark": "#5d5d5d", "yellow": "#d0c800", "outline": "black"},
+      "0123456789", [11,6,11,11,10,11,11,11,11,11]);
   keyHandler = new KeyHandler(canvas, [" ", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", , "W", "A", "S", "D", "Enter", "Escape"]);
   mouseHandler = new MouseHandler(canvas);
   mouse = mouseHandler.mouse;

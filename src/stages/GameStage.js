@@ -5,6 +5,8 @@ function GameStage() {
     this.floatingTexts = [];
     this.cashflowFeed = new CashflowFeed();
     this.nextPatientSpawnTimeFactor = 1;
+    this.drawFPS = true;
+    this.fpsCounter = new FpsCounter(1000);
 }
 
 inherit(GameStage, Stage);
@@ -124,14 +126,19 @@ GameStage.prototype.render = function (ctx, timer) {
     ctx.restore();
 
     // Space Hint for first patient
-    if (this.gameState.closestPatientToDoctor && this.gameState.closestPatientToDoctor.id == 1 &&
+    if (this.gameState.closestPatientToDoctor && this.gameState.closestPatientToDoctor.id <= 3 &&
         this.gameState.closestPatientToDoctor.state == PatientStates.WAIT_AT_RECEPTION && this.active) {
       mainFont.drawText(ctx, "Press space to talk to patient", ctx.canvas.width / 2, ctx.canvas.height * 0.7,
-            "red", align = 0.5, BitmapFontStyle.OUTLINE);
+            "red", 0.5, BitmapFontStyle.OUTLINE);
     }
 
     // Screen space UI
     this.gameState.hospital.draw(ctx);
+    // FPS Counter
+    const fps = this.fpsCounter.update();
+    if (this.drawFPS) {
+        bigFont.drawText(ctx, "" + fps, 5, ctx.canvas.height - 20, "yellow", 0, BitmapFontStyle.OUTLINE);
+    }
 
     // Cashflow Feed
     this.cashflowFeed.draw(ctx);
@@ -266,6 +273,9 @@ GameStage.prototype.onkey = function (event) {
         if (this.gameState.closestPatientToDoctor !== null) {
             this.contextStage = this.transitionIn("context", 300, { patient: this.gameState.closestPatientToDoctor });
         }
+    }
+    if (event.key === "f") {
+        this.drawFPS = !this.drawFPS;
     }
     if (window["cheats"]) {
       if (event.key == "k") {
