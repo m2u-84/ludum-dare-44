@@ -38,8 +38,8 @@ function GameState() {
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     this.receptions = [
-        new Treatment("Admit Patient", 0, 0, -20, 0, 0, () => !this.allBedsOccupied()),
-        new Treatment("Send Away", 0, 0, 40, 0, 0)
+        new Treatment("Admit Patient", 0, 0, -20, 0, 0, 0, () => !this.allBedsOccupied()),
+        new Treatment("Send Away", 0, 0, 40, 0, 0, 0)
     ];
     this.acceptReception = this.receptions[0];
     this.rejectReception = this.receptions[1];
