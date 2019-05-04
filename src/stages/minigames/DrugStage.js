@@ -163,7 +163,11 @@ DrugStage.prototype.updatePill = function() {
       if (getDistance(this.x, this.y, this.bounceArea.x, this.bounceArea.y) <= this.bounceArea.r) {
         // bounce back
         this.soundBumping.play();
+
+        // init head hit animation
         this.headHit = true;
+        this.soundGroaning.play();
+        this.remainingHeadHitAnimTime = this.hitAnimLength;
 
         const vel = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         const dx = this.w * 0.92 - this.x, dy = this.h - this.y;
@@ -232,18 +236,10 @@ DrugStage.prototype.render = function(ctx, timer) {
 
   // Patient
   let headHitX = 0;
-
   if (this.headHit) {
-    // Init Animation
-    if (this.remainingHeadHitAnimTime == 0) {
-      this.soundGroaning.play();
-      this.remainingHeadHitAnimTime = this.hitAnimLength;
-    }
-
     // Calculate X Pos
     headHitX = (this.remainingHeadHitAnimTime / this.hitAnimLength) * this.hitAnimStrength;
     this.remainingHeadHitAnimTime -= timer.gameTimeDif;
-
     // Finish Animation
     if (this.remainingHeadHitAnimTime <= 0) {
       this.remainingHeadHitAnimTime = 0;
