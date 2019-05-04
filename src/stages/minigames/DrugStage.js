@@ -47,6 +47,8 @@ DrugStage.prototype.prestart = function(payload) {
   this.throwFromX = 0;
   this.grabStart = 0;
   this.attempts = 0;
+
+  // Parameters for patient hit animation
   this.hitAnimStrength = 7;
   this.hitAnimLength = 250;
   this.remainingHeadHitAnimTime = 0;
