@@ -25,7 +25,7 @@ DrugStage.prototype.preload = function() {
   this.soundThrowing = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-whoosh.mp3'});
   this.soundBumping = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-bump.mp3'});
   this.soundGulping = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-gulp.mp3'});
-  this.soundGroaning = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/hammer-hitting/hammer-hitting-knee.mp3'});
+  this.soundGroaning = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/patient-groan/patient-groan.mp3'});
 };
 
 DrugStage.prototype.prestart = function(payload) {
