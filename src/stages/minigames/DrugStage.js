@@ -25,6 +25,7 @@ DrugStage.prototype.preload = function() {
   this.soundThrowing = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-whoosh.mp3'});
   this.soundBumping = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-bump.mp3'});
   this.soundGulping = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-gulp.mp3'});
+  this.soundGroaning = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/hammer-hitting/hammer-hitting-knee.mp3'});
 };
 
 DrugStage.prototype.prestart = function(payload) {
@@ -34,6 +35,7 @@ DrugStage.prototype.prestart = function(payload) {
   this.tries = 0;
   this.flying = false;
   this.lying = false;
+  this.headHit = false;
   this.handX = 50;
   this.handY = 50;
   this.wellPlaced = false;
@@ -45,6 +47,9 @@ DrugStage.prototype.prestart = function(payload) {
   this.throwFromX = 0;
   this.grabStart = 0;
   this.attempts = 0;
+  this.hitAnimStrength = 7;
+  this.hitAnimLength = 250;
+  this.remainingHeadHitAnimTime = 0;
 };
 
 DrugStage.prototype.update = function(timer) {
@@ -156,6 +161,7 @@ DrugStage.prototype.updatePill = function() {
       if (getDistance(this.x, this.y, this.bounceArea.x, this.bounceArea.y) <= this.bounceArea.r) {
         // bounce back
         this.soundBumping.play();
+        this.headHit = true;
 
         const vel = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
         const dx = this.w * 0.92 - this.x, dy = this.h - this.y;
@@ -221,8 +227,30 @@ DrugStage.prototype.render = function(ctx, timer) {
   ctx.moveTo(this.w - 130, this.h - 80);
   ctx.arc(this.w - 114, this.h - 70, 32, 0, 6.28);
   ctx.fill(); */
+
   // Patient
-  drawImageToScreen(ctx, this.headImage, this.w, this.h, 0, 1, 1, 1, 1);
+  let headHitX = 0;
+
+  if (this.headHit) {
+    // Init Animation
+    if (this.remainingHeadHitAnimTime == 0) {
+      this.soundGroaning.play();
+      this.remainingHeadHitAnimTime = this.hitAnimLength;
+    }
+
+    // Calculate X Pos
+    headHitX = (this.remainingHeadHitAnimTime / this.hitAnimLength) * this.hitAnimStrength;
+    this.remainingHeadHitAnimTime -= timer.gameTimeDif;
+
+    // Finish Animation
+    if (this.remainingHeadHitAnimTime <= 0) {
+      this.remainingHeadHitAnimTime = 0;
+      this.headHit = false;
+    }
+  }
+
+  drawImageToScreen(ctx, this.headImage, this.w + headHitX, this.h, 0, 1, 1, 1, 1);
+
   // MinigameStage handles overlay stuff / UI
   MinigameStage.prototype.renderOnTop.call(this, ctx, timer);
 };
