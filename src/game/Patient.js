@@ -265,7 +265,13 @@ Patient.prototype.getCharacterFrames = function(isMoving) {
     if (this.isDead()) {
         return [1, 6, 6, 7, 7];
     } else {
-        return isMoving ? [0, 1, 2, 3, 2, 1] : [1, 4, 5, 5, 5, 4, 1, 1];
+        if (isMoving) {
+            return [0, 1, 2, 3, 2, 1];
+        } else {
+            if (this.health < 25) return [1, 4, 5, 4];
+            if (this.health < 50) return [1, 4, 5, 5, 4, 1];
+            return [1, 4, 5, 5, 5, 5, 4, 1, 1, 1];
+        }
     }
 };
 
