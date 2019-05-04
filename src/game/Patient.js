@@ -62,6 +62,30 @@ Patient.load = function() {
     Patient.images = sprites.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
     Patient.indicatorImage = loader.loadImage(IMAGES_BASE_PATH + "indicator.png");
 
+    /**
+     * Todo: Load separated sprite sets (head, shirt, legs) and put them together to create
+     * a wide variety of patient appereances.
+     **/ 
+
+    // const dynSprites = {
+    //     heads: [
+    //         'patient_head0',
+    //         'patient_head1',
+    //         'patient_head2',
+    //         'patient_head3'
+    //     ],
+    //     shirts: [
+    //         'patient_shirt0'
+    //     ],
+    //     legs: [
+    //         'patient_leg0'
+    //     ]
+    // }
+
+    // Patient.headImages  = dynSprites.heads.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
+    // Patient.shirtImages = dynSprites.shirts.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
+    // Patient.legImages   = dynSprites.legs.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
+
     Patient.soundsDying = {
         male: [
             loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-1.mp3'}),
