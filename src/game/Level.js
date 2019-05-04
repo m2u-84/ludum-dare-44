@@ -181,7 +181,7 @@ Level.prototype.findPath = function(x1, y1, x2, y2, doShuffle = true) {
             found = true;
             break;
         }
-        addNeighbours(tiles[i][0], tiles[i][1]);
+        addNeighbours(tiles[i][0], tiles[i][1], tiles[i][2]);
     }
     if (found) {
         // Reconstruct path by backtracking from goal
@@ -197,20 +197,23 @@ Level.prototype.findPath = function(x1, y1, x2, y2, doShuffle = true) {
         return null;
     }
 
-    function addNeighbours(x, y) {
+    function addNeighbours(x, y, originalDirection) {
         if (doShuffle) {
             shuffle(directions)
         }
+        if (originalDirection) {
+            moveToTop(directions, originalDirection);
+        }
         for (var d of directions) {
-            addNeighbour(x + d[0], y + d[1], x, y);
+            addNeighbour(x + d[0], y + d[1], x, y, d);
         }
     }
 
-    function addNeighbour(x, y, sx, sy) {
+    function addNeighbour(x, y, sx, sy, d) {
         if (!self.isBlocked({x,y}) && self.tilemap[y][x].pathFindingCount !== Level.pathFindingCount) {
             self.tilemap[y][x].pathFindingCount = Level.pathFindingCount;
             self.tilemap[y][x].pathFindingSource = [sx, sy];
-            tiles.push([x, y]);
+            tiles.push([x, y, d]);
         }
     }
 };
