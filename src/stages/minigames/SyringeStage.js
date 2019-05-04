@@ -1,7 +1,7 @@
 
 function SyringeStage() {
   MinigameStage.call(this, "syringe");
-  this.helpText = "Hold space to control syringe"
+  this.helpText = "Hold space to control syringe. Try to hit the vein"
 }
 inherit(SyringeStage, MinigameStage);
 
