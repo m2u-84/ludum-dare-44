@@ -30,7 +30,7 @@ StartStage.prototype.render = function(ctx, timer) {
 StartStage.prototype.onkey = function(event) {
   if (event.key == "1" || event.key == "2") {
     if (gameStage.gameState) {
-      gameStage.prestart();
+      gameStage.prestart({isMale: event.key == "1"});
       this.transitionOut();
     } else {
       this.transitionTo("game", undefined, {isMale: event.key == "1"});
