@@ -89,7 +89,7 @@ DrugStage.prototype.updateWobble = function() {
   this.wobbles = [cur, prev];
 
   function wobbleToPos(v) {
-    const ease = Math.min(1, 0.3 * self.attempts);
+    const ease = 1; // Math.min(1, 0.3 * self.attempts);
     const ease1 = 1 - ease;
     const x = 90 + (ease1 * 70 + ease * 80) * Math.sin(v);
     const y = 90 - (ease1 * 60 + ease * 20) * Math.sin(v);
