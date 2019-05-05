@@ -369,7 +369,7 @@ Patient.prototype.paintAttachedUI = function(ctx) {
             /**
              * Exclamation Mark
              **/
-            if(this.state == PatientStates.WAIT_AT_RECEPTION || this.state == PatientStates.STAY_IN_BED){
+            if(this.state == PatientStates.WAIT_AT_RECEPTION || (this.state == PatientStates.STAY_IN_BED && this.healthDecrease > 0)){
                 const exclamationFrame = getArrayFrame(gameStage.time / 50, Patient.exclamationFrames);
                 drawFrame(ctx, Patient.exclamationImage, exclamationFrame, x, y - (1/24), 0, 1/24, 1/24, 0.5, 1);
             }
