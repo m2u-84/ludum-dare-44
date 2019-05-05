@@ -11,6 +11,15 @@ const PatientStates = {
   ASLEEP: 8
 };
 
+const PatientMoods = {
+    NONE: -1,
+    BETTER: 0,
+    WORSE: 1,
+    CURED: 2,
+    DEAD: 3,
+    ANGRY: 4
+};
+
 function Patient(x, y, health, wealth, sickness, gameState) {
 
     MovingObject.call(this, x, y, gameState);
@@ -41,15 +50,15 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isMale = this.imageIndex === 3 ? false : true;
     // Patients have takable organ initially, but not after player takes one
     this.hasOrgan = true;
-    this.mood = '';
+    this.mood = PatientMoods.NONE;
     this.moodIconDuration = 4000;
     this.moodStartTime = 0;
     this.moodAnimations = {
-        'better': [0,1,2,3],
-        'worse': [4,5,6,7],
-        'cured': [8,9,10,11],
-        'dead': [12,13,14,15],
-        'angry': [16,17,18,19]
+        0: [0,1,2,3],
+        1: [4,5,6,7],
+        2: [8,9,10,11],
+        3: [12,13,14,15],
+        4: [16,17,18,19]
     }
 
     this.baseVelocity = this.movingVelocity;
@@ -142,7 +151,7 @@ Patient.prototype.update = function() {
         gameStage.cashflowFeed.addText("Release happily rewarded with $500", "gold");
         this.gameState.hospital.giveRevenue(500, this.x, this.y);
         this.executeAction(this.gameState.releaseTreatment);
-        this.setMood('cured');
+        this.setMood(PatientMoods.CURED);
     } else if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
         this.nextState();
     } else if (this.state === PatientStates.ASLEEP && gameStage.time > this.stateChangedTime + this.sleepTime) {
@@ -160,7 +169,6 @@ Patient.prototype.recomputeVelocity = function() {
 };
 
 Patient.prototype.setMood = function(mood) {
-    console.log('setting mood to', mood);
     this.mood = mood;
     this.moodStartTime = gameStage.time;
 };
@@ -372,10 +380,10 @@ Patient.prototype.paintAttachedUI = function(ctx) {
     }
 
     // Draw mood icon
-    if (this.mood != '') {
+    if (this.mood != PatientMoods.NONE) {
         const moodFrame = getArrayFrame(gameStage.time / 200, this.moodAnimations[this.mood]);
         drawFrame(ctx, Patient.moodImage, moodFrame, x - (15/24), y + (2/24), 0, 1/24, 1/24, 0.5, 0.5, 1);
-        if (gameStage.time - this.moodStartTime >=  this.moodIconDuration) this.mood = '';
+        if (gameStage.time - this.moodStartTime >=  this.moodIconDuration) this.mood = PatientMoods.NONE;
     }
 };
 
@@ -425,7 +433,7 @@ Patient.prototype.executeAction = function(action) {
             this.walkHome();
             this.gameState.stats.patientsRejected++;
             this.gameState.hospital.giveRevenue(this.getTreatmentPrice(this.gameState.rejectReception), this.x, this.y);
-            this.setMood('angry');
+            this.setMood(PatientMoods.ANGRY);
             break;
         default:
             throw new Error("Invalid action for waiting patient: " + action);
@@ -535,7 +543,7 @@ Patient.prototype.die = function() {
         this.health = 0;
         this.setState(PatientStates.DEAD);
         this.finishPath();
-        this.setMood('dead');
+        this.setMood(PatientMoods.DEAD);
 
         Patient.soundsDying[this.isMale ? 'male' : 'female'][rndInt(0, 3)].play();
 
@@ -563,7 +571,7 @@ Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
     if (this.sickness && treatment == this.sickness.treatment && regeneration > 0 && absolute > 0) {
         // No sickness anymore
         this.cured = true;
-        this.setMood('better');
+        this.setMood(PatientMoods.BETTER);
     }
     // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
     // thus value change has maximum of 50% of max hp, but exponent of 2 pulls values closer towards 0
@@ -578,7 +586,7 @@ Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
     } else {
         // Apply 50% damping to keep de/regeneration relatively close to 0 even after many actions
         // thus recent actions will always have bigger effect on patient's well-being than long term history
-        if (regeneration >= 0) this.setMood('better'); else this.setMood('worse');
+        if (regeneration >= 0) this.setMood(PatientMoods.BETTER); else this.setMood(PatientMoods.WORSE);
         this.healthDecrease = 0.5 * this.healthDecrease - 3 * regeneration - 0.2;
         this.healthDecrease = clump(this.healthDecrease, -0.3, 0.3, 0.25);
         // console.log("Setting health decrease to ", this.healthDecrease);
