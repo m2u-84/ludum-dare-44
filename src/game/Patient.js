@@ -41,6 +41,16 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isMale = this.imageIndex === 3 ? false : true;
     // Patients have takable organ initially, but not after player takes one
     this.hasOrgan = true;
+    this.mood = '';
+    this.moodIconDuration = 4000;
+    this.moodStartTime = 0;
+    this.moodAnimations = {
+        'better': [0,1,2,3],
+        'worse': [4,5,6,7],
+        'cured': [8,9,10,11],
+        'dead': [12,13,14,15],
+        'angry': [16,17,18,19]
+    }
 
     this.baseVelocity = this.movingVelocity;
     this.movingVelocity = computeMovingVelocity(this.baseVelocity, this.health);
@@ -61,6 +71,7 @@ Patient.load = function() {
 
     Patient.images = sprites.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
     Patient.indicatorImage = loader.loadImage(IMAGES_BASE_PATH + "indicator.png");
+    Patient.moodImage = loader.loadImage("./assets/images/mood.png", 4, 5);
 
     /**
      * Todo: Load separated sprite sets (head, shirt, legs) and put them together to create
@@ -131,6 +142,7 @@ Patient.prototype.update = function() {
         gameStage.cashflowFeed.addText("Release happily rewarded with $500", "gold");
         this.gameState.hospital.giveRevenue(500, this.x, this.y);
         this.executeAction(this.gameState.releaseTreatment);
+        this.setMood('cured');
     } else if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
         this.nextState();
     } else if (this.state === PatientStates.ASLEEP && gameStage.time > this.stateChangedTime + this.sleepTime) {
@@ -144,8 +156,13 @@ Patient.prototype.setState = function(state) {
 };
 
 Patient.prototype.recomputeVelocity = function() {
-
     this.movingVelocity = computeMovingVelocity(this.baseVelocity, this.health);
+};
+
+Patient.prototype.setMood = function(mood) {
+    console.log('setting mood to', mood);
+    this.mood = mood;
+    this.moodStartTime = gameStage.time;
 };
 
 function updateHealth() {
@@ -301,6 +318,19 @@ Patient.prototype.getCharacterFrames = function(isMoving) {
 
 Patient.prototype.paintAttachedUI = function(ctx) {
 
+    // Dynamic coordinates above the patient
+    let x;
+    let y;
+    const px = 2 / 24;
+
+    if (!this.isDead() || this.mood != '') {
+        const offX = gameStage.active ? this.shiverX : 0
+        const offY = gameStage.active ? this.shiverY : 0;
+        const directionFactor = sgn(this.directionFactor.x);
+        x = Math.round(this.x * 24 + 4 * directionFactor + offX) / 24;
+        y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24 + offY) / 24;
+    }
+
     if (!this.isDead()) {
 
         if (this.health < 20 && this.inBed) {
@@ -322,25 +352,30 @@ Patient.prototype.paintAttachedUI = function(ctx) {
             this.shiverX = 0;
             this.shiverY = 0;
         }
-        const offX = gameStage.active ? this.shiverX : 0, offY = gameStage.active ? this.shiverY : 0;
 
-        // Health bar
-        const directionFactor = sgn(this.directionFactor.x);
-        const px = 2 / 24;
-        const x = Math.round(this.x * 24 + 4 * directionFactor + offX) / 24,
-            y = Math.round((this.y - 2 - px + (this.inBed ? 9/24 : 0)) * 24 + offY) / 24;
-        const halfWidth = 6 / 24;
-        const height = 2 / 24;
-        // Health bar background
-        ctx.fillStyle = "white";
-        ctx.fillRect(x - halfWidth, y, 2 * halfWidth, height);
-        // Direction indicator
-        const frame = absMod( Math.round(-this.healthDecrease * gameStage.time / 200), Patient.indicatorImage.height);
-        ctx.drawImage(Patient.indicatorImage, 0, frame, 24 * 2 * halfWidth, 1, x - halfWidth, y, 2 * halfWidth, px);
-        // Actual health bar; use power > 0 to make hp seem lower than they are, for a more tense/dramatic experience
-        const displayedHealth = Math.pow(this.health / 100, 1.5);
-        ctx.fillStyle = getHealthColor(displayedHealth);
-        ctx.fillRect(x - halfWidth, y, 2 * halfWidth * displayedHealth, height);
+        // Only show health bar if patient is not cured
+        if (!this.isCured()) {
+            // Health bar
+            const halfWidth = 6 / 24;
+            const height = 2 / 24;
+            // Health bar background
+            ctx.fillStyle = "white";
+            ctx.fillRect(x - halfWidth, y, 2 * halfWidth, height);
+            // Direction indicator
+            const frame = absMod( Math.round(-this.healthDecrease * gameStage.time / 200), Patient.indicatorImage.height);
+            ctx.drawImage(Patient.indicatorImage, 0, frame, 24 * 2 * halfWidth, 1, x - halfWidth, y, 2 * halfWidth, px);
+            // Actual health bar; use power > 0 to make hp seem lower than they are, for a more tense/dramatic experience
+            const displayedHealth = Math.pow(this.health / 100, 1.5);
+            ctx.fillStyle = getHealthColor(displayedHealth);
+            ctx.fillRect(x - halfWidth, y, 2 * halfWidth * displayedHealth, height);
+        }
+    }
+
+    // Draw mood icon
+    if (this.mood != '') {
+        const moodFrame = getArrayFrame(gameStage.time / 200, this.moodAnimations[this.mood]);
+        drawFrame(ctx, Patient.moodImage, moodFrame, x - (15/24), y + (2/24), 0, 1/24, 1/24, 0.5, 0.5, 1);
+        if (gameStage.time - this.moodStartTime >=  this.moodIconDuration) this.mood = '';
     }
 };
 
@@ -390,6 +425,7 @@ Patient.prototype.executeAction = function(action) {
             this.walkHome();
             this.gameState.stats.patientsRejected++;
             this.gameState.hospital.giveRevenue(this.getTreatmentPrice(this.gameState.rejectReception), this.x, this.y);
+            this.setMood('angry');
             break;
         default:
             throw new Error("Invalid action for waiting patient: " + action);
@@ -499,6 +535,7 @@ Patient.prototype.die = function() {
         this.health = 0;
         this.setState(PatientStates.DEAD);
         this.finishPath();
+        this.setMood('dead');
 
         Patient.soundsDying[this.isMale ? 'male' : 'female'][rndInt(0, 3)].play();
 
@@ -526,6 +563,7 @@ Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
     if (this.sickness && treatment == this.sickness.treatment && regeneration > 0 && absolute > 0) {
         // No sickness anymore
         this.cured = true;
+        this.setMood('better');
     }
     // Single intervention can in extreme cases fully kill or cure a patient, but usually has relatively small immediate effect
     // thus value change has maximum of 50% of max hp, but exponent of 2 pulls values closer towards 0
@@ -540,6 +578,7 @@ Patient.prototype.addEffect = function(regeneration, absolute, treatment) {
     } else {
         // Apply 50% damping to keep de/regeneration relatively close to 0 even after many actions
         // thus recent actions will always have bigger effect on patient's well-being than long term history
+        if (regeneration >= 0) this.setMood('better'); else this.setMood('worse');
         this.healthDecrease = 0.5 * this.healthDecrease - 3 * regeneration - 0.2;
         this.healthDecrease = clump(this.healthDecrease, -0.3, 0.3, 0.25);
         // console.log("Setting health decrease to ", this.healthDecrease);
