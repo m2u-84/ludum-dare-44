@@ -81,6 +81,8 @@ Patient.load = function() {
     Patient.images = sprites.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
     Patient.indicatorImage = loader.loadImage(IMAGES_BASE_PATH + "indicator.png");
     Patient.moodImage = loader.loadImage("./assets/images/mood.png", 4, 5);
+    Patient.exclamationImage = loader.loadImage("./assets/images/attention.png", 5, 1);
+    Patient.exclamationFrames = [0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 2, 2, 1];
 
     /**
      * Todo: Load separated sprite sets (head, shirt, legs) and put them together to create
@@ -363,7 +365,18 @@ Patient.prototype.paintAttachedUI = function(ctx) {
 
         // Only show health bar if patient is not cured
         if (!this.isCured()) {
-            // Health bar
+
+            /**
+             * Exclamation Mark
+             **/
+            if(this.state == PatientStates.WAIT_AT_RECEPTION || this.state == PatientStates.STAY_IN_BED){
+                const exclamationFrame = getArrayFrame(gameStage.time / 50, Patient.exclamationFrames);
+                drawFrame(ctx, Patient.exclamationImage, exclamationFrame, x, y - (1/24), 0, 1/24, 1/24, 0.5, 1);
+            }
+
+            /**
+             * Health bar
+             **/ 
             const halfWidth = 6 / 24;
             const height = 2 / 24;
             // Health bar background
@@ -382,7 +395,7 @@ Patient.prototype.paintAttachedUI = function(ctx) {
     // Draw mood icon
     if (this.mood != PatientMoods.NONE) {
         const moodFrame = getArrayFrame(gameStage.time / 200, this.moodAnimations[this.mood]);
-        drawFrame(ctx, Patient.moodImage, moodFrame, x - (15/24), y + (2/24), 0, 1/24, 1/24, 0.5, 0.5, 1);
+        drawFrame(ctx, Patient.moodImage, moodFrame, x - (15/24), y + px, 0, 1/24, 1/24, 0.5, 0.5, 1);
         if (gameStage.time - this.moodStartTime >=  this.moodIconDuration) this.mood = PatientMoods.NONE;
     }
 };
