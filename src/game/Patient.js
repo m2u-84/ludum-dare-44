@@ -47,7 +47,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.image = Patient.images[this.imageIndex];
     this.diagnosingUntil = 0;
     this.sleepTime = 0;
-    this.isMale = this.imageIndex === 3 ? false : true;
+    this.isMale = this.imageIndex === 2 ? false : true;
     // Patients have takable organ initially, but not after player takes one
     this.hasOrgan = true;
     this.mood = PatientMoods.NONE;

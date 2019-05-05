@@ -16,6 +16,7 @@ ContextMenuStage.prototype.preload = function() {
   this.dollar = loader.loadImage(IMAGES_BASE_PATH + 'dollar.png', 6, 1);
   this.dollarAnimation = [0, 0, 0, 0, 0, 0, 1, 2, 3, 4];
   this.keyImage = loader.loadImage(IMAGES_BASE_PATH + 'keys.png', 9, 1);
+  this.genderImage = loader.loadImage(IMAGES_BASE_PATH + 'gender.png', 3, 1);
 
   this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
 };
@@ -54,6 +55,9 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   drawFrame(ctx, this.dollar, this.patient.wealthLevel > 0 ? frame : 5, -35, 27, 0, 1, 1, 0, 0);
   drawFrame(ctx, this.dollar, this.patient.wealthLevel > 1 ? frame : 5, -20, 25, 0, 1, 1, 0, 0);
   drawFrame(ctx, this.dollar, this.patient.wealthLevel > 2 ? frame : 5, -5, 30, 0, 1, 1, 0, 0);
+
+  // Draw gender symbol
+  drawFrame(ctx, this.genderImage, this.patient.isMale ? 1 : 0, (this.background.width - 30), 10, 0, 1, 1, 0, 0);
 
   // Draw Patient Overview
   ctx.translate(14, 14);
