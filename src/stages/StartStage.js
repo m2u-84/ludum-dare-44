@@ -10,16 +10,16 @@ inherit(StartStage, Stage);
 StartStage.prototype.preload = function() {
   // Load images here
   this.menuImage = loader.loadImage("./assets/images/menu.png");
-  this.menuButtons = loader.loadImage("./assets/images/menu_buttons.png", 6, 2);
+  this.menuButtons = loader.loadImage("./assets/images/menu_buttons.png", 8, 2);
   this.menuButton1 = {
     x: 192,
     y: 205,
     w: 95,
     h: 21,
     frames: {
-      idle: [0, 0, 0, 0, 0, 0, 1, 2, 3],
-      hovered: [4],
-      armed: [5]
+      idle: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
+      hovered: [6],
+      armed: [7]
     },
     frame: 0,
     hovered: false,
@@ -31,9 +31,9 @@ StartStage.prototype.preload = function() {
     w: 95,
     h: 21,
     frames: {
-      idle: [6, 6, 6, 6, 6, 6, 7, 8, 9],
-      hovered: [10],
-      armed: [11]
+      idle: [9, 10, 11, 12, 13, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+      hovered: [14],
+      armed: [15]
     },
     frame: 0,
     hovered: false,
@@ -67,14 +67,14 @@ StartStage.prototype.render = function(ctx, timer) {
     this.menuButton1.armed = false;
   } else if (isOverMenuButton(this.menuButton1) && this.menuButton1.hovered && mouseHandler.mouse.click) {
     this.menuButton1.armed = true;
-    this.menuButton1.frame = getArrayFrame(timer.gameTime / 100, this.menuButton1.frames.armed);
+    this.menuButton1.frame = getArrayFrame(timer.gameTime / 75, this.menuButton1.frames.armed);
   } else if (isOverMenuButton(this.menuButton1) && !mouseHandler.mouse.click) {
     this.menuButton1.hovered = true;
-    this.menuButton1.frame = getArrayFrame(timer.gameTime / 100, this.menuButton1.frames.hovered);
+    this.menuButton1.frame = getArrayFrame(timer.gameTime / 75, this.menuButton1.frames.hovered);
   } else {
     this.menuButton1.hovered = false;
     this.menuButton1.armed = false;
-    this.menuButton1.frame = getArrayFrame(timer.gameTime / 100, this.menuButton1.frames.idle);
+    this.menuButton1.frame = getArrayFrame(timer.gameTime / 75, this.menuButton1.frames.idle);
   }
 
   if (this.menuButton2.hovered && this.menuButton2.armed && !mouseHandler.mouse.click) {
@@ -83,14 +83,14 @@ StartStage.prototype.render = function(ctx, timer) {
     this.menuButton2.armed = false;
   } else if (isOverMenuButton(this.menuButton2) && this.menuButton2.hovered && mouseHandler.mouse.click) {
     this.menuButton2.armed = true;
-    this.menuButton2.frame = getArrayFrame(timer.gameTime / 100, this.menuButton2.frames.armed);
+    this.menuButton2.frame = getArrayFrame(timer.gameTime / 75, this.menuButton2.frames.armed);
   } else if (isOverMenuButton(this.menuButton2) && !mouseHandler.mouse.click) {
     this.menuButton2.hovered = true;
-    this.menuButton2.frame = getArrayFrame(timer.gameTime / 100, this.menuButton2.frames.hovered);
+    this.menuButton2.frame = getArrayFrame(timer.gameTime / 75, this.menuButton2.frames.hovered);
   } else {
     this.menuButton2.hovered = false;
     this.menuButton2.armed = false;
-    this.menuButton2.frame = getArrayFrame(timer.gameTime / 100, this.menuButton2.frames.idle);
+    this.menuButton2.frame = getArrayFrame(timer.gameTime / 75, this.menuButton2.frames.idle);
   }
 
   drawFrame(ctx, this.menuButtons, this.menuButton1.frame, this.menuButton1.x, this.menuButton1.y, 0, 1, 1, 0, 0);
