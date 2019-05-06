@@ -8,9 +8,17 @@ function StartStage() {
 inherit(StartStage, Stage);
 
 StartStage.prototype.preload = function() {
+  const ASSETS_BASE_PATH = './assets/';
+  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
+  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+
   // Load images here
-  this.menuImage = loader.loadImage("./assets/images/menu.png");
-  this.menuButtons = loader.loadImage("./assets/images/menu_buttons.png", 8, 2);
+  this.menuImage = loader.loadImage(IMAGES_BASE_PATH + 'menu.png');
+  this.menuButtons = loader.loadImage(IMAGES_BASE_PATH + 'menu_buttons.png', 8, 2);
+  this.clickSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
+  this.backgroundMusic = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-starting/menu-song.mp3'});
+  this.startingSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-starting/game-starting.mp3'});
+
   this.menuButton1 = {
     x: 192,
     y: 205,
@@ -50,6 +58,23 @@ function isOverMenuButton(menuButton) {
   );
 }
 
+StartStage.prototype.startGame = function(isMale) {
+  this.backgroundMusic.stop();
+  this.startingSound.play();
+  if (gameStage.gameState) {
+    gameStage.prestart({isMale: isMale});
+    this.transitionOut();
+  } else {
+    this.transitionTo("game", undefined, {isMale: isMale});
+  }
+};
+
+// StartStage.prototype.prestart = function() {
+//   this.backgroundMusic.setVolume(0.8);
+//   this.backgroundMusic.loop = true;
+//   this.backgroundMusic.play();
+// }
+
 StartStage.prototype.render = function(ctx, timer) {
   const w = ctx.canvas.width, h = ctx.canvas.height;
   const p = Interpolators.cubic3(this.opacity);
@@ -62,40 +87,40 @@ StartStage.prototype.render = function(ctx, timer) {
   // Draw Menu Buttons and logic
   // todo: Create a proper Button class that handles all the mouseHandler logic
   if (this.menuButton1.hovered && this.menuButton1.armed && !mouseHandler.mouse.click) {
-    this.transitionTo("game", undefined, {isMale: true});
+    this.startGame(true);
     this.menuButton1.hovered = false;
     this.menuButton1.armed = false;
   } else if (isOverMenuButton(this.menuButton1) && this.menuButton1.hovered && mouseHandler.mouse.click) {
     this.menuButton1.armed = true;
     this.menuButton1.frame = getArrayFrame(timer.gameTime / 75, this.menuButton1.frames.armed);
-  } else if (isOverMenuButton(this.menuButton1) && !mouseHandler.mouse.click) {
+  } else if (isOverMenuButton(this.menuButton1) && !mouseHandler.mouse.click && !this.menuButton1.hovered) {
     this.menuButton1.hovered = true;
+    this.clickSound.play();
     this.menuButton1.frame = getArrayFrame(timer.gameTime / 75, this.menuButton1.frames.hovered);
-  } else {
+  } else if (!isOverMenuButton(this.menuButton1)) {
     this.menuButton1.hovered = false;
     this.menuButton1.armed = false;
     this.menuButton1.frame = getArrayFrame(timer.gameTime / 75, this.menuButton1.frames.idle);
   }
 
   if (this.menuButton2.hovered && this.menuButton2.armed && !mouseHandler.mouse.click) {
-    this.transitionTo("game", undefined, {isMale: false});
+    this.startGame(false);
     this.menuButton2.hovered = false;
     this.menuButton2.armed = false;
   } else if (isOverMenuButton(this.menuButton2) && this.menuButton2.hovered && mouseHandler.mouse.click) {
     this.menuButton2.armed = true;
     this.menuButton2.frame = getArrayFrame(timer.gameTime / 75, this.menuButton2.frames.armed);
-  } else if (isOverMenuButton(this.menuButton2) && !mouseHandler.mouse.click) {
+  } else if (isOverMenuButton(this.menuButton2) && !mouseHandler.mouse.click && !this.menuButton2.hovered) {
     this.menuButton2.hovered = true;
+    this.clickSound.play();
     this.menuButton2.frame = getArrayFrame(timer.gameTime / 75, this.menuButton2.frames.hovered);
-  } else {
+  } else if (!isOverMenuButton(this.menuButton2)) {
     this.menuButton2.hovered = false;
     this.menuButton2.armed = false;
     this.menuButton2.frame = getArrayFrame(timer.gameTime / 75, this.menuButton2.frames.idle);
   }
-
   drawFrame(ctx, this.menuButtons, this.menuButton1.frame, this.menuButton1.x, this.menuButton1.y, 0, 1, 1, 0, 0);
   drawFrame(ctx, this.menuButtons, this.menuButton2.frame, this.menuButton2.x, this.menuButton2.y, 0, 1, 1, 0, 0);
-
 
   // Credits Text
   const off = (this.time / 12) % 2600;
@@ -105,11 +130,11 @@ StartStage.prototype.render = function(ctx, timer) {
 
 StartStage.prototype.onkey = function(event) {
   if (event.key == "1" || event.key == "2") {
-    if (gameStage.gameState) {
-      gameStage.prestart({isMale: event.key == "1"});
-      this.transitionOut();
-    } else {
-      this.transitionTo("game", undefined, {isMale: event.key == "1"});
-    }
+    this.startGame(event.key == "1");
+  }
+  if (event.key == "m") {
+    this.backgroundMusic.setVolume(0.8);
+    this.backgroundMusic.loop = true;
+    this.backgroundMusic.play();
   }
 }
