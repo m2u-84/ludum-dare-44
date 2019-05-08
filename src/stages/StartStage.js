@@ -12,25 +12,31 @@ StartStage.prototype.preload = function() {
   const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
   const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
-  const menuButton2frames = {
-    idle: [9, 10, 11, 12, 13, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-    hovered: [14],
-    armed: [15]
-  }
   const menuButton1frames = {
     idle: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
+    idleSpeed: 75,
     hovered: [6],
-    armed: [7]
+    hoveredSpeed: 75,
+    armed: [7],
+    armedSpeed: 75
+  }
+
+  const menuButton2frames = {
+    idle: [9, 10, 11, 12, 13, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+    idleSpeed: 75,
+    hovered: [14],
+    hoveredSpeed: 75,
+    armed: [15],
+    armedSpeed: 75
   }
 
   // Load images here
   this.menuImage = loader.loadImage(IMAGES_BASE_PATH + 'menu.png');
   this.menuButtons = loader.loadImage(IMAGES_BASE_PATH + 'menu_buttons.png', 8, 2);
   this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
-  this.backgroundMusic = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-starting/menu-song.mp3'});
   this.startingSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-starting/game-starting.mp3'});
-  this.menuButton1 = new Button(192, 205, 95, 21, this.menuButtons, menuButton1frames, function() { stageManager.activeStage.startGame(true) }, undefined, this.hoverSound);
-  this.menuButton2 = new Button(192, 229, 95, 21, this.menuButtons, menuButton2frames, function() { stageManager.activeStage.startGame(false) }, undefined, this.hoverSound);
+  this.menuButton1 = new Button(192, 205, this.menuButtons, menuButton1frames, function() { stageManager.activeStage.startGame(true) }, undefined, this.hoverSound);
+  this.menuButton2 = new Button(192, 229, this.menuButtons, menuButton2frames, function() { stageManager.activeStage.startGame(false) }, undefined, this.hoverSound);
 
 }
 
@@ -45,11 +51,9 @@ StartStage.prototype.startGame = function(isMale) {
   }
 };
 
-// StartStage.prototype.prestart = function() {
-//   this.backgroundMusic.setVolume(0.8);
-//   this.backgroundMusic.loop = true;
-//   this.backgroundMusic.play();
-// }
+StartStage.prototype.prestart = function() {
+
+}
 
 StartStage.prototype.render = function(ctx, timer) {
   const w = ctx.canvas.width, h = ctx.canvas.height;
@@ -73,10 +77,5 @@ StartStage.prototype.render = function(ctx, timer) {
 StartStage.prototype.onkey = function(event) {
   if (event.key == "1" || event.key == "2") {
     this.startGame(event.key == "1");
-  }
-  if (event.key == "m") {
-    this.backgroundMusic.setVolume(0.8);
-    this.backgroundMusic.loop = true;
-    this.backgroundMusic.play();
   }
 }
