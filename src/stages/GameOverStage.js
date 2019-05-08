@@ -15,8 +15,30 @@ GameOverStage.prototype.preload = function() {
     'modal_gameover_3', // 2: Money Ending
   ];
 
+  const backToMenuButtonFrames = {
+    idle: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
+    idleSpeed: 75,
+    hovered: [6],
+    hoveredSpeed: 75,
+    armed: [7],
+    armedSpeed: 75
+  }
+
+  const keepPlayingButtonFrames = {
+    idle: [9, 10, 11, 12, 13, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+    idleSpeed: 75,
+    hovered: [14],
+    hoveredSpeed: 75,
+    armed: [15],
+    armedSpeed: 75
+  }
+
+  this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
   this.backgrounds = endings.map(ending => loader.loadImage(IMAGES_BASE_PATH + ending + '.png'));
   this.soundGameOver = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/outcomes/outcomes-gameover.mp3'});
+  this.backToMenuButton = new Button(this.menuButtons, backToMenuButtonFrames, function() { console.log('1') }, undefined, this.hoverSound);
+  this.keepPlayingButton = new Button(this.menuButtons, keepPlayingButtonFrames, function() { console.log('2') }, undefined, this.hoverSound);
+
 }
 
 GameOverStage.prototype.prestart = function(payload) {

@@ -277,7 +277,7 @@ GameStage.prototype.onkey = function (event) {
     if (event.key === "f") {
         this.drawFPS = !this.drawFPS;
     }
-    if (window["cheats"]) {
+    // if (window["cheats"]) {
       if (event.key == "k") {
           // Kill all patients
           this.gameState.patients.forEach( p => p.die() );
@@ -289,7 +289,7 @@ GameStage.prototype.onkey = function (event) {
       } else if (event.key == "l") {
           this.gameState.hospital.balance += 100;
       }
-    }
+    // }
 };
 
 function isSpecialCharacter(char) {

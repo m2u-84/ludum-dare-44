@@ -35,13 +35,12 @@ StartStage.prototype.preload = function() {
   this.menuButtons = loader.loadImage(IMAGES_BASE_PATH + 'menu_buttons.png', 8, 2);
   this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
   this.startingSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-starting/game-starting.mp3'});
-  this.menuButton1 = new Button(192, 205, this.menuButtons, menuButton1frames, function() { stageManager.activeStage.startGame(true) }, undefined, this.hoverSound);
-  this.menuButton2 = new Button(192, 229, this.menuButtons, menuButton2frames, function() { stageManager.activeStage.startGame(false) }, undefined, this.hoverSound);
+  this.menuButton1 = new Button(this.menuButtons, menuButton1frames, function() { stageManager.activeStage.startGame(true) }, undefined, this.hoverSound);
+  this.menuButton2 = new Button(this.menuButtons, menuButton2frames, function() { stageManager.activeStage.startGame(false) }, undefined, this.hoverSound);
 
 }
 
 StartStage.prototype.startGame = function(isMale) {
-  this.backgroundMusic.stop();
   this.startingSound.play();
   if (gameStage.gameState) {
     gameStage.prestart({isMale: isMale});
@@ -65,8 +64,8 @@ StartStage.prototype.render = function(ctx, timer) {
   drawImage(ctx, this.menuImage, 0, 0, 0, 1, 1, 0, 0);
 
   // Draw Menu Buttons
-  this.menuButton1.paint(ctx);
-  this.menuButton2.paint(ctx);
+  this.menuButton1.paint(ctx, 192, 205);
+  this.menuButton2.paint(ctx, 192, 229);
 
   // Credits Text
   const off = (this.time / 12) % 2600;
