@@ -12,6 +12,7 @@ function MinigameStage(name) {
   this.firstAttempt = true; // first attempt -> multiple tries
   this.trainingLeft = false;
   this.succeededOnce = false;
+  this.forceHelpText = false;
   this.helpText = "";
   this.paused = false;
 }
@@ -118,7 +119,7 @@ MinigameStage.prototype.renderOnTop = function(ctx, timer) {
     ctx.globalAlpha = Interpolators.cubic3(Math.sqrt(0.5 + 0.5 * Math.sin(this.time * 0.0032)));
     const text = this.succeededOnce ? "press enter when you've trained enough" : "Training mode";
     mainFont.drawText(ctx, text, this.w / 2, helpY, "white", 0.5, BitmapFontStyle.OUTLINE);
-    if (this.helpText && !this.succeededOnce) {
+    if (this.helpText && (!this.succeededOnce || this.forceHelpText)) {
       mainFont.drawText(ctx, this.helpText, this.w / 2, helpY + 20, "white", 0.5, BitmapFontStyle.OUTLINE);
     }
     ctx.globalAlpha = 1;

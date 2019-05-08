@@ -2,15 +2,17 @@
 function PlaceboStage() {
   MinigameStage.call(this, "placebo");
   this.helpText = "WASD to move paddle. Don't hit the patient!";
-  this.paddleW = 50;
+  this.forceHelpText = true;
+  this.paddleW = 55;
   this.paddleW2 = this.paddleW / 2;
   this.ballSize = 14;
   this.ballR = this.ballSize / 2;
-  this.minBallSpeed = 0.1;
+  this.minBallSpeed = 0.2;
   this.maxBallSpeed = 0.5;
   this.dampingX = 0.9984;
   this.dampingY = 0.9985;
   this.strength = 0.25;
+  this.requiredBounces = 3;
   this.bounces = 0;
   this.maxBounces = 0;
 }
@@ -60,6 +62,7 @@ PlaceboStage.prototype.prestart = function(payload) {
 
 PlaceboStage.prototype.update = function(timer) {
   if (this.paused) { return; }
+  const self = this;
   MinigameStage.prototype.update.call(this, timer);
   // Paddle Controls
   const rl = ((this.getKeyState("d") || this.getKeyState("ArrowRight")) ? 1 : 0) -
@@ -78,7 +81,7 @@ PlaceboStage.prototype.update = function(timer) {
   this.paddleY = this.paddleBaseY + this.controlledPaddleY + 4 * wobble(this.time, 7.2, 0, 1.8);
   this.paddleVX = (this.paddleX - lastPX) / this.timeDif;
   this.paddleVY = (this.paddleY - lastPY) / this.timeDif;
-  this.paddleAngle = this.controlledPaddleAngle + 0.2 * wobble(this.time, 5, 0, 1.5) - this.paddleVX * 0.3;
+  this.paddleAngle = this.controlledPaddleAngle + 0.2 * wobble(this.time, 5, 0, 1.5) - this.paddleVX * 0.3 + getAngleOffset(this.paddleX);
   // Ball
   const steps = 5;
   const td = Math.min(this.timeDif, 100) / steps;
@@ -86,6 +89,11 @@ PlaceboStage.prototype.update = function(timer) {
     if (this.updateBall(td)) {
       break;
     }
+  }
+
+  function getAngleOffset(x) {
+    const off = (x - (self.w * 0.3)) / (self.w * 0.3);
+    return -0.2 * off;
   }
 };
 
@@ -108,7 +116,8 @@ PlaceboStage.prototype.updateBall = function(tf) {
   }
   // Win condition (leave screen)
   if (this.ballY > this.h + 30) {
-    this.close(true);
+    const success = (this.bounces >= this.requiredBounces);
+    this.close(success);
     return true;
   }
   // Collision with paddle. First check if it's within paddle's bounding box
@@ -165,8 +174,11 @@ PlaceboStage.prototype.render = function(ctx, timer) {
   // Ball
   drawImageToScreen(ctx, this.ballImage, this.ballX, this.ballY, 0, 1, 1, 0.5, 0.5);
   // Ball position
-  ctx.fillStyle = "rgba(255,255,255,.5)";
+  ctx.fillStyle = "rgba(255,255,255,1)";
   ctx.fillRect(this.ballX - 2, this.h - 5, 3, 3);
+  // Bounces
+  const fontColor = (this.bounces >= this.requiredBounces) ? "green" : "yellow";
+  bigFont.drawText(ctx, this.bounces + "/" + this.requiredBounces, 4, 4, fontColor);
   // MinigameStage handles overlay stuff / UI
   MinigameStage.prototype.renderOnTop.call(this, ctx, timer);
 };
