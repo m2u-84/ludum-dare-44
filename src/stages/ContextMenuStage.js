@@ -14,10 +14,12 @@ ContextMenuStage.prototype.preload = function() {
   this.background = loader.loadImage(IMAGES_BASE_PATH + 'patientsheet.png');
   this.postIt = loader.loadImage(IMAGES_BASE_PATH + 'postit.png');
   this.dollar = loader.loadImage(IMAGES_BASE_PATH + 'dollar.png', 6, 1);
+  this.buttonImage = loader.loadImage(IMAGES_BASE_PATH + 'treatment_button.png', 1, 10);
   this.dollarAnimation = [0, 0, 0, 0, 0, 0, 1, 2, 3, 4];
   this.keyImage = loader.loadImage(IMAGES_BASE_PATH + 'keys.png', 9, 1);
+  this.minigameIcons = loader.loadImage(IMAGES_BASE_PATH + 'minigames.png', 9, 1);
   this.genderImage = loader.loadImage(IMAGES_BASE_PATH + 'gender.png', 3, 1);
-
+  this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
   this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
 };
 
@@ -25,12 +27,31 @@ ContextMenuStage.prototype.prestart = function(payload) {
   this.soundSliding.play();
   this.patient = payload.patient;
   this.actions = this.patient ? this.patient.getActions() : [];
+
+  const buttonframes = {
+    idle: [0],
+    idleSpeed: 75,
+    hovered: [1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8],
+    hoveredSpeed: 75,
+    armed: [9],
+    armedSpeed: 75
+  }
+  
+  this.actionButtons = {};
+  this.actions.forEach(action => {
+    this.actionButtons[action.name] = new Button(this.buttonImage, buttonframes, function() { stageManager.activeStage.executeButtonAction(action) }, undefined, this.hoverSound);
+  });
 };
 
 ContextMenuStage.prototype.update = function(timer) {
   if (this.actions.length < 1) {
     this.close();
   }
+};
+
+ContextMenuStage.prototype.executeButtonAction = function(action) {
+  this.close();
+  this.patient.executeAction(action);
 };
 
 ContextMenuStage.prototype.render = function(ctx, timer) {
@@ -47,7 +68,6 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   const x = w - this.background.width * p;
   ctx.translate(x, y);
   drawImageToScreen(ctx, this.background, 0, 0, 0, 1, 1, 0, 0);
-
   
   // Draw Wealth Postit
   drawImageToScreen(ctx, this.postIt, -42, 7, 0, 1, 1, 0, 0);
@@ -71,23 +91,27 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   mainFont.drawText(ctx, diagnosis, 70, 28, "orange");
 
   // Preferred option
-  drawOption(72, 1, this.actions[0], "Safe");
+  drawOption(72, 1, this.actions[0], x+14, y+14);
+
   for (var i = 1; i < this.actions.length; i++) {
     const action = this.actions[i];
-    const y = 107 + 18 * i;
-    drawOption(y, i + 1, action, "Safe");
+    const posY = 107 + 18 * i;
+    drawOption(posY, i + 1, action, x+14, y+14);
     ctx.fillStyle = "rgba(0,0,0,.12)";
-    ctx.fillRect(20, y + 12, 240, 1);
+    ctx.fillRect(20, posY + 12, 240, 1);
   }
 
-  function drawOption(y, num, nameOrTreatment) {
+  function drawOption(y, num, nameOrTreatment, translateX, translateY) {
+    let isEnabled = true;
     if (nameOrTreatment instanceof Treatment) {
       if (!nameOrTreatment.isEnabled(self.patient)) {
         ctx.globalAlpha = 0.2;
+        isEnabled = false;
       }
     }
     // Key symbol
-    drawFrame(ctx, self.keyImage, num - 1, 0, y - 4, 0, 1, 1, 0, 0);
+    // drawFrame(ctx, self.keyImage, num - 1, 0, y - 4, 0, 1, 1, 0, 0);
+
     // Option name
     const name = nameOrTreatment instanceof Treatment ? nameOrTreatment.name : nameOrTreatment;
     mainFont.drawText(ctx, name, 20, y, "blue");
@@ -107,6 +131,13 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
       const priceString = (price >= 0 ? "+ $ " : "- $ ") + Math.abs(price);
       mainFont.drawText(ctx, priceString, 260, y, priceColor, 1);
     }
+    
+    // Draw Action Button
+    if (isEnabled)
+      self.actionButtons[nameOrTreatment.name].paint(ctx, 0, (y - 5), translateX, translateY)
+
+    // Draw Treatment Icon
+    drawFrame(ctx, self.minigameIcons, nameOrTreatment == 'Diagnose' ? 8 : nameOrTreatment.iconIndex, 0, y - 4, 0, 1, 1, 0, 0);
     ctx.globalAlpha = 1;
   }
 
@@ -126,7 +157,6 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
     return {max: 0, text: "unknown", color: "gray"};
   }
 };
-
 
 ContextMenuStage.prototype.onkey = function(event) {
   if (["Escape", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "w", "a", "s", "d"].indexOf(event.key) >= 0) {

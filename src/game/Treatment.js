@@ -2,7 +2,7 @@
  * 
  */
 function Treatment(name, sleepTime, costsForPatient, costsForHospital, failureRegenerative = 0.3,
-        failureAbsolute = failureRegenerative, riskOfDeath = 0, enabledCallback = () => true) {
+        failureAbsolute = failureRegenerative, riskOfDeath = 0, enabledCallback = () => true, iconIndex) {
     this.name = name;
     this.sleepTime = sleepTime * 1000;
     this.costsForPatient = costsForPatient;
@@ -12,6 +12,7 @@ function Treatment(name, sleepTime, costsForPatient, costsForHospital, failureRe
     this.failureAbsolute = failureAbsolute;
     this.riskOfDeath = riskOfDeath;
     this.enabledCallback = enabledCallback;
+    this.iconIndex = iconIndex;
 }
 
 Treatment.prototype.setRelation = function(sickness, effect) {

@@ -24,22 +24,22 @@ function GameState() {
         treatmentsSucceeded: 0
     }
 
-    this.releaseTreatment = new Treatment('Release as cured',      0,    0,  0.0,  0.0);
+    this.releaseTreatment = new Treatment('Release as cured',      0,    0,  0.0,  0.0, 6);
     // possible treatments
     this.treatments = {
-        //                            name        sleepTime[s]   price pat|hosp  failure, risk of death
-        drugs:          new Treatment('Prescribe Drugs',     5,      100,   10,  0.0,  0.0, 0.01),
-        placeboSurgery: new Treatment('Placebo Surgery',    10,     1000,   80,  0.0,  0.0, 0),
+        //                            name        sleepTime[s]   price pat|hosp  failure, risk of death, iconIndex
+        drugs:          new Treatment('Prescribe Drugs',     5,      100,   10,  0.0,  0.0, 0.01, undefined, 0),
+        placeboSurgery: new Treatment('Placebo Surgery',    10,     1000,   80,  0.0,  0.0,    0, undefined, 1),
         // surgery:        new Treatment('Proper Surgery',     20,     1000,  500, -0.1, -0.3, 0.1),
-        organ:          new Treatment('Give Organ',         30,     5000, 1000, -0.1, -0.3, 0.12, () => this.hospital.organs > 0),
-        antibiotics:    new Treatment('Give Antibiotics',    5,      200,   40, -0.1, -0.1, 0),
-        takeOrgan:      new Treatment('Take Organ',         30,     2000,  500, -0.2, -0.4, 0.2, (p) => p.hasOrgan),
-        fixLeg:         new Treatment('Fix Fracture',       20,      800,  220, -0.1, -0.3, 0.03)
+        organ:          new Treatment('Give Organ',         30,     5000, 1000, -0.1, -0.3, 0.12, () => this.hospital.organs > 0, 2),
+        antibiotics:    new Treatment('Give Antibiotics',    5,      200,   40, -0.1, -0.1,    0, undefined, 3),
+        takeOrgan:      new Treatment('Take Organ',         30,     2000,  500, -0.2, -0.4,  0.2, (p) => p.hasOrgan, 4),
+        fixLeg:         new Treatment('Fix Fracture',       20,      800,  220, -0.1, -0.3, 0.03, undefined, 5)
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     this.receptions = [
-        new Treatment("Admit Patient", 0, 0, -20, 0, 0, 0, () => !this.allBedsOccupied()),
-        new Treatment("Send Away", 0, 0, 40, 0, 0, 0)
+        new Treatment("Admit Patient", 0, 0, -20, 0, 0, 0, () => !this.allBedsOccupied(), 6),
+        new Treatment("Send Away", 0, 0, 40, 0, 0, 0, undefined, 7)
     ];
     this.acceptReception = this.receptions[0];
     this.rejectReception = this.receptions[1];
