@@ -10,8 +10,19 @@ InstructionsStage.prototype.preload = function() {
   const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
   this.image = loader.loadImage(IMAGES_BASE_PATH + 'modal_intro.png');
+  const introButtonFrames = {
+    idle: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
+    idleSpeed: 75,
+    hovered: [6],
+    hoveredSpeed: 75,
+    armed: [7],
+    armedSpeed: 75
+  }
 
+  this.buttonImage = loader.loadImage(IMAGES_BASE_PATH + 'intro_buttons.png', 8, 1);
   this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
+  this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
+  this.introButton = new Button(this.buttonImage, introButtonFrames, function() { stageManager.activeStage.transitionOut(800); }, undefined, this.hoverSound);
 }
 
 InstructionsStage.prototype.prestart = function() {
@@ -34,6 +45,9 @@ InstructionsStage.prototype.render = function(ctx, timer) {
   const x = (w - this.image.width) / 2;
   ctx.translate(x, y);
   drawImageToScreen(ctx, this.image, 0, 0, 0, 1, 1, 0, 0);
+
+  // Button
+  this.introButton.paint(ctx, 101, 110, x, y);
 
 };
 

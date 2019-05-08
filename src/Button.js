@@ -18,7 +18,7 @@
  */
 
 function Button(image, frames, action, clickSound = null, hoverSound = null) {
-  this.image = image
+  this.image = image;
   this.frames = frames;
   this.hoverSound = hoverSound;
   this.clickSound = clickSound;
@@ -28,30 +28,38 @@ function Button(image, frames, action, clickSound = null, hoverSound = null) {
   this.armed = false;
 }
 
-Button.prototype.isHovered = function(x, y) {
+Button.prototype.isHovered = function(x, y, offsetX, offsetY) {
     return (
-        mouseHandler.mouse.canvasX >= x &&
-        mouseHandler.mouse.canvasX < (x + this.image.frameWidth) &&
-        mouseHandler.mouse.canvasY >= y &&
-        mouseHandler.mouse.canvasY < (y + this.image.frameHeight)
+        mouseHandler.mouse.canvasX >= (x + offsetX) &&
+        mouseHandler.mouse.canvasX < (x + offsetX + this.image.frameWidth) &&
+        mouseHandler.mouse.canvasY >= (y + offsetY) &&
+        mouseHandler.mouse.canvasY < (y + offsetY + this.image.frameHeight)
     );
 }
 
-Button.prototype.paint = function(ctx, x, y) {
+/**
+ * The Paint method of the button class.
+ * 
+ * Call this in the render method of the parent stage. If the stages' point of origin is not 0, 0 but translated
+ * in some way, apply offsetX and offsetY to adjust the hover calculations since mouse positions are absolute over
+ * the whole canvas
+ */
+
+Button.prototype.paint = function(ctx, x, y, offsetX = 0, offsetY = 0) {
 
     if (this.hovered && this.armed && !mouseHandler.mouse.click) {
         if (this.clickSound) this.clickSound.play();
         this.action();
         this.hovered = false;
         this.armed = false;
-      } else if (this.isHovered(x,y) && this.hovered && mouseHandler.mouse.click) {
+      } else if (this.isHovered(x,y,offsetX,offsetY) && this.hovered && mouseHandler.mouse.click) {
         this.armed = true;
         this.frame = getArrayFrame(timer.gameTime / this.frames.armedSpeed, this.frames.armed);
-      } else if (this.isHovered(x,y) && !mouseHandler.mouse.click && !this.hovered) {
+      } else if (this.isHovered(x,y,offsetX,offsetY) && !mouseHandler.mouse.click && !this.hovered) {
         this.hovered = true;
         if (this.hoverSound) this.hoverSound.play();
         this.frame = getArrayFrame(timer.gameTime / this.frames.hoveredSpeed, this.frames.hovered);
-      } else if (!this.isHovered(x,y)) {
+      } else if (!this.isHovered(x,y,offsetX,offsetY)) {
         this.hovered = false;
         this.armed = false;
         this.frame = getArrayFrame(timer.gameTime / this.frames.idleSpeed, this.frames.idle);
