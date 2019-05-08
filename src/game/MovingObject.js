@@ -142,7 +142,9 @@ MovingObject.prototype.paint = function(ctx) {
     // Mirror character depending on last movement direction
     this.directionFactor.x = this.lastMoveDelta.x !== 0 ? Math.sign(this.lastMoveDelta.x) : this.directionFactor.x;
     this.directionFactor.y = this.lastMoveDelta.y !== 0 ? Math.sign(this.lastMoveDelta.y) : this.directionFactor.y;
+    // TODO: remove frameIndexes
     const frameIndexes = this.getCharacterFrames(this.isCharacterMoving);
+    // TODO: remove velocity?!
     const velocity = this.isCharacterMoving === 0 ? this.movingVelocity : this.idleVelocity;
 
     this.paintExecution(ctx, velocity, frameIndexes);

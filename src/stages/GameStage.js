@@ -38,6 +38,9 @@ GameStage.prototype.playMusicTrack = function() {
 
 GameStage.prototype.preload = function () {
     this.mapImage = loader.loadImage("./assets/images/map.png");
+
+    this.loadAnimations();
+
     Doctor.load();
     Patient.load();
     FacilityManager.load();
@@ -49,6 +52,69 @@ GameStage.prototype.preload = function () {
     GameStage.load();
 
     this.facilityManagerDelay = 1000;
+};
+
+GameStage.prototype.loadAnimations = function() {
+
+    this.animationPlayer = new AnimationPlayer(() => {
+        return this.time;
+    }, 24);
+
+    this.animationPlayer.loadSprites("doctor-0-m", "./assets/images/doctor_m.png", 4, 3);
+    this.animationPlayer.loadSprites("doctor-0-w", "./assets/images/doctor_w.png", 4, 3);
+    for (let i=0; i <= 3; i++) {
+        this.animationPlayer.loadSprites("patient-head-" + i, "./assets/images/patient_head" + i + ".png", 4, 3);
+    }
+    this.animationPlayer.loadSprites("patient-shirt-0", "./assets/images/patient_shirt0.png", 4, 3);
+    this.animationPlayer.loadSprites("patient-leg-0", "./assets/images/patient_leg0.png", 4, 3);
+
+    let doctorFrameIndexesMoving = [0, 1, 2, 3, 2, 1];
+    let doctorFrameIndexesIdle = [1, 4, 5, 5, 5, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1, 1];
+    let doctorVariants = ["m", "w"];
+    for (let i=0; i < doctorVariants.length; i++) {
+        let v = doctorVariants[i];
+        // TODO: interpolation syntax?
+        this.animationPlayer.createAnimation("doctor-" + v + "-moving");
+        this.animationPlayer.addAnimation("doctor-" + v + "-moving", "doctor-0-" + v + "", 75, doctorFrameIndexesMoving);
+        this.animationPlayer.createAnimation("doctor-" + v + "-idle");
+        this.animationPlayer.addAnimation("doctor-" + v + "-idle", "doctor-0-" + v + "", 150, doctorFrameIndexesIdle);
+    }
+
+    let patientFrameIndexesMoving = [0, 1, 2, 3, 2, 1];
+    let patientFrameIndexesIdle25 = [1, 4, 5, 4];
+    let patientFrameIndexesIdle50 = [1, 4, 5, 5, 4, 1];
+    let patientFrameIndexesIdle100 = [1, 4, 5, 5, 5, 5, 4, 1, 1, 1];
+    let patientFrameIndexesDead = [1, 6, 6, 7, 7];
+    for (let i=0; i <= 3; i++) {
+        let animationNameMoving = "patient-" + i + "-moving";
+        let animationNameIdle25 = "patient-" + i + "-idle-25";
+        let animationNameIdle50 = "patient-" + i + "-idle-50";
+        let animationNameIdle100 = "patient-" + i + "-idle-100";
+        let animationNameDead = "patient-" + i + "-dead";
+        let spriteSetNameLeg = "patient-leg-0";
+        let spriteSetNameHead = "patient-head-" + i;
+        let spriteSetNameShirt = "patient-shirt-0";
+        this.animationPlayer.createAnimation(animationNameMoving);
+        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameLeg, 75, patientFrameIndexesMoving);
+        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameHead, 75, patientFrameIndexesMoving);
+        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameShirt, 75, patientFrameIndexesMoving);
+        this.animationPlayer.createAnimation(animationNameIdle25);
+        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameLeg, 75, patientFrameIndexesIdle25);
+        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameHead, 75, patientFrameIndexesIdle25);
+        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameShirt, 75, patientFrameIndexesIdle25);
+        this.animationPlayer.createAnimation(animationNameIdle50);
+        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameLeg, 75, patientFrameIndexesIdle50);
+        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameHead, 75, patientFrameIndexesIdle50);
+        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameShirt, 75, patientFrameIndexesIdle50);
+        this.animationPlayer.createAnimation(animationNameIdle100);
+        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameLeg, 75, patientFrameIndexesIdle100);
+        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameHead, 75, patientFrameIndexesIdle100);
+        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameShirt, 75, patientFrameIndexesIdle100);
+        this.animationPlayer.createAnimation(animationNameDead);
+        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameLeg, 75, patientFrameIndexesDead);
+        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameHead, 75, patientFrameIndexesDead);
+        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameShirt, 75, patientFrameIndexesDead);
+    }
 };
 
 GameStage.prototype.prestart = function(payload) {

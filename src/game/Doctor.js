@@ -8,43 +8,35 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
     this.sizeX = sizeX;
     this.sizeY = sizeY;
     this.movingVelocity = 3; // tiles per second TODO: reduce to 2
-    this.idleVelocity = 1;
     this.gameState = gameState;
     this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
     this.directionFactor = 1;
+    // TODO: use kind of enum
     this.characterStateIndex = 0;
-    this.characterFrameIndexes = [
-        [1, 4, 5, 5, 5, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1, 1], // idle
-        [0, 1, 2, 3, 2, 1] // moving
-    ];
-    this.lastFrameIndex = -1;
 
-    this.isMale = true;
-    this.image = Doctor.images[this.isMale ? 0 : 1];
+    this.isMale = true; // TODO: why isn't this set via constructor?
 }
 
 Doctor.load = function() {
 
     const ASSETS_BASE_PATH = './assets/';
     const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-    let sprites = [
-        'doctor_m', // 0: Male Doctor
-        'doctor_w', // 1: Female Doctor
-      ];
-    Doctor.images = sprites.map(sprite => loader.loadImage("./assets/images/" + sprite +".png", 4, 3));
     Doctor.soundWalking = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/feet-walking/feet-walking.mp3'});
 };
 
 Doctor.prototype.update = function() {
 
     this.handleKeys();
+    if (gameStage.time - this.lastMoveTime > 100) {
+        this.characterStateIndex = 0;
+    }
+    this.directionFactor = this.lastMoveDelta.x !== 0 ? Math.sign(this.lastMoveDelta.x) : this.directionFactor;
 };
 
 Doctor.prototype.assignGender = function(isMale) {
     this.isMale = isMale;
-    this.image = Doctor.images[isMale ? 0 : 1];
-}
+};
 
 Doctor.prototype.getDeltaFromKeys = function() {
 
@@ -149,26 +141,28 @@ Doctor.prototype.collidesPoint = function(target) {
 
 Doctor.prototype.paint = function(ctx) {
 
-    /*
-    let bounds = this.computeBoundingRect(this.x, this.y);
-    ctx.fillStyle= 'blue';
-    ctx.fillRect(bounds.tl.x, bounds.tl.y, (bounds.tr.x - bounds.tl.x), (bounds.bl.y - bounds.tl.y));
-    */
-    if (gameStage.time - this.lastMoveTime > 100) {
-        this.characterStateIndex = 0;
+    let animationId = this.getAnimationId();
+
+    // TODO: clarify relation between x,y and centerX, centerY
+    let status = gameStage.animationPlayer.paint(ctx, animationId, this.x, this.y,
+        0.5, 0.98, this.directionFactor < 0, false, 0);
+
+    let frameChanged = status[0].changed; // TODO: make this more robust
+    if ((this.characterStateIndex === 1) && (frameChanged)) {
         Doctor.soundWalking.stop();
-    }
-
-    this.directionFactor = this.lastMoveDelta.x !== 0 ? Math.sign(this.lastMoveDelta.x) : this.directionFactor;
-    const frames = this.characterFrameIndexes[this.characterStateIndex];
-    const frameCount = frames.length;
-    const velocity = this.characterStateIndex === 0 ? this.idleVelocity : this.movingVelocity;
-    const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-
-    if ((this.characterStateIndex === 1) && (frameIndex !== this.lastFrameIndex)) {
-        this.lastFrameIndex = frameIndex;
         Doctor.soundWalking.play();
     }
+};
 
-    drawFrame(ctx, this.image, frames[frameIndex], this.x, this.y, 0, this.directionFactor * 1/24, 1/24, 0.5, 0.98);
+Doctor.prototype.getAnimationId = function() {
+
+    // TODO: use enums
+    let gender = this.isMale ? "m" : "w";
+    if (this.characterStateIndex === 0) {
+        return "doctor-" + gender + "-idle";
+    } else if (this.characterStateIndex === 1){
+        return "doctor-" + gender + "-moving";
+    } else {
+        throw new Error("unhandled character state");
+    }
 };

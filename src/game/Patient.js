@@ -22,7 +22,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.treated = false;
     this.cured = false;
     this.wealthLevel = wealth >= 80 ? 3 : wealth >= 40 ? 2 : 1;
-    this.isRich = (this.wealthLevel == 3);
+    this.isRich = (this.wealthLevel === 3);
     this.inBed = null;
     this.targetBed = null;
     this.healthDecrease = 1.5 * sickness.deadliness * (1 + rnd(0.5) - rnd(0.3)); // per second
@@ -34,11 +34,10 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.patience = interpolate(60000, 120000, Math.random());
     this.animationOffset = rnd(9999);
     this.isHighlighted = false;
-    this.imageIndex = Patient.getImage(this.isRich);
-    this.image = Patient.images[this.imageIndex];
+    this.patientImageIndex = Patient.getPatientImageIndex(this.isRich);
     this.diagnosingUntil = 0;
     this.sleepTime = 0;
-    this.isMale = this.imageIndex === 3 ? false : true;
+    this.isMale = this.patientImageIndex !== 2;
     // Patients have takable organ initially, but not after player takes one
     this.hasOrgan = true;
     this.mood = '';
@@ -50,7 +49,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
         'cured': [8,9,10,11],
         'dead': [12,13,14,15],
         'angry': [16,17,18,19]
-    }
+    };
 
     this.baseVelocity = this.movingVelocity;
     this.movingVelocity = computeMovingVelocity(this.baseVelocity, this.health);
@@ -62,40 +61,8 @@ Patient.load = function() {
     const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
     const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
-    let sprites = [
-      'patient1', // 0: Sick Man #1
-      'patient2', // 1: Sick Man #2
-      'patient3', // 2: Sick woman #1
-      'patient4', // 3: Rich person
-    ];
-
-    Patient.images = sprites.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
     Patient.indicatorImage = loader.loadImage(IMAGES_BASE_PATH + "indicator.png");
     Patient.moodImage = loader.loadImage("./assets/images/mood.png", 4, 5);
-
-    /**
-     * Todo: Load separated sprite sets (head, shirt, legs) and put them together to create
-     * a wide variety of patient appereances.
-     **/ 
-
-    // const dynSprites = {
-    //     heads: [
-    //         'patient_head0',
-    //         'patient_head1',
-    //         'patient_head2',
-    //         'patient_head3'
-    //     ],
-    //     shirts: [
-    //         'patient_shirt0'
-    //     ],
-    //     legs: [
-    //         'patient_leg0'
-    //     ]
-    // }
-
-    // Patient.headImages  = dynSprites.heads.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
-    // Patient.shirtImages = dynSprites.shirts.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
-    // Patient.legImages   = dynSprites.legs.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
 
     Patient.soundsDying = {
         male: [
@@ -111,20 +78,20 @@ Patient.load = function() {
     }
 };
 
-Patient.lastImages = [];
-Patient.getImage = function(rich) {
+Patient.lastPatientImageIndexes = [];
+Patient.getPatientImageIndex = function(rich) {
     if (rich) { return 3; }
     // Not rich -> randomize
     let index = rndInt(0, 3);
     let count = 0;
-    while (Patient.lastImages.includes(index) && count++ < 100) {
+    while (Patient.lastPatientImageIndexes.includes(index) && count++ < 100) {
         index = rndInt(0, 3);
     }
     // Push to array
-    if (Patient.lastImages.length >= 1) {
-        Patient.lastImages.splice(0, 1);
+    if (Patient.lastPatientImageIndexes.length >= 1) {
+        Patient.lastPatientImageIndexes.splice(0, 1);
     }
-    Patient.lastImages.push(index);
+    Patient.lastPatientImageIndexes.push(index);
     return index;
 };
 
@@ -269,49 +236,56 @@ Patient.prototype.paint = function(ctx) {
 
 Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
-    const frameCount = frameIndexes.length;
-    if (frameCount === 0) {
-        return;
-    }
-
+    let animationId = this.getAnimationId(this.isCharacterMoving);
     if (!this.isDead()) {
         // determine sequential frame index using game time
         const highlight = this.isHighlighted;
-        const frameIndex = Math.floor((gameStage.time + this.animationOffset) / ((200 + this.animationOffset % 80)  / velocity)) % frameCount;
-        const angle = 0; // wobble(gameStage.time, 5 + this.animationOffset/5000, this.animationOffset, 8) * 1;
+        // TODO: re-implement animationOffset
+        //const frameIndex = Math.floor((gameStage.time + this.animationOffset) / ((200 + this.animationOffset % 80)  / velocity)) % frameCount;
         ctx.save();
         if (highlight) {
             ctx.shadowColor = '#009cff';
             ctx.shadowBlur = 1;
         }
         for (let i = 0; i < (highlight ? 8 : 1); i++) {
-            drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, angle, this.directionFactor.x * 1/24, 1/24, 0.5, 0.98);
+            gameStage.animationPlayer.paint(ctx, animationId, this.x, this.y,
+                0.5, 0.98, this.directionFactor.x < 0, false, 0);
         }
         ctx.restore();
     } else {
+        // TODO: implement animation which ends (and does not repeat)
         let dyingPercentage = (gameStage.time - this.timeOfDeath) / this.deathDuration;
         dyingPercentage = Math.min(1, dyingPercentage);
+        let frameCount = 5; // TODO
         const frameIndex = Math.floor(dyingPercentage * (frameCount  - 1));
         // hacked angle to improve dying animation without too many sprites
         let angle = Math.PI * (1/2 - 1/7) * dyingPercentage; // 1/7 comes from PI/7
         if (frameIndex > 2) {
             angle += Math.PI / 7;
         }
-        drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x - dyingPercentage * this.directionFactor.x, this.y, this.directionFactor.x * angle, this.directionFactor.x * 1/24, 1/24, 0.5, 0.98);
+        gameStage.animationPlayer.paint(ctx, animationId, this.x - dyingPercentage * this.directionFactor.x, this.y,
+            0.5, 0.98, this.directionFactor.x < 0, false, this.directionFactor.x * angle);
     }
 };
 
-Patient.prototype.getCharacterFrames = function(isMoving) {
+Patient.prototype.getAnimationId = function(isMoving) {
 
+    let animationId = "patient-" + this.patientImageIndex + "-";
     if (this.isDead()) {
-        return [1, 6, 6, 7, 7];
+        return animationId + "dead";
     } else {
         if (isMoving) {
-            return [0, 1, 2, 3, 2, 1];
+            return animationId + "moving";
         } else {
-            if (this.health < 25) return [1, 4, 5, 4];
-            if (this.health < 50) return [1, 4, 5, 5, 4, 1];
-            return [1, 4, 5, 5, 5, 5, 4, 1, 1, 1];
+            animationId += "idle-";
+            if (this.health < 25) {
+                return animationId + "25";
+            }
+            if (this.health < 50) {
+                return animationId + "50";
+            } else {
+                return animationId + "100";
+            }
         }
     }
 };

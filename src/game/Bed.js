@@ -23,7 +23,7 @@ Bed.prototype.paint = function(ctx) {
     const patient = this.occupiedBy;
     if (patient) {
         frame = 1 + Math.floor((gameStage.time + patient.animationOffset) / 1600) % 2;
-        headFrame = patient.imageIndex;
+        headFrame = patient.patientImageIndex;
         if (patient.state == PatientStates.DEAD) {
             headFrame += 4;
             frame = 4;
