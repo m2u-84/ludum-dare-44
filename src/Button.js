@@ -50,7 +50,6 @@ Button.prototype.paint = function(ctx, x, y, offsetX = 0, offsetY = 0) {
     if (this.hovered && this.armed && !mouseHandler.mouse.click) {
       if (this.clickSound) this.clickSound.play();
       this.action();
-      this.hovered = false;
       this.armed = false;
     } else if (this.isHovered(x,y,offsetX,offsetY) && this.hovered && mouseHandler.mouse.click) {
       this.armed = true;

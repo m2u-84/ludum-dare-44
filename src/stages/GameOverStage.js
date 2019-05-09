@@ -35,10 +35,11 @@ GameOverStage.prototype.preload = function() {
 
   this.buttonImage = loader.loadImage(IMAGES_BASE_PATH + 'gameover_buttons.png', 8, 2);
   this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
+  this.confirmSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/confirm.wav'});
   this.backgrounds = endings.map(ending => loader.loadImage(IMAGES_BASE_PATH + ending + '.png'));
   this.soundGameOver = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/outcomes/outcomes-gameover.mp3'});
-  this.backToMenuButton = new Button(this.buttonImage, backToMenuButtonFrames, function() { stageManager.activeStage.transitionTo("start"); }, undefined, this.hoverSound);
-  this.keepPlayingButton = new Button(this.buttonImage, keepPlayingButtonFrames, function() { stageManager.activeStage.transitionOut(800); }, undefined, this.hoverSound);
+  this.backToMenuButton = new Button(this.buttonImage, backToMenuButtonFrames, function() { stageManager.activeStage.transitionTo("start"); }, this.confirmSound, this.hoverSound);
+  this.keepPlayingButton = new Button(this.buttonImage, keepPlayingButtonFrames, function() { stageManager.activeStage.transitionOut(800); }, this.confirmSound, this.hoverSound);
 
 }
 

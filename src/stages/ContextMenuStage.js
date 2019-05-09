@@ -20,6 +20,7 @@ ContextMenuStage.prototype.preload = function() {
   this.minigameIcons = loader.loadImage(IMAGES_BASE_PATH + 'minigames.png', 9, 1);
   this.genderImage = loader.loadImage(IMAGES_BASE_PATH + 'gender.png', 3, 1);
   this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
+  this.confirmSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/confirm.wav'});
   this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
 };
 
@@ -39,7 +40,7 @@ ContextMenuStage.prototype.prestart = function(payload) {
   
   this.actionButtons = {};
   this.actions.forEach(action => {
-    this.actionButtons[action.name] = new Button(this.buttonImage, buttonframes, function() { stageManager.activeStage.executeButtonAction(action) }, undefined, this.hoverSound);
+    this.actionButtons[action.name] = new Button(this.buttonImage, buttonframes, function() { stageManager.activeStage.executeButtonAction(action) }, this.confirmSound, this.hoverSound);
   });
 };
 
