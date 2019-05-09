@@ -14,10 +14,7 @@ inherit(GameStage, Stage);
 GameStage.load = function() {
 
     GameStage.audioAmbient = loader.loadAudio({src: "./assets/audio/ambience/ambience.mp3"});
-    GameStage.audioMusic = [
-        loader.loadAudio({src: "./assets/audio/music/music-1.mp3"}),
-        loader.loadAudio({src: "./assets/audio/music/music-2.mp3"})
-    ];
+    GameStage.audioMusic = levels.map(level => loader.loadAudio({src: `./assets/audio/music/${level.bgm}`}));
 };
 
 GameStage.prototype.playAmbientMusic = function() {
@@ -37,7 +34,10 @@ GameStage.prototype.playMusicTrack = function() {
 };
 
 GameStage.prototype.preload = function () {
+
+    this.mapImages = levels.map(level => loader.loadImage(`./assets/images/levels/${level.mapImage}`))
     this.mapImage = loader.loadImage("./assets/images/map.png");
+
     Doctor.load();
     Patient.load();
     FacilityManager.load();

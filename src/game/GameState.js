@@ -1,8 +1,11 @@
 function GameState() {
     this.startTime = gameStage.time;
-    this.level = new Level();
+
+    this.level = new Level(levels[0].rawMap);
     this.hospital = new Hospital();
+
     this.doctor = new Doctor(11, 12.8, 0.5, 0.1, this);
+
     this.cars = [];
     this.facilityManager = null;
     this.closestPatientToDoctor = null;
