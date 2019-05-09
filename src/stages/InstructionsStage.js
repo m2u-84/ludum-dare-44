@@ -22,7 +22,7 @@ InstructionsStage.prototype.preload = function() {
   this.buttonImage = loader.loadImage(IMAGES_BASE_PATH + 'intro_buttons.png', 8, 1);
   this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
   this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
-  this.confirmSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/confirm.wav'});
+  this.confirmSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/confirm.mp3'});
   this.introButton = new Button(this.buttonImage, introButtonFrames, function() { stageManager.activeStage.transitionOut(800); }, this.confirmSound, this.hoverSound);
 }
 
