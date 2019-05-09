@@ -58,7 +58,7 @@ PoliceCar.prototype.stopWaitingSound = function() {
 PoliceCar.prototype.performWaitingAction = function() {
 
     if (this.gameState.registerPoliceBribery()) {
-        gameStage.cashflowFeed.addText("Lost $1000 due to police bribery");
-        this.gameState.hospital.loseRevenue(1000, this.x, this.y);
+        gameStage.cashflowFeed.addText(`Lost $${this.gameState.currentLevel.params.police.briberyAmount} due to police bribery`);
+        this.gameState.hospital.loseRevenue(this.gameState.currentLevel.params.police.briberyAmount, this.x, this.y);
     }
 };

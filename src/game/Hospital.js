@@ -1,10 +1,14 @@
-function Hospital() {
-    this.balance = 2500;
+function Hospital(gameState) {
+    this.currentLevel = gameState.currentLevel;
+    this.balance = this.currentLevel.params.hospital.startingBalance;
     this.inventory = [];
     this.lastTime = 0;
-    this.revenueDelay = 25000;
-    this.organs = 1;
+    this.revenueDelay = this.currentLevel.params.hospital.revenueDelay;
+    this.organs = this.currentLevel.params.hospital.startingOrgans;
     this.lastOrganSpent = 0;
+
+    // Get Game Over Conditions for Hospital
+    this.balanceAboveCheck = this.currentLevel.gameOver.find(item => item.type == 'balanceAbove');
 }
 
 Hospital.load = function() {
@@ -27,8 +31,9 @@ Hospital.prototype.update = function(td, time) {
         this.lastTime = time;
         this.collectRevenue();
     }
-    if (this.balance >= 10000) {
-        setTimeout(() => gameStage.gameState.setGameOver("gameover", 800, 2), 1000);
+
+    if (this.balanceAboveCheck && this.balance >= this.balanceAboveCheck.value) {
+        setTimeout(() => gameStage.gameState.setGameOver("gameover", 800, this.balanceAboveCheck.stageNum), 1000);
     }
 };
 
@@ -106,14 +111,17 @@ Hospital.prototype.draw = function(ctx) {
     drawImageToScreen(ctx, Hospital.organImage, 3, y, 0, 1, 1, 0, 0);
     if (this.organs <= 0 && gameStage.time - this.lastOrganSpent < 5000) { this.flashWarning(ctx, 3, y); }
     mainFont.drawText(ctx, "" + this.organs, 55, y + 6, "organ", 1);
+    
     // Police
-    y += offy;
-    drawImageToScreen(ctx, Hospital.policeImage, 3, y, 0, 1, 1, 0, 0);
-    if (gameStage.gameState.policyBriberyAttempts >= 2 ||
-            gameStage.time - gameStage.gameState.lastBriberyAttempt < 12000) { this.flashWarning(ctx, 3, y); }
-    for (let i = 0; i < 3; i++) {
+    if (this.currentLevel.params.police.enabled) {
+      y += offy;
+      drawImageToScreen(ctx, Hospital.policeImage, 3, y, 0, 1, 1, 0, 0);
+      if (gameStage.gameState.policyBriberyAttempts >= 2 ||
+          gameStage.time - gameStage.gameState.lastBriberyAttempt < 12000) { this.flashWarning(ctx, 3, y); }
+      for (let i = 0; i < 3; i++) {
         const alpha = (i < gameStage.gameState.policyBriberyAttempts) ? 1 : 0.2;
         drawImageToScreen(ctx, Hospital.policeStrikeImage, 23 + 11 * i, y + 4, 0, 1, 1, 0, 0, alpha);
+      }
     }
 };
 

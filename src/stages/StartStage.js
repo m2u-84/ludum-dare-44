@@ -46,7 +46,7 @@ StartStage.prototype.startGame = function(isMale) {
     gameStage.prestart({isMale: isMale});
     this.transitionOut();
   } else {
-    this.transitionTo("game", undefined, {level: 1, isMale: isMale});
+    this.transitionTo("game", undefined, {level: 2, isMale: isMale});
   }
 };
 
