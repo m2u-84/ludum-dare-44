@@ -136,7 +136,7 @@ var levels = [
           spawnTimeFactorReduction: 1.04,
           spawnIntervalRange: [15000, 25000],
           maxSpawnIntervalRange: [5000, 9000],
-          healthRange: [25, 75],
+          healthRange: [35, 85],
           patientsWithFullHealth: 1,
           wealthRange: [15, 100],
           healthDecrease: 1.5,
