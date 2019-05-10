@@ -4,7 +4,6 @@ function GameStage() {
     this.contextStage = null;
     this.floatingTexts = [];
     this.cashflowFeed = new CashflowFeed();
-    this.nextPatientSpawnTimeFactor = 1;
     this.drawFPS = true;
     this.fpsCounter = new FpsCounter(1000);
 }
@@ -14,10 +13,8 @@ inherit(GameStage, Stage);
 GameStage.load = function() {
 
     GameStage.audioAmbient = loader.loadAudio({src: "./assets/audio/ambience/ambience.mp3"});
-    GameStage.audioMusic = [
-        loader.loadAudio({src: "./assets/audio/music/music-1.mp3"}),
-        loader.loadAudio({src: "./assets/audio/music/music-2.mp3"})
-    ];
+    GameStage.audioMusic = {}
+    levels.forEach(level => { GameStage.audioMusic[level.num] = loader.loadAudio({src: `./assets/audio/music/${level.bgm}`}) });
 };
 
 GameStage.prototype.playAmbientMusic = function() {
@@ -30,14 +27,16 @@ GameStage.prototype.playAmbientMusic = function() {
 
 GameStage.prototype.playMusicTrack = function() {
 
-    const music = GameStage.audioMusic[rndInt(0, 2)];
-    GameStage.audioMusic.forEach(music => music.stop());
+    const music = GameStage.audioMusic[this.currentLevel.num];
+    Object.keys(GameStage.audioMusic).forEach(key => GameStage.audioMusic[key].stop());
     music.loop = true;
     music.play();
 };
 
 GameStage.prototype.preload = function () {
-    this.mapImage = loader.loadImage("./assets/images/map.png");
+
+    this.mapImages = {};
+    levels.forEach(level => { this.mapImages[level.num] = loader.loadImage(`./assets/images/levels/${level.mapImage}`) });
     Doctor.load();
     Patient.load();
     FacilityManager.load();
@@ -52,14 +51,29 @@ GameStage.prototype.preload = function () {
 };
 
 GameStage.prototype.prestart = function(payload) {
-  this.gameState = new GameState();
+  
+  // Find out which level to initialise. Fallback is level 1
+  this.currentLevel = levels.find(level => level.num === (payload.level || 1));
+
+  // Load map image depending on level
+  this.mapImage = this.mapImages[this.currentLevel.num];
+
+  // Start Background Music depending on level
+  this.playAmbientMusic();
+  this.playMusicTrack();
+
+  this.gameState = new GameState(this.currentLevel);
   this.gameState.init();
   this.contextStage = null;
+
   // Assign Doctor gender when coming from main menu
   if (payload) this.gameState.doctor.assignGender(payload.isMale);
-  this.nextPatientSpawnTime = gameStage.time + 3000;
-  this.nextPoliceCarSpawnTime = gameStage.time + 75000;
-  this.nextMafiaCarSpawnTime = Infinity;
+
+  this.nextPatientSpawnTimeFactor = this.currentLevel.params.patients.spawnTimeFactor;
+  this.nextPatientSpawnTime = gameStage.time + this.currentLevel.params.patients.firstSpawnTime;
+
+  this.nextPoliceCarSpawnTime = this.currentLevel.params.police.enabled ? gameStage.time + this.currentLevel.params.police.firstSpawnTime : Infinity;
+  this.nextMafiaCarSpawnTime = this.currentLevel.params.mafia.enabled ? gameStage.time + this.currentLevel.params.mafia.firstSpawnTime : Infinity;
   this.cashflowFeed.clear();
   this.floatingTexts = [];
 };
@@ -168,7 +182,7 @@ GameStage.prototype.update = function (timer) {
 
 GameStage.prototype.spawnEntities = function() {
 
-    if ((this.gameState.facilityManager === null) && (this.time > this.facilityManagerDelay)) {
+    if (this.currentLevel.params.facilityManager.enabled && (this.gameState.facilityManager === null) && (this.time > this.facilityManagerDelay)) {
         this.gameState.facilityManager = this.spawnFacilityManager();
     }
 
@@ -176,10 +190,10 @@ GameStage.prototype.spawnEntities = function() {
         this.spawnPatient();
     }
 
-    if ((this.gameState.cars.length === 0) && (this.time > this.nextPoliceCarSpawnTime)) {
+    if (this.currentLevel.params.police.enabled && (this.gameState.cars.length === 0) && (this.time > this.nextPoliceCarSpawnTime)) {
         this.spawnPoliceCar();
     }
-    if ((this.gameState.cars.length === 0) && (this.time > this.nextMafiaCarSpawnTime)) {
+    if (this.currentLevel.params.mafia.enabled && (this.gameState.cars.length === 0) && (this.time > this.nextMafiaCarSpawnTime)) {
         this.spawnMafiaCar();
     }
 };
@@ -187,10 +201,11 @@ GameStage.prototype.spawnEntities = function() {
 
 GameStage.prototype.spawnPatient = function() {
     const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
+    const patientsConfig = this.currentLevel.params.patients;
     if (spawnPoint !== null) {
 
-        const health = (this.gameState.stats.patientCount < 4) ? 100 : rndInt(35, 100),
-              wealth = rndInt(15, 100);
+        const health = (this.gameState.stats.patientCount < patientsConfig.patientsWithFullHealth) ? 100 : rndInt(patientsConfig.healthRange[0], patientsConfig.healthRange[1]),
+              wealth = rndInt(patientsConfig.wealthRange[0], patientsConfig.wealthRange[1]);
         let sickness = getRandomItem(this.gameState.sicknesses);
         if (this.gameState.stats.patientCount < this.gameState.sicknesses.length) {
             // First 7 or so patients all have different disease, so you see all the minigames if you're a good doctor
@@ -201,23 +216,17 @@ GameStage.prototype.spawnPatient = function() {
           this.gameState.patients.push(patient);
         }
     }
-    this.nextPatientSpawnTimeFactor /= 1.04;
-    const minTime = Math.max(4000, this.nextPatientSpawnTimeFactor * 13000);
-    const maxTime = Math.min(8000, this.nextPatientSpawnTimeFactor * 23000);
+    this.nextPatientSpawnTimeFactor /= patientsConfig.spawnTimeFactorReduction;
+    const minTime = Math.max(patientsConfig.maxSpawnIntervalRange[0], this.nextPatientSpawnTimeFactor * patientsConfig.spawnIntervalRange[0]);
+    const maxTime = Math.max(patientsConfig.maxSpawnIntervalRange[1], this.nextPatientSpawnTimeFactor * patientsConfig.spawnIntervalRange[1]);
     this.nextPatientSpawnTime = gameStage.time + interpolate(minTime, maxTime, Math.random());
 };
 
 GameStage.prototype.spawnFacilityManager = function() {
     const spawnPoint = this.getRandomElement(this.gameState.level.spawnPoints);
     if (spawnPoint !== null) {
-
-        // Workaround: start music here since it's most likely loaded
-        this.playAmbientMusic();
-        this.playMusicTrack();
-
         const facilityManager = new FacilityManager(spawnPoint.x, spawnPoint.y, this.gameState);
         facilityManager.nextState();
-
         return facilityManager;
     }
 };
@@ -227,8 +236,8 @@ GameStage.prototype.spawnPoliceCar = function() {
     this.nextPoliceCarSpawnTime = Infinity; // never spawn a new car until this car finishes
     const spawnPoint = this.gameState.level.spawnPointCar;
     const car = new PoliceCar(spawnPoint.x, spawnPoint.y, this.gameState, () => {
-        this.nextPoliceCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
-        this.nextMafiaCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
+        this.nextPoliceCarSpawnTime = gameStage.time + interpolate(this.currentLevel.params.police.spawnIntervalRange[0], this.currentLevel.params.police.spawnIntervalRange[1], Math.random());
+        // this.nextMafiaCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
     });
     this.gameState.cars.push(car);
     car.nextState();
@@ -240,8 +249,8 @@ GameStage.prototype.spawnMafiaCar = function() {
     this.nextMafiaCarSpawnTime = Infinity; // never spawn a new car until this car finishes
     const spawnPoint = this.gameState.level.spawnPointCar;
     const car = new MafiaCar(spawnPoint.x, spawnPoint.y, this.gameState, () => {
-        this.nextMafiaCarSpawnTime = gameStage.time + interpolate(20000, 40000, Math.random());
-        this.nextPoliceCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
+        this.nextMafiaCarSpawnTime = gameStage.time + interpolate(this.currentLevel.params.mafia.spawnIntervalRange[0], this.currentLevel.params.mafia.spawnIntervalRange[1], Math.random());
+        // this.nextPoliceCarSpawnTime = gameStage.time + interpolate(5000, 15000, Math.random());
     });
     this.gameState.cars.push(car);
     car.nextState();

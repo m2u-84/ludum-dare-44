@@ -71,11 +71,11 @@ Bed.prototype.releasePatient = function() {
 };
 
 Bed.prototype.getRevenue = function() {
-    if (this.occupiedBy) {
+    if (this.occupiedBy && !this.occupiedBy.isDead()) {
         if (this.occupiedBy.isRich) {
-            return 150;
+            return gameStage.gameState.currentLevel.params.balance.richBedRent;
         } else {
-            return 50;
+            return gameStage.gameState.currentLevel.params.balance.bedRent;
         }
     }
     return 0;

@@ -34,13 +34,13 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.isRich = (this.wealthLevel == 3);
     this.inBed = null;
     this.targetBed = null;
-    this.healthDecrease = 1.5 * sickness.deadliness * (1 + rnd(0.5) - rnd(0.3)); // per second
+    this.healthDecrease = this.gameState.currentLevel.params.patients.healthDecrease * sickness.deadliness * (1 + rnd(0.5) - rnd(0.3)); // per second
     this.healthDecrease = 0.75 * clump(this.healthDecrease, -0.3, 0.3);
     this.deathDuration = 500; // millisecs
     this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
     this.stateChangedTime = 0;
-    this.patience = interpolate(60000, 120000, Math.random());
+    this.patience = interpolate(this.gameState.currentLevel.params.patients.patienceRange[0], this.gameState.currentLevel.params.patients.patienceRange[1], Math.random());
     this.animationOffset = rnd(9999);
     this.isHighlighted = false;
     this.imageIndex = Patient.getImage(this.isRich);
@@ -150,8 +150,8 @@ Patient.prototype.update = function() {
     if ((this.state === PatientStates.WAIT_AT_RECEPTION) && (gameStage.time - this.stateChangedTime > this.patience)) {
         this.executeAction(this.gameState.receptions[1]);
     } else if ((this.state === PatientStates.STAY_IN_BED) && (this.isCured())) {
-        gameStage.cashflowFeed.addText("Release happily rewarded with $500", "gold");
-        this.gameState.hospital.giveRevenue(500, this.x, this.y);
+        gameStage.cashflowFeed.addText(`Release happily rewarded with $${this.gameState.currentLevel.params.balance.curedPatient}`, "gold");
+        this.gameState.hospital.giveRevenue(this.gameState.currentLevel.params.balance.curedPatient, this.x, this.y);
         this.executeAction(this.gameState.releaseTreatment);
         this.setMood(PatientMoods.CURED);
     } else if (this.state === PatientStates.DIAGNOSING && gameStage.time > this.diagnosingUntil) {
@@ -446,7 +446,12 @@ Patient.prototype.executeAction = function(action) {
             this.walkHome();
             this.gameState.stats.patientsRejected++;
             this.gameState.hospital.giveRevenue(this.getTreatmentPrice(this.gameState.rejectReception), this.x, this.y);
-            this.setMood(PatientMoods.ANGRY);
+            this.setMood(PatientMoods.ANGRY); 
+
+            if(this.gameState.currentLevel.gameOver.patientsRejectedEquals && this.gameState.stats.patientsRejected == this.gameState.currentLevel.gameOver.patientsRejectedEquals.value) {
+                this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.patientsRejectedEquals.stageNum);
+            }
+
             break;
         default:
             throw new Error("Invalid action for waiting patient: " + action);
@@ -456,7 +461,7 @@ Patient.prototype.executeAction = function(action) {
     case PatientStates.STAY_IN_BED: {
       switch (action) {
         case "Diagnose":
-          this.diagnosingUntil = gameStage.time + 1000 * rndInt(7, 40);
+          this.diagnosingUntil = gameStage.time + this.gameState.currentLevel.params.treatments.diagnose.baseDuration * rndInt(this.gameState.currentLevel.params.treatments.diagnose.multiplicatorRange[0], this.gameState.currentLevel.params.treatments.diagnose.multiplicatorRange[1]);
             this.setState(PatientStates.DIAGNOSING);
           break;
         case treatments.antibiotics:
@@ -475,6 +480,10 @@ Patient.prototype.executeAction = function(action) {
           this.releaseFromBed();
           this.walkHome();
           this.gameState.stats.patientsCured++;
+
+          if(this.gameState.currentLevel.gameOver.curedPatientsCountEquals && this.gameState.stats.patientsCured == this.gameState.currentLevel.gameOver.curedPatientsCountEquals.value) {
+              this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.curedPatientsCountEquals.stageNum);
+          }
           break;
         case treatments.takeOrgan:
           gameStage.transitionIn("takeOrgan", undefined, {patient: this});
@@ -561,10 +570,14 @@ Patient.prototype.die = function() {
         Patient.soundsDying[this.isMale ? 'male' : 'female'][rndInt(0, 3)].play();
 
         setTimeout(() => {
-            gameStage.cashflowFeed.addText("Lost $250 due to deceased patient");
-            this.gameState.hospital.loseRevenue(250, this.x, this.y);
+            gameStage.cashflowFeed.addText(`Lost $${this.gameState.currentLevel.params.balance.deadPatient} due to deceased patient`);
+            this.gameState.hospital.loseRevenue(this.gameState.currentLevel.params.balance.deadPatient, this.x, this.y);
         }, this.deathDuration);
         this.timeOfDeath = gameStage.time;
+        
+        if (this.gameState.currentLevel.gameOver.deathCountEquals && this.gameState.stats.patientsDied == this.gameState.currentLevel.gameOver.deathCountEquals.value) {
+            this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.deathCountEquals.stageNum);
+        }
     }
 };
 

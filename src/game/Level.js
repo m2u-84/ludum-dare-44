@@ -1,39 +1,17 @@
 
 
 // define Level class
-function Level() {
+function Level(rawMap) {
 
     // use w for wall, b for bed, r for receptionPoint, s for spawnPoint
     // cf. map_raster.png
-    let rawMap =
-          'c-sw--------------w-----\n'
-        + '---w--------------w-----\n'
-        + '---w--------------w-----\n'
-        + '---wwwwwww--wwwwwww-----\n'
-        + '---wwb-b-w--w-b-bww-----\n'
-        + '---w-b-b-wwww-b-b-w-Fww-\n'
-        + '---w--------------wwwww-\n'
-        + '---wwwwwww--wwwwwww-p---\n'
-        + '---wwb-b-w--w-b-bww-----\n'
-        + '---w-b-b-w--w-b-b-w-----\n'
-        + '---w--------------ww-www\n'
-        + '---wwww-ww--ww-wwww-----\n'
-        + '---w--w-w----w-w--w-----\n'
-        + '---w--w-wwwwww-wf-w-----\n'
-        + '---w--w--rrrr-----w-----\n'
-        + '---wwwww------wwwww-----\n'
-        + '-------www--www---------\n'
-        + '-------www--www---------\n'
-        + '-----------------------s\n'
-        + '------------------------\n'
-        + 'C-------N-M-------Q-P---',
-        x, y, collide;
+    let x, y, collide;
 
-    rawMap = rawMap.split('\n');
+    this.rawMap = rawMap.split('\n');
 
     // used for collision detection
-    this.tilemap = new Array(rawMap.length).fill(null)
-        .map(tile => new Array(rawMap[0].length).fill(null));
+    this.tilemap = new Array(this.rawMap.length).fill(null)
+        .map(tile => new Array(this.rawMap[0].length).fill(null));
     this.beds = [];
     this.spawnPoints = [];
     this.spawnPointCar = null;
@@ -47,7 +25,7 @@ function Level() {
     this.pilePoint = null;
     this.firePoint = null;
 
-    const isTopmostBedTile = function(y) {
+    const isTopmostBedTile = function(y, rawMap) {
         let count = 0,
             y0;
 
@@ -59,11 +37,11 @@ function Level() {
         return count % 2 == 0;
     };
 
-    for (y = 0; y < rawMap.length; y++) {
-        for (x = 0; x < rawMap[0].length; x++) {
+    for (y = 0; y < this.rawMap.length; y++) {
+        for (x = 0; x < this.rawMap[0].length; x++) {
             collide = false;
 
-            switch (rawMap[y][x]) {
+            switch (this.rawMap[y][x]) {
                 case '-':
                     break;
 
@@ -118,7 +96,7 @@ function Level() {
 
                 case 'b':
                     collide = true;
-                    if (isTopmostBedTile(y)) {
+                    if (isTopmostBedTile(y, this.rawMap)) {
                         this.beds.push(new Bed(x, y));
                     }
                     break;

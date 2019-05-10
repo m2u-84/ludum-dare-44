@@ -21,34 +21,13 @@ StartStage.prototype.preload = function() {
     armedSpeed: 75
   }
 
-  const menuButton2frames = {
-    idle: [9, 10, 11, 12, 13, 8, 8, 8, 8, 8, 8, 8, 8, 8],
-    idleSpeed: 75,
-    hovered: [14],
-    hoveredSpeed: 75,
-    armed: [15],
-    armedSpeed: 75
-  }
-
   // Load images here
   this.menuImage = loader.loadImage(IMAGES_BASE_PATH + 'menu.png');
-  this.menuButtons = loader.loadImage(IMAGES_BASE_PATH + 'menu_buttons.png', 8, 2);
+  this.menuButtonImage = loader.loadImage(IMAGES_BASE_PATH + 'menu_buttons.png', 8, 3);
   this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
   this.startingSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-starting/game-starting.mp3'});
-  this.menuButton1 = new Button(this.menuButtons, menuButton1frames, function() { stageManager.activeStage.startGame(true) }, undefined, this.hoverSound);
-  this.menuButton2 = new Button(this.menuButtons, menuButton2frames, function() { stageManager.activeStage.startGame(false) }, undefined, this.hoverSound);
-
+  this.menuButton = new Button(this.menuButtonImage, menuButton1frames, function() { stageManager.activeStage.transitionTo("levelSelect") }, this.startingSound, this.hoverSound);
 }
-
-StartStage.prototype.startGame = function(isMale) {
-  this.startingSound.play();
-  if (gameStage.gameState) {
-    gameStage.prestart({isMale: isMale});
-    this.transitionOut();
-  } else {
-    this.transitionTo("game", undefined, {isMale: isMale});
-  }
-};
 
 StartStage.prototype.prestart = function() {
 
@@ -64,8 +43,7 @@ StartStage.prototype.render = function(ctx, timer) {
   drawImage(ctx, this.menuImage, 0, 0, 0, 1, 1, 0, 0);
 
   // Draw Menu Buttons
-  this.menuButton1.paint(ctx, 192, 205);
-  this.menuButton2.paint(ctx, 192, 229);
+  this.menuButton.paint(ctx, 192, 230);
 
   // Credits Text
   const off = (this.time / 12) % 2600;
@@ -75,6 +53,6 @@ StartStage.prototype.render = function(ctx, timer) {
 
 StartStage.prototype.onkey = function(event) {
   if (event.key == "1" || event.key == "2") {
-    this.startGame(event.key == "1");
+    this.transitionTo("levelSelect")
   }
 }

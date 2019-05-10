@@ -1,14 +1,18 @@
-function GameState() {
+function GameState(currentLevel) {
+    this.currentLevel = currentLevel;
     this.startTime = gameStage.time;
-    this.level = new Level();
-    this.hospital = new Hospital();
-    this.doctor = new Doctor(11, 12.8, 0.5, 0.1, this);
+
+    this.level = new Level(this.currentLevel.rawMap);
+    this.hospital = new Hospital(this);
+
+    this.doctor = new Doctor(this.currentLevel.params.doctor.startingPos[0], this.currentLevel.params.doctor.startingPos[1], 0.5, 0.1, this);
+
     this.cars = [];
     this.facilityManager = null;
     this.closestPatientToDoctor = null;
     this.policyBriberyAttempts = 0;
     this.lastBriberyAttempt = -99999;
-    this.danegeld = 1000;
+    this.danegeld = this.currentLevel.params.mafia.startingDanegeld;
     this.gameOver = false;
     this.stats = {
         patientCount: 0,
@@ -38,8 +42,8 @@ function GameState() {
     };
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
     this.receptions = [
-        new Treatment("Admit Patient", 0, 0, -20, 0, 0, 0, () => !this.allBedsOccupied(), 6),
-        new Treatment("Send Away", 0, 0, 40, 0, 0, 0, undefined, 7)
+        new Treatment("Admit Patient", 0, 0, this.currentLevel.params.balance.acceptPatient, 0, 0, 0, () => !this.allBedsOccupied(), 6),
+        new Treatment("Send Away", 0, 0, this.currentLevel.params.balance.sendAwayPatient, 0, 0, 0, undefined, 7)
     ];
     this.acceptReception = this.receptions[0];
     this.rejectReception = this.receptions[1];

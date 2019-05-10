@@ -19,9 +19,12 @@ window.onload = () => {
   mouseHandler = new MouseHandler(canvas);
   mouse = mouseHandler.mouse;
   stageManager = new StageManager(canvas, timer);
+  
   gameStage = new GameStage();
+
   stageManager.add(new LoadStage())
               .add(new StartStage())
+              .add(new LevelSelectStage())
               .add(gameStage)
               .add(new InstructionsStage())
               .add(new GameOverStage())
