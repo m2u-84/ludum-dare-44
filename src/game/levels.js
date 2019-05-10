@@ -1,8 +1,6 @@
 var levels = [
   {
     num: 1,
-    label: 'Level 1',
-    description: 'Lorem Ipsum',
     mapImage: 'level1.png',
     bgm: 'music-1.mp3',
     instruction: 'modal_intro_level1.png',
@@ -88,8 +86,6 @@ var levels = [
   },
   {
       num: 2,
-      label: 'level 2',
-      description: 'Lorem Ipsum',
       mapImage: 'level2.png',
       bgm: 'music-2.mp3',
       instruction: 'modal_intro_level2.png',
