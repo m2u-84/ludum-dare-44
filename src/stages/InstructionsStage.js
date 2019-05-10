@@ -9,7 +9,9 @@ InstructionsStage.prototype.preload = function() {
   const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
   const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
-  this.image = loader.loadImage(IMAGES_BASE_PATH + 'modal_intro.png');
+  this.images = {};
+  levels.forEach(level => { this.images[level.num] = loader.loadImage(IMAGES_BASE_PATH + level.instruction) });
+
   const introButtonFrames = {
     idle: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
     idleSpeed: 75,
@@ -42,10 +44,10 @@ InstructionsStage.prototype.render = function(ctx, timer) {
 
   // Image
   ctx.globalAlpha = 1;
-  const y = (h - this.image.height) / 2 - ( (10 / p) - 10);
-  const x = (w - this.image.width) / 2;
+  const y = (h - this.images[gameStage.gameState.currentLevel.num].height) / 2 - ( (10 / p) - 10);
+  const x = (w - this.images[gameStage.gameState.currentLevel.num].width) / 2;
   ctx.translate(x, y);
-  drawImageToScreen(ctx, this.image, 0, 0, 0, 1, 1, 0, 0);
+  drawImageToScreen(ctx, this.images[gameStage.gameState.currentLevel.num], 0, 0, 0, 1, 1, 0, 0);
 
   // Button
   this.introButton.paint(ctx, 101, 110, x, y);

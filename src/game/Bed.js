@@ -71,7 +71,7 @@ Bed.prototype.releasePatient = function() {
 };
 
 Bed.prototype.getRevenue = function() {
-    if (this.occupiedBy) {
+    if (this.occupiedBy && !this.occupiedBy.isDead()) {
         if (this.occupiedBy.isRich) {
             return gameStage.gameState.currentLevel.params.balance.richBedRent;
         } else {

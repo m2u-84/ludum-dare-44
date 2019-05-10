@@ -24,6 +24,7 @@ window.onload = () => {
 
   stageManager.add(new LoadStage())
               .add(new StartStage())
+              .add(new LevelSelectStage())
               .add(gameStage)
               .add(new InstructionsStage())
               .add(new GameOverStage())
