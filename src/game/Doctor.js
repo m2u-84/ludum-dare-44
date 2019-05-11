@@ -25,15 +25,13 @@ function Doctor(x, y, sizeX, sizeY, gameState) {
 }
 
 Doctor.load = function() {
-
-    const ASSETS_BASE_PATH = './assets/';
-    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
     let sprites = [
         'doctor_m', // 0: Male Doctor
         'doctor_w', // 1: Female Doctor
-      ];
-    Doctor.images = sprites.map(sprite => loader.loadImage("./assets/images/" + sprite +".png", 4, 3));
-    Doctor.soundWalking = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/feet-walking/feet-walking.mp3'});
+    ];
+
+    Doctor.images = sprites.map(sprite => loader.loadAssetImage(sprite + '.png', 4, 3));
+    Doctor.soundWalking = loader.loadAssetAudio({src: 'sounds/feet-walking/feet-walking.mp3'});
 };
 
 Doctor.prototype.update = function() {

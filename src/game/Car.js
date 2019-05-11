@@ -19,13 +19,8 @@ function Car(x, y, gameState, driveFinishedCallback) {
 inherit(Car, MovingObject);
 
 Car.load = function() {
-
-    const ASSETS_BASE_PATH = './assets/';
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
-    Car.soundBrakes = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/police-braking/police-braking.mp3'});
-    Car.soundDriving = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/car-driving/car-driving.mp3'});
+    Car.soundBrakes = loader.loadAssetAudio({src: 'sounds/police-braking/police-braking.mp3'});
+    Car.soundDriving = loader.loadAssetAudio({src: 'sounds/car-driving/car-driving.mp3'});
     Car.soundDriving.volume = 0.3;
     Car.soundDriving.loop = true;
 };

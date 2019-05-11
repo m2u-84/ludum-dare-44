@@ -13,19 +13,15 @@ inherit(DrugStage, MinigameStage);
 DrugStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
 
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+  this.headImage = loader.loadAssetImage('pill_head.png');
+  this.pillImage = loader.loadAssetImage('pill.png');
+  this.handImage = loader.loadAssetImage('darthand_back.png');
+  this.thumbImage = loader.loadAssetImage('darthand_front.png');
 
-  this.headImage = loader.loadImage(IMAGES_BASE_PATH + 'pill_head.png');
-  this.pillImage = loader.loadImage(IMAGES_BASE_PATH + 'pill.png');
-  this.handImage = loader.loadImage(IMAGES_BASE_PATH + 'darthand_back.png');
-  this.thumbImage = loader.loadImage(IMAGES_BASE_PATH + 'darthand_front.png');
-
-  this.soundThrowing = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-whoosh.mp3'});
-  this.soundBumping = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-bump.mp3'});
-  this.soundGulping = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/drug-throwing/drug-throwing-gulp.mp3'});
-  this.soundGroaning = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/patient-groan/patient-groan.mp3'});
+  this.soundThrowing = loader.loadAssetAudio({src: 'sounds/drug-throwing/drug-throwing-whoosh.mp3'});
+  this.soundBumping = loader.loadAssetAudio({src: 'sounds/drug-throwing/drug-throwing-bump.mp3'});
+  this.soundGulping = loader.loadAssetAudio({src: 'sounds/drug-throwing/drug-throwing-gulp.mp3'});
+  this.soundGroaning = loader.loadAssetAudio({src: 'sounds/patient-groan/patient-groan.mp3'});
 };
 
 DrugStage.prototype.prestart = function(payload) {

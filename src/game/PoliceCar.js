@@ -7,14 +7,8 @@ function PoliceCar(x, y, gameState, driveFinishedCallback) {
 inherit(PoliceCar, Car);
 
 PoliceCar.load = function() {
-
-    const ASSETS_BASE_PATH = './assets/';
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
-    PoliceCar.image = loader.loadImage(IMAGES_BASE_PATH + 'police_car.png', 4, 2);
-    PoliceCar.soundSiren = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/police-siren/police-siren.mp3'});
-    // PoliceCar.soundSiren.loop = true;
+    PoliceCar.image = loader.loadAssetImage('police_car.png', 4, 2);
+    PoliceCar.soundSiren = loader.loadAssetAudio({src: 'sounds/police-siren/police-siren.mp3'});
 };
 
 PoliceCar.prototype.update = function() {

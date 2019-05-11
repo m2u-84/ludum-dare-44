@@ -9,16 +9,11 @@ function Hospital(gameState) {
 }
 
 Hospital.load = function() {
-    const ASSETS_BASE_PATH = './assets/';
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+    Hospital.policeStrikeImage = loader.loadAssetImage('hud_strike.png');
+    Hospital.hudFrames = loader.loadAssetImage('hud.png', 1, 7);
 
-
-    Hospital.policeStrikeImage = loader.loadImage(IMAGES_BASE_PATH + 'hud_strike.png');
-    Hospital.hudFrames = loader.loadImage(IMAGES_BASE_PATH + 'hud.png', 1, 7);
-
-    Hospital.soundGainMoney = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/money-handling/money-gain.mp3'});
-    Hospital.soundLoseMoney = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/money-handling/money-loss.mp3'});
+    Hospital.soundGainMoney = loader.loadAssetAudio({src: 'sounds/money-handling/money-gain.mp3'});
+    Hospital.soundLoseMoney = loader.loadAssetAudio({src: 'sounds/money-handling/money-loss.mp3'});
 }
 
 Hospital.prototype.update = function(td, time) {
@@ -109,7 +104,7 @@ Hospital.prototype.draw = function(ctx) {
     drawFrame(ctx, Hospital.hudFrames, 2, 3, y, 0, 1, 1, 0, 0);
     if (this.organs <= 0 && gameStage.time - this.lastOrganSpent < 5000) { this.flashWarning(ctx, 3, y); }
     mainFont.drawText(ctx, "" + this.organs, 55, y + 6, "organ", 1);
-    
+
     // Police
     if (this.currentLevel.params.police.enabled) {
       y += offy;

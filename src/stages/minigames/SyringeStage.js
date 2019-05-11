@@ -8,17 +8,13 @@ inherit(SyringeStage, MinigameStage);
 SyringeStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
 
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+  this.syringe = loader.loadAssetImage('syringe.png');
+  this.arrow = loader.loadAssetImage('arrow.png');
+  this.arm = loader.loadAssetImage('arm.png');
+  this.hand = loader.loadAssetImage('darthand_back.png');
+  this.thumb = loader.loadAssetImage('darthand_front.png');
 
-  this.syringe = loader.loadImage(IMAGES_BASE_PATH + 'syringe.png');
-  this.arrow = loader.loadImage(IMAGES_BASE_PATH + 'arrow.png');
-  this.arm = loader.loadImage(IMAGES_BASE_PATH + 'arm.png');
-  this.hand = loader.loadImage(IMAGES_BASE_PATH + 'darthand_back.png');
-  this.thumb = loader.loadImage(IMAGES_BASE_PATH + 'darthand_front.png');
-
-  this.soundDarting = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/syringe-darting/syringe-darting.mp3'});
+  this.soundDarting = loader.loadAssetAudio({src: 'sounds/syringe-darting/syringe-darting.mp3'});
 };
 
 SyringeStage.prototype.prestart = function(payload) {

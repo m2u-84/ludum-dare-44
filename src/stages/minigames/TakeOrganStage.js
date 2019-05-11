@@ -10,17 +10,13 @@ inherit(TakeOrganStage, MinigameStage);
 TakeOrganStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
 
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+  this.organ = loader.loadAssetImage('organ.png');
+  this.hookImage = loader.loadAssetImage('grabmachine.png', 2, 1);
+  this.openHand = loader.loadAssetImage('organ_hand_back_open.png');
+  this.bodyBack = loader.loadAssetImage('organ_body_back.png');
+  this.bodyFront = loader.loadAssetImage('organ_body_front.png');
 
-  this.organ = loader.loadImage(IMAGES_BASE_PATH + 'organ.png');
-  this.hookImage = loader.loadImage(IMAGES_BASE_PATH + 'grabmachine.png', 2, 1);
-  this.openHand = loader.loadImage(IMAGES_BASE_PATH + 'organ_hand_back_open.png');
-  this.bodyBack = loader.loadImage(IMAGES_BASE_PATH + 'organ_body_back.png');
-  this.bodyFront = loader.loadImage(IMAGES_BASE_PATH + 'organ_body_front.png');
-
-  this.soundPicking = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/picker-moving/picker-moving.mp3'});
+  this.soundPicking = loader.loadAssetAudio({src: 'sounds/picker-moving/picker-moving.mp3'});
 };
 
 TakeOrganStage.prototype.prestart = function(payload) {

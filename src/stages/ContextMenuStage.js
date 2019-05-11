@@ -7,21 +7,18 @@ function ContextMenuStage() {
 inherit(ContextMenuStage, Stage);
 
 ContextMenuStage.prototype.preload = function() {
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+    this.background = loader.loadAssetImage('patientsheet.png');
+    this.postIt = loader.loadAssetImage('postit.png');
+    this.dollar = loader.loadAssetImage('dollar.png', 6, 1);
+    this.buttonImage = loader.loadAssetImage('treatment_button.png', 1, 10);
+    this.dollarAnimation = [0, 0, 0, 0, 0, 0, 1, 2, 3, 4];
+    this.keyImage = loader.loadAssetImage('keys.png', 9, 1);
+    this.minigameIcons = loader.loadAssetImage('minigames.png', 9, 1);
+    this.genderImage = loader.loadAssetImage('gender.png', 3, 1);
 
-  this.background = loader.loadImage(IMAGES_BASE_PATH + 'patientsheet.png');
-  this.postIt = loader.loadImage(IMAGES_BASE_PATH + 'postit.png');
-  this.dollar = loader.loadImage(IMAGES_BASE_PATH + 'dollar.png', 6, 1);
-  this.buttonImage = loader.loadImage(IMAGES_BASE_PATH + 'treatment_button.png', 1, 10);
-  this.dollarAnimation = [0, 0, 0, 0, 0, 0, 1, 2, 3, 4];
-  this.keyImage = loader.loadImage(IMAGES_BASE_PATH + 'keys.png', 9, 1);
-  this.minigameIcons = loader.loadImage(IMAGES_BASE_PATH + 'minigames.png', 9, 1);
-  this.genderImage = loader.loadImage(IMAGES_BASE_PATH + 'gender.png', 3, 1);
-  this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
-  this.confirmSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/confirm.mp3'});
-  this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
+    this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
+    this.confirmSound = loader.loadAssetAudio({src: 'sounds/key-clicking/confirm.mp3'});
+    this.soundSliding = loader.loadAssetAudio({src: 'sounds/paper-sliding/paper-sliding.mp3'});
 };
 
 ContextMenuStage.prototype.prestart = function(payload) {
@@ -37,7 +34,7 @@ ContextMenuStage.prototype.prestart = function(payload) {
     armed: [9],
     armedSpeed: 75
   }
-  
+
   this.actionButtons = {};
   this.actions.forEach(action => {
     this.actionButtons[action.name] = new Button(this.buttonImage, buttonframes, function() { stageManager.activeStage.executeButtonAction(action) }, this.confirmSound, this.hoverSound);
@@ -69,7 +66,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
   const x = w - this.background.width * p;
   ctx.translate(x, y);
   drawImageToScreen(ctx, this.background, 0, 0, 0, 1, 1, 0, 0);
-  
+
   // Draw Wealth Postit
   drawImageToScreen(ctx, this.postIt, -42, 7, 0, 1, 1, 0, 0);
   const frame = getArrayFrame(timer.gameTime / 100, this.dollarAnimation);
@@ -132,7 +129,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
       const priceString = (price >= 0 ? "+ $ " : "- $ ") + Math.abs(price);
       mainFont.drawText(ctx, priceString, 260, y, priceColor, 1);
     }
-    
+
     // Draw Action Button
     if (isEnabled)
       self.actionButtons[nameOrTreatment.name].paint(ctx, 0, (y - 5), translateX, translateY)

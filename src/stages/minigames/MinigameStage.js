@@ -19,16 +19,12 @@ function MinigameStage(name) {
 inherit(MinigameStage, Stage);
 
 MinigameStage.prototype.preload = function() {
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+  this.background = loader.loadAssetImage('minigames_background.png');
+  this.successIcon = loader.loadAssetImage('tick.png');
+  this.failIcon = loader.loadAssetImage('cross.png');
 
-  this.background = loader.loadImage(IMAGES_BASE_PATH + 'minigames_background.png');
-  this.successIcon = loader.loadImage(IMAGES_BASE_PATH + 'tick.png');
-  this.failIcon = loader.loadImage(IMAGES_BASE_PATH + 'cross.png');
-
-  this.soundSuccess = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/outcomes/outcomes-success.mp3'});
-  this.soundFailure = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/outcomes/outcomes-failure.mp3'});
+  this.soundSuccess = loader.loadAssetAudio({src: 'sounds/outcomes/outcomes-success.mp3'});
+  this.soundFailure = loader.loadAssetAudio({src: 'sounds/outcomes/outcomes-failure.mp3'});
 };
 
 MinigameStage.prototype.prestart = function(payload) {

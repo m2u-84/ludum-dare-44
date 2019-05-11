@@ -8,19 +8,15 @@ inherit(FractureStage, MinigameStage);
 FractureStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
 
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
+  this.upperLeg = loader.loadAssetImage('hammer_leg_back.png');
+  this.lowerLeg = loader.loadAssetImage('hammer_leg_front.png');
+  this.nailImage = loader.loadAssetImage('hammer_nail.png');
+  this.hammerImage = loader.loadAssetImage('hammer_hand.png');
+  this.curtainImage = loader.loadAssetImage('curtain.png');
 
-  this.upperLeg = loader.loadImage(IMAGES_BASE_PATH + 'hammer_leg_back.png');
-  this.lowerLeg = loader.loadImage(IMAGES_BASE_PATH + 'hammer_leg_front.png');
-  this.nailImage = loader.loadImage(IMAGES_BASE_PATH + 'hammer_nail.png');
-  this.hammerImage = loader.loadImage(IMAGES_BASE_PATH + 'hammer_hand.png');
-  this.curtainImage = loader.loadImage(IMAGES_BASE_PATH + 'curtain.png');
-
-  this.soundWhoosh = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/hammer-hitting/hammer-hitting-whoosh.mp3'});
-  this.soundNail = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/hammer-hitting/hammer-hitting-nail.mp3'});
-  this.soundKnee = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/hammer-hitting/hammer-hitting-knee.mp3'});
+  this.soundWhoosh = loader.loadAssetAudio({src: 'sounds/hammer-hitting/hammer-hitting-whoosh.mp3'});
+  this.soundNail = loader.loadAssetAudio({src: 'sounds/hammer-hitting/hammer-hitting-nail.mp3'});
+  this.soundKnee = loader.loadAssetAudio({src: 'sounds/hammer-hitting/hammer-hitting-knee.mp3'});
 };
 
 FractureStage.prototype.prestart = function(payload) {
@@ -29,7 +25,7 @@ FractureStage.prototype.prestart = function(payload) {
   // Reset minigame logics here
   this.legAngle = 0;
   this.maxLegAngle = 20 * Math.PI / 180;
-  if (this.patient.sickness.name == "Bone Fracture") {
+  if (this.patient.sickness.name == 'Bone Fracture') {
     this.legAngle = rnd(28, 50) * Math.PI / 180 * rndSgn();
     this.maxLegAngle = Math.abs(this.legAngle);
   }

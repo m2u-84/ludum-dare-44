@@ -19,16 +19,11 @@ function FacilityManager(x, y, gameState) {
 inherit(FacilityManager, MovingObject);
 
 FacilityManager.load = function() {
+    FacilityManager.imageFire = loader.loadAssetImage('dumpsterfire.png', 4, 1);
+    FacilityManager.image = loader.loadAssetImage('facility_manager.png', 4, 3);
 
-    const ASSETS_BASE_PATH = './assets/'
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/'
-    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/'
-
-    FacilityManager.imageFire = loader.loadImage(IMAGES_BASE_PATH + 'dumpsterfire.png', 4, 1);
-    FacilityManager.image = loader.loadImage(IMAGES_BASE_PATH + 'facility_manager.png', 4, 3);
-
-    FacilityManager.soundContainerDump = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/container-dump/container-dump.mp3'});
-    FacilityManager.soundBurn = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/burning/burning.mp3'});
+    FacilityManager.soundContainerDump = loader.loadAssetAudio({src: 'sounds/container-dump/container-dump.mp3'});
+    FacilityManager.soundBurn = loader.loadAssetAudio({src: 'sounds/burning/burning.mp3'});
 };
 
 FacilityManager.prototype.update = function() {

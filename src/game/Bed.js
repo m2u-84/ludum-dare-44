@@ -6,11 +6,11 @@ function Bed(x, y) {
 }
 
 Bed.load = function() {
-    Bed.image = loader.loadImage("./assets/images/bed.png", 4, 2);
-    Bed.headImage = loader.loadImage("./assets/images/bed_patients.png", 4, 3);
-    Bed.busyImage = loader.loadImage("./assets/images/busy.png", 6, 1);
+    Bed.image = loader.loadAssetImage('bed.png', 4, 2);
+    Bed.headImage = loader.loadAssetImage('bed_patients.png', 4, 3);
+    Bed.busyImage = loader.loadAssetImage('busy.png', 6, 1);
     Bed.busyFrames = [0, 0, 0, 1, 1, 2, 2, 3, 4, 5];
-    Bed.sleepImage = loader.loadImage("./assets/images/sleeping.png", 4, 1);
+    Bed.sleepImage = loader.loadAssetImage('sleeping.png', 4, 1);
     Bed.sleepFrames = [0, 1, 2, 3, 2, 1];
 };
 

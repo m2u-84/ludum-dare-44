@@ -8,10 +8,6 @@ function StartStage() {
 inherit(StartStage, Stage);
 
 StartStage.prototype.preload = function() {
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
   const menuButton1frames = {
     idle: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
     idleSpeed: 75,
@@ -22,11 +18,11 @@ StartStage.prototype.preload = function() {
   }
 
   // Load images here
-  this.menuImage = loader.loadImage(IMAGES_BASE_PATH + 'menu.png');
-  this.menuButtonImage = loader.loadImage(IMAGES_BASE_PATH + 'menu_buttons.png', 8, 3);
-  this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
-  this.startingSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-starting/game-starting.mp3'});
-  this.menuButton = new Button(this.menuButtonImage, menuButton1frames, function() { stageManager.activeStage.transitionTo("levelSelect") }, this.startingSound, this.hoverSound);
+  this.menuImage = loader.loadAssetImage('menu.png');
+  this.menuButtonImage = loader.loadAssetImage('menu_buttons.png', 8, 3);
+  this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
+  this.startingSound = loader.loadAssetAudio({src: 'sounds/game-starting/game-starting.mp3'});
+  this.menuButton = new Button(this.menuButtonImage, menuButton1frames, function() { stageManager.activeStage.transitionTo('levelSelect') }, this.startingSound, this.hoverSound);
 }
 
 StartStage.prototype.prestart = function() {
@@ -47,7 +43,7 @@ StartStage.prototype.render = function(ctx, timer) {
 
   // Credits Text
   const off = (this.time / 12) % 2600;
-  const cx = Math.round(w + 100 - off); 
+  const cx = Math.round(w + 100 - off);
   mainFont.drawText(ctx, this.creditsText, cx, h - 20, "gray", 0);
 };
 

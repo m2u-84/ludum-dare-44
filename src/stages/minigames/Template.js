@@ -8,7 +8,7 @@ inherit(TemplateStage, MinigameStage);
 TemplateStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
   // load graphics here
-  // this.image = loader.loadImage("assets/images/...");
+  // this.image = loader.loadAssetImage('…');
 };
 
 TemplateStage.prototype.prestart = function(payload) {

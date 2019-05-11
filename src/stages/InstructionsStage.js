@@ -1,16 +1,15 @@
 
 function InstructionsStage() {
-  Stage.call(this, "instructions", 8);
+  Stage.call(this, 'instructions', 8);
 }
 inherit(InstructionsStage, Stage);
 
 InstructionsStage.prototype.preload = function() {
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
   this.images = {};
-  levels.forEach(level => { this.images[level.num] = loader.loadImage(IMAGES_BASE_PATH + level.instruction) });
+
+  levels.forEach(level => {
+    this.images[level.num] = loader.loadAssetImage(level.instruction)
+  });
 
   const introButtonFrames = {
     idle: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
@@ -21,10 +20,10 @@ InstructionsStage.prototype.preload = function() {
     armedSpeed: 75
   }
 
-  this.buttonImage = loader.loadImage(IMAGES_BASE_PATH + 'intro_buttons.png', 8, 1);
-  this.soundSliding = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/paper-sliding/paper-sliding.mp3'});
-  this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
-  this.confirmSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/confirm.mp3'});
+  this.buttonImage = loader.loadAssetImage('intro_buttons.png', 8, 1);
+  this.soundSliding = loader.loadAssetAudio({src: 'sounds/paper-sliding/paper-sliding.mp3'});
+  this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
+  this.confirmSound = loader.loadAssetAudio({src: 'sounds/key-clicking/confirm.mp3'});
   this.introButton = new Button(this.buttonImage, introButtonFrames, function() { stageManager.activeStage.transitionOut(800); }, this.confirmSound, this.hoverSound);
 }
 
@@ -39,7 +38,7 @@ InstructionsStage.prototype.render = function(ctx, timer) {
 
   // Black background
   ctx.globalAlpha = 0.5 * p;
-  ctx.fillStyle = "black";
+  ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, w, h);
 
   // Image

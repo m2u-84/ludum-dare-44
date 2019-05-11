@@ -5,11 +5,7 @@ function GameOverStage() {
 inherit(GameOverStage, Stage);
 
 GameOverStage.prototype.preload = function() {
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
-  let endings = [
+  const endings = [
     'modal_gameover_1', // 0: Mafia Ending
     'modal_gameover_2', // 1: Police Ending
     'modal_gameover_3', // 2: Money Ending
@@ -33,11 +29,11 @@ GameOverStage.prototype.preload = function() {
     armedSpeed: 75
   }
 
-  this.buttonImage = loader.loadImage(IMAGES_BASE_PATH + 'gameover_buttons.png', 8, 2);
-  this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
-  this.confirmSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/confirm.mp3'});
-  this.backgrounds = endings.map(ending => loader.loadImage(IMAGES_BASE_PATH + ending + '.png'));
-  this.soundGameOver = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/outcomes/outcomes-gameover.mp3'});
+  this.buttonImage = loader.loadAssetImage('gameover_buttons.png', 8, 2);
+  this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
+  this.confirmSound = loader.loadAssetAudio({src: 'sounds/key-clicking/confirm.mp3'});
+  this.backgrounds = endings.map(ending => loader.loadAssetImage(ending + '.png'));
+  this.soundGameOver = loader.loadAssetAudio({src: 'sounds/outcomes/outcomes-gameover.mp3'});
   this.backToMenuButton = new Button(this.buttonImage, backToMenuButtonFrames, function() { stageManager.activeStage.transitionTo("levelSelect"); }, this.confirmSound, this.hoverSound);
   this.keepPlayingButton = new Button(this.buttonImage, keepPlayingButtonFrames, function() { stageManager.activeStage.transitionOut(800); }, this.confirmSound, this.hoverSound);
 

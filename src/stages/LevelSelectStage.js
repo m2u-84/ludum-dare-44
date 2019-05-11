@@ -5,15 +5,11 @@ function LevelSelectStage() {
 inherit(LevelSelectStage, Stage);
 
 LevelSelectStage.prototype.preload = function() {
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
   // Load images here
-  this.bgImage = loader.loadImage(IMAGES_BASE_PATH + 'level_select_stage.png');
-  this.levelSelectButtonImage = loader.loadImage(IMAGES_BASE_PATH + 'level_select_button.png', 4, 2);
-  this.hoverSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/key-clicking/key-clicking.mp3'});
-  this.startingSound = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/game-starting/game-starting.mp3'});
+  this.bgImage = loader.loadAssetImage('level_select_stage.png');
+  this.levelSelectButtonImage = loader.loadAssetImage('level_select_button.png', 4, 2);
+  this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
+  this.startingSound = loader.loadAssetAudio({src: 'sounds/game-starting/game-starting.mp3'});
 
   const levelButtonFrames = {
     idle: [0, 1, 2, 3, 2, 1],

@@ -11,10 +11,12 @@ function GameStage() {
 inherit(GameStage, Stage);
 
 GameStage.load = function() {
-
-    GameStage.audioAmbient = loader.loadAudio({src: "./assets/audio/ambience/ambience.mp3"});
+    GameStage.audioAmbient = loader.loadAssetAudio({src: 'ambience/ambience.mp3'});
     GameStage.audioMusic = {}
-    levels.forEach(level => { GameStage.audioMusic[level.num] = loader.loadAudio({src: `./assets/audio/music/${level.bgm}`}) });
+
+    levels.forEach(level => {
+        GameStage.audioMusic[level.num] = loader.loadAssetAudio({src: `music/${level.bgm}`})
+    });
 };
 
 GameStage.prototype.playAmbientMusic = function() {
@@ -34,9 +36,12 @@ GameStage.prototype.playMusicTrack = function() {
 };
 
 GameStage.prototype.preload = function () {
-
     this.mapImages = {};
-    levels.forEach(level => { this.mapImages[level.num] = loader.loadImage(`./assets/images/levels/${level.mapImage}`) });
+
+    levels.forEach(level => {
+        this.mapImages[level.num] = loader.loadAssetImage(`levels/${level.mapImage}`)
+    });
+
     Doctor.load();
     Patient.load();
     FacilityManager.load();
@@ -51,7 +56,7 @@ GameStage.prototype.preload = function () {
 };
 
 GameStage.prototype.prestart = function(payload) {
-  
+
   // Find out which level to initialise. Fallback is level 1
   this.currentLevel = levels.find(level => level.num === (payload.level || 1));
 

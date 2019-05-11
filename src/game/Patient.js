@@ -67,10 +67,6 @@ function Patient(x, y, health, wealth, sickness, gameState) {
 inherit(Patient, MovingObject);
 
 Patient.load = function() {
-    const ASSETS_BASE_PATH = './assets/';
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
     let sprites = [
       'patient1', // 0: Sick Man #1
       'patient2', // 1: Sick Man #2
@@ -78,16 +74,16 @@ Patient.load = function() {
       'patient4', // 3: Rich person
     ];
 
-    Patient.images = sprites.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
-    Patient.indicatorImage = loader.loadImage(IMAGES_BASE_PATH + "indicator.png");
-    Patient.moodImage = loader.loadImage("./assets/images/mood.png", 4, 5);
-    Patient.exclamationImage = loader.loadImage("./assets/images/attention.png", 5, 1);
+    Patient.images = sprites.map(sprite => loader.loadAssetImage(sprite + '.png', 4, 3));
+    Patient.indicatorImage = loader.loadAssetImage('indicator.png');
+    Patient.moodImage = loader.loadAssetImage('mood.png', 4, 5);
+    Patient.exclamationImage = loader.loadAssetImage('attention.png', 5, 1);
     Patient.exclamationFrames = [0, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 3, 3, 3, 2, 2, 1];
 
     /**
      * Todo: Load separated sprite sets (head, shirt, legs) and put them together to create
      * a wide variety of patient appereances.
-     **/ 
+     **/
 
     // const dynSprites = {
     //     heads: [
@@ -104,20 +100,20 @@ Patient.load = function() {
     //     ]
     // }
 
-    // Patient.headImages  = dynSprites.heads.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
-    // Patient.shirtImages = dynSprites.shirts.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
-    // Patient.legImages   = dynSprites.legs.map(sprite => loader.loadImage(IMAGES_BASE_PATH + sprite + '.png', 4, 3));
+    // Patient.headImages  = dynSprites.heads.map(sprite => loader.loadAssetImage(sprite + '.png', 4, 3));
+    // Patient.shirtImages = dynSprites.shirts.map(sprite => loader.loadAssetImage(sprite + '.png', 4, 3));
+    // Patient.legImages   = dynSprites.legs.map(sprite => loader.loadAssetImage(sprite + '.png', 4, 3));
 
     Patient.soundsDying = {
         male: [
-            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-1.mp3'}),
-            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-2.mp3'}),
-            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-male-3.mp3'})
+            loader.loadAssetAudio({src: 'sounds/dying/dying-male-1.mp3'}),
+            loader.loadAssetAudio({src: 'sounds/dying/dying-male-2.mp3'}),
+            loader.loadAssetAudio({src: 'sounds/dying/dying-male-3.mp3'})
         ],
         female: [
-            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-1.mp3'}),
-            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-2.mp3'}),
-            loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/dying/dying-female-3.mp3'})
+            loader.loadAssetAudio({src: 'sounds/dying/dying-female-1.mp3'}),
+            loader.loadAssetAudio({src: 'sounds/dying/dying-female-2.mp3'}),
+            loader.loadAssetAudio({src: 'sounds/dying/dying-female-3.mp3'})
         ]
     }
 };
@@ -376,7 +372,7 @@ Patient.prototype.paintAttachedUI = function(ctx) {
 
             /**
              * Health bar
-             **/ 
+             **/
             const halfWidth = 6 / 24;
             const height = 2 / 24;
             // Health bar background
@@ -446,7 +442,7 @@ Patient.prototype.executeAction = function(action) {
             this.walkHome();
             this.gameState.stats.patientsRejected++;
             this.gameState.hospital.giveRevenue(this.getTreatmentPrice(this.gameState.rejectReception), this.x, this.y);
-            this.setMood(PatientMoods.ANGRY); 
+            this.setMood(PatientMoods.ANGRY);
 
             if(this.gameState.currentLevel.gameOver.patientsRejectedEquals && this.gameState.stats.patientsRejected == this.gameState.currentLevel.gameOver.patientsRejectedEquals.value) {
                 this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.patientsRejectedEquals.stageNum);
@@ -574,7 +570,7 @@ Patient.prototype.die = function() {
             this.gameState.hospital.loseRevenue(this.gameState.currentLevel.params.balance.deadPatient, this.x, this.y);
         }, this.deathDuration);
         this.timeOfDeath = gameStage.time;
-        
+
         if (this.gameState.currentLevel.gameOver.deathCountEquals && this.gameState.stats.patientsDied == this.gameState.currentLevel.gameOver.deathCountEquals.value) {
             this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.deathCountEquals.stageNum);
         }

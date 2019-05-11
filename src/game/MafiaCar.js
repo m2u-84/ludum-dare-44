@@ -8,14 +8,8 @@ function MafiaCar(x, y, gameState, driveFinishedCallback) {
 inherit(MafiaCar, Car);
 
 MafiaCar.load = function() {
-
-    const ASSETS_BASE_PATH = './assets/';
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
-    MafiaCar.image = loader.loadImage(IMAGES_BASE_PATH + 'mafia_car.png', 4, 2);
-    MafiaCar.soundMafia = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/mafia-robbing/mafia-robbing.mp3'});
-    // MafiaCar.soundMafia.loop = true;
+    MafiaCar.image = loader.loadAssetImage('mafia_car.png', 4, 2);
+    MafiaCar.soundMafia = loader.loadAssetAudio({src: 'sounds/mafia-robbing/mafia-robbing.mp3'});
 };
 
 MafiaCar.prototype.getCarImage = function() {

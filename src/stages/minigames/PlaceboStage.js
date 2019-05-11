@@ -21,18 +21,14 @@ inherit(PlaceboStage, MinigameStage);
 PlaceboStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
 
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
-  this.patientImage = loader.loadImage(IMAGES_BASE_PATH + 'patient_head.png');
-  this.paddleImage = loader.loadImage(IMAGES_BASE_PATH + 'tabletennis_hand.png');
-  this.ballImage = loader.loadImage(IMAGES_BASE_PATH + 'tabletennis_ball.png');
+  this.patientImage = loader.loadAssetImage('patient_head.png');
+  this.paddleImage = loader.loadAssetImage('tabletennis_hand.png');
+  this.ballImage = loader.loadAssetImage('tabletennis_ball.png');
 
   this.soundsBounce = [
-    loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/pingpong-volley/pingpong-volley-1.mp3'}),
-    loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/pingpong-volley/pingpong-volley-2.mp3'}),
-    loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/pingpong-volley/pingpong-volley-3.mp3'})
+    loader.loadAssetAudio({src: 'sounds/pingpong-volley/pingpong-volley-1.mp3'}),
+    loader.loadAssetAudio({src: 'sounds/pingpong-volley/pingpong-volley-2.mp3'}),
+    loader.loadAssetAudio({src: 'sounds/pingpong-volley/pingpong-volley-3.mp3'})
   ];
 };
 

@@ -8,21 +8,17 @@ inherit(OrganStage, MinigameStage);
 OrganStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
 
-  const ASSETS_BASE_PATH = './assets/';
-  const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
-  const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
-
-  this.organ = loader.loadImage(IMAGES_BASE_PATH + 'organ.png');
-  this.hand = loader.loadImage(IMAGES_BASE_PATH + 'organ_hand_back.png');
-  this.thumb = loader.loadImage(IMAGES_BASE_PATH + 'organ_hand_front.png');
-  this.dropHand = loader.loadImage(IMAGES_BASE_PATH + 'organ_hand_back_open.png');
-  this.bodyBack = loader.loadImage(IMAGES_BASE_PATH + 'organ_body_back.png');
-  this.bodyFront = loader.loadImage(IMAGES_BASE_PATH + 'organ_body_front.png');
+  this.organ = loader.loadAssetImage('organ.png');
+  this.hand = loader.loadAssetImage('organ_hand_back.png');
+  this.thumb = loader.loadAssetImage('organ_hand_front.png');
+  this.dropHand = loader.loadAssetImage('organ_hand_back_open.png');
+  this.bodyBack = loader.loadAssetImage('organ_body_back.png');
+  this.bodyFront = loader.loadAssetImage('organ_body_front.png');
 
   this.soundsBounce = [
-    loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/organ-bounce/organ-bounce-1.mp3'}),
-    loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/organ-bounce/organ-bounce-2.mp3'}),
-    loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/organ-bounce/organ-bounce-3.mp3'})
+    loader.loadAssetAudio({src: 'sounds/organ-bounce/organ-bounce-1.mp3'}),
+    loader.loadAssetAudio({src: 'sounds/organ-bounce/organ-bounce-2.mp3'}),
+    loader.loadAssetAudio({src: 'sounds/organ-bounce/organ-bounce-3.mp3'})
   ];
 };
 
