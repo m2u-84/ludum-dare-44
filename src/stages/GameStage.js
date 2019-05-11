@@ -75,9 +75,9 @@ GameStage.prototype.loadAnimations = function() {
         let v = doctorVariants[i];
         // TODO: interpolation syntax?
         this.animationPlayer.createAnimation("doctor-" + v + "-moving");
-        this.animationPlayer.addAnimation("doctor-" + v + "-moving", "doctor-0-" + v + "", 75, doctorFrameIndexesMoving);
+        this.animationPlayer.addAnimation("doctor-" + v + "-moving", "doctor-0-" + v + "", 75, true, true, doctorFrameIndexesMoving);
         this.animationPlayer.createAnimation("doctor-" + v + "-idle");
-        this.animationPlayer.addAnimation("doctor-" + v + "-idle", "doctor-0-" + v + "", 150, doctorFrameIndexesIdle);
+        this.animationPlayer.addAnimation("doctor-" + v + "-idle", "doctor-0-" + v + "", 150, true, true, doctorFrameIndexesIdle);
     }
 
     let patientFrameIndexesMoving = [0, 1, 2, 3, 2, 1];
@@ -95,25 +95,25 @@ GameStage.prototype.loadAnimations = function() {
         let spriteSetNameHead = "patient-head-" + i;
         let spriteSetNameShirt = "patient-shirt-0";
         this.animationPlayer.createAnimation(animationNameMoving);
-        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameLeg, 75, patientFrameIndexesMoving);
-        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameHead, 75, patientFrameIndexesMoving);
-        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameShirt, 75, patientFrameIndexesMoving);
+        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameLeg, 75, true, true, patientFrameIndexesMoving);
+        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameHead, 75, true, true, patientFrameIndexesMoving);
+        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameShirt, 75, true, true, patientFrameIndexesMoving);
         this.animationPlayer.createAnimation(animationNameIdle25);
-        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameLeg, 75, patientFrameIndexesIdle25);
-        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameHead, 75, patientFrameIndexesIdle25);
-        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameShirt, 75, patientFrameIndexesIdle25);
+        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameLeg, 75, true, true, patientFrameIndexesIdle25);
+        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameHead, 75, true, true, patientFrameIndexesIdle25);
+        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameShirt, 75, true, true, patientFrameIndexesIdle25);
         this.animationPlayer.createAnimation(animationNameIdle50);
-        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameLeg, 75, patientFrameIndexesIdle50);
-        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameHead, 75, patientFrameIndexesIdle50);
-        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameShirt, 75, patientFrameIndexesIdle50);
+        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameLeg, 75, true, true, patientFrameIndexesIdle50);
+        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameHead, 75, true, true, patientFrameIndexesIdle50);
+        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameShirt, 75, true, true, patientFrameIndexesIdle50);
         this.animationPlayer.createAnimation(animationNameIdle100);
-        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameLeg, 75, patientFrameIndexesIdle100);
-        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameHead, 75, patientFrameIndexesIdle100);
-        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameShirt, 75, patientFrameIndexesIdle100);
+        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameLeg, 75, true, true, patientFrameIndexesIdle100);
+        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameHead, 75, true, true, patientFrameIndexesIdle100);
+        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameShirt, 75, true, true, patientFrameIndexesIdle100);
         this.animationPlayer.createAnimation(animationNameDead);
-        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameLeg, 75, patientFrameIndexesDead);
-        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameHead, 75, patientFrameIndexesDead);
-        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameShirt, 75, patientFrameIndexesDead);
+        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameLeg, 250, false, true, patientFrameIndexesDead);
+        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameHead, 250, false, true, patientFrameIndexesDead);
+        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameShirt, 250, false, true, patientFrameIndexesDead);
     }
 };
 

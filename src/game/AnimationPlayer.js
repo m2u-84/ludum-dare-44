@@ -40,10 +40,10 @@ AnimationPlayer.prototype.createAnimation = function(animationId) {
  * @param spriteSetId
  * @param speed
  *      Milliseconds per frame.
- * @param reportFrameChange
+ * @param continuous
  * @param frameIndexes
  */
-AnimationPlayer.prototype.addAnimation = function(animationId, spriteSetId, speed, frameIndexes = []) {
+AnimationPlayer.prototype.addAnimation = function(animationId, spriteSetId, speed, continuous = true, randomized = true, frameIndexes = []) {
 
     let animation = this.getAnimation(animationId);
     let spriteSet = this.getSpriteSet(spriteSetId);
@@ -53,9 +53,11 @@ AnimationPlayer.prototype.addAnimation = function(animationId, spriteSetId, spee
                 frameIndexes.push(i);
             }
         }
+        const randomization = randomized ? rnd(9999) : 0;
         animation.spriteSets.push({id: spriteSetId, frameIndexes: frameIndexes,
-            lastPaintedFrameIndex: NaN, speed: speed});
-        animation.status.push({spriteSetId: spriteSetId, currentFrame: NaN, totalFrames: frameIndexes.length, changed: false});
+            lastPaintedFrameIndex: NaN, speed: speed, continuous: continuous, randomization: randomization});
+        animation.status.push({spriteSetId: spriteSetId, currentFrame: NaN, totalFrames: frameIndexes.length,
+            startTime: NaN, percentage: NaN, changed: false});
     } else {
         throw new Error("animation " + animationId + " not found!");
     }
@@ -97,14 +99,27 @@ AnimationPlayer.prototype.paint = function(ctx, animationId, tileX, tileY, cente
             let spriteSet = this.getSpriteSet(spriteSetId);
             let indexes = spriteSetDesc.frameIndexes;
             let speed = spriteSetDesc.speed;
+            let continuous = spriteSetDesc.continuous;
+            let startTime = status[i].startTime;
 
-            const spriteIndex = Math.floor((this.getTimeCallback() / speed) % indexes.length);
+            let spriteIndex;
+            if (continuous) {
+                const offset = spriteSetDesc.randomization;
+                const floatIndex = (this.getTimeCallback() + offset) / (speed + offset % 80);
+                const modulusFloatIndex = floatIndex % indexes.length;
+                spriteIndex = Math.floor(modulusFloatIndex);
+                status[i].percentage = modulusFloatIndex - spriteIndex;
+            } else {
+                let percentage = Math.min(1, (this.getTimeCallback() - startTime) / speed);
+                spriteIndex = Math.floor(percentage * (indexes.length  - 1));
+                status[i].percentage = percentage;
+            }
             status[i].currentFrame = spriteIndex;
             if (spriteIndex !== spriteSetDesc.lastPaintedFrameIndex) {
                 spriteSetDesc.lastPaintedFrameIndex = spriteIndex;
                 status[i].changed = true;
             } else {
-                status[i] = false;
+                status[i].changed = false;
             }
 
             drawFrame(ctx, spriteSet.spriteSet, indexes[spriteIndex], tileX, tileY,
@@ -113,6 +128,32 @@ AnimationPlayer.prototype.paint = function(ctx, animationId, tileX, tileY, cente
 
         }
         return status;
+    } else {
+        throw new Error("animation " +  animationId + " not defined");
+    }
+};
+
+AnimationPlayer.prototype.startAnimation = function(animationId) {
+
+    let animation = this.getAnimation(animationId);
+    if (animation) {
+        for (let i=0; i < animation.spriteSets.length; i++) {
+            let spriteSetDesc = animation.spriteSets[i];
+            let continuous = spriteSetDesc.continuous;
+            if (!continuous) {
+                animation.status[i].startTime = this.getTimeCallback();
+            }
+        }
+    } else {
+        throw new Error("animation " +  animationId + " not defined");
+    }
+};
+
+AnimationPlayer.prototype.getAnimationStatus = function(animationId) {
+
+    let animation = this.getAnimation(animationId);
+    if (animation) {
+        return animation.status;
     } else {
         throw new Error("animation " +  animationId + " not defined");
     }

@@ -27,12 +27,9 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.targetBed = null;
     this.healthDecrease = 1.5 * sickness.deadliness * (1 + rnd(0.5) - rnd(0.3)); // per second
     this.healthDecrease = 0.75 * clump(this.healthDecrease, -0.3, 0.3);
-    this.deathDuration = 500; // millisecs
-    this.timeOfDeath = 0;
     this.state = PatientStates.SPAWNED;
     this.stateChangedTime = 0;
     this.patience = interpolate(60000, 120000, Math.random());
-    this.animationOffset = rnd(9999);
     this.isHighlighted = false;
     this.patientImageIndex = Patient.getPatientImageIndex(this.isRich);
     this.diagnosingUntil = 0;
@@ -43,6 +40,7 @@ function Patient(x, y, health, wealth, sickness, gameState) {
     this.mood = '';
     this.moodIconDuration = 4000;
     this.moodStartTime = 0;
+    // TODO: move mood animations to animation player?
     this.moodAnimations = {
         'better': [0,1,2,3],
         'worse': [4,5,6,7],
@@ -238,10 +236,7 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
 
     let animationId = this.getAnimationId(this.isCharacterMoving);
     if (!this.isDead()) {
-        // determine sequential frame index using game time
         const highlight = this.isHighlighted;
-        // TODO: re-implement animationOffset
-        //const frameIndex = Math.floor((gameStage.time + this.animationOffset) / ((200 + this.animationOffset % 80)  / velocity)) % frameCount;
         ctx.save();
         if (highlight) {
             ctx.shadowColor = '#009cff';
@@ -253,11 +248,9 @@ Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
         }
         ctx.restore();
     } else {
-        // TODO: implement animation which ends (and does not repeat)
-        let dyingPercentage = (gameStage.time - this.timeOfDeath) / this.deathDuration;
-        dyingPercentage = Math.min(1, dyingPercentage);
-        let frameCount = 5; // TODO
-        const frameIndex = Math.floor(dyingPercentage * (frameCount  - 1));
+        const status = gameStage.animationPlayer.getAnimationStatus(animationId)[0];
+        const dyingPercentage = status.percentage;
+        const frameIndex = status.currentFrame;
         // hacked angle to improve dying animation without too many sprites
         let angle = Math.PI * (1/2 - 1/7) * dyingPercentage; // 1/7 comes from PI/7
         if (frameIndex > 2) {
@@ -516,8 +509,9 @@ Patient.prototype.die = function() {
         setTimeout(() => {
             gameStage.cashflowFeed.addText("Lost $250 due to deceased patient");
             this.gameState.hospital.loseRevenue(250, this.x, this.y);
-        }, this.deathDuration);
-        this.timeOfDeath = gameStage.time;
+        }, 500);
+        let animationId = this.getAnimationId(false);
+        gameStage.animationPlayer.startAnimation(animationId);
     }
 };
 

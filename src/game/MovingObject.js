@@ -76,10 +76,10 @@ MovingObject.prototype.getPathProgress = function() {
     const millsecsForPath = this.pathLength / this.movingVelocity * 1000;
     const elapsedMillisecs = gameStage.time - this.pathStartedTime;
     const percentage = elapsedMillisecs / millsecsForPath;
-    const floatingWaitpointIndex = this.path.length * percentage;
-    let waypointIndex = Math.floor(floatingWaitpointIndex);
+    const floatingWaypointIndex = this.path.length * percentage;
+    let waypointIndex = Math.floor(floatingWaypointIndex);
     waypointIndex = Math.min(this.path.length - 1, waypointIndex);
-    const betweenPercent = floatingWaitpointIndex - Math.floor(floatingWaitpointIndex);
+    const betweenPercent = floatingWaypointIndex - Math.floor(floatingWaypointIndex);
 
     return {waypointIndex: waypointIndex, betweenPercent: betweenPercent};
 };
