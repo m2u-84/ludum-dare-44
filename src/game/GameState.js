@@ -15,6 +15,8 @@ function GameState(currentLevel) {
     this.danegeld = this.currentLevel.params.mafia.startingDanegeld;
     this.gameOver = false;
     this.stats = {
+        totalSeconds: 0,
+        playTime: '0:00',
         patientCount: 0,
         patientsAccepted: 0,
         patientsRejected: 0,

@@ -87,9 +87,11 @@ Hospital.prototype.draw = function(ctx) {
 
     // Time
     let seconds = Math.floor((gameStage.time - gameStage.gameState.startTime) / 1000);
+    gameStage.gameState.stats.totalSeconds = seconds;
     const minutes = Math.floor(seconds / 60);
     seconds = seconds % 60;
     const time = minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    gameStage.gameState.stats.playTime = time;
     drawFrame(ctx, Hospital.hudFrames, 0, 3, y, 0, 1, 1, 0, 0);
     mainFont.drawText(ctx, time, 55, y + 6, "darkgray", 1);
 
