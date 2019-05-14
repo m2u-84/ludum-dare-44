@@ -13,7 +13,7 @@ ContextMenuStage.prototype.preload = function() {
     this.buttonImage = loader.loadAssetImage('treatment_button.png', 1, 10);
     this.dollarAnimation = [0, 0, 0, 0, 0, 0, 1, 2, 3, 4];
     this.keyImage = loader.loadAssetImage('keys.png', 9, 1);
-    this.minigameIcons = loader.loadAssetImage('minigames.png', 9, 1);
+    this.minigameIcons = loader.loadAssetImage('minigames.png', 10, 1);
     this.genderImage = loader.loadAssetImage('gender.png', 3, 1);
 
     this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});

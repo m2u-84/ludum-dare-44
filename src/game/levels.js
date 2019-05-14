@@ -50,7 +50,7 @@ var levels = [
           failureAbsolute: -0.3,
           riskOfDeath: 0.1,
           enabledCallback: undefined,
-          iconIndex: 2
+          iconIndex: 9
         },
         placeboSurgery: {
           enabled: true,
