@@ -78,7 +78,11 @@ Patient.load = function() {
 
 Patient.lastPatientImageIndexes = [];
 Patient.getPatientImageIndex = function(rich) {
-    if (rich) { return 3; }
+
+    // TODO: re-implement rich patient sprite selection
+    return rndInt(0, gameStage.patientAnimations.length - 1);
+
+/*    if (rich) { return 3; }
     // Not rich -> randomize
     let index = rndInt(0, 3);
     let count = 0;
@@ -90,7 +94,7 @@ Patient.getPatientImageIndex = function(rich) {
         Patient.lastPatientImageIndexes.splice(0, 1);
     }
     Patient.lastPatientImageIndexes.push(index);
-    return index;
+    return index;*/
 };
 
 Patient.prototype.update = function() {
@@ -232,9 +236,9 @@ Patient.prototype.paint = function(ctx) {
     MovingObject.prototype.paint.call(this, ctx);
 };
 
-Patient.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
+Patient.prototype.paintExecution = function(ctx) {
 
-    let animationId = this.getAnimationId(this.isCharacterMoving);
+    let animationId = this.getAnimationId(this.isMoving);
     if (!this.isDead()) {
         const highlight = this.isHighlighted;
         ctx.save();

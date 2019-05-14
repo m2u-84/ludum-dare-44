@@ -3,11 +3,10 @@ function MovingObject(x, y, gameState) {
     this.y = y;
 
     this.movingVelocity = 3; // animation and moving speed
-    this.idleVelocity = 1; // animation speed
     this.lastMoveDelta = {x: 0, y: 0};
     this.lastMoveTime = 0;
     this.directionFactor = {x: 1, y: 1};
-    this.isCharacterMoving = false;
+    this.isMoving = false;
     this.path = null;
     this.pathLength = 0;
     this.pathStartedTime = 0;
@@ -118,7 +117,7 @@ MovingObject.prototype.updateCharacterPosition = function(x, y) {
     if ((this.lastMoveDelta.x !== 0) || (this.lastMoveDelta.y !== 0)) {
         this.x = x;
         this.y = y;
-        this.isCharacterMoving = true;
+        this.isMoving = true;
         this.lastMoveTime = gameStage.time;
     }
 };
@@ -136,21 +135,16 @@ MovingObject.prototype.paint = function(ctx) {
 
     // Reset character state (idle, moving) shortly after walking ends
     if (gameStage.time - this.lastMoveTime > 100) {
-        this.isCharacterMoving = false;
+        this.isMoving = false;
     }
 
     // Mirror character depending on last movement direction
     this.directionFactor.x = this.lastMoveDelta.x !== 0 ? Math.sign(this.lastMoveDelta.x) : this.directionFactor.x;
     this.directionFactor.y = this.lastMoveDelta.y !== 0 ? Math.sign(this.lastMoveDelta.y) : this.directionFactor.y;
-    // TODO: remove frameIndexes
-    const frameIndexes = this.getCharacterFrames(this.isCharacterMoving);
-    // TODO: remove velocity?!
-    const velocity = this.isCharacterMoving === 0 ? this.movingVelocity : this.idleVelocity;
-
-    this.paintExecution(ctx, velocity, frameIndexes);
+    this.paintExecution(ctx);
 };
 
-MovingObject.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
+MovingObject.prototype.paintExecution = function(ctx) {
 
 };
 

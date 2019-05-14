@@ -1,10 +1,6 @@
 /*
 
-- migrate existing animations: patient, facility manager, cars
-- support for isDead: start animation for specific timeframe
-- support for braking car
 - improve walking sound (in the worst case by reverting the placement of stop-call)
-- re-implement animationOffset
 
  */
 

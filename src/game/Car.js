@@ -3,8 +3,8 @@ const CarStates = {
   SPAWNED: 0,
   DRIVE_TO_BREAKING_POINT: 1,
   BRAKE: 2,
-  DRIVE_TO_SPOT: 3, // RENAME: DRIVE_TO_SPOT
-  WAIT_BEFORE_HOSPITAL: 4,
+  DRIVE_TO_SPOT: 3,
+  WAIT_BEFORE_HOSPITAL: 4, // TODO: rename properly
   DRIVE_TO_VANISHINGPOINT: 5
 };
 
@@ -13,7 +13,6 @@ function Car(x, y, gameState, driveFinishedCallback) {
     MovingObject.call(this, x, y, gameState);
     this.state = CarStates.SPAWNED;
     this.movingVelocity = 10;
-    this.stopAtWayToPile = false;
     this.driveFinishedCallback = driveFinishedCallback;
 }
 inherit(Car, MovingObject);
@@ -21,7 +20,6 @@ inherit(Car, MovingObject);
 Car.load = function() {
 
     const ASSETS_BASE_PATH = './assets/';
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
     const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
     Car.soundBrakes = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/police-braking/police-braking.mp3'});
@@ -38,7 +36,6 @@ Car.prototype.update = function() {
 Car.prototype.setState = function(state) {
 
     this.state = state;
-    this.stateChangedTime = gameStage.time;
 };
 
 Car.prototype.nextState = function() {
@@ -78,27 +75,28 @@ Car.prototype.paint = function(ctx) {
     MovingObject.prototype.paint.call(this, ctx);
 };
 
-Car.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
+Car.prototype.paintExecution = function(ctx) {
 
-    const frameIndex = Math.floor(gameStage.time / 100) % frameIndexes.length;
     const yCorrection = this.directionFactor.y < 0 ? -1 : 0;
     const angle = this.state === CarStates.DRIVE_TO_SPOT ? Math.PI/20 : 0; // driving to hospital while breaking
-    drawFrame(ctx, this.getCarImage(), frameIndexes[frameIndex], this.x, this.y, angle,
-        this.directionFactor.x * 1 / 24, this.directionFactor.y * 1 / 24, 0.5,  0.6 + yCorrection);
+    let animationId = this.getAnimationId(this.isMoving);
+    gameStage.animationPlayer.paint(ctx, animationId, this.x, this.y,
+        0.5, 0.6 + yCorrection, this.directionFactor.x < 0, this.directionFactor.y < 0, angle);
 };
 
-Car.prototype.getCarImage = function() {
+Car.prototype.getAnimationPrefix = function() {
 
 };
 
-Car.prototype.getCharacterFrames = function(isMoving) {
+Car.prototype.getAnimationId = function(isMoving) {
 
+    let base = this.getAnimationPrefix() + "-";
     if (this.state === CarStates.WAIT_BEFORE_HOSPITAL) {
-        return [0];
+        return base + "waiting";
     } else if (this.lastMoveDelta.x !== 0) {
-        return [0, 1, 2, 3];
+        return base + "moving";
     } else {
-        return [4, 5, 6, 7];
+        return base + "idle";
     }
 };
 

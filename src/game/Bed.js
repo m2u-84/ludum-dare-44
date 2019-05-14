@@ -6,6 +6,7 @@ function Bed(x, y) {
 }
 
 Bed.load = function() {
+    // TODO: consider using AnimationPlayer
     Bed.image = loader.loadImage("./assets/images/bed.png", 4, 2);
     Bed.headImage = loader.loadImage("./assets/images/bed_patients.png", 4, 3);
     Bed.exclamationImage = loader.loadImage("./assets/images/attention.png", 5, 1);

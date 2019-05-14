@@ -60,13 +60,17 @@ GameStage.prototype.loadAnimations = function() {
         return this.time;
     }, 24);
 
+    this.loadDoctorSprites();
+    this.loadFacilityManagerSprites();
+    this.loadPatientSprites();
+    this.loadCarSprites();
+    this.loadOtherSprites();
+};
+
+GameStage.prototype.loadDoctorSprites = function(payload) {
+
     this.animationPlayer.loadSprites("doctor-0-m", "./assets/images/doctor_m.png", 4, 3);
     this.animationPlayer.loadSprites("doctor-0-w", "./assets/images/doctor_w.png", 4, 3);
-    for (let i=0; i <= 3; i++) {
-        this.animationPlayer.loadSprites("patient-head-" + i, "./assets/images/patient_head" + i + ".png", 4, 3);
-    }
-    this.animationPlayer.loadSprites("patient-shirt-0", "./assets/images/patient_shirt0.png", 4, 3);
-    this.animationPlayer.loadSprites("patient-leg-0", "./assets/images/patient_leg0.png", 4, 3);
 
     let doctorFrameIndexesMoving = [0, 1, 2, 3, 2, 1];
     let doctorFrameIndexesIdle = [1, 4, 5, 5, 5, 5, 5, 5, 5, 4, 1, 1, 1, 1, 1, 1, 1, 1];
@@ -75,46 +79,242 @@ GameStage.prototype.loadAnimations = function() {
         let v = doctorVariants[i];
         // TODO: interpolation syntax?
         this.animationPlayer.createAnimation("doctor-" + v + "-moving");
-        this.animationPlayer.addAnimation("doctor-" + v + "-moving", "doctor-0-" + v + "", 75, true, true, doctorFrameIndexesMoving);
+        this.animationPlayer.addAnimation("doctor-" + v + "-moving", "doctor-0-" + v, 75, true, true, doctorFrameIndexesMoving);
         this.animationPlayer.createAnimation("doctor-" + v + "-idle");
-        this.animationPlayer.addAnimation("doctor-" + v + "-idle", "doctor-0-" + v + "", 150, true, true, doctorFrameIndexesIdle);
+        this.animationPlayer.addAnimation("doctor-" + v + "-idle", "doctor-0-" + v, 150, true, true, doctorFrameIndexesIdle);
+    }
+};
+
+GameStage.prototype.loadFacilityManagerSprites = function(payload) {
+
+    this.animationPlayer.loadSprites("facility-manager", "./assets/images/facility_manager.png", 4, 3);
+
+    let facilityManagerFrameIndexesMoving = [0, 1, 2, 3, 2, 1];
+    let facilityManagerFrameIndexesIdle = [4, 5, 6, 6, 6, 6, 5, 4, 4, 4];
+    let facilityManagerFrameIndexesCarrying = [8, 9, 10, 11, 10, 9];
+    this.animationPlayer.createAnimation("facility-manager-moving");
+    this.animationPlayer.addAnimation("facility-manager-moving", "facility-manager", 75, true, true, facilityManagerFrameIndexesMoving);
+    this.animationPlayer.createAnimation("facility-manager-idle");
+    this.animationPlayer.addAnimation("facility-manager-idle", "facility-manager", 75, true, true, facilityManagerFrameIndexesIdle);
+    this.animationPlayer.createAnimation("facility-manager-carrying");
+    this.animationPlayer.addAnimation("facility-manager-carrying", "facility-manager", 75, true, true, facilityManagerFrameIndexesCarrying);
+};
+
+GameStage.prototype.loadPatientSprites = function(payload) {
+
+    this.patientAnimations = [];
+
+    this.animationPlayer.loadSprites(this.getMaleNonRichHeadName(0), "./assets/images/patient_head0.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getMaleNonRichHeadName(1), "./assets/images/patient_head1.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getMaleRichHeadName(0), "./assets/images/patient_head3.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getFemaleNonRichHeadName(0), "./assets/images/patient_head2.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexNonRichShirtName(0), "./assets/images/patient_shirt0.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexNonRichShirtName(1), "./assets/images/patient_shirt2.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexNonRichShirtName(2), "./assets/images/patient_shirt3.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexNonRichShirtName(3), "./assets/images/patient_shirt4.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexNonRichShirtName(4), "./assets/images/patient_shirt5.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexNonRichShirtName(5), "./assets/images/patient_shirt6.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexRichShirtName(0), "./assets/images/patient_shirt1.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexLegName(0), "./assets/images/patient_leg0.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexLegName(1), "./assets/images/patient_leg2.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexLegName(2), "./assets/images/patient_leg3.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getUnisexLegName(3), "./assets/images/patient_leg4.png", 4, 3);
+    this.animationPlayer.loadSprites(this.getWomenLegName(0), "./assets/images/patient_leg1.png", 4, 3);
+
+    let iMoving = [0, 1, 2, 3, 2, 1];
+    let iIdle25 = [1, 4, 5, 4];
+    let iIdle50 = [1, 4, 5, 5, 4, 1];
+    let iIdle100 = [1, 4, 5, 5, 5, 5, 4, 1, 1, 1];
+    let iDead = [1, 6, 6, 7, 7];
+
+    this.createNonRichMen(2, 6, 4, iMoving, iIdle100, iIdle50, iIdle25, iDead);
+    this.createRichMen(1, 1,4, iMoving, iIdle100, iIdle50, iIdle25, iDead);
+    this.createNonRichWomen(1, 6, 4, iMoving, iIdle100, iIdle50, iIdle25, iDead);
+    this.createRichWomen(1, 1,4, iMoving, iIdle100, iIdle50, iIdle25, iDead);
+};
+
+GameStage.prototype.getMaleNonRichHeadName = function(index) {
+
+    return "patient-head-men-nr-" + index;
+};
+
+GameStage.prototype.getMaleRichHeadName = function(index) {
+
+    return "patient-head-men-r-" + index;
+};
+
+GameStage.prototype.getFemaleNonRichHeadName = function(index) {
+
+    return "patient-head-women-nr-" + index;
+};
+
+GameStage.prototype.getUnisexNonRichShirtName = function(index) {
+
+    return "patient-shirt-unisex-nr-" + index;
+};
+
+GameStage.prototype.getUnisexRichShirtName = function(index) {
+
+    return "patient-shirt-unisex-r-" + index;
+};
+
+GameStage.prototype.getUnisexLegName = function(index) {
+
+    return "patient-leg-unisex-" + index;
+};
+
+GameStage.prototype.getWomenLegName = function(index) {
+
+    return "patient-leg-women-" + index;
+};
+
+GameStage.prototype.createPatientAnimations = function(headSprite, shirtSprite, legSprite, iMoving, iIdle100, iIdle50, iIdle25, iDead) {
+
+    let animationBaseName = "patient-" + this.patientAnimations.length;
+    this.patientAnimations.push(animationBaseName);
+    let animationNameMoving = animationBaseName + "-moving";
+    let animationNameIdle25 = animationBaseName + "-idle-25";
+    let animationNameIdle50 = animationBaseName + "-idle-50";
+    let animationNameIdle100 = animationBaseName + "-idle-100";
+    let animationNameDead = animationBaseName + "-dead";
+    this.animationPlayer.createAnimation(animationNameMoving);
+    this.animationPlayer.addAnimation(animationNameMoving, legSprite, 75, true, true, iMoving);
+    this.animationPlayer.addAnimation(animationNameMoving, headSprite, 75, true, true, iMoving);
+    this.animationPlayer.addAnimation(animationNameMoving, shirtSprite, 75, true, true, iMoving);
+    this.animationPlayer.createAnimation(animationNameIdle25);
+    this.animationPlayer.addAnimation(animationNameIdle25, legSprite, 75, true, true, iIdle25);
+    this.animationPlayer.addAnimation(animationNameIdle25, headSprite, 75, true, true, iIdle25);
+    this.animationPlayer.addAnimation(animationNameIdle25, shirtSprite, 75, true, true, iIdle25);
+    this.animationPlayer.createAnimation(animationNameIdle50);
+    this.animationPlayer.addAnimation(animationNameIdle50, legSprite, 75, true, true, iIdle50);
+    this.animationPlayer.addAnimation(animationNameIdle50, headSprite, 75, true, true, iIdle50);
+    this.animationPlayer.addAnimation(animationNameIdle50, shirtSprite, 75, true, true, iIdle50);
+    this.animationPlayer.createAnimation(animationNameIdle100);
+    this.animationPlayer.addAnimation(animationNameIdle100, legSprite, 75, true, true, iIdle100);
+    this.animationPlayer.addAnimation(animationNameIdle100, headSprite, 75, true, true, iIdle100);
+    this.animationPlayer.addAnimation(animationNameIdle100, shirtSprite, 75, true, true, iIdle100);
+    this.animationPlayer.createAnimation(animationNameDead);
+    this.animationPlayer.addAnimation(animationNameDead, legSprite, 250, false, true, iDead);
+    this.animationPlayer.addAnimation(animationNameDead, headSprite, 250, false, true, iDead);
+    this.animationPlayer.addAnimation(animationNameDead, shirtSprite, 250, false, true, iDead);
+
+};
+
+GameStage.prototype.createNonRichMen = function(headMenNonRichCount, shirtUnisexNonRichCount, legUnisexCount,
+    iMoving, iIdle100, iIdle50, iIdle25, iDead) {
+
+    for (let iHead=0; iHead < headMenNonRichCount; iHead++) {
+        for (let iShirt=0; iShirt < shirtUnisexNonRichCount; iShirt++) {
+            for (let iLeg=0; iLeg < legUnisexCount; iLeg++) {
+                this.createPatientAnimations(this.getMaleNonRichHeadName(iHead),
+                    this.getUnisexNonRichShirtName(iShirt),
+                    this.getUnisexLegName(iLeg),
+                    iMoving, iIdle100, iIdle50, iIdle25, iDead);
+            }
+        }
+    }
+};
+
+GameStage.prototype.createRichMen = function(headMenRichCount, shirtUnisexRichCount, legUnisexCount,
+    iMoving, iIdle100, iIdle50, iIdle25, iDead) {
+
+    for (let iHead=0; iHead < headMenRichCount; iHead++) {
+        for (let iShirt=0; iShirt < shirtUnisexRichCount; iShirt++) {
+            for (let iLeg=0; iLeg < legUnisexCount; iLeg++) {
+                this.createPatientAnimations(this.getMaleRichHeadName(iHead),
+                    this.getUnisexRichShirtName(iShirt),
+                    this.getUnisexLegName(iLeg),
+                    iMoving, iIdle100, iIdle50, iIdle25, iDead);
+            }
+        }
+    }
+};
+
+GameStage.prototype.createRichWomen = function(headWomenNonRichCount, shirtUnisexRichCount, legUnisexCount, legWomanCount,
+    iMoving, iIdle100, iIdle50, iIdle25, iDead) {
+
+    for (let iHead=0; iHead < headWomenNonRichCount; iHead++) {
+        for (let iShirt=0; iShirt < shirtUnisexRichCount; iShirt++) {
+            for (let iLeg=0; iLeg < legUnisexCount; iLeg++) {
+                this.createPatientAnimations(this.getFemaleNonRichHeadName(iHead),
+                    this.getUnisexRichShirtName(iShirt),
+                    this.getUnisexLegName(iLeg),
+                    iMoving, iIdle100, iIdle50, iIdle25, iDead);
+            }
+        }
     }
 
-    let patientFrameIndexesMoving = [0, 1, 2, 3, 2, 1];
-    let patientFrameIndexesIdle25 = [1, 4, 5, 4];
-    let patientFrameIndexesIdle50 = [1, 4, 5, 5, 4, 1];
-    let patientFrameIndexesIdle100 = [1, 4, 5, 5, 5, 5, 4, 1, 1, 1];
-    let patientFrameIndexesDead = [1, 6, 6, 7, 7];
-    for (let i=0; i <= 3; i++) {
-        let animationNameMoving = "patient-" + i + "-moving";
-        let animationNameIdle25 = "patient-" + i + "-idle-25";
-        let animationNameIdle50 = "patient-" + i + "-idle-50";
-        let animationNameIdle100 = "patient-" + i + "-idle-100";
-        let animationNameDead = "patient-" + i + "-dead";
-        let spriteSetNameLeg = "patient-leg-0";
-        let spriteSetNameHead = "patient-head-" + i;
-        let spriteSetNameShirt = "patient-shirt-0";
-        this.animationPlayer.createAnimation(animationNameMoving);
-        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameLeg, 75, true, true, patientFrameIndexesMoving);
-        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameHead, 75, true, true, patientFrameIndexesMoving);
-        this.animationPlayer.addAnimation(animationNameMoving, spriteSetNameShirt, 75, true, true, patientFrameIndexesMoving);
-        this.animationPlayer.createAnimation(animationNameIdle25);
-        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameLeg, 75, true, true, patientFrameIndexesIdle25);
-        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameHead, 75, true, true, patientFrameIndexesIdle25);
-        this.animationPlayer.addAnimation(animationNameIdle25, spriteSetNameShirt, 75, true, true, patientFrameIndexesIdle25);
-        this.animationPlayer.createAnimation(animationNameIdle50);
-        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameLeg, 75, true, true, patientFrameIndexesIdle50);
-        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameHead, 75, true, true, patientFrameIndexesIdle50);
-        this.animationPlayer.addAnimation(animationNameIdle50, spriteSetNameShirt, 75, true, true, patientFrameIndexesIdle50);
-        this.animationPlayer.createAnimation(animationNameIdle100);
-        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameLeg, 75, true, true, patientFrameIndexesIdle100);
-        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameHead, 75, true, true, patientFrameIndexesIdle100);
-        this.animationPlayer.addAnimation(animationNameIdle100, spriteSetNameShirt, 75, true, true, patientFrameIndexesIdle100);
-        this.animationPlayer.createAnimation(animationNameDead);
-        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameLeg, 250, false, true, patientFrameIndexesDead);
-        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameHead, 250, false, true, patientFrameIndexesDead);
-        this.animationPlayer.addAnimation(animationNameDead, spriteSetNameShirt, 250, false, true, patientFrameIndexesDead);
+    for (let iHead=0; iHead < headWomenNonRichCount; iHead++) {
+        for (let iShirt=0; iShirt < shirtUnisexRichCount; iShirt++) {
+            for (let iLeg=0; iLeg < legWomanCount; iLeg++) {
+                this.createPatientAnimations(this.getFemaleNonRichHeadName(iHead),
+                    this.getUnisexRichShirtName(iShirt),
+                    this.getWomenLegName(iLeg),
+                    iMoving, iIdle100, iIdle50, iIdle25, iDead);
+            }
+        }
     }
+};
+
+GameStage.prototype.createNonRichWomen = function(headWomenNonRichCount, shirtUnisexNonRichCount, legUnisexCount, legWomanCount,
+    iMoving, iIdle100, iIdle50, iIdle25, iDead) {
+
+    for (let iHead=0; iHead < headWomenNonRichCount; iHead++) {
+        for (let iShirt=0; iShirt < shirtUnisexNonRichCount; iShirt++) {
+            for (let iLeg=0; iLeg < legUnisexCount; iLeg++) {
+                this.createPatientAnimations(this.getFemaleNonRichHeadName(iHead),
+                    this.getUnisexNonRichShirtName(iShirt),
+                    this.getUnisexLegName(iLeg),
+                    iMoving, iIdle100, iIdle50, iIdle25, iDead);
+            }
+        }
+    }
+
+    for (let iHead=0; iHead < headWomenNonRichCount; iHead++) {
+        for (let iShirt=0; iShirt < shirtUnisexNonRichCount; iShirt++) {
+            for (let iLeg=0; iLeg < legWomanCount; iLeg++) {
+                this.createPatientAnimations(this.getFemaleNonRichHeadName(iHead),
+                    this.getUnisexNonRichShirtName(iShirt),
+                    this.getWomenLegName(iLeg),
+                    iMoving, iIdle100, iIdle50, iIdle25, iDead);
+            }
+        }
+    }
+};
+
+GameStage.prototype.loadCarSprites = function(payload) {
+
+    this.animationPlayer.loadSprites("police-car", "./assets/images/police_car.png", 4, 2);
+    this.animationPlayer.loadSprites("mafia-car", "./assets/images/mafia_car.png", 4, 2);
+
+    let policeCarFramesMoving = [0, 1, 2, 3];
+    let policeCarFramesWaiting = [0];
+    let policeCarFramesIdle = [4, 5, 6, 7];
+    this.animationPlayer.createAnimation("police-car-moving");
+    this.animationPlayer.addAnimation("police-car-moving", "police-car", 150, true, true, policeCarFramesMoving);
+    this.animationPlayer.createAnimation("police-car-waiting");
+    this.animationPlayer.addAnimation("police-car-waiting", "police-car", 150, true, true, policeCarFramesWaiting);
+    this.animationPlayer.createAnimation("police-car-idle");
+    this.animationPlayer.addAnimation("police-car-idle", "police-car", 150, true, true, policeCarFramesIdle);
+
+    let mafiaCarFramesMoving = [0, 1, 2, 3];
+    let mafiaCarFramesWaiting = [0];
+    let mafiaCarFramesIdle = [4, 5, 6, 7];
+    this.animationPlayer.createAnimation("mafia-car-moving");
+    this.animationPlayer.addAnimation("mafia-car-moving", "mafia-car", 150, true, true, mafiaCarFramesMoving);
+    this.animationPlayer.createAnimation("mafia-car-waiting");
+    this.animationPlayer.addAnimation("mafia-car-waiting", "mafia-car", 150, true, true, mafiaCarFramesWaiting);
+    this.animationPlayer.createAnimation("mafia-car-idle");
+    this.animationPlayer.addAnimation("mafia-car-idle", "mafia-car", 150, true, true, mafiaCarFramesIdle);
+};
+
+GameStage.prototype.loadOtherSprites = function(payload) {
+
+    this.animationPlayer.loadSprites("dumpster-fire", "./assets/images/dumpsterfire.png", 4, 1);
+
+    let pileFireFrames = [0, 1, 2, 3];
+    this.animationPlayer.createAnimation("dumpster-fire");
+    this.animationPlayer.addAnimation("dumpster-fire", "dumpster-fire", 150, true, true, pileFireFrames);
 };
 
 GameStage.prototype.prestart = function(payload) {
@@ -131,7 +331,6 @@ GameStage.prototype.prestart = function(payload) {
 };
 
 GameStage.prototype.start = function() {
-    // Todo: Enable on release
     this.transitionIn("instructions", 800);
 };
 

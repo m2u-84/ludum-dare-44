@@ -2,19 +2,17 @@ function PoliceCar(x, y, gameState, driveFinishedCallback) {
 
     Car.call(this, x, y, gameState, driveFinishedCallback);
     this.state = CarStates.SPAWNED;
-    this.movingVelocity = 10;
+    this.stopAtWayToPile = false;
 }
+
 inherit(PoliceCar, Car);
 
 PoliceCar.load = function() {
 
     const ASSETS_BASE_PATH = './assets/';
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
     const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
-    PoliceCar.image = loader.loadImage(IMAGES_BASE_PATH + 'police_car.png', 4, 2);
     PoliceCar.soundSiren = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/police-siren/police-siren.mp3'});
-    // PoliceCar.soundSiren.loop = true;
 };
 
 PoliceCar.prototype.update = function() {
@@ -30,9 +28,9 @@ PoliceCar.prototype.update = function() {
     }
 };
 
-PoliceCar.prototype.getCarImage = function() {
+PoliceCar.prototype.getAnimationPrefix = function() {
 
-    return PoliceCar.image;
+    return "police-car";
 };
 
 PoliceCar.prototype.getBreakingPoint = function() {

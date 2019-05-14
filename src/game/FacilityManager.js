@@ -20,12 +20,8 @@ inherit(FacilityManager, MovingObject);
 
 FacilityManager.load = function() {
 
-    const ASSETS_BASE_PATH = './assets/'
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/'
-    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/'
-
-    FacilityManager.imageFire = loader.loadImage(IMAGES_BASE_PATH + 'dumpsterfire.png', 4, 1);
-    FacilityManager.image = loader.loadImage(IMAGES_BASE_PATH + 'facility_manager.png', 4, 3);
+    const ASSETS_BASE_PATH = './assets/';
+    const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
     FacilityManager.soundContainerDump = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/container-dump/container-dump.mp3'});
     FacilityManager.soundBurn = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/burning/burning.mp3'});
@@ -80,26 +76,30 @@ FacilityManager.prototype.paint = function(ctx) {
 
 FacilityManager.prototype.paintFire = function(ctx) {
     if (this.fireIsBurning) {
-        const frame = Math.floor(gameStage.time / 100) % 4;
         const firePoint = this.gameState.level.firePoint;
-        drawFrame(ctx, FacilityManager.imageFire, frame, firePoint.x, firePoint.y + 1, 0, 1 / 24, 1 / 24, 0, 1);
+        gameStage.animationPlayer.paint(ctx, "dumpster-fire", firePoint.x, firePoint.y + 1,
+            0, 1, false, false, 0);
     }
 };
 
-FacilityManager.prototype.paintExecution = function(ctx, velocity, frameIndexes) {
+FacilityManager.prototype.paintExecution = function(ctx) {
 
-    // determine sequential frame index using game time
-    const frameCount = frameIndexes.length;
-    const frameIndex = Math.floor(gameStage.time / (200 / velocity)) % frameCount;
-    drawFrame(ctx, this.image, frameIndexes[frameIndex], this.x, this.y, 0, this.directionFactor.x * 1 / 24, 1 / 24, 0.5, 0.98);
+    let animationId = this.getAnimationId(this.isMoving);
+    gameStage.animationPlayer.paint(ctx, animationId, this.x, this.y,
+        0.5, 0.98, this.directionFactor.x < 0, false, 0);
 };
 
-FacilityManager.prototype.getCharacterFrames = function(isMoving) {
+FacilityManager.prototype.getAnimationId = function(isMoving) {
 
+    let animationId = "facility-manager-";
     if (this.isCarryingCorpse()) {
-        return [8, 9, 10, 11, 10, 9]
+        return animationId + "carrying";
     } else {
-        return isMoving ? [0, 1, 2, 3, 2, 1] : [4, 5, 6, 6, 6, 6, 5, 4, 4, 4];
+        if (isMoving) {
+            return animationId + "moving";
+        } else {
+            return animationId + "idle";
+        }
     }
 };
 

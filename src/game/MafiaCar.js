@@ -2,25 +2,21 @@ function MafiaCar(x, y, gameState, driveFinishedCallback) {
 
     Car.call(this, x, y, gameState, driveFinishedCallback);
     this.state = CarStates.SPAWNED;
-    this.movingVelocity = 10;
-    this.stopAtWayToPile = true;
 }
 inherit(MafiaCar, Car);
 
 MafiaCar.load = function() {
 
     const ASSETS_BASE_PATH = './assets/';
-    const IMAGES_BASE_PATH = ASSETS_BASE_PATH + 'images/';
     const AUDIO_BASE_PATH = ASSETS_BASE_PATH + 'audio/';
 
-    MafiaCar.image = loader.loadImage(IMAGES_BASE_PATH + 'mafia_car.png', 4, 2);
     MafiaCar.soundMafia = loader.loadAudio({src: AUDIO_BASE_PATH + 'sounds/mafia-robbing/mafia-robbing.mp3'});
     // MafiaCar.soundMafia.loop = true;
 };
 
-MafiaCar.prototype.getCarImage = function() {
+MafiaCar.prototype.getAnimationPrefix = function() {
 
-    return MafiaCar.image;
+    return "mafia-car";
 };
 
 MafiaCar.prototype.getBreakingPoint = function() {

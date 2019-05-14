@@ -147,7 +147,7 @@ Doctor.prototype.paint = function(ctx) {
     let status = gameStage.animationPlayer.paint(ctx, animationId, this.x, this.y,
         0.5, 0.98, this.directionFactor < 0, false, 0);
 
-    let frameChanged = status[0].changed; // TODO: make this more robust
+    let frameChanged = status[0].changed;
     if ((this.characterStateIndex === 1) && (frameChanged)) {
         Doctor.soundWalking.stop();
         Doctor.soundWalking.play();
