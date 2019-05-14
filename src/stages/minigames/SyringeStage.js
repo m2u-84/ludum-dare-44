@@ -22,6 +22,7 @@ SyringeStage.prototype.prestart = function(payload) {
   this.treatment = gameStage.gameState.treatments.antibiotics;
   this.isAiming = true;
   this.isFlying = false;
+  this.syringeSize = 70;
   this.angle = 0;
   this.force = 0;
   this.vx = 0;
@@ -38,6 +39,8 @@ SyringeStage.prototype.update = function(timer) {
   if (!this.isFlying) {
     this.x = this.w * 0.2 + 10 * wobble(this.time, 8, 0, 2);
     this.y = this.h * 0.75 + 10 * wobble(this.time, 13.7, 1, 2);
+    this.syringeX = this.x + this.syringeSize * Math.cos(this.angle);
+    this.syringeY = this.y + this.syringeSize * Math.sin(this.angle);
   }
   if (this.isAiming) {
     // Aiming (angle)
@@ -75,9 +78,12 @@ SyringeStage.prototype.updateFlight = function() {
   this.vy += f * 0.002;
   // Angle according to velocity
   this.angle = Math.atan2(this.vy, this.vx);
+  this.syringeX = this.x + this.syringeSize * Math.cos(this.angle);
+  this.syringeY = this.y + this.syringeSize * Math.sin(this.angle);
   if (this.active && (this.x > this.armLeft - 20 || this.y > this.h + 100)) {
     this.x = this.armLeft - 20;
-    this.close(Math.abs(this.y - this.targetY) < 0.1 * this.h);
+    const success = Math.abs(this.syringeY - this.targetY) < 0.1 * this.h
+    this.close(success);
   }
 };
 

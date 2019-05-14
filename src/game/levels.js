@@ -40,6 +40,18 @@ var levels = [
           enabledCallback: undefined,
           iconIndex: 0
         },
+        surgery: {
+          enabled: true,
+          name: 'Surgery',
+          sleepTime: 20,
+          costsForPatient: 1000,
+          costsForHospital: 500,
+          failureRegenerative: -0.1,
+          failureAbsolute: -0.3,
+          riskOfDeath: 0.1,
+          enabledCallback: undefined,
+          iconIndex: 2
+        },
         placeboSurgery: {
           enabled: true,
           name: 'Placebo Surgery',
@@ -61,7 +73,7 @@ var levels = [
           failureRegenerative: -0.1,
           failureAbsolute: -0.3,
           riskOfDeath: 0.12,
-          enabledCallback: () => this.hospital.organs > 0,
+          enabledCallback: () => gameStage.gameState.hospital.organs > 0,
           iconIndex: 2
         },
         antibiotics: {

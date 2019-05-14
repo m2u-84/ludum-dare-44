@@ -21,8 +21,8 @@ LevelSelectStage.prototype.preload = function() {
     armedSpeed: 75
   }
 
-  this.level1Button = new Button(this.levelSelectButtonImage, levelButtonFrames, function() { stageManager.activeStage.startGame(1) }, undefined, this.hoverSound);
-  this.level2Button = new Button(this.levelSelectButtonImage, levelButtonFrames, function() { stageManager.activeStage.startGame(2) }, undefined, this.hoverSound);
+  this.level1Button = new Button(this.levelSelectButtonImage, levelButtonFrames, () => this.startGame(1), undefined, this.hoverSound);
+  this.level2Button = new Button(this.levelSelectButtonImage, levelButtonFrames, () => this.startGame(2), undefined, this.hoverSound);
 }
 
 LevelSelectStage.prototype.startGame = function(level) {

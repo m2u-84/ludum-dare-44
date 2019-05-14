@@ -104,6 +104,10 @@ function wobble(t, speedFactor = 1, offset = 0, power = 1) {
   return v;
 }
 
+function isWithinRange(v, min, max) {
+  return v >= min && v <= max;
+}
+
 function sgn(value) {
   return value > 0 ? 1 : value < 0 ? -1 : 0;
 }

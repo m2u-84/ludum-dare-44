@@ -4,7 +4,8 @@ function GameStage() {
     this.contextStage = null;
     this.floatingTexts = [];
     this.cashflowFeed = new CashflowFeed();
-    this.drawFPS = true;
+    this.drawFPS = true; // TODO set to false
+    window.cheats = true; // TODO remove this
     this.fpsCounter = new FpsCounter(1000);
 }
 
@@ -338,7 +339,7 @@ GameStage.prototype.onkey = function (event) {
           // Kill all patients
           this.gameState.patients.forEach( p => p.die() );
       } else if (event.key == "f") {
-        this.transitionIn("drug", 300, { patient: new Patient(5, 5, 100, 50, this.gameState.sicknesses[4], this.gameState)})
+        this.transitionIn("surgery", 300, { patient: new Patient(5, 5, 100, 50, this.gameState.sicknesses[4], this.gameState)})
       } else if (event.key == "i") {
         // Diagnose all patients
         this.gameState.patients.forEach( p => p.diagnosed = true );

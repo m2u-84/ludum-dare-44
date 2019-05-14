@@ -108,6 +108,24 @@ MinigameStage.prototype.render = function(ctx, timer) {
   ctx.clip();
 };
 
+/**
+ * Debugging helper method that allows easily identifying points in space by rendering them as circles.
+ * Useful for success criteria depending on dynamic and otherwise not explicitly rendered positions.
+ */
+MinigameStage.prototype.renderPosition = function(ctx, x, y) {
+  ctx.save();
+  ctx.beginPath();
+  const rad = 5;
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "green";
+  ctx.beginPath();
+  ctx.moveTo(x, y - rad);
+  ctx.arc(x, y, rad, 0, 6.28);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.restore();
+};
+
 MinigameStage.prototype.renderOnTop = function(ctx, timer) {
   // Help Text
   if (this.firstAttempt) {
