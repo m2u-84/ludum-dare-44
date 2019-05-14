@@ -1,3 +1,7 @@
+const defaultParams = {
+
+}
+
 var levels = [
   {
     num: 1,
@@ -23,6 +27,78 @@ var levels = [
         diagnose: {
           baseDuration: 1000,
           multiplicatorRange: [7, 40]
+        },
+        drugs: {
+          enabled: true,
+          name: 'Prescribe Drugs',
+          sleepTime: 5,
+          costsForPatient: 100,
+          costsForHospital: 10,
+          failureRegenerative: 0.0,
+          failureAbsolute: 0.0,
+          riskOfDeath: 0.01,
+          enabledCallback: undefined,
+          iconIndex: 0
+        },
+        placeboSurgery: {
+          enabled: true,
+          name: 'Placebo Surgery',
+          sleepTime: 10,
+          costsForPatient: 1000,
+          costsForHospital: 80,
+          failureRegenerative: 0.0,
+          failureAbsolute: 0.0,
+          riskOfDeath: 0,
+          enabledCallback: undefined,
+          iconIndex: 1
+        },
+        organ: {
+          enabled: true,
+          name: 'Give Organ',
+          sleepTime: 30,
+          costsForPatient: 5000,
+          costsForHospital: 1000,
+          failureRegenerative: -0.1,
+          failureAbsolute: -0.3,
+          riskOfDeath: 0.12,
+          enabledCallback: () => this.hospital.organs > 0,
+          iconIndex: 2
+        },
+        antibiotics: {
+          enabled: true,
+          name: 'Give Antibiotics',
+          sleepTime: 5,
+          costsForPatient: 200,
+          costsForHospital: 40,
+          failureRegenerative: -0.1,
+          failureAbsolute: -0.1,
+          riskOfDeath: 0,
+          enabledCallback: undefined,
+          iconIndex: 3
+        },
+        takeOrgan: {
+          enabled: true,
+          name: 'Take Organ',
+          sleepTime: 30,
+          costsForPatient: 2000,
+          costsForHospital: 500,
+          failureRegenerative: -0.2,
+          failureAbsolute: -0.4,
+          riskOfDeath: 0.2,
+          enabledCallback: (p) => p.hasOrgan,
+          iconIndex: 4
+        },
+        fixLeg: {
+          enabled: true,
+          name: 'Fix Fracture',
+          sleepTime: 20,
+          costsForPatient: 800,
+          costsForHospital: 220,
+          failureRegenerative: -0.1,
+          failureAbsolute: -0.3,
+          riskOfDeath: 0.03,
+          enabledCallback: undefined,
+          iconIndex: 5
         }
       },
       balance: {
@@ -116,6 +192,30 @@ var levels = [
           diagnose: {
             baseDuration: 1000,
             multiplicatorRange: [5, 10]
+          },
+          drugs: {
+            sleepTime: 8,
+            riskOfDeath: 0
+          },
+          placeboSurgery: {
+            sleepTime: 10,
+            riskOfDeath: 0
+          },
+          organ: {
+            sleepTime: 15,
+            riskOfDeath: 0
+          },
+          antibiotics: {
+            sleepTime: 8,
+            riskOfDeath: 0
+          },
+          takeOrgan: {
+            sleepTime: 15,
+            riskOfDeath: 0
+          },
+          fixLeg: {
+            sleepTime: 10,
+            riskOfDeath: 0
           }
         },
         balance: {

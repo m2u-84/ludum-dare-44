@@ -32,17 +32,42 @@ function GameState(currentLevel) {
 
     this.releaseTreatment = new Treatment('Release as cured',      0,    0,  0.0,  0.0, 6);
     // possible treatments
-    this.treatments = {
-        //                            name        sleepTime[s]   price pat|hosp  failure, risk of death, iconIndex
-        drugs:          new Treatment('Prescribe Drugs',     5,      100,   10,  0.0,  0.0, 0.01, undefined, 0),
-        placeboSurgery: new Treatment('Placebo Surgery',    10,     1000,   80,  0.0,  0.0,    0, undefined, 1),
-        // surgery:        new Treatment('Proper Surgery',     20,     1000,  500, -0.1, -0.3, 0.1),
-        organ:          new Treatment('Give Organ',         30,     5000, 1000, -0.1, -0.3, 0.12, () => this.hospital.organs > 0, 2),
-        antibiotics:    new Treatment('Give Antibiotics',    5,      200,   40, -0.1, -0.1,    0, undefined, 3),
-        takeOrgan:      new Treatment('Take Organ',         30,     2000,  500, -0.2, -0.4,  0.2, (p) => p.hasOrgan, 4),
-        fixLeg:         new Treatment('Fix Fracture',       20,      800,  220, -0.1, -0.3, 0.03, undefined, 5)
-    };
+
+    const levelTreatments = this.currentLevel.params.treatments;
+
+    // this.treatments = {
+    //     //                            name        sleepTime[s]   price pat|hosp  failure, risk of death, iconIndex
+    //     drugs:          new Treatment('Prescribe Drugs',     5,      100,   10,  0.0,  0.0, params.drugs.riskOfDeath, undefined, 0),
+    //     placeboSurgery: new Treatment('Placebo Surgery',    10,     1000,   80,  0.0,  0.0, params.placeboSurgery.riskOfDeath, undefined, 1),
+    //     // surgery:        new Treatment('Proper Surgery',     20,     1000,  500, -0.1, -0.3, 0.1),
+    //     organ:          new Treatment('Give Organ',         30,     5000, 1000, -0.1, -0.3, params.organ.riskOfDeath, () => this.hospital.organs > 0, 2),
+    //     antibiotics:    new Treatment('Give Antibiotics',    5,      200,   40, -0.1, -0.1, params.antibiotics.riskOfDeath, undefined, 3),
+    //     takeOrgan:      new Treatment('Take Organ',         30,     2000,  500, -0.2, -0.4, params.takeOrgan.riskOfDeath, (p) => p.hasOrgan, 4),
+    //     fixLeg:         new Treatment('Fix Fracture',       20,      800,  220, -0.1, -0.3, params.fixLeg.riskOfDeath, undefined, 5)
+    // };
+    console.log(levelTreatments);
+
+    this.treatments = {};
+    Object.keys(levelTreatments).forEach(t => {
+        console.log(levelTreatments[t])
+        if (levelTreatments[t].enabled) {
+            this.treatments[t] = new Treatment(
+                levelTreatments[t].name,
+                levelTreatments[t].sleepTime,
+                levelTreatments[t].costsForPatient,
+                levelTreatments[t].costsForHospital,
+                levelTreatments[t].failureRegenerative,
+                levelTreatments[t].failureAbsolute,
+                levelTreatments[t].riskOfDeath,
+                levelTreatments[t].enabledCallback,
+                levelTreatments[t].iconIndex);
+        }
+    });
+    console.log(this.treatments);
     this.treatmentArray = Object.keys(this.treatments).map(key => this.treatments[key]);
+
+
+    console.log(this.treatmentArray);
     this.receptions = [
         new Treatment("Admit Patient", 0, 0, this.currentLevel.params.balance.acceptPatient, 0, 0, 0, () => !this.allBedsOccupied(), 6),
         new Treatment("Send Away", 0, 0, this.currentLevel.params.balance.sendAwayPatient, 0, 0, 0, undefined, 7)
