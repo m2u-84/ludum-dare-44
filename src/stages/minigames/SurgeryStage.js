@@ -9,11 +9,12 @@ inherit(SurgeryStage, MinigameStage);
 SurgeryStage.prototype.preload = function() {
   MinigameStage.prototype.preload.call(this);
   // load graphics here
-  this.scalpelImage = loader.loadImage("assets/images/scalpel.png");
+  this.scalpelImage = loader.loadImage("assets/images/scalpel.png", 1, 2);
   this.bodyImage = loader.loadImage("assets/images/surgery_body.png");
-  this.holeImage = loader.loadImage("assets/images/organ.png");
+  this.holeImage = loader.loadImage("assets/images/surgery_cut.png");
   this.handImage = loader.loadImage("assets/images/darthand_back.png");
   this.thumbImage = loader.loadImage("assets/images/darthand_front.png");
+  this.bloodSplatImage = loader.loadImage("assets/images/bloodsplat.png", 1, 4);
 };
 
 SurgeryStage.prototype.prestart = function(payload) {
@@ -37,6 +38,8 @@ SurgeryStage.prototype.prestart = function(payload) {
   this.y = 0;
   this.yoff = 0;
   this.vy = 0;
+  this.scalpelFrame = 0;
+  this.bloodSplatFrame = 0;
 };
 
 SurgeryStage.prototype.update = function(timer) {
@@ -76,17 +79,22 @@ SurgeryStage.prototype.update = function(timer) {
       if (this.yoff > this.stopHeight * this.h) {
         // Start to cut
         this.cutStarted = true;
+        this.cutStartTime = this.time;
         this.cutStart = this.x;
         this.cutEnd = this.x;
       }
     } else {
       if (this.yoff > this.stopHeight * this.h) {
         // Cutting process
+        if ((this.time - this.cutStartTime) > 400) this.bloodSplatFrame = 2;
+        else if ((this.time - this.cutStartTime) > 200) this.bloodSplatFrame = 1;
         this.cutStart = Math.min(this.cutStart, this.x - 1);
         this.cutEnd = Math.max(this.cutEnd, this.x + 1);
       } else {
         // End cut
+        this.bloodSplatFrame = 3;
         this.cutEnded = true;
+        this.scalpelFrame = 1;
         this.evaluationTime = this.time + this.evaluationDelay;
       }
     }
@@ -119,7 +127,8 @@ SurgeryStage.prototype.render = function(ctx, timer) {
   if (this.cutStarted) {
     const holeScale = (this.cutEnd - this.cutStart) / this.holeImage.width;
     const holeScaleY = holeScale > 2 ? 1 : holeScale - 0.25 * Math.pow(holeScale, 2);
-    drawImageToScreen(ctx, this.holeImage, this.cutStart, holeHeight, 0, holeScale, holeScaleY, 0, 0.5);
+    drawFrame(ctx, this.bloodSplatImage, this.bloodSplatFrame, 145, Math.floor(holeHeight) + 3, 0, 1, 1, 0, 0.5);
+    drawImageToScreen(ctx, this.holeImage, this.cutStart, Math.floor(holeHeight), 0, holeScale, holeScaleY, 0, 0.5);
   }
   // Hand with scalpel
   ctx.save();
@@ -128,7 +137,7 @@ SurgeryStage.prototype.render = function(ctx, timer) {
   ctx.clip();
   drawImageToScreen(ctx, this.handImage, this.x, this.y, Math.PI / 2, 1, 1, 0.9, 0.1);
   const mirror = (this.x < this.lastX) ? 1 : -1;
-  drawImageToScreen(ctx, this.scalpelImage, this.x, this.y, Math.PI / 2 + this.scalpelAngle, 1, 1 * mirror, 0.2, 0.5);
+  drawFrame(ctx, this.scalpelImage, this.scalpelFrame, this.x, this.y, Math.PI / 2 + this.scalpelAngle, 1, 1 * mirror, 0.2, 0.5);
   drawImageToScreen(ctx, this.thumbImage, this.x, this.y, Math.PI / 2, 1, 1, 0.9, 0.1);
   ctx.restore();
   const h = 180;
