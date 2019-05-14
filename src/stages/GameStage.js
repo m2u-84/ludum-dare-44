@@ -277,7 +277,7 @@ GameStage.prototype.getRandomElement = function(list) {
     return null;
 };
 
-GameStage.prototype.calculateScore = function() {
+GameStage.prototype.calculateScore = function(useTimeBonus) {
   let score = 0;
 
   score += (this.gameState.stats.patientsAccepted * 50);
@@ -301,10 +301,10 @@ GameStage.prototype.calculateScore = function() {
   // console.log('treatment bad: -', this.gameState.stats.treatmentsFailed * 250);
 
   const timeBonus = (600 - this.gameState.stats.totalSeconds) * 20;
-  score += (timeBonus > 0) ? timeBonus : 0;
+  score += (timeBonus > 0 && useTimeBonus) ? timeBonus : 0;
   // console.log('timebonus: +', (timeBonus > 0) ? timeBonus : 0);
 
-  return score;
+  return score >= 0 ? score : 0;
 }
 
 GameStage.prototype.isHighscore = function(levelNum, score) {

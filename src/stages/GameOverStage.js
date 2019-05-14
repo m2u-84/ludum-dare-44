@@ -52,7 +52,7 @@ GameOverStage.prototype.prestart = function(payload) {
   this.soundGameOver.play();
 
   // Set highscores
-  this.score = gameStage.calculateScore();
+  this.score = gameStage.calculateScore(this.gameOverNr == 2 ? true : false);
   if (gameStage.isHighscore(gameStage.gameState.currentLevel.num, this.score)) {
     this.isHighscore = true;
     gameStage.writeHighScore(gameStage.gameState.currentLevel.num, this.score)
@@ -87,8 +87,8 @@ GameOverStage.prototype.render = function(ctx, timer) {
   bigFont.drawText(ctx, "" + this.score, 152, 182, "green", 1);
 
   // Draw Statistics
-  mainFont.drawText(ctx, gameStage.gameState.stats.playTime, 135, 79, "darkgray", 1);
-  mainFont.drawText(ctx, gameStage.gameState.stats.patientCount, 135, 90, "green", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.playTime, 135, 79, "green", 1);
+  mainFont.drawText(ctx, gameStage.gameState.stats.patientCount, 135, 90, "darkgray", 1);
   mainFont.drawText(ctx, gameStage.gameState.stats.patientsAccepted, 135, 101, "green", 1);
   mainFont.drawText(ctx, gameStage.gameState.stats.patientsRejected, 135, 112, "red", 1);
   mainFont.drawText(ctx, gameStage.gameState.stats.patientsDied, 135, 123, "red", 1);
