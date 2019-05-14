@@ -283,4 +283,3 @@ const levelOverrides = [
 ]
 
 var levels = levelOverrides.map(levelOverride => deepmerge(defaultSettings, levelOverride));
-console.log(levels);

@@ -281,28 +281,28 @@ GameStage.prototype.calculateScore = function() {
   let score = 0;
 
   score += (this.gameState.stats.patientsAccepted * 50);
-  console.log('accepted: +', this.gameState.stats.patientsAccepted * 50);
+  // console.log('accepted: +', this.gameState.stats.patientsAccepted * 50);
   score += (this.gameState.stats.patientsCured * 250);
-  console.log('cured: +', this.gameState.stats.patientsCured * 250);
+  // console.log('cured: +', this.gameState.stats.patientsCured * 250);
   score += (this.gameState.stats.treatmentsSucceeded * 20);
-  console.log('treatment ok: +', this.gameState.stats.treatmentsSucceeded * 20);
+  // console.log('treatment ok: +', this.gameState.stats.treatmentsSucceeded * 20);
   score += (this.gameState.stats.pingPongBounces * 20);
-  console.log('pingpong ok: +', this.gameState.stats.pingPongBounces * 20);
+  // console.log('pingpong ok: +', this.gameState.stats.pingPongBounces * 20);
   score += (Math.floor(this.gameState.stats.moneyEarned / 1.5));
-  console.log('money: +', Math.floor(this.gameState.stats.moneyEarned / 1.5));
+  // console.log('money: +', Math.floor(this.gameState.stats.moneyEarned / 1.5));
   score += (this.gameState.stats.diagnoses * 25);
-  console.log('diagnoses: +', this.gameState.stats.diagnoses * 25);
+  // console.log('diagnoses: +', this.gameState.stats.diagnoses * 25);
 
   score -= (this.gameState.stats.patientsRejected * 100);
-  console.log('rejected: -', this.gameState.stats.patientsRejected * 100);
+  // console.log('rejected: -', this.gameState.stats.patientsRejected * 100);
   score -= (this.gameState.stats.patientsDied * 500);
-  console.log('died: -', this.gameState.stats.patientsDied * 500);
+  // console.log('died: -', this.gameState.stats.patientsDied * 500);
   score -= (this.gameState.stats.treatmentsFailed * 250);
-  console.log('treatment bad: -', this.gameState.stats.treatmentsFailed * 250);
+  // console.log('treatment bad: -', this.gameState.stats.treatmentsFailed * 250);
 
   const timeBonus = (600 - this.gameState.stats.totalSeconds) * 20;
   score += (timeBonus > 0) ? timeBonus : 0;
-  console.log('timebonus: +', (timeBonus > 0) ? timeBonus : 0);
+  // console.log('timebonus: +', (timeBonus > 0) ? timeBonus : 0);
 
   return score;
 }
@@ -334,7 +334,7 @@ GameStage.prototype.onkey = function (event) {
     if (event.key === "f") {
         this.drawFPS = !this.drawFPS;
     }
-    // if (window["cheats"]) {
+    if (window["cheats"]) {
       if (event.key == "k") {
           // Kill all patients
           this.gameState.patients.forEach( p => p.die() );
@@ -352,7 +352,7 @@ GameStage.prototype.onkey = function (event) {
       } else if (event.key == "c") {
         this.gameState.setGameOver("gameover", 800, 2);
       }
-    // }
+    }
 };
 
 function isSpecialCharacter(char) {
