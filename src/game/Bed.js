@@ -3,6 +3,7 @@ function Bed(x, y) {
     let position2 = {x: x, y: y+1};
     this.positions = [position1, position2];
     this.occupiedBy = null;
+    this.animationOffset = rnd(9999);
 }
 
 Bed.load = function() {
@@ -23,7 +24,7 @@ Bed.prototype.paint = function(ctx) {
     let frame = 0, headFrame = -1;
     const patient = this.occupiedBy;
     if (patient) {
-        frame = 1 + Math.floor((gameStage.time + patient.animationOffset) / 1600) % 2;
+        frame = 1 + Math.floor((gameStage.time + this.animationOffset) / 1600) % 2;
         headFrame = patient.patientImageIndex;
         if (patient.state == PatientStates.DEAD) {
             headFrame += 4;
