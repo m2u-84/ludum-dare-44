@@ -37,7 +37,7 @@ function GameState(currentLevel) {
 
     this.treatments = {};
     Object.keys(treatmentSettings).forEach(t => {
-        if (treatmentSettings[t].enabled) {
+        if (treatmentSettings[t].isTreatment) {
             this.treatments[t] = new Treatment(
                 treatmentSettings[t].name,
                 treatmentSettings[t].sleepTime,

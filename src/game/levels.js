@@ -1,8 +1,99 @@
-const defaultParams = {
-
+const defaultSettings = {
+  params: {
+    treatments: {
+      diagnose: {
+        baseDuration: 1000,
+        multiplicatorRange: [7, 40]
+      },
+      drugs: {
+        isTreatment: true,
+        name: 'Prescribe Drugs',
+        sleepTime: 5,
+        costsForPatient: 100,
+        costsForHospital: 10,
+        failureRegenerative: 0.0,
+        failureAbsolute: 0.0,
+        riskOfDeath: 0.01,
+        enabledCallback: undefined,
+        iconIndex: 0
+      },
+      surgery: {
+        isTreatment: true,
+        name: 'Surgery',
+        sleepTime: 20,
+        costsForPatient: 1000,
+        costsForHospital: 500,
+        failureRegenerative: -0.1,
+        failureAbsolute: -0.3,
+        riskOfDeath: 0.1,
+        enabledCallback: undefined,
+        iconIndex: 9
+      },
+      placeboSurgery: {
+        isTreatment: true,
+        name: 'Placebo Surgery',
+        sleepTime: 10,
+        costsForPatient: 1000,
+        costsForHospital: 80,
+        failureRegenerative: 0.0,
+        failureAbsolute: 0.0,
+        riskOfDeath: 0,
+        enabledCallback: undefined,
+        iconIndex: 1
+      },
+      organ: {
+        isTreatment: true,
+        name: 'Give Organ',
+        sleepTime: 30,
+        costsForPatient: 5000,
+        costsForHospital: 1000,
+        failureRegenerative: -0.1,
+        failureAbsolute: -0.3,
+        riskOfDeath: 0.12,
+        enabledCallback: () => gameStage.gameState.hospital.organs > 0,
+        iconIndex: 2
+      },
+      antibiotics: {
+        isTreatment: true,
+        name: 'Give Antibiotics',
+        sleepTime: 5,
+        costsForPatient: 200,
+        costsForHospital: 40,
+        failureRegenerative: -0.1,
+        failureAbsolute: -0.1,
+        riskOfDeath: 0,
+        enabledCallback: undefined,
+        iconIndex: 3
+      },
+      takeOrgan: {
+        isTreatment: true,
+        name: 'Take Organ',
+        sleepTime: 30,
+        costsForPatient: 2000,
+        costsForHospital: 500,
+        failureRegenerative: -0.2,
+        failureAbsolute: -0.4,
+        riskOfDeath: 0.2,
+        enabledCallback: (p) => p.hasOrgan,
+        iconIndex: 4
+      },
+      fixLeg: {
+        isTreatment: true,
+        name: 'Fix Fracture',
+        sleepTime: 20,
+        costsForPatient: 800,
+        costsForHospital: 220,
+        failureRegenerative: -0.1,
+        failureAbsolute: -0.3,
+        riskOfDeath: 0.03,
+        enabledCallback: undefined,
+        iconIndex: 5
+      }
+    }
+  }
 }
 
-var levels = [
+const levelOverrides = [
   {
     num: 1,
     mapImage: 'level1.png',
@@ -22,96 +113,6 @@ var levels = [
       },
       doctor: {
         startingPos: [11, 12.8]
-      },
-      treatments: {
-        diagnose: {
-          baseDuration: 1000,
-          multiplicatorRange: [7, 40]
-        },
-        drugs: {
-          enabled: true,
-          name: 'Prescribe Drugs',
-          sleepTime: 5,
-          costsForPatient: 100,
-          costsForHospital: 10,
-          failureRegenerative: 0.0,
-          failureAbsolute: 0.0,
-          riskOfDeath: 0.01,
-          enabledCallback: undefined,
-          iconIndex: 0
-        },
-        surgery: {
-          enabled: true,
-          name: 'Surgery',
-          sleepTime: 20,
-          costsForPatient: 1000,
-          costsForHospital: 500,
-          failureRegenerative: -0.1,
-          failureAbsolute: -0.3,
-          riskOfDeath: 0.1,
-          enabledCallback: undefined,
-          iconIndex: 9
-        },
-        placeboSurgery: {
-          enabled: true,
-          name: 'Placebo Surgery',
-          sleepTime: 10,
-          costsForPatient: 1000,
-          costsForHospital: 80,
-          failureRegenerative: 0.0,
-          failureAbsolute: 0.0,
-          riskOfDeath: 0,
-          enabledCallback: undefined,
-          iconIndex: 1
-        },
-        organ: {
-          enabled: true,
-          name: 'Give Organ',
-          sleepTime: 30,
-          costsForPatient: 5000,
-          costsForHospital: 1000,
-          failureRegenerative: -0.1,
-          failureAbsolute: -0.3,
-          riskOfDeath: 0.12,
-          enabledCallback: () => gameStage.gameState.hospital.organs > 0,
-          iconIndex: 2
-        },
-        antibiotics: {
-          enabled: true,
-          name: 'Give Antibiotics',
-          sleepTime: 5,
-          costsForPatient: 200,
-          costsForHospital: 40,
-          failureRegenerative: -0.1,
-          failureAbsolute: -0.1,
-          riskOfDeath: 0,
-          enabledCallback: undefined,
-          iconIndex: 3
-        },
-        takeOrgan: {
-          enabled: true,
-          name: 'Take Organ',
-          sleepTime: 30,
-          costsForPatient: 2000,
-          costsForHospital: 500,
-          failureRegenerative: -0.2,
-          failureAbsolute: -0.4,
-          riskOfDeath: 0.2,
-          enabledCallback: (p) => p.hasOrgan,
-          iconIndex: 4
-        },
-        fixLeg: {
-          enabled: true,
-          name: 'Fix Fracture',
-          sleepTime: 20,
-          costsForPatient: 800,
-          costsForHospital: 220,
-          failureRegenerative: -0.1,
-          failureAbsolute: -0.3,
-          riskOfDeath: 0.03,
-          enabledCallback: undefined,
-          iconIndex: 5
-        }
       },
       balance: {
         curedPatient: 500,
@@ -202,7 +203,6 @@ var levels = [
         },
         treatments: {
           diagnose: {
-            baseDuration: 1000,
             multiplicatorRange: [5, 10]
           },
           drugs: {
@@ -242,7 +242,7 @@ var levels = [
           firstSpawnTime: 3000,
           spawnTimeFactor: 1,
           spawnTimeFactorReduction: 1.04,
-          spawnIntervalRange: [15000, 25000],
+          spawnIntervalRange: [20000, 40000],
           maxSpawnIntervalRange: [5000, 9000],
           healthRange: [35, 85],
           patientsWithFullHealth: 1,
@@ -281,3 +281,6 @@ var levels = [
             + 'wwwwwwwsswwwwwwwwwwwwww'
     },
 ]
+
+var levels = levelOverrides.map(levelOverride => deepmerge(defaultSettings, levelOverride));
+console.log(levels);
