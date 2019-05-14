@@ -35,6 +35,7 @@ window.onload = () => {
               .add(new PlaceboStage())
               .add(new TakeOrganStage())
               .add(new DrugStage())
+              .add(new SurgeryStage())
               .add(new OrganStage());
 
   // Load stage content
