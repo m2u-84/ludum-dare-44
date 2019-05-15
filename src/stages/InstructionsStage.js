@@ -24,7 +24,8 @@ InstructionsStage.prototype.preload = function() {
   this.soundSliding = loader.loadAssetAudio({src: 'sounds/paper-sliding/paper-sliding.mp3'});
   this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
   this.confirmSound = loader.loadAssetAudio({src: 'sounds/key-clicking/confirm.mp3'});
-  this.introButton = new Button(this.buttonImage, introButtonFrames, function() { stageManager.activeStage.transitionOut(800); }, this.confirmSound, this.hoverSound);
+  this.introButton = new Button(this.buttonImage, introButtonFrames, () => this.transitionOut(800),
+      this, this.confirmSound, this.hoverSound);
 }
 
 InstructionsStage.prototype.prestart = function() {

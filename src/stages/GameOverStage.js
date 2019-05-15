@@ -65,8 +65,10 @@ GameOverStage.prototype.preload = function() {
   this.scorePanelImage = loader.loadAssetImage('scorepanel.png', 1, 8);
   this.scoreLabelImage = loader.loadAssetImage('scorelabel.png', 1, 14);
   this.soundGameOver = loader.loadAssetAudio({src: 'sounds/outcomes/outcomes-gameover.mp3'});
-  this.backToMenuButton = new Button(this.buttonImage, backToMenuButtonFrames, function() { stageManager.activeStage.transitionTo("levelSelect"); }, this.confirmSound, this.hoverSound);
-  this.keepPlayingButton = new Button(this.buttonImage, keepPlayingButtonFrames, function() { stageManager.activeStage.transitionOut(800); }, this.confirmSound, this.hoverSound);
+  this.backToMenuButton = new Button(this.buttonImage, backToMenuButtonFrames, () => this.transitionTo("levelSelect"),
+      this, this.confirmSound, this.hoverSound);
+  this.keepPlayingButton = new Button(this.buttonImage, keepPlayingButtonFrames, () => this.transitionOut(800),
+      this, this.confirmSound, this.hoverSound);
 }
 
 GameOverStage.prototype.prestart = function(payload) {

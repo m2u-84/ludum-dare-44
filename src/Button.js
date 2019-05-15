@@ -17,24 +17,26 @@
  * @param {Sound} hoverSound    Option click sound
  */
 
-function Button(image, frames, action, clickSound = null, hoverSound = null) {
+function Button(image, frames, action, stage = null, clickSound = null, hoverSound = null) {
   this.image = image;
   this.frames = frames;
   this.hoverSound = hoverSound;
   this.clickSound = clickSound;
   this.action = action;
   this.frame = 0;
+  this.stage = stage;
   this.hovered = false;
   this.armed = false;
 }
 
 Button.prototype.isHovered = function(x, y, offsetX, offsetY) {
-    return (
-        mouseHandler.mouse.canvasX >= (x + offsetX) &&
-        mouseHandler.mouse.canvasX < (x + offsetX + this.image.frameWidth) &&
-        mouseHandler.mouse.canvasY >= (y + offsetY) &&
-        mouseHandler.mouse.canvasY < (y + offsetY + this.image.frameHeight)
-    );
+  const mouse = this.getMouse();
+  return (
+      mouse.canvasX >= (x + offsetX) &&
+      mouse.canvasX <  (x + offsetX + this.image.frameWidth) &&
+      mouse.canvasY >= (y + offsetY) &&
+      mouse.canvasY <  (y + offsetY + this.image.frameHeight)
+  );
 }
 
 /**
@@ -46,27 +48,32 @@ Button.prototype.isHovered = function(x, y, offsetX, offsetY) {
  */
 
 Button.prototype.paint = function(ctx, x, y, offsetX = 0, offsetY = 0) {
+  const mouse = this.getMouse();
+  if (this.hovered && this.armed && !mouse.click) {
+    if (this.clickSound) this.clickSound.play();
+    this.action();
+    this.armed = false;
 
-    if (this.hovered && this.armed && !mouseHandler.mouse.click) {
-      if (this.clickSound) this.clickSound.play();
-      this.action();
-      this.armed = false;
-
-    } else if (this.isHovered(x,y,offsetX,offsetY) && this.hovered && mouseHandler.mouse.click) {
-      this.armed = true;
-      this.frame = getArrayFrame(timer.gameTime / this.frames.armedSpeed, this.frames.armed);
-    } else if (this.isHovered(x,y,offsetX,offsetY) && !mouseHandler.mouse.click) {
-      if (!this.hovered) {
-        this.hovered = true;
-        if (this.hoverSound) this.hoverSound.play();
-      } else {
-        this.frame = getArrayFrame(timer.gameTime / this.frames.hoveredSpeed, this.frames.hovered);
-      }
-    } else if (!this.isHovered(x,y,offsetX,offsetY)) {
-      this.hovered = false;
-      this.armed = false;
-      this.frame = getArrayFrame(timer.gameTime / this.frames.idleSpeed, this.frames.idle);
+  } else if (this.isHovered(x,y,offsetX,offsetY) && this.hovered && mouse.click) {
+    this.armed = true;
+    this.frame = getArrayFrame(timer.gameTime / this.frames.armedSpeed, this.frames.armed);
+  } else if (this.isHovered(x,y,offsetX,offsetY) && !mouse.click) {
+    if (!this.hovered) {
+      this.hovered = true;
+      if (this.hoverSound) this.hoverSound.play();
+    } else {
+      this.frame = getArrayFrame(timer.gameTime / this.frames.hoveredSpeed, this.frames.hovered);
     }
-      
-      drawFrame(ctx, this.image, this.frame, x, y, 0, 1, 1, 0, 0);
+  } else if (!this.isHovered(x,y,offsetX,offsetY)) {
+    this.hovered = false;
+    this.armed = false;
+    this.frame = getArrayFrame(timer.gameTime / this.frames.idleSpeed, this.frames.idle);
+  }
+
+  drawFrame(ctx, this.image, this.frame, x, y, 0, 1, 1, 0, 0);
+};
+
+Button.prototype.getMouse = function() {
+  const mouse = this.stage ? this.stage.getMouse() : mouseHandler.mouse;
+  return mouse;
 };

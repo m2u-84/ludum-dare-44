@@ -37,7 +37,8 @@ ContextMenuStage.prototype.prestart = function(payload) {
 
   this.actionButtons = {};
   this.actions.forEach(action => {
-    this.actionButtons[action.name] = new Button(this.buttonImage, buttonframes, function() { stageManager.activeStage.executeButtonAction(action) }, this.confirmSound, this.hoverSound);
+    this.actionButtons[action.name] = new Button(this.buttonImage, buttonframes, () => this.executeButtonAction(action),
+        this, this.confirmSound, this.hoverSound);
   });
 };
 

@@ -52,7 +52,7 @@ Stage.prototype.getKeyState = function(key) {
 };
 
 Stage.prototype.getMouse = function() {
-  if (this.active) {
+  if (this.active && this.opacity >= 1) {
     return mouse;
   } else {
     return {

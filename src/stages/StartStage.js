@@ -22,7 +22,8 @@ StartStage.prototype.preload = function() {
   this.menuButtonImage = loader.loadAssetImage('menu_buttons.png', 8, 3);
   this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
   this.startingSound = loader.loadAssetAudio({src: 'sounds/game-starting/game-starting.mp3'});
-  this.menuButton = new Button(this.menuButtonImage, menuButton1frames, () => this.transitionTo('levelSelect'), this.startingSound, this.hoverSound);
+  this.menuButton = new Button(this.menuButtonImage, menuButton1frames, () => this.transitionTo('levelSelect'),
+      this, this.startingSound, this.hoverSound);
 }
 
 StartStage.prototype.prestart = function() {
