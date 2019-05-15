@@ -22,8 +22,8 @@ inherit(MinigameStage, Stage);
 MinigameStage.prototype.preload = function() {
   this.background = loader.loadAssetImage('minigames_background.png');
   this.successIcon = loader.loadAssetImage('tick.png');
+  this.labelPerfect = loader.loadAssetImage('perfect.png', 1, 22);
   this.failIcon = loader.loadAssetImage('cross.png');
-
   this.soundSuccess = loader.loadAssetAudio({src: 'sounds/outcomes/outcomes-success.mp3'});
   this.soundFailure = loader.loadAssetAudio({src: 'sounds/outcomes/outcomes-failure.mp3'});
 };
@@ -38,6 +38,7 @@ MinigameStage.prototype.prestart = function(payload) {
   this.closeTime = 0;
   this.closeCallback = null;
   this.hintProgress = 0;
+  this.labelFrame = 0;
 };
 
 MinigameStage.prototype.stop = function() {
@@ -74,12 +75,14 @@ MinigameStage.prototype.close = function(success) {
       this.succeededOnce = true;
     }
     this.paused = true;
-    this.closeTime = this.time + 700;
+    this.pauseTime = this.time;
+    this.closeTime = this.time + 1000;
     this.closeCallback = () => this.prestart(this.payload);
   } else {
     // No training mode, so close minigame
     this.paused = true;
-    this.closeTime = this.time + 700;
+    this.pauseTime = this.time;
+    this.closeTime = this.time + 1000;
     this.closeCallback = null;
     this.hint = gameStage.gameState.hintSystem.getHint();
   }
@@ -159,7 +162,15 @@ MinigameStage.prototype.renderOnTop = function(ctx, timer) {
   if (this.paused) {
     if (this.success) {
       // Checkmark
-      drawImageToScreen(ctx, this.successIcon, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5);
+      
+      if (this.time - this.pauseTime >= (Math.floor((this.closeTime - this.pauseTime) / this.labelPerfect.frameCount) * (this.labelFrame + 1)) ) {
+        // console.log(this.closeTime - this.time);
+        this.labelFrame++;
+      }
+
+      if (this.labelFrame < this.labelPerfect.frameCount)
+        drawFrame(ctx, this.labelPerfect, this.labelFrame, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5, 1)
+
     } else {
       // Nope
       drawImageToScreen(ctx, this.failIcon, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5);
