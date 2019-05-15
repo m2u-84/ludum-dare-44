@@ -47,7 +47,7 @@ TakeOrganStage.prototype.update = function(timer) {
   if (this.paused) { return; }
   if (!this.isTaking) {
     // Hand movement
-    const speed = 2.5;
+    const speed = 4.2;
     const t = (this.time - this.sessionStart) * 0.001 * speed + this.sessionOffset;
     this.x = this.w * (0.5 + 0.35 * Math.sin(t)) + 8 * wobble(this.time, 10, 0, 2);
     this.y = this.h * 0.2 + 10 * wobble(this.time, 13.7, 1, 2);

@@ -46,7 +46,7 @@ FractureStage.prototype.update = function(timer) {
   if (this.paused) { return; }
   this.nailX = 108;
   this.nailY = this.h - 50;
-  const wobbleX = 50 * wobble(this.time, 5, 1, 1.6), wobbleY = 15 * wobble(this.time, 8.6, -0.7, 1.2);
+  const wobbleX = 54 * wobble(this.time, 6.5, 1, 1.5), wobbleY = 15 * wobble(this.time, 8.6, -0.7, 1.2);
   if (!this.hammering && !this.holding && !this.returning) {
     this.hammerX = this.nailX + wobbleX;
     this.hammerY = this.nailY - 100 + wobbleY;
