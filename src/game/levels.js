@@ -214,7 +214,8 @@ const levelOverrides = [
         },
         treatments: {
           diagnose: {
-            multiplicatorRange: [5, 10]
+            baseDuration: 500,
+            multiplicatorRange: [4, 8]
           },
           drugs: {
             sleepTime: 8,
@@ -255,7 +256,7 @@ const levelOverrides = [
           spawnTimeFactorReduction: 1.04,
           spawnIntervalRange: [15000, 25000],
           maxSpawnIntervalRange: [10000, 15000],
-          healthRange: [35, 85],
+          healthRange: [45, 85],
           patientsWithFullHealth: 1,
           wealthRange: [15, 100],
           healthDecrease: 1.5,
