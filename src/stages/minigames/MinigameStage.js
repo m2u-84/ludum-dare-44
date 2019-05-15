@@ -21,9 +21,8 @@ inherit(MinigameStage, Stage);
 
 MinigameStage.prototype.preload = function() {
   this.background = loader.loadAssetImage('minigames_background.png');
-  this.successIcon = loader.loadAssetImage('tick.png');
   this.labelPerfect = loader.loadAssetImage('perfect.png', 1, 22);
-  this.failIcon = loader.loadAssetImage('cross.png');
+  this.labelWhoops = loader.loadAssetImage('whoops.png', 1, 22);
   this.soundSuccess = loader.loadAssetAudio({src: 'sounds/outcomes/outcomes-success.mp3'});
   this.soundFailure = loader.loadAssetAudio({src: 'sounds/outcomes/outcomes-failure.mp3'});
 };
@@ -160,20 +159,17 @@ MinigameStage.prototype.renderOnTop = function(ctx, timer) {
   }
   // Success or not
   if (this.paused) {
-    if (this.success) {
-      // Checkmark
-      
-      if (this.time - this.pauseTime >= (Math.floor((this.closeTime - this.pauseTime) / this.labelPerfect.frameCount) * (this.labelFrame + 1)) ) {
-        // console.log(this.closeTime - this.time);
-        this.labelFrame++;
+    if (this.time - this.pauseTime >= (Math.floor((this.closeTime - this.pauseTime) / this.labelPerfect.frameCount) * (this.labelFrame + 1))) {
+      this.labelFrame++;
+    }
+    if (this.labelFrame < this.labelPerfect.frameCount) {
+      if (this.success) {
+        // Perfect
+          drawFrame(ctx, this.labelPerfect, this.labelFrame, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5, 1)
+      } else {
+        // Whoops
+        drawFrame(ctx, this.labelWhoops, this.labelFrame, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5, 1)
       }
-
-      if (this.labelFrame < this.labelPerfect.frameCount)
-        drawFrame(ctx, this.labelPerfect, this.labelFrame, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5, 1)
-
-    } else {
-      // Nope
-      drawImageToScreen(ctx, this.failIcon, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5);
     }
   }
   // Hint
