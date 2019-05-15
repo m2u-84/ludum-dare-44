@@ -18,8 +18,8 @@ TemplateStage.prototype.prestart = function(payload) {
 };
 
 TemplateStage.prototype.update = function(timer) {
-  if (this.paused) { return; }
   MinigameStage.prototype.update.call(this, timer);
+  if (this.paused) { return; }
   // If minigame is won or lost:
   if (someCondition) {
     success = someEvaluation;

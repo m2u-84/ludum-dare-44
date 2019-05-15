@@ -43,8 +43,8 @@ TakeOrganStage.prototype.stop = function() {
 };
 
 TakeOrganStage.prototype.update = function(timer) {
-  if (this.paused) { return; }
   MinigameStage.prototype.update.call(this, timer);
+  if (this.paused) { return; }
   if (!this.isTaking) {
     // Hand movement
     const speed = 2.5;

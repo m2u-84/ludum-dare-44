@@ -30,6 +30,10 @@ function GameState(currentLevel) {
         treatmentsSucceeded: 0
     }
 
+    this.hintSystem = new HintSystem();
+    const hints = this.currentLevel.hints.map(text => new Hint(text));
+    hints.forEach(hint => this.hintSystem.add(hint));
+
     this.releaseTreatment = new Treatment('Release as cured',      0,    0,  0.0,  0.0, 6);
     
     // possible treatments

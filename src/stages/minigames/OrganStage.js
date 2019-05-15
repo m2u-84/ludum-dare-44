@@ -47,8 +47,8 @@ OrganStage.prototype.prestop = function() {
 };
 
 OrganStage.prototype.update = function(timer) {
-  if (this.paused) { return; }
   MinigameStage.prototype.update.call(this, timer);
+  if (this.paused) { return; }
   if (this.bounceHeight == 0) this.bounceHeight = this.h * 0.7;
   if (!this.isFlying) {
     const speed = 2.5;

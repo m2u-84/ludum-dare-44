@@ -57,9 +57,9 @@ PlaceboStage.prototype.prestart = function(payload) {
 };
 
 PlaceboStage.prototype.update = function(timer) {
+  MinigameStage.prototype.update.call(this, timer);
   if (this.paused) { return; }
   const self = this;
-  MinigameStage.prototype.update.call(this, timer);
   // Paddle Controls
   const rl = ((this.getKeyState("d") || this.getKeyState("ArrowRight")) ? 1 : 0) -
       ((this.getKeyState("a") || this.getKeyState("ArrowLeft")) ? 1 : 0);

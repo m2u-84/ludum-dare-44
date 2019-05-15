@@ -90,7 +90,13 @@ const defaultSettings = {
         iconIndex: 5
       }
     }
-  }
+  },
+  hints: [
+    'Wealthy patients pay more for treatments',
+    'Wealthy patients wear suits',
+    'Occupied beds yield regular rent',
+    'Wealthy patients pay higher bed rent'
+  ]
 }
 
 const levelOverrides = [
@@ -105,6 +111,11 @@ const levelOverrides = [
         endingKey: 'beach'
       }
     },
+    hints: [
+      'The mafia takes increasing amounts of money\nevery time they visit',
+      'When the police witnesses the facility manager\ndisposing of a body, you pay a fine',
+      'You can only bribe the police twice,\nthe third time there will be no escape'
+    ],
     params: {
       hospital: {
         startingBalance: 2500,

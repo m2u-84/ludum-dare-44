@@ -30,8 +30,8 @@ SyringeStage.prototype.prestart = function(payload) {
 };
 
 SyringeStage.prototype.update = function(timer) {
-  if (this.paused) { return; }
   MinigameStage.prototype.update.call(this, timer);
+  if (this.paused) { return; }
   this.targetY = this.h * 0.64;
   this.armLeft = this.w - 90;
   this.armRight = this.w - 30;

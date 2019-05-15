@@ -43,8 +43,8 @@ SurgeryStage.prototype.prestart = function(payload) {
 };
 
 SurgeryStage.prototype.update = function(timer) {
-  if (this.paused || this.timeDif <= 0) { return; }
   MinigameStage.prototype.update.call(this, timer);
+  if (this.paused || this.timeDif <= 0) { return; }
   // Self update
   // Base position
   this.scalpelAngle = 0 * 0.2 * wobble(this.time, 8.7, 0.4);

@@ -15,6 +15,7 @@ function MinigameStage(name) {
   this.forceHelpText = false;
   this.helpText = "";
   this.paused = false;
+  this.closeTime = 0;
 }
 inherit(MinigameStage, Stage);
 
@@ -34,6 +35,9 @@ MinigameStage.prototype.prestart = function(payload) {
   this.patient = payload.patient;
   this.firstAttempt = (this.numberOfExecutions == 0 || !this.trainingLeft);
   this.numberOfExecutions++;
+  this.closeTime = 0;
+  this.closeCallback = null;
+  this.hintProgress = 0;
 };
 
 MinigameStage.prototype.stop = function() {
@@ -65,14 +69,19 @@ MinigameStage.prototype.close = function(success) {
   }
 
   if (this.firstAttempt) {
+    // Restart during training mode
     if (success) {
       this.succeededOnce = true;
     }
     this.paused = true;
-    setTimeout(() => this.prestart(this.payload), 700);
+    this.closeTime = this.time + 700;
+    this.closeCallback = () => this.prestart(this.payload);
   } else {
+    // No training mode, so close minigame
     this.paused = true;
-    setTimeout(() => this.transitionOut(), 700);
+    this.closeTime = this.time + 700;
+    this.closeCallback = null;
+    this.hint = gameStage.gameState.hintSystem.getHint();
   }
 }
 
@@ -82,6 +91,14 @@ MinigameStage.prototype.update = function(timer) {
     this.prestart(this.payload);
   } else if (this.getKeyState("Escape") && this.active && !stageManager.get("pause").alive) {
     this.transitionIn("pause", 400);
+  } else if (this.closeTime) {
+    if (this.time >= this.closeTime) {
+      if (this.closeCallback) { this.closeCallback(); }
+      this.hintProgress = clamp(this.hintProgress + this.timeDif * 0.003, 0, 1);
+      if (this.getKeyState(" ") || this.getKeyState("Enter")) {
+        if (!this.closeCallback) { this.transitionOut(700); }
+      }
+    }
   }
 };
 
@@ -146,6 +163,25 @@ MinigameStage.prototype.renderOnTop = function(ctx, timer) {
     } else {
       // Nope
       drawImageToScreen(ctx, this.failIcon, this.w / 2, this.h / 2, 0, 1, 1, 0.5, 0.5);
+    }
+  }
+  // Hint
+  if (this.hintProgress > 0) {
+    // Black background
+    ctx.globalAlpha = Interpolators.cubic2(this.hintProgress);
+    ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+    ctx.fillRect(0, 0, this.w, this.h);
+    // Hint
+    if (this.hint) {
+      const lines = this.hint.getLines();
+      let y = Math.round(this.h * 0.5 - 10 * (lines.length - 1));
+      for (const line of lines) {
+        mainFont.drawText(ctx, line, this.w / 2, y, "white", 0.5, BitmapFontStyle.NONE);
+        y += 20;
+      }
+      ctx.globalAlpha *= 0.5;
+      mainFont.drawText(ctx, "Did you know?", this.w / 2, 25, "white", 0.5, BitmapFontStyle.NONE);
+      mainFont.drawText(ctx, "Space to proceed", this.w / 2, this.h - 25, "white", 0.5, BitmapFontStyle.NONE);
     }
   }
 };

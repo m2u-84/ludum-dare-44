@@ -62,8 +62,8 @@ DrugStage.prototype.update = function(timer) {
     r: 125
   }
   this.clipRect = [ 0, 0, 0.9 * this.w, 0.8 * this.h ];
-  if (this.paused) { return; }
   MinigameStage.prototype.update.call(this, timer);
+  if (this.paused) { return; }
   this.updateWobble();
   if (!this.flying && !this.lying) {
     this.updateWobblyHand();
