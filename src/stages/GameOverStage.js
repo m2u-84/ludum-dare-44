@@ -5,11 +5,34 @@ function GameOverStage() {
 inherit(GameOverStage, Stage);
 
 GameOverStage.prototype.preload = function() {
-  const endings = [
-    'gameover_1', // 0: Mafia Ending
-    'gameover_2', // 1: Police Ending
-    'gameover_3', // 2: Money Ending
-  ];
+
+  this.endings = {
+    mafia: {
+      win: false,
+      keepPlaying: false,
+      image: loader.loadAssetImage('gameover_mafia.png')
+    },
+    police: {
+      win: false,
+      keepPlaying: false,
+      image: loader.loadAssetImage('gameover_police.png')
+    },
+    beach: {
+      win: true,
+      keepPlaying: true,
+      image: loader.loadAssetImage('gameover_beach.png')
+    },
+    goodDoctor: {
+      win: true,
+      keepPlaying: true,
+      image: loader.loadAssetImage('gameover_goodDoctor.png')
+    },
+    badDoctor: {
+      win: false,
+      keepPlaying: false,
+      image: loader.loadAssetImage('gameover_badDoctor.png')
+    },
+  }
 
   const backToMenuButtonFrames = {
     idle: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
@@ -38,7 +61,6 @@ GameOverStage.prototype.preload = function() {
   this.buttonImage = loader.loadAssetImage('gameover_buttons.png', 8, 2);
   this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
   this.confirmSound = loader.loadAssetAudio({src: 'sounds/key-clicking/confirm.mp3'});
-  this.gameOverImages = endings.map(ending => loader.loadAssetImage(ending + '.png'));
   this.modalBackground = loader.loadAssetImage('modal_gameover.png');
   this.scorePanelImage = loader.loadAssetImage('scorepanel.png', 1, 8);
   this.scoreLabelImage = loader.loadAssetImage('scorelabel.png', 1, 14);
@@ -48,11 +70,12 @@ GameOverStage.prototype.preload = function() {
 }
 
 GameOverStage.prototype.prestart = function(payload) {
-  this.gameOverNr = payload;
+  this.endingKey = payload;
+  this.currentEnding = this.endings[this.endingKey];
   this.soundGameOver.play();
 
   // Set highscores
-  this.score = gameStage.calculateScore(this.gameOverNr == 2 ? true : false);
+  this.score = gameStage.calculateScore(this.currentEnding.win);
   if (gameStage.isHighscore(gameStage.gameState.currentLevel.num, this.score)) {
     this.isHighscore = true;
     gameStage.writeHighScore(gameStage.gameState.currentLevel.num, this.score)
@@ -75,7 +98,7 @@ GameOverStage.prototype.render = function(ctx, timer) {
 
   ctx.translate(x, y);
   drawImageToScreen(ctx, this.modalBackground, 0, 0, 0, 1, 1, 0, 0);
-  drawImageToScreen(ctx, this.gameOverImages[this.gameOverNr], 5, 9, 0, 1, 1, 0, 0);
+  drawImageToScreen(ctx, this.currentEnding.image, 5, 9, 0, 1, 1, 0, 0);
 
   // Draw Score
   if (this.isHighscore) {
@@ -103,7 +126,7 @@ GameOverStage.prototype.render = function(ctx, timer) {
   mainFont.drawText(ctx, gameStage.gameState.stats.pingPongBounces, 310, 143, "green", 1);
 
   // Draw Buttons
-  if (this.gameOverNr == 2) {
+  if (this.currentEnding.keepPlaying) {
     this.keepPlayingButton.paint(ctx, 180, 190, x, y);
     this.backToMenuButton.paint(ctx, 180, 166, x, y);
   } else {
@@ -117,7 +140,7 @@ GameOverStage.prototype.onkey = function(event) {
     if (this.active && event.key == " ") {
       this.transitionTo("start");
     }
-    if (this.active && event.key == "1" && this.gameOverNr == 2) {
+    if (this.active && event.key == "1" && this.currentEnding.keepPlaying) {
       this.transitionOut(800);
     }
   }

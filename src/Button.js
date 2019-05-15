@@ -17,7 +17,7 @@
  * @param {Sound} hoverSound    Option click sound
  */
 
-function Button(image, frames, action, clickSound = null, hoverSound = null, isOneClick = true) {
+function Button(image, frames, action, clickSound = null, hoverSound = null) {
   this.image = image;
   this.frames = frames;
   this.hoverSound = hoverSound;
@@ -26,8 +26,6 @@ function Button(image, frames, action, clickSound = null, hoverSound = null, isO
   this.frame = 0;
   this.hovered = false;
   this.armed = false;
-  this.isOneClick = isOneClick;
-  this.clickedOnce = false;
 }
 
 Button.prototype.isHovered = function(x, y, offsetX, offsetY) {
@@ -50,12 +48,9 @@ Button.prototype.isHovered = function(x, y, offsetX, offsetY) {
 Button.prototype.paint = function(ctx, x, y, offsetX = 0, offsetY = 0) {
 
     if (this.hovered && this.armed && !mouseHandler.mouse.click) {
-      if (!this.isOneClick || (this.isOneClick && !this.clickedOnce)) {
-        if (this.clickSound) this.clickSound.play();
-        this.action();
-        this.armed = false;
-        this.clickedOnce = true;
-    }
+      if (this.clickSound) this.clickSound.play();
+      this.action();
+      this.armed = false;
 
     } else if (this.isHovered(x,y,offsetX,offsetY) && this.hovered && mouseHandler.mouse.click) {
       this.armed = true;

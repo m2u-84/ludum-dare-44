@@ -102,7 +102,7 @@ const levelOverrides = [
     gameOver: {
       balanceAbove: {
         value: 15000,
-        stageNum: 2
+        endingKey: 'beach'
       }
     },
     params: {
@@ -180,16 +180,16 @@ const levelOverrides = [
       instruction: 'modal_intro_level2.png',
       gameOver: {
         curedPatientsCountEquals: {
-          value: 15,
-          stageNum: 2
+          value: 10,
+          endingKey: 'goodDoctor'
         },
         deathCountEquals: {
           value: 2,
-          stageNum: 1
+          endingKey: 'badDoctor'
         },
         patientsRejectedEquals: {
           value: 5,
-          stageNum: 1
+          endingKey: 'badDoctor'
         }
       },
       params: {

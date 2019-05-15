@@ -445,7 +445,7 @@ Patient.prototype.executeAction = function(action) {
             this.setMood(PatientMoods.ANGRY);
 
             if(this.gameState.currentLevel.gameOver.patientsRejectedEquals && this.gameState.stats.patientsRejected == this.gameState.currentLevel.gameOver.patientsRejectedEquals.value) {
-                this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.patientsRejectedEquals.stageNum);
+                this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.patientsRejectedEquals.endingKey);
             }
 
             break;
@@ -481,7 +481,7 @@ Patient.prototype.executeAction = function(action) {
           this.gameState.stats.patientsCured++;
 
           if(this.gameState.currentLevel.gameOver.curedPatientsCountEquals && this.gameState.stats.patientsCured == this.gameState.currentLevel.gameOver.curedPatientsCountEquals.value) {
-              this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.curedPatientsCountEquals.stageNum);
+              this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.curedPatientsCountEquals.endingKey);
           }
           break;
         case treatments.takeOrgan:
@@ -575,7 +575,7 @@ Patient.prototype.die = function() {
         this.timeOfDeath = gameStage.time;
 
         if (this.gameState.currentLevel.gameOver.deathCountEquals && this.gameState.stats.patientsDied == this.gameState.currentLevel.gameOver.deathCountEquals.value) {
-            this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.deathCountEquals.stageNum);
+            this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.deathCountEquals.endingKey);
         }
     }
 };

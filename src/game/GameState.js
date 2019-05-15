@@ -128,7 +128,7 @@ GameState.prototype.registerPoliceBribery = function() {
         this.lastBriberyAttempt = gameStage.time;
         return true;
     }
-    this.setGameOver("gameover", 800, 1);
+    this.setGameOver("gameover", 800, 'police');
     return false;
 };
 

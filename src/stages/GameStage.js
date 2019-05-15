@@ -346,11 +346,11 @@ GameStage.prototype.onkey = function (event) {
       } else if (event.key == "l") {
         this.gameState.hospital.balance += 100;
       } else if (event.key == "y") {
-        this.gameState.setGameOver("gameover", 800, 0);
+        this.gameState.setGameOver("gameover", 800, 'mafia');
       } else if (event.key == "x") {
-        this.gameState.setGameOver("gameover", 800, 1);
+        this.gameState.setGameOver("gameover", 800, 'police');
       } else if (event.key == "c") {
-        this.gameState.setGameOver("gameover", 800, 2);
+        this.gameState.setGameOver("gameover", 800, 'beach');
       }
     }
 };

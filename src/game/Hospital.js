@@ -23,7 +23,7 @@ Hospital.prototype.update = function(td, time) {
     }
 
     if (this.currentLevel.gameOver.balanceAbove && this.balance >= this.currentLevel.gameOver.balanceAbove.value) {
-        setTimeout(() => gameStage.gameState.setGameOver("gameover", 800, this.currentLevel.gameOver.balanceAbove.stageNum), 1000);
+        setTimeout(() => gameStage.gameState.setGameOver("gameover", 800, this.currentLevel.gameOver.balanceAbove.endingKey), 1000);
     }
 };
 
