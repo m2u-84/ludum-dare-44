@@ -104,11 +104,13 @@ const levelOverrides = [
     num: 1,
     mapImage: 'level1.png',
     bgm: 'music-1.mp3',
+    thumb: 'thumb_level1.png',
     instruction: 'modal_intro_level1.png',
     gameOver: {
       balanceAbove: {
         value: 15000,
-        endingKey: 'beach'
+        endingKey: 'beach',
+        text: 'Make 15.0000 $'
       }
     },
     hints: [
@@ -188,19 +190,23 @@ const levelOverrides = [
       num: 2,
       mapImage: 'level2.png',
       bgm: 'music-2.mp3',
+      thumb: 'thumb_level2.png',
       instruction: 'modal_intro_level2.png',
       gameOver: {
         curedPatientsCountEquals: {
           value: 10,
-          endingKey: 'goodDoctor'
+          endingKey: 'goodDoctor',
+          text: 'Cure 10 Patients'
         },
         deathCountEquals: {
           value: 2,
-          endingKey: 'badDoctor'
+          endingKey: 'badDoctor',
+          text: 'No more than 2 deaths'
         },
         patientsRejectedEquals: {
           value: 5,
-          endingKey: 'badDoctor'
+          endingKey: 'badDoctor',
+          text: 'No more than 5 rejections'
         }
       },
       params: {

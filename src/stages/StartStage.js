@@ -22,7 +22,7 @@ StartStage.prototype.preload = function() {
   this.menuButtonImage = loader.loadAssetImage('menu_buttons.png', 8, 3);
   this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
   this.startingSound = loader.loadAssetAudio({src: 'sounds/game-starting/game-starting.mp3'});
-  this.menuButton = new Button(this.menuButtonImage, menuButton1frames, () => this.transitionTo('levelSelect'),
+  this.menuButton = new Button(this.menuButtonImage, menuButton1frames, () => stageManager.crossfadeToStage("levelSelect", 800, 0),
       this, this.startingSound, this.hoverSound);
 }
 
@@ -35,7 +35,12 @@ StartStage.prototype.render = function(ctx, timer) {
   const p = Interpolators.cubic3(this.opacity);
   if (p < 1) {
     ctx.translate(0, -(1 - p) * (h + 10));
+    
+    // Draw transition shadow
+    ctx.fillStyle = "rgba(0,0,0,0.5)";
+    ctx.fillRect(0, h*p, w, 300);
   }
+
   // Draw background image
   drawImage(ctx, this.menuImage, 0, 0, 0, 1, 1, 0, 0);
 
@@ -50,6 +55,7 @@ StartStage.prototype.render = function(ctx, timer) {
 
 StartStage.prototype.onkey = function(event) {
   if (event.key == "1" || event.key == "2") {
-    this.transitionTo("levelSelect")
+    stageManager.crossfadeToStage("levelSelect", 800, 0);
+    // this.transitionTo("levelSelect", undefined, undefined)
   }
 }

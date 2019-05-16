@@ -336,8 +336,8 @@ GameStage.prototype.onkey = function (event) {
     }
     if (window["cheats"]) {
       if (event.key == "k") {
-          // Kill all patients
-          this.gameState.patients.forEach( p => p.die() );
+        // Kill all patients
+        this.gameState.patients.forEach( p => p.die() );
       } else if (event.key == "f") {
         this.transitionIn("surgery", 300, { patient: new Patient(5, 5, 100, 50, this.gameState.sicknesses[4], this.gameState)})
       } else if (event.key == "i") {
