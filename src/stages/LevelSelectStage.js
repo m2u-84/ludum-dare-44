@@ -15,7 +15,7 @@ LevelSelectStage.prototype.preload = function() {
   this.levels = Object.keys(levels).map(key => levels[key]);
   this.levelThumbImages = this.levels.map(level => loader.loadAssetImage(level.thumb));
   this.drawSettings = {
-    x: 26,
+    x: 62,
     y: 90,
     space: 10,
     textMargin: 10
@@ -31,6 +31,12 @@ LevelSelectStage.prototype.preload = function() {
   }
 
   this.levelButtons = this.levels.map(level => new Button(this.levelSelectButtonImage, levelButtonFrames, () => this.startGame(level.num), this, undefined, this.hoverSound));
+  
+  this.menu = new MenuHandler();
+  this.levelButtons.forEach(button => {
+    this.menu.addButton(button);
+  })
+
 }
 
 LevelSelectStage.prototype.startGame = function(level) {
@@ -102,4 +108,16 @@ LevelSelectStage.prototype.render = function(ctx, timer) {
     
     }
   })
+};
+
+LevelSelectStage.prototype.onkey = function(event) {
+  if (["ArrowLeft", "a"].indexOf(event.key) >= 0) {
+    this.menu.prev();
+  }
+  if (["ArrowRight", "d"].indexOf(event.key) >= 0) {
+    this.menu.next();
+  }
+  if (["Enter"].indexOf(event.key) >= 0) {
+    this.menu.executeFocusedButton();
+  }
 };

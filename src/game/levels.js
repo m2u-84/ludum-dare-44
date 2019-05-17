@@ -122,7 +122,7 @@ const levelOverrides = [
       hospital: {
         startingBalance: 2500,
         revenueDelay: 25000,
-        startingOrgans: 1
+        startingOrgans: 0
       },
       doctor: {
         startingPos: [11, 12.8]
