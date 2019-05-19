@@ -38,9 +38,22 @@ MenuHandler.prototype.prev = function() {
   }
 }
 
-MenuHandler.prototype.switchFocusTo = function(index) {
+MenuHandler.prototype.switchFocusTo = function(indexOrRefId) {
   this.buttonList.forEach(button => button.blur());
-  this.buttonList[index].focus();
+  let index = null;
+
+  if (isNaN(indexOrRefId)) {
+    index = this.buttonList.findIndex(button => button.refId == indexOrRefId);
+    this.focusedIndex = index
+  } else {
+    index = indexOrRefId
+  }
+
+  if (index !== null) {
+    this.buttonList[index].focus();
+  } else {
+    throw new Error("Couldnt switch focus to button because index could not be determinded");
+  } 
 }
 
 MenuHandler.prototype.executeFocusedButton = function() {

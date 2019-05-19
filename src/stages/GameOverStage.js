@@ -81,9 +81,9 @@ GameOverStage.prototype.prestart = function(payload) {
 
   this.menu = new MenuHandler();
 
-  this.backToMenuButton = new Button(this.buttonImage, this.backToMenuButtonFrames, () => this.transitionTo("levelSelect"),
+  this.backToMenuButton = new Button(this.buttonImage, this.menu, this.backToMenuButtonFrames, () => this.transitionTo("levelSelect"),
     this, this.confirmSound, this.hoverSound, false, true);
-  this.keepPlayingButton = new Button(this.buttonImage, this.keepPlayingButtonFrames, () => this.transitionOut(800),
+  this.keepPlayingButton = new Button(this.buttonImage, this.menu, this.keepPlayingButtonFrames, () => this.transitionOut(800),
     this, this.confirmSound, this.hoverSound, !this.currentEnding.win, true);
 
   this.menu.addButton(this.backToMenuButton);

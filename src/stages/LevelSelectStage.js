@@ -29,10 +29,10 @@ LevelSelectStage.prototype.preload = function() {
     armed: [7],
     armedSpeed: 75
   }
-
-  this.levelButtons = this.levels.map(level => new Button(this.levelSelectButtonImage, levelButtonFrames, () => this.startGame(level.num), this, undefined, this.hoverSound));
-  
   this.menu = new MenuHandler();
+
+  this.levelButtons = this.levels.map(level => new Button(this.levelSelectButtonImage, this.menu, levelButtonFrames, () => this.startGame(level.num), this, undefined, this.hoverSound));
+
   this.levelButtons.forEach(button => {
     this.menu.addButton(button);
   })
@@ -85,7 +85,7 @@ LevelSelectStage.prototype.render = function(ctx, timer) {
     const panelBaseY = baseY + this.levelThumbImages[i].height + 10;
     let addedPanelY = 7;
 
-    if (this.levelButtons[i].hovered) {
+    if (this.levelButtons[i].focused) {
       drawImage(ctx, this.goalPanel, baseX, panelBaseY, 0, 1, 1, 0, 0);
 
       // Iterate over static game over conditions
@@ -118,6 +118,6 @@ LevelSelectStage.prototype.onkey = function(event) {
     this.menu.next();
   }
   if (["Enter"].indexOf(event.key) >= 0) {
-    this.menu.executeFocusedButton();
+    this.menu.executeFocusedButton()
   }
 };

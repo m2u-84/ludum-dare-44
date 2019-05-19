@@ -48,7 +48,7 @@ ContextMenuStage.prototype.prestart = function(payload) {
 
     return {
       action: action.name,
-      button: new Button(this.buttonImage, buttonframes, () => this.executeButtonAction(action),this, this.confirmSound, this.hoverSound, disabled, true)
+      button: new Button(this.buttonImage, this.menu, buttonframes, () => this.executeButtonAction(action),this, this.confirmSound, this.hoverSound, disabled, true)
     }
   })
 

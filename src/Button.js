@@ -17,7 +17,8 @@
  * @param {Sound} hoverSound    Option click sound
  */
 
-function Button(image, frames, action, stage = null, clickSound = null, hoverSound = null, disabled = false, drawPointer = false) {
+function Button(image, menu = undefined, frames, action, stage = null, clickSound = null, hoverSound = null, disabled = false, drawPointer = false) {
+  this.refId = uuidv4();
   this.image = image;
   this.frames = frames;
   this.hoverSound = hoverSound;
@@ -30,7 +31,8 @@ function Button(image, frames, action, stage = null, clickSound = null, hoverSou
   this.armed = false;
   this.disabled = disabled;
   this.drawPointer = drawPointer;
-  this.pointer = {}
+  this.pointer = {};
+  this.menu = menu;
 
   if (this.drawPointer) {
     this.pointer = this.stage.getShared('pointer');
@@ -49,18 +51,18 @@ Button.prototype.isHovered = function(x, y, offsetX, offsetY) {
 
 Button.prototype.focus = function() {
   this.focused = true;
-  this.hovered = true;
   if (this.hoverSound) this.hoverSound.play();
 }
 
 Button.prototype.blur = function() {
+  console.log('blur');
   this.focused = false;
   this.hovered = false;
   this.armed = false;
 }
 
 Button.prototype.execute = function() {
-  this.armed = true;
+  this.armed = false;
   if (this.clickSound) this.clickSound.play();
   this.action();
 }
@@ -97,8 +99,8 @@ Button.prototype.paint = function(ctx, x, y, offsetX = 0, offsetY = 0) {
   // }
 
   // Button is focused
+  
   if (this.focused) {
-
     // Draw pointer on focused button if wanted
     if (this.drawPointer) {
       this.pointerFrame = getArrayFrame(timer.gameTime / 35, this.pointer.frames);
@@ -107,9 +109,19 @@ Button.prototype.paint = function(ctx, x, y, offsetX = 0, offsetY = 0) {
     if (this.armed) {
       // focused AND armed
       this.frame = getArrayFrame(timer.gameTime / this.frames.armedSpeed, this.frames.armed);
+
+      // Allow button execution with mouse if button is already armed
+      if (!mouse.click && this.isHovered(x,y,offsetX,offsetY)) {
+        this.execute();
+      }
     } else {
       // just focused
       this.frame = getArrayFrame(timer.gameTime / this.frames.hoveredSpeed, this.frames.hovered);
+    }
+
+    // Allow button arming with mouse
+    if (!this.armed && this.focused && mouse.click && this.hovered && this.isHovered(x,y,offsetX,offsetY))  {
+      this.armed = true;
     }
   }
 
@@ -118,9 +130,20 @@ Button.prototype.paint = function(ctx, x, y, offsetX = 0, offsetY = 0) {
     this.frame = getArrayFrame(timer.gameTime / this.frames.idleSpeed, this.frames.idle);
   }
 
+  // General mouse control logic to prevent unexpected click and hover behaviour
+  if (!mouse.click) {
+    if (this.isHovered(x,y,offsetX,offsetY)) {
+      if (!this.hovered) this.hovered = true;
+      if (!this.focused) this.menu.switchFocusTo(this.refId)
+    } else {
+      if (this.armed) this.armed = false;
+    }
+  } else {
+    if (this.hovered) this.hovered = false;
+  }
+
   drawFrame(ctx, this.image, this.frame, x, y, 0, 1, 1, 0, 0);
   if (this.focused && this.drawPointer) drawFrame(ctx, this.pointer.image, this.pointerFrame, x, Math.floor((y + this.image.frameHeight / 2)), 0, 1, 1, 0.5, 0.5);
-
 };
 
 Button.prototype.getMouse = function() {
