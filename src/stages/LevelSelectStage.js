@@ -6,12 +6,16 @@ inherit(LevelSelectStage, Stage);
 
 LevelSelectStage.prototype.preload = function() {
   // Load images here
-  this.bgImage = loader.loadAssetImage('level_select_stage.png');
   this.scoreIcon = loader.loadAssetImage('levelscore.png', 2, 1);
+
+  this.headlineImage = loader.loadAssetImage('levelselect_head.png', 1, 11);
+  this.headlineFrames = [0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,9,9,10,10,10];
+  this.headlineFrame = 0;
+
   this.goalPanel = loader.loadAssetImage('level_goal_panel.png');
   this.levelSelectButtonImage = loader.loadAssetImage('level_select_button.png', 4, 2);
   this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
-  this.startingSound = loader.loadAssetAudio({src: 'sounds/game-starting/game-starting.mp3'});
+  this.startingSound = loader.loadAssetAudio({src: 'sounds/key-clicking/confirm.mp3'});
   this.levels = Object.keys(levels).map(key => levels[key]);
   this.levelThumbImages = this.levels.map(level => loader.loadAssetImage(level.thumb));
   this.drawSettings = {
@@ -20,6 +24,7 @@ LevelSelectStage.prototype.preload = function() {
     space: 10,
     textMargin: 10
   }
+
 
   const levelButtonFrames = {
     idle: [0, 1, 2, 3, 2, 1],
@@ -63,7 +68,12 @@ LevelSelectStage.prototype.render = function(ctx, timer) {
   }
 
   // Draw background image
-  drawImage(ctx, this.bgImage, 0, 0, 0, 1, 1, 0, 0);
+  ctx.fillStyle = "#e8e8e8";
+  ctx.fillRect(0, 0, w, h);
+
+  // Draw Header
+  this.headlineFrame = getArrayFrame(timer.gameTime / 80, this.headlineFrames);
+  drawFrame(ctx, this.headlineImage, this.headlineFrame, 0, 15, 0, 1, 1, 0, 0);
 
   // Iterate over available levels and draw them
   this.levels.forEach((level, i) => {
