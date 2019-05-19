@@ -4,6 +4,10 @@
  * Can be used as a wrapper for all buttons on a stage to be able to
  * move the selection pointer around and execute button actions via
  * the keyboard
+ * 
+ * Create a menu object at your stage startup and add the buttons via the addButton method.
+ * Then you can bind your keyboard commands to menu.prev() or menu.next() methods to able to navigate
+ * through the buttons via keyboard controls.
  */
 
 function MenuHandler() {

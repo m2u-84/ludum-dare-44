@@ -1,6 +1,9 @@
 /**
  * A Button
  * 
+ * Buttons can and should be created on stages and then be added to a menu object
+ * to allow full functionality
+ * 
  * @param {Image} image        Image Object
  * @param {Object} frames
  * Object with animation frame mapping arrays for each state and it's animation speed.
@@ -33,6 +36,8 @@ function Button(image, menu = undefined, frames, action, stage = null, clickSoun
   this.drawPointer = drawPointer;
   this.pointer = {};
   this.menu = menu;
+  this.lastFocusTime = 0;
+  this.lastHoverTime = 0;
 
   if (this.drawPointer) {
     this.pointer = this.stage.getShared('pointer');
@@ -51,11 +56,11 @@ Button.prototype.isHovered = function(x, y, offsetX, offsetY) {
 
 Button.prototype.focus = function() {
   this.focused = true;
+  this.lastFocusTime = timer.gameTime;
   if (this.hoverSound) this.hoverSound.play();
 }
 
 Button.prototype.blur = function() {
-  console.log('blur');
   this.focused = false;
   this.hovered = false;
   this.armed = false;
@@ -78,28 +83,7 @@ Button.prototype.execute = function() {
 Button.prototype.paint = function(ctx, x, y, offsetX = 0, offsetY = 0) {
   const mouse = this.getMouse();
 
-  // if (this.focused && this.armed && !mouse.click) {
-  //   if (this.clickSound) this.clickSound.play();
-  //   this.action();
-  //   this.armed = false;
-  // } else if (this.isHovered(x,y,offsetX,offsetY) && this.focused && mouse.click) {
-  //   this.armed = true;
-  //   this.frame = getArrayFrame(timer.gameTime / this.frames.armedSpeed, this.frames.armed);
-  // } else if (this.isHovered(x,y,offsetX,offsetY) && !mouse.click) {
-  //   if (!this.focused) {
-  //     this.focus()
-  //   } else {
-  //     this.frame = getArrayFrame(timer.gameTime / this.frames.hoveredSpeed, this.frames.hovered);
-  //   }
-  // } else if (!this.isHovered(x,y,offsetX,offsetY)) {
-  //   this.hovered = false;
-  //   this.armed = false;
-  //   if (!this.focused)
-  //     this.frame = getArrayFrame(timer.gameTime / this.frames.idleSpeed, this.frames.idle);
-  // }
-
   // Button is focused
-  
   if (this.focused) {
     // Draw pointer on focused button if wanted
     if (this.drawPointer) {
@@ -133,7 +117,10 @@ Button.prototype.paint = function(ctx, x, y, offsetX = 0, offsetY = 0) {
   // General mouse control logic to prevent unexpected click and hover behaviour
   if (!mouse.click) {
     if (this.isHovered(x,y,offsetX,offsetY)) {
-      if (!this.hovered) this.hovered = true;
+      if (!this.hovered) {
+        this.hovered = true;
+        this.lastHoverTime = timer.gameTime;
+      }
       if (!this.focused) this.menu.switchFocusTo(this.refId)
     } else {
       if (this.armed) this.armed = false;
