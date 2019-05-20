@@ -22,8 +22,9 @@ StartStage.prototype.preload = function() {
   this.menuButtonImage = loader.loadAssetImage('menu_buttons.png', 8, 3);
   this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
   this.startingSound = loader.loadAssetAudio({src: 'sounds/game-starting/game-starting.mp3'});
-  this.menuButton = new Button(this.menuButtonImage, menuButton1frames, () => stageManager.crossfadeToStage("levelSelect", 800, 0),
-      this, this.startingSound, this.hoverSound);
+  this.menu = new MenuHandler();
+  this.menuButton = new Button(this.menuButtonImage, this.menu, menuButton1frames, () => stageManager.crossfadeToStage("levelSelect", 800, 0), this, this.startingSound, this.hoverSound, false, true);
+  this.menu.addButton(this.menuButton);
 }
 
 StartStage.prototype.prestart = function() {
@@ -54,8 +55,7 @@ StartStage.prototype.render = function(ctx, timer) {
 };
 
 StartStage.prototype.onkey = function(event) {
-  if (event.key == "1" || event.key == "2") {
-    stageManager.crossfadeToStage("levelSelect", 800, 0);
-    // this.transitionTo("levelSelect", undefined, undefined)
+  if (["Enter", " "].indexOf(event.key) >= 0) {
+    this.menu.executeFocusedButton();
   }
 }

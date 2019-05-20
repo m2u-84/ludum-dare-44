@@ -34,7 +34,7 @@ GameOverStage.prototype.preload = function() {
     },
   }
 
-  const backToMenuButtonFrames = {
+  this.backToMenuButtonFrames = {
     idle: [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
     idleSpeed: 75,
     hovered: [6],
@@ -43,7 +43,7 @@ GameOverStage.prototype.preload = function() {
     armedSpeed: 75
   }
 
-  const keepPlayingButtonFrames = {
+  this.keepPlayingButtonFrames = {
     idle: [9, 10, 11, 12, 13, 8, 8, 8, 8, 8, 8, 8, 8, 8],
     idleSpeed: 75,
     hovered: [14],
@@ -65,10 +65,6 @@ GameOverStage.prototype.preload = function() {
   this.scorePanelImage = loader.loadAssetImage('scorepanel.png', 1, 8);
   this.scoreLabelImage = loader.loadAssetImage('scorelabel.png', 1, 14);
   this.soundGameOver = loader.loadAssetAudio({src: 'sounds/outcomes/outcomes-gameover.mp3'});
-  this.backToMenuButton = new Button(this.buttonImage, backToMenuButtonFrames, () => this.transitionTo("levelSelect"),
-      this, this.confirmSound, this.hoverSound);
-  this.keepPlayingButton = new Button(this.buttonImage, keepPlayingButtonFrames, () => this.transitionOut(800),
-      this, this.confirmSound, this.hoverSound);
 }
 
 GameOverStage.prototype.prestart = function(payload) {
@@ -82,6 +78,16 @@ GameOverStage.prototype.prestart = function(payload) {
     this.isHighscore = true;
     gameStage.writeHighScore(gameStage.gameState.currentLevel.num, this.score)
   }
+
+  this.menu = new MenuHandler();
+
+  this.backToMenuButton = new Button(this.buttonImage, this.menu, this.backToMenuButtonFrames, () => this.transitionTo("levelSelect"),
+    this, this.confirmSound, this.hoverSound, false, true);
+  this.keepPlayingButton = new Button(this.buttonImage, this.menu, this.keepPlayingButtonFrames, () => this.transitionOut(800),
+    this, this.confirmSound, this.hoverSound, !this.currentEnding.win, true);
+
+  this.menu.addButton(this.backToMenuButton);
+  this.menu.addButton(this.keepPlayingButton);
 }
 
 GameOverStage.prototype.render = function(ctx, timer) {
@@ -138,12 +144,15 @@ GameOverStage.prototype.render = function(ctx, timer) {
 };
 
 GameOverStage.prototype.onkey = function(event) {
-  if (this.time > 1500) {
-    if (this.active && event.key == " ") {
-      this.transitionTo("start");
+  if (this.time > 800) {
+    if (["ArrowUp", "w"].indexOf(event.key) >= 0) {
+      this.menu.prev();
     }
-    if (this.active && event.key == "1" && this.currentEnding.keepPlaying) {
-      this.transitionOut(800);
+    if (["ArrowDown", "s"].indexOf(event.key) >= 0) {
+      this.menu.next();
+    }
+    if (["Enter"].indexOf(event.key) >= 0) {
+      this.menu.executeFocusedButton();
     }
   }
 }

@@ -5,6 +5,11 @@ function LoadStage() {
 inherit(LoadStage, Stage);
 
 LoadStage.prototype.preload = function() {
+  this.pointer = {
+    image:  loader.loadAssetImage('pointer.png', 24, 1),
+    frames: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+  }
+  this.share('pointer', this.pointer);
 }
 
 LoadStage.prototype.render = function(ctx, timer) {

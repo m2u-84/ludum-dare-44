@@ -10,7 +10,7 @@ ContextMenuStage.prototype.preload = function() {
     this.background = loader.loadAssetImage('patientsheet.png');
     this.postIt = loader.loadAssetImage('postit.png');
     this.dollar = loader.loadAssetImage('dollar.png', 6, 1);
-    this.buttonImage = loader.loadAssetImage('treatment_button.png', 1, 10);
+    this.buttonImage = loader.loadAssetImage('treatment_button.png', 1, 2);
     this.dollarAnimation = [0, 0, 0, 0, 0, 0, 1, 2, 3, 4];
     this.keyImage = loader.loadAssetImage('keys.png', 9, 1);
     this.minigameIcons = loader.loadAssetImage('minigames.png', 10, 1);
@@ -29,17 +29,32 @@ ContextMenuStage.prototype.prestart = function(payload) {
   const buttonframes = {
     idle: [0],
     idleSpeed: 75,
-    hovered: [1, 1, 1, 1, 1, 1, 1, 2, 3, 4, 5, 6, 7, 8],
+    hovered: [0],
     hoveredSpeed: 75,
-    armed: [9],
+    armed: [0],
     armedSpeed: 75
   }
 
-  this.actionButtons = {};
-  this.actions.forEach(action => {
-    this.actionButtons[action.name] = new Button(this.buttonImage, buttonframes, () => this.executeButtonAction(action),
-        this, this.confirmSound, this.hoverSound);
-  });
+  this.menu = new MenuHandler();
+
+  this.actionButtons = this.actions.map(action => {
+
+    let disabled = false;
+    if (action instanceof Treatment) {
+      if (!action.isEnabled(this.patient)) {
+        disabled = true;
+      }
+    }
+
+    return {
+      action: action.name,
+      button: new Button(this.buttonImage, this.menu, buttonframes, () => this.executeButtonAction(action),this, this.confirmSound, this.hoverSound, disabled, true)
+    }
+  })
+
+  this.actionButtons.forEach(item => {
+    this.menu.addButton(item.button);
+  })
 };
 
 ContextMenuStage.prototype.update = function(timer) {
@@ -133,7 +148,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
 
     // Draw Action Button
     if (isEnabled)
-      self.actionButtons[nameOrTreatment.name].paint(ctx, 0, (y - 5), translateX, translateY)
+      self.actionButtons.find(item => item.action == nameOrTreatment.name).button.paint(ctx, -12, (y - 5), translateX, translateY)
 
     // Draw Treatment Icon
     drawFrame(ctx, self.minigameIcons, nameOrTreatment == 'Diagnose' ? 8 : nameOrTreatment.iconIndex, 0, y - 4, 0, 1, 1, 0, 0);
@@ -158,7 +173,7 @@ ContextMenuStage.prototype.render = function(ctx, timer) {
 };
 
 ContextMenuStage.prototype.onkey = function(event) {
-  if (["Escape", "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "w", "a", "s", "d"].indexOf(event.key) >= 0) {
+  if (["Escape"].indexOf(event.key) >= 0) {
     // Prevent accidental closing when opening menu while still barely running
     if (this.opacity >= 0.95 && this.time > 200) {
       this.close();
@@ -175,10 +190,24 @@ ContextMenuStage.prototype.onkey = function(event) {
   }
 };
 
+ContextMenuStage.prototype.onkey = function(event) {
+  if (["ArrowUp", "w"].indexOf(event.key) >= 0) {
+    this.menu.prev();
+  }
+  if (["ArrowDown", "s"].indexOf(event.key) >= 0) {
+    this.menu.next();
+  }
+  if (["Enter"].indexOf(event.key) >= 0) {
+    this.menu.executeFocusedButton();
+  }
+  if (["Escape"].indexOf(event.key) >= 0) {
+    this.close();
+  }
+};
+
 ContextMenuStage.prototype.close = function() {
   if (this.active) {
     this.soundSliding.play();
-
     this.transitionOut(300);
   }
 };

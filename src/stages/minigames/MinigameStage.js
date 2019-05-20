@@ -88,17 +88,20 @@ MinigameStage.prototype.close = function(success) {
 }
 
 MinigameStage.prototype.update = function(timer) {
-  if (this.getKeyState("Enter") && !this.trainingLeft) { // && this.succeededOnce) {
-    this.trainingLeft = true;
-    this.prestart(this.payload);
-  } else if (this.getKeyState("Escape") && this.active && !stageManager.get("pause").alive) {
-    this.transitionIn("pause", 400);
-  } else if (this.closeTime) {
-    if (this.time >= this.closeTime) {
-      if (this.closeCallback) { this.closeCallback(); }
-      this.hintProgress = clamp(this.hintProgress + this.timeDif * 0.003, 0, 1);
-      if (this.getKeyState(" ") || this.getKeyState("Enter")) {
-        if (!this.closeCallback) { this.transitionOut(700); }
+  // Wait a bit to prevent onKey-Events from previous Stage
+  if (this.time > 800) {
+    if (this.getKeyState("Enter") && !this.trainingLeft) { // && this.succeededOnce) {
+      this.trainingLeft = true;
+      this.prestart(this.payload);
+    } else if (this.getKeyState("Escape") && this.active && !stageManager.get("pause").alive) {
+      this.transitionIn("pause", 400);
+    } else if (this.closeTime) {
+      if (this.time >= this.closeTime) {
+        if (this.closeCallback) { this.closeCallback(); }
+        this.hintProgress = clamp(this.hintProgress + this.timeDif * 0.003, 0, 1);
+        if (this.getKeyState(" ") || this.getKeyState("Enter")) {
+          if (!this.closeCallback) { this.transitionOut(700); }
+        }
       }
     }
   }

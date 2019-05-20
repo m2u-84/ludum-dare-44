@@ -24,8 +24,9 @@ InstructionsStage.prototype.preload = function() {
   this.soundSliding = loader.loadAssetAudio({src: 'sounds/paper-sliding/paper-sliding.mp3'});
   this.hoverSound = loader.loadAssetAudio({src: 'sounds/key-clicking/key-clicking.mp3'});
   this.confirmSound = loader.loadAssetAudio({src: 'sounds/key-clicking/confirm.mp3'});
-  this.introButton = new Button(this.buttonImage, introButtonFrames, () => this.transitionOut(800),
-      this, this.confirmSound, this.hoverSound);
+  this.menu = new MenuHandler();
+  this.introButton = new Button(this.buttonImage, this.menu, introButtonFrames, () => this.transitionOut(800), this, this.confirmSound, this.hoverSound, false, true);  
+  this.menu.addButton(this.introButton);
 }
 
 InstructionsStage.prototype.prestart = function() {
@@ -55,9 +56,7 @@ InstructionsStage.prototype.render = function(ctx, timer) {
 };
 
 InstructionsStage.prototype.onkey = function(event) {
-  if (this.active && event.key == " ") {
-    this.soundSliding.play();
-
-    this.transitionOut(800);
+  if (this.active && (event.key == " " || event.key == "Enter")) {
+    this.menu.executeFocusedButton();
   }
 }
