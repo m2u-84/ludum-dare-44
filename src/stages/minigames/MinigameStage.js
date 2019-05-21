@@ -69,6 +69,7 @@ MinigameStage.prototype.close = function(success) {
   }
 
   if (this.firstAttempt) {
+    console.log("Initiating restart");
     // Restart during training mode
     if (success) {
       this.succeededOnce = true;
@@ -97,10 +98,11 @@ MinigameStage.prototype.update = function(timer) {
       this.transitionIn("pause", 400);
     } else if (this.closeTime) {
       if (this.time >= this.closeTime) {
-        if (this.closeCallback) { this.closeCallback(); }
+        const callback = this.closeCallback;
+        if (callback) { callback(); }
         this.hintProgress = clamp(this.hintProgress + this.timeDif * 0.003, 0, 1);
-        if (this.getKeyState(" ") || this.getKeyState("Enter")) {
-          if (!this.closeCallback) { this.transitionOut(700); }
+        if (this.getKeyState(" ") || this.getKeyState("Enter") || !this.hint) {
+          if (!callback && this.active) { this.transitionOut(700); }
         }
       }
     }
@@ -183,15 +185,17 @@ MinigameStage.prototype.renderOnTop = function(ctx, timer) {
     ctx.fillRect(0, 0, this.w, this.h);
     // Hint
     if (this.hint) {
+      const tdif = this.time - this.closeTime;
+      const animOff = Math.round(Interpolators.parabounce(tdif / 1400, 80, 0));
       const lines = this.hint.getLines();
       let y = Math.round(this.h * 0.5 - 10 * (lines.length - 1));
       for (const line of lines) {
         mainFont.drawText(ctx, line, this.w / 2, y, "white", 0.5, BitmapFontStyle.NONE);
         y += 20;
       }
+      mainFont.drawText(ctx, "Did you know?", this.w / 2, 25 - animOff, "white", 0.5, BitmapFontStyle.OUTLINE);
       ctx.globalAlpha *= 0.5;
-      mainFont.drawText(ctx, "Did you know?", this.w / 2, 25, "white", 0.5, BitmapFontStyle.NONE);
-      mainFont.drawText(ctx, "Space to proceed", this.w / 2, this.h - 25, "white", 0.5, BitmapFontStyle.NONE);
+      mainFont.drawText(ctx, "Space to proceed", this.w / 2, this.h - 25 + animOff, "white", 0.5, BitmapFontStyle.NONE);
     }
   }
 };

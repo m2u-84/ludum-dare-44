@@ -181,6 +181,7 @@ function isMergeableObject(val) {
   return nonNullObject
       && Object.prototype.toString.call(val) !== '[object RegExp]'
       && Object.prototype.toString.call(val) !== '[object Date]'
+      && val.constructor == Object; // <- later addition to prevent class instances from being disassembled
 }
 
 function emptyTarget(val) {

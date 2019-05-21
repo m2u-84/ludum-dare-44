@@ -1,3 +1,16 @@
+
+const defaultHints = [
+  new Hint('Diagnosis is optional, but recommended\nif saving patients is your goal', 1),
+  new Hint('Occupied beds yield recurring rent', 1),
+  new Hint('It is sometimes wise to not accept all patients', 1),
+  new Hint('If you ignore patients at your counter for\ntoo long, they will leave', 2),
+  new Hint('Patients can (and sometimes should) be treated\nmultiple times', 2),
+  new Hint('Different patients pay different amounts for treatments', 2),
+  new Hint('Suits are a sign of wealth', 3),
+  new Hint('Wealthy patients pay higher bed rent', 3),
+  new Hint('Health bars not only show current health,\nbut also state of regeneration', 3)
+];
+
 const defaultSettings = {
   params: {
     treatments: {
@@ -90,14 +103,8 @@ const defaultSettings = {
         iconIndex: 5
       }
     }
-  },
-  hints: [
-    'Wealthy patients pay more for treatments',
-    'Wealthy patients wear suits',
-    'Occupied beds yield regular rent',
-    'Wealthy patients pay higher bed rent'
-  ]
-}
+  }
+};
 
 const levelOverrides = [
   {
@@ -114,10 +121,11 @@ const levelOverrides = [
       }
     },
     hints: [
-      'The mafia takes increasing amounts of money\nevery time they visit',
-      'When the police witnesses the facility manager\ndisposing of a body, you pay a fine',
-      'You can only bribe the police twice,\nthe third time there will be no escape'
-    ],
+      new Hint('In case a patient dies, the facility manager (gray suit)\nwill get rid of the evidence', 0),
+      new Hint('The mafia takes increasing amounts of money\nevery time they visit', 2),
+      new Hint('When the police witnesses the facility manager\ndisposing of a body, you pay a fine', 2),
+      new Hint('You can only bribe the police twice,\nthe third time there will be no escape', 2)
+    ].concat(defaultHints),
     params: {
       hospital: {
         startingBalance: 2500,
@@ -209,6 +217,10 @@ const levelOverrides = [
           text: 'No more than 5 rejections'
         }
       },
+      hints: [
+        new Hint('Dead patients will not be disposed in this hospital.\nA single dead patient greatly reduces your odds\nof success!', 1),
+        new Hint('Drugs help against most problems,\nremember this when there\'s no time for a diagnosis', 2)
+      ].concat(defaultHints),
       params: {
         hospital: {
           startingBalance: 2500,
