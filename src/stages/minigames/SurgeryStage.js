@@ -19,7 +19,7 @@ SurgeryStage.prototype.preload = function() {
 
 SurgeryStage.prototype.prestart = function(payload) {
   MinigameStage.prototype.prestart.call(this, payload);
-  this.treatment = gameStage.gameState.treatments.surgery; // TODO add that treatment
+  this.treatment = gameStage.gameState.treatments.surgery;
   // Reset minigame logics here
   this.targetFrom = 208 / 500;
   this.targetTo = 266 / 500;

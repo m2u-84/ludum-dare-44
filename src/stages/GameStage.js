@@ -4,8 +4,7 @@ function GameStage() {
     this.contextStage = null;
     this.floatingTexts = [];
     this.cashflowFeed = new CashflowFeed();
-    this.drawFPS = true; // TODO set to false
-    window.cheats = true; // TODO remove this
+    this.drawFPS = false;
     this.fpsCounter = new FpsCounter(1000);
 }
 
@@ -85,7 +84,6 @@ GameStage.prototype.prestart = function(payload) {
 };
 
 GameStage.prototype.start = function() {
-    // Todo: Enable on release
     this.transitionIn("instructions", 800);
 };
 
