@@ -69,7 +69,6 @@ MinigameStage.prototype.close = function(success) {
   }
 
   if (this.firstAttempt) {
-    console.log("Initiating restart");
     // Restart during training mode
     if (success) {
       this.succeededOnce = true;
@@ -85,6 +84,8 @@ MinigameStage.prototype.close = function(success) {
     this.closeTime = this.time + 1000;
     this.closeCallback = null;
     this.hint = gameStage.gameState.hintSystem.getHint();
+    // Ensure patient sleeps immediately, even before adding effect (which happens in stop method)
+    this.patient.beginSleep(5000);
   }
 }
 

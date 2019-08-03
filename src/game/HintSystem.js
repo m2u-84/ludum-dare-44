@@ -7,7 +7,9 @@ function HintSystem() {
 
 HintSystem.prototype.add = function(hint) {
   this.allHints.push(hint);
-  this.unusedHints.push(hint);
+  if (!hint.used) {
+    this.unusedHints.push(hint);
+  }
   this.unusedHints.sort((h1, h2) => h1.priority - h2.priority);
 };
 
@@ -16,6 +18,9 @@ HintSystem.prototype.getHint = function(indexRange = 3) {
     return null;
   }
   let currentHints = this.unusedHints.filter(hint => !hint.used);
+  if (currentHints.length < 1) {
+    return null;
+  }
   const priority = currentHints[0].priority;
   currentHints = this.unusedHints.filter(hint => hint.priority <= priority);
   const index = Math.floor(currentHints.length * Math.random());

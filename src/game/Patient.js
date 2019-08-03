@@ -444,7 +444,7 @@ Patient.prototype.executeAction = function(action) {
             this.gameState.hospital.giveRevenue(this.getTreatmentPrice(this.gameState.rejectReception), this.x, this.y);
             this.setMood(PatientMoods.ANGRY);
 
-            if(this.gameState.currentLevel.gameOver.patientsRejectedEquals && this.gameState.stats.patientsRejected == this.gameState.currentLevel.gameOver.patientsRejectedEquals.value) {
+            if(this.gameState.currentLevel.gameOver.patientsRejectedEquals && this.gameState.stats.patientsRejected > this.gameState.currentLevel.gameOver.patientsRejectedEquals.value) {
                 this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.patientsRejectedEquals.endingKey);
             }
 
@@ -574,7 +574,7 @@ Patient.prototype.die = function() {
         }, this.deathDuration);
         this.timeOfDeath = gameStage.time;
 
-        if (this.gameState.currentLevel.gameOver.deathCountEquals && this.gameState.stats.patientsDied == this.gameState.currentLevel.gameOver.deathCountEquals.value) {
+        if (this.gameState.currentLevel.gameOver.deathCountEquals && this.gameState.stats.patientsDied > this.gameState.currentLevel.gameOver.deathCountEquals.value) {
             this.gameState.setGameOver("gameover", 800, this.gameState.currentLevel.gameOver.deathCountEquals.endingKey);
         }
     }

@@ -76,6 +76,12 @@ function GameState(currentLevel) {
         new Sickness(0.8, 'Kidney Failure', this.treatments.organ),
         new Sickness(0.8, 'Appendicitis', this.treatments.surgery)
     ];
+    this.firstSicknesses = [
+        this.sicknesses[6], // Antibiotics
+        this.sicknesses[5], // Drugs
+        this.sicknesses[4], // Fracture
+        this.sicknesses[8] // Organ
+    ];
     // Relations between sickness & treatment     Hyp  CCl  Dem  Dep  Frc  Flu  Drh    Stk  Ant  Kid   App
     setRelations(this.treatments.drugs,          [0.5, 0.4, 0.1, 0.6, 0.1, 0.8, 0.2/* 0.1*/, 0.3, 0.1, 0.1]);
     setRelations(this.treatments.placeboSurgery, [1.0, 0.5, 0.3, 0.2, 0.0, 0.0,-0.3/* 0.0*/, 0.0,-0.1, 0.0]);

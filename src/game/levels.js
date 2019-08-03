@@ -2,7 +2,6 @@
 const defaultHints = [
   new Hint('Diagnosis is optional, but recommended\nif saving patients is your goal', 1),
   new Hint('Occupied beds yield recurring rent', 1),
-  new Hint('It is sometimes wise to not accept all patients', 1),
   new Hint('If you ignore patients at your counter for\ntoo long, they will leave', 2),
   new Hint('Patients can (and sometimes should) be treated\nmultiple times', 2),
   new Hint('Different patients pay different amounts for treatments', 2),
@@ -122,6 +121,7 @@ const levelOverrides = [
     },
     hints: [
       new Hint('In case a patient dies, the facility manager (gray suit)\nwill get rid of the evidence', 0),
+      new Hint('It is sometimes wise to not accept all patients', 1),
       new Hint('The mafia takes increasing amounts of money\nevery time they visit', 2),
       new Hint('When the police witnesses the facility manager\ndisposing of a body, you pay a fine', 2),
       new Hint('You can only bribe the police twice,\nthe third time there will be no escape', 2)
@@ -219,6 +219,7 @@ const levelOverrides = [
       },
       hints: [
         new Hint('Dead patients will not be disposed in this hospital.\nA single dead patient greatly reduces your odds\nof success!', 1),
+        new Hint('Surgeries can kill patients even if they\'re successful.\nMaybe try drugs or placebo surgeries instead to\nreduce the risk.', 1),
         new Hint('Drugs help against most problems,\nremember this when there\'s no time for a diagnosis', 2)
       ].concat(defaultHints),
       params: {

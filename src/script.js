@@ -48,7 +48,9 @@ window.onload = () => {
 
 function handleFrame() {
   timer.update();
-  stageManager.update();
-  stageManager.render();
+  try {
+    stageManager.update();
+    stageManager.render();
+  } catch (e) { console.error(e); }
   requestAnimationFrame(handleFrame);
 }

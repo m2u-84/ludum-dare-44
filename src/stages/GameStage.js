@@ -211,9 +211,9 @@ GameStage.prototype.spawnPatient = function() {
         const health = (this.gameState.stats.patientCount < patientsConfig.patientsWithFullHealth) ? 100 : rndInt(patientsConfig.healthRange[0], patientsConfig.healthRange[1]),
               wealth = rndInt(patientsConfig.wealthRange[0], patientsConfig.wealthRange[1]);
         let sickness = getRandomItem(this.gameState.sicknesses);
-        if (this.gameState.stats.patientCount < this.gameState.sicknesses.length) {
+        if (this.gameState.stats.patientCount < this.gameState.firstSicknesses.length) {
             // First 7 or so patients all have different disease, so you see all the minigames if you're a good doctor
-            sickness = this.gameState.sicknesses[this.gameState.sicknesses.length - this.gameState.stats.patientCount - 1];
+            sickness = this.gameState.firstSicknesses[this.gameState.stats.patientCount];
         }
         const patient = new Patient(spawnPoint.x, spawnPoint.y, health, wealth, sickness, this.gameState);
         if (patient.executeAction("Register")) {
@@ -321,6 +321,10 @@ GameStage.prototype.onkey = function (event) {
     if (event && event.key && event.key.length == 1 && (event.key !== event.key.toLowerCase() || isSpecialCharacter(event.key))
         && !event.shiftKey && this.cashflowFeed.texts.filter(t => t.text.indexOf("Capslock") >= 0).length == 0) {
       this.cashflowFeed.addText("Activated Capslock may interfere with the game!", "yellow");
+    }
+    // Ignore any key if currently transitioning
+    if (stageManager.transitions.length > 0) {
+      return;
     }
     if (event.key === "Escape") {
         this.transitionIn("pause", 400);
